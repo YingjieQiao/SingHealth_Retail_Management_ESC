@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, current_app, jsonify, request, Response
-from app.models import Movie
+from app.models import User
 import time, json
 import boto3
 from botocore.exceptions import ClientError
@@ -15,11 +15,25 @@ def get_homepage():
     return '<h1>hello there</h1>'
 
 
-@apis.route('/check_password')
-def check_password(username, password):
-    #TODO encryption
-    
+@apis.route('/signup', methods=['GET', 'POST'])
+def user_signup():
+    body = request.get_json()
+    user = User(**body)
+    user.hash_password()
+    user.save()
+    id = user.id
+    return {'id': str(id)}, 200
 
+
+@apis.route('/signup_test', methods=['GET', 'POST'])
+def user_signup_test():
+    content = '{ "username":"007", "password": "12345678"}'
+    body = json.loads(content)
+    user = User(**body)
+    user.hash_password()
+    user.save()
+    id = user.id
+    return {'id': str(id)}, 200
 
 
 @apis.route('/upload_file')
