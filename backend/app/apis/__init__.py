@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, current_app, jsonify, request
-import time
+from flask import Blueprint, render_template, current_app, jsonify, request, Response
+from app.models import Movie
+import time, json
 import boto3
 from botocore.exceptions import ClientError
 import logging
@@ -10,12 +11,15 @@ apis = Blueprint('apis', __name__)
 
 @apis.route('/')
 def get_homepage():
+    # for testing
     return '<h1>hello there</h1>'
 
 
-@apis.route('/time')
-def get_current_time():
-    return {'time': time.time()}
+@apis.route('/check_password')
+def check_password(username, password):
+    #TODO encryption
+    
+
 
 
 @apis.route('/upload_file')
@@ -41,7 +45,7 @@ def upload_file(file_name, bucket, object_name=None):
     return True
 
 
-@apis.route('/upload_file')
+@apis.route('/download_file')
 def download_file(file_name, bucket, object_name):
     """Download a file from an S3 bucket
 
@@ -62,3 +66,31 @@ def download_file(file_name, bucket, object_name):
         logging.error(e)
         return False
     return True
+
+
+
+# mongodb testing code
+
+"""
+@apis.route('/movies')
+def get_movies():
+    movies = Movie.objects().to_json()
+    return Response(movies, mimetype="application/json", status=200)
+
+
+@apis.route('/add_movies', methods=['POST'])
+def add_movie():
+    body = request.get_json()
+    movie =  Movie(**body).save()
+    id = movie.id
+    return {'id': str(id)}, 200
+
+
+@apis.route('/add_movies_test', methods=['GET', 'POST'])
+def add_movie_test():
+    content = '{ "name":"007", "casts":["james"], "genres":["fun"]}'
+    body = json.loads(content)
+    movie = Movie(**body).save()
+    id = 123
+    return {'id': str(id)}, 200
+"""

@@ -1,3 +1,29 @@
+# SingHealth Retail Management App
+
+
+
+### to start the app
+
+1. start a python virtual environment and install backend dependencies using `pip install -r requirements.txt`
+
+2. start mongodb
+
+- on Mac OS
+
+start: `brew services start mongodb-community@4.4`
+
+stop: `brew services stop mongodb-community@4.4`
+
+- on other os
+
+https://docs.mongodb.com/manual/administration/install-community/
+
+
+3. todo
+
+---
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -68,10 +94,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `yarn build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-
-### to start the app
-
-1. start a python virtual environment and install backend dependencies using `pip install -r requirements.txt`
-
-2. todo
