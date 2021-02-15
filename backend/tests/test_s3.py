@@ -1,25 +1,9 @@
-from flask import Blueprint, render_template, current_app, jsonify, request
-import time
 import boto3
 from botocore.exceptions import ClientError
 import logging
 
 
-apis = Blueprint('apis', __name__)
-
-
-@apis.route('/')
-def get_homepage():
-    return '<h1>hello there</h1>'
-
-
-@apis.route('/time')
-def get_current_time():
-    return {'time': time.time()}
-
-
-@apis.route('/upload_file')
-def upload_file(file_name, bucket, object_name=None):
+def upload(file_name, bucket, object_name=None):
     """Upload a file to an S3 bucket
 
     :param file_name: File to upload
@@ -34,15 +18,13 @@ def upload_file(file_name, bucket, object_name=None):
     s3_client = boto3.client('s3')
     try:
         response = s3_client.upload_file(file_name, bucket, object_name)
-        #TODO log the response in the logger
     except ClientError as e:
         logging.error(e)
         return False
     return True
 
 
-@apis.route('/upload_file')
-def download_file(file_name, bucket, object_name):
+def download(file_name, bucket, object_name):
     """Download a file from an S3 bucket
 
     :param file_name: File to download
@@ -57,8 +39,12 @@ def download_file(file_name, bucket, object_name):
     s3 = boto3.client('s3')
     try:
         response = s3.download_file(bucket, object_name, file_name)
-        #TODO log the response in the logger
     except ClientError as e:
         logging.error(e)
         return False
     return True
+
+
+if __name__ == "__main__":
+    # upload('testpic.png', 'escapp-bucket', 'images/test2.png')
+    download('downloaded_pic2.png', 'escapp-bucket', 'images/testpic.png')
