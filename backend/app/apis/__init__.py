@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, current_app, jsonify, request
-import time
+from flask import Blueprint, request
+from app.models import User
 import boto3
 from botocore.exceptions import ClientError
 import logging
@@ -10,12 +10,34 @@ apis = Blueprint('apis', __name__)
 
 @apis.route('/')
 def get_homepage():
+    # for testing
     return '<h1>hello there</h1>'
 
 
-@apis.route('/time')
-def get_current_time():
-    return {'time': time.time()}
+@apis.route('/signup', methods=['GET', 'POST'])
+def user_signup():
+    body = request.get_json()
+    user = User(**body)
+    user.hash_password()
+    user.save()
+    id = user.id
+    response = {
+        'id': str(id),
+        'username': body['username'],
+        'email': body['email']
+    }
+
+    return response, 200
+
+
+@apis.route('/login', methods=['GET', 'POST'])
+def user_login():
+    body = request.get_json()
+    user = User.objects.get(email=body.get('email'))
+    authorized = user.check_password(body.get('password'))
+    if not authorized:
+        return {'error': 'Email or password invalid'}, 401
+    return {'result': True}, 200
 
 
 @apis.route('/upload_file')
@@ -41,7 +63,7 @@ def upload_file(file_name, bucket, object_name=None):
     return True
 
 
-@apis.route('/upload_file')
+@apis.route('/download_file')
 def download_file(file_name, bucket, object_name):
     """Download a file from an S3 bucket
 
@@ -62,3 +84,4 @@ def download_file(file_name, bucket, object_name):
         logging.error(e)
         return False
     return True
+

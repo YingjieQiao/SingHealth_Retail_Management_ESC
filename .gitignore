@@ -26,3 +26,6 @@ yarn-error.log*
 
 .vscode
 /.idea
+.flaskenv
+/backend/.flaskenv
+/backend/tests/.pytest_cache
