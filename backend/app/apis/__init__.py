@@ -30,6 +30,16 @@ def user_signup():
     return response, 200
 
 
+@apis.route('/login', methods=['GET', 'POST'])
+def user_login():
+    body = request.get_json()
+    user = User.objects.get(email=body.get('email'))
+    authorized = user.check_password(body.get('password'))
+    if not authorized:
+        return {'error': 'Email or password invalid'}, 401
+    return {'result': True}, 200
+
+
 @apis.route('/upload_file')
 def upload_file(file_name, bucket, object_name=None):
     """Upload a file to an S3 bucket
