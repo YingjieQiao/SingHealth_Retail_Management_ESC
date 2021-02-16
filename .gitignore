@@ -28,3 +28,4 @@ yarn-error.log*
 /.idea
 .flaskenv
 /backend/.flaskenv
+/backend/tests/.pytest_cache

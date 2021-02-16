@@ -1,6 +1,5 @@
-from flask import Blueprint, render_template, current_app, jsonify, request, Response
+from flask import Blueprint, request
 from app.models import User
-import time, json
 import boto3
 from botocore.exceptions import ClientError
 import logging
@@ -22,18 +21,13 @@ def user_signup():
     user.hash_password()
     user.save()
     id = user.id
-    return {'id': str(id)}, 200
+    response = {
+        'id': str(id),
+        'username': body['username'],
+        'email': body['email']
+    }
 
-
-@apis.route('/signup_test', methods=['GET', 'POST'])
-def user_signup_test():
-    content = '{ "username":"007", "password": "12345678"}'
-    body = json.loads(content)
-    user = User(**body)
-    user.hash_password()
-    user.save()
-    id = user.id
-    return {'id': str(id)}, 200
+    return response, 200
 
 
 @apis.route('/upload_file')
@@ -81,30 +75,3 @@ def download_file(file_name, bucket, object_name):
         return False
     return True
 
-
-
-# mongodb testing code
-
-"""
-@apis.route('/movies')
-def get_movies():
-    movies = Movie.objects().to_json()
-    return Response(movies, mimetype="application/json", status=200)
-
-
-@apis.route('/add_movies', methods=['POST'])
-def add_movie():
-    body = request.get_json()
-    movie =  Movie(**body).save()
-    id = movie.id
-    return {'id': str(id)}, 200
-
-
-@apis.route('/add_movies_test', methods=['GET', 'POST'])
-def add_movie_test():
-    content = '{ "name":"007", "casts":["james"], "genres":["fun"]}'
-    body = json.loads(content)
-    movie = Movie(**body).save()
-    id = 123
-    return {'id': str(id)}, 200
-"""
