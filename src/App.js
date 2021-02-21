@@ -3,35 +3,23 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
-	const [currentTime, setCurrentTime] = useState(0);
+  return (
+    <div className="App">
+      <main className="form-signin">
+        <form>
+             <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
+             <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autofocus/>
+             <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
+             <div className="checkbox mb-3">
 
-	useEffect(() => {
-		fetch('/time').then(res => res.json()).then(data => {
-		  setCurrentTime(data.time);
-		});
-	}, []);
+             </div>
+             <button className="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
 
-	return (
-		<div className="App">
-		<header className="App-header">
-			<img src={logo} className="App-logo" alt="logo" />
-			<p>
-				Edit <code>src/App.js</code> and save to reload.
-			</p>
-			<a
-				className="App-link"
-				href="https://reactjs.org"
-				target="_blank"
-				rel="noopener noreferrer"
-			>
-				Learn React
-			</a>
-			<p>
-				The current time is {currentTime}.
-			</p>
-		</header>
-		</div>
-  	);
+          </form>
+        </main>
+    </div>
+  );
 }
 
 export default App;
+
