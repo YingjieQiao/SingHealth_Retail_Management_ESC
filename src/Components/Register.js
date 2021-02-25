@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import './CSS/todo.css'
+import {Route, BrowserRouter as Router,Switch,Link} from "react-router-dom";
+import Login from './Login';
 
 
 
@@ -14,7 +16,7 @@ class Register extends Component {
             mobile: "",
             password: "",
             REpassword: "",
-            gender: "",
+            Location: "",
 
 
         }
@@ -52,9 +54,9 @@ class Register extends Component {
         })
     }
 
-    genderhandler = (event) => {
+    Locationhandler = (event) => {
         this.setState({
-            gender: event.target.value
+            Location: event.target.value
         })
     }
 
@@ -68,7 +70,7 @@ class Register extends Component {
             mobile: "",
             password: '',
             REpassword: '',
-            gender: "",
+            Location: "",
         })
      event.preventDefault()
         
@@ -80,6 +82,7 @@ class Register extends Component {
     render() {
         return (
             <div>
+                <Route path="/" exact component={Login}/>        
 
                 <form onSubmit={this.handleSubmit}>
                     <h1>User Registration</h1>
@@ -90,13 +93,21 @@ class Register extends Component {
                     <label>Password :</label> <input type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password..." /><br />
                     <label>RE-Password :</label> <input type="password" value={this.state.REpassword} onChange={this.REpasswordhandler} placeholder="RE-Password..." /><br />
 
-                    <label>Gender :</label><select onChange={this.genderhandler} defaultValue="Select Gender">
-                        <option defaultValue>Select Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                    <label>location :</label><select onChange={this.locationhandler} defaultValue="none">
+                        <option defaultValue>Select location</option>
+                        <option value="SUTD">SUTD</option>
+                        <option value="NUS">NUS</option>
+                        <option value="None">None</option>
                     </select><br />
-                    <input type="submit" value="Submit" />
-                </form>
+                    <Link to="/">
+                    <input type="submit" value="Submit"/>
+                    </Link>
+                    <li>
+                         <label>Sign in? </label>
+                        <Link to="/">Login</Link>
+
+                     </li>
+                </form >
 
             </div>
             
