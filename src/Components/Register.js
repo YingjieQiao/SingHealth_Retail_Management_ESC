@@ -61,6 +61,7 @@ class Register extends Component {
     }
 
     handleSubmit = (event) => {
+        
         alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
         console.log(this.state);
         this.setState({
@@ -99,9 +100,9 @@ class Register extends Component {
                         <option value="NUS">NUS</option>
                         <option value="None">None</option>
                     </select><br />
-                    <Link to="/">
-                    <input type="submit" value="Submit"/>
-                    </Link>
+
+                    <input type="submit" value="Submit"  />
+
                     <li>
                          <label>Sign in? </label>
                         <Link to="/">Login</Link>
