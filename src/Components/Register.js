@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './CSS/todo.css'
 import {Route, BrowserRouter as Router,Switch,Link} from "react-router-dom";
 import Login from './Login';
-
+import axios from 'axios';
 
 
 class Register extends Component {
@@ -16,7 +16,7 @@ class Register extends Component {
             mobile: "",
             password: "",
             REpassword: "",
-            Location: "",
+            location: "",
 
 
         }
@@ -54,15 +54,34 @@ class Register extends Component {
         })
     }
 
-    Locationhandler = (event) => {
+    locationhandler = (event) => {
         this.setState({
-            Location: event.target.value
+            location: event.target.value
         })
     }
 
     handleSubmit = (event) => {
+        event.preventDefault()
         
-        alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
+        const user = {
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            email: this.state.email,
+            mobile: this.state.mobile,
+            password: this.state.password,
+            location: this.state.location
+        };
+        const headers = {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        };
+
+        axios.post(`http://localhost:5000/signup`, user, headers)
+            .then(res => {
+              console.log(res);
+              console.log(res.data);
+        })
+
         console.log(this.state);
         this.setState({
             firstName: "",
@@ -71,10 +90,10 @@ class Register extends Component {
             mobile: "",
             password: '',
             REpassword: '',
-            Location: "",
+            location: "",
         })
-     event.preventDefault()
         
+        alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
     }
 
 

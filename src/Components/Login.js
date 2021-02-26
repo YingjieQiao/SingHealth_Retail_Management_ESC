@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import './CSS/todo.css'
 import Register from './Register'
 import {Route, BrowserRouter as Router,Switch,Link} from "react-router-dom";
+import axios from 'axios';
+
 
 class Login extends Component {
     constructor(props) {
@@ -10,15 +12,13 @@ class Login extends Component {
         this.state = {
             email: "",
             password: "",
-
-
         }
         this.handleSubmit=this.handleSubmit.bind(this)
     }
 
     emailhandler = (event) => {
         this.setState({
-            emmail: event.target.value
+            email: event.target.value
         })
     }
 
@@ -28,9 +28,6 @@ class Login extends Component {
             password: event.target.value
         })
     }
-
-
-
 
     handleSubmit = (event) => {
    //     alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
@@ -45,6 +42,22 @@ class Login extends Component {
     }
 
 
+    handleSubmit = event => {
+        event.preventDefault();
+    
+        const user = {
+          name: this.state.name
+        };
+    
+        axios.post(`http://localhost:5000/login`, { user })
+          .then(res => {
+            console.log(res);
+            console.log(res.data);
+        })
+
+        alert("Login success!")
+    }
+    
 
 
     render() {
