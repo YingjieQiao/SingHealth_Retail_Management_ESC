@@ -11,7 +11,13 @@ class TestUser(TestBase):
         "location": "SUTD"
     }
 
+    TEST_ACCOUNT_2 = {
+        'email': 'test@example.com',
+        'password': 'testpassword'
+    }
+
     TEST_ACCOUNT_JSON = json.dumps(TEST_ACCOUNT)
+    TEST_ACCOUNT_JSON_2 = json.dumps(TEST_ACCOUNT_2)
     #TODO more comprehensive test cases
 
     def test_signup(self):
@@ -27,6 +33,13 @@ class TestUser(TestBase):
 
     def test_login(self):
         rv = self.client.post('/login', data=self.TEST_ACCOUNT_JSON,
+                              content_type='application/json')
+        assert rv.status_code == 200
+        assert rv.json['result'] == True
+
+
+    def test_login2(self):
+        rv = self.client.post('/login', data=self.TEST_ACCOUNT_JSON_2,
                               content_type='application/json')
         assert rv.status_code == 200
         assert rv.json['result'] == True

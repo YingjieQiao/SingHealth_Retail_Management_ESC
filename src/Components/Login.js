@@ -29,27 +29,21 @@ class Login extends Component {
         })
     }
 
-    handleSubmit = (event) => {
-   //     alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
-        console.log(this.state);
-        this.setState({
-            email: "",
-            password: '',
-
-        })
-     event.preventDefault()
-        
-    }
 
 
     handleSubmit = event => {
         event.preventDefault();
     
         const user = {
-          name: this.state.name
+          password: this.state.password,
+          email: this.state.email
+        };
+        const headers = {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
         };
     
-        axios.post(`http://localhost:5000/login`, { user })
+        axios.post(`http://localhost:5000/login`, user, headers)
           .then(res => {
             console.log(res);
             console.log(res.data);

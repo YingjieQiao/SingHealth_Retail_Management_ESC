@@ -40,7 +40,7 @@ def user_login():
     user = User.objects.get(email=body.get('email'))
     authorized = user.check_password(body.get('password'))
     if not authorized:
-        return {'error': 'Email or password invalid'}, 401
+        return {'result': False}, 401
     return {'result': True}, 200
 
 
