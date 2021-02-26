@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './CSS/todo.css'
 import Register from './Register'
-import {Route, BrowserRouter as Router,Switch,Link} from "react-router-dom";
+import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-router-dom";
 import axios from 'axios';
 
 
@@ -50,6 +50,7 @@ class Login extends Component {
         })
 
         alert("Login success!")
+        this.props.history.push('/home');
     }
     
 
@@ -77,4 +78,4 @@ class Login extends Component {
     }
 
 }
-export default Login
+export default withRouter(Login)

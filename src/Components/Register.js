@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './CSS/todo.css'
-import {Route, BrowserRouter as Router,Switch,Link} from "react-router-dom";
+import {Route, BrowserRouter as Router,Switch,Link,withRouter} from "react-router-dom";
 import Login from './Login';
 import axios from 'axios';
 
@@ -94,6 +94,7 @@ class Register extends Component {
         })
         
         alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
+        this.props.history.push('/home');
     }
 
 
@@ -135,4 +136,4 @@ class Register extends Component {
     }
 }
 
-export default Register
+export default withRouter(Register)
