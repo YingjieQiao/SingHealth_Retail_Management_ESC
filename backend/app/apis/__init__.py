@@ -20,11 +20,15 @@ def user_signup():
     user = User(**body)
     user.hash_password()
     user.save()
-    id = user.id
+    userid = user.id
+
     response = {
-        'id': str(id),
-        'username': body['username'],
-        'email': body['email']
+        'id': str(userid),
+        'firstName': body['firstName'],
+        'lastName': body['lastName'],
+        'email': body['email'],
+        'mobile': body['mobile'],
+        'location': body['location']
     }
 
     return response, 200

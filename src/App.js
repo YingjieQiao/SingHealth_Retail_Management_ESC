@@ -1,37 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Register from './Components/Register'
+import Login from './Components/Login'
+import Home from './Components/home'
+import {Route, BrowserRouter as Router,Switch,Link} from "react-router-dom";
 
 function App() {
-	const [currentTime, setCurrentTime] = useState(0);
+  return (
+    <Router>
+    <div className="App">
 
-	useEffect(() => {
-		fetch('/time').then(res => res.json()).then(data => {
-		  setCurrentTime(data.time);
-		});
-	}, []);
+    <Switch>
+    <Route path="/" exact component={Login}/>
+    <Route path="/Register" exact component={Register}/>
+    <Route path="/home" exact component={Home}/>
+    </Switch>
 
-	return (
-		<div className="App">
-		<header className="App-header">
-			<img src={logo} className="App-logo" alt="logo" />
-			<p>
-				Edit <code>src/App.js</code> and save to reload.
-			</p>
-			<a
-				className="App-link"
-				href="https://reactjs.org"
-				target="_blank"
-				rel="noopener noreferrer"
-			>
-				Learn React
-			</a>
-			<p>
-				The current time is {currentTime}.
-			</p>
-		</header>
-		</div>
-  	);
+    </div>
+
+    </Router>
+  );
 }
 
 export default App;
