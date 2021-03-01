@@ -13,7 +13,7 @@ export const SidebarData = [
   },
   {
     title: 'Upload Photos',
-    path: '/home',
+    path: '/upload',
     icon: <FaIcons.FaUpload />,
     cName: 'nav-text'
   },
