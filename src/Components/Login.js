@@ -45,12 +45,17 @@ class Login extends Component {
     
         axios.post(`http://localhost:5000/login`, user, headers)
           .then(res => {
-            console.log(res);
             console.log(res.data);
+            if (res.data.result === true) {
+                alert("Login success!")
+                this.props.history.push('/home');
+            } else {
+                alert(res.data.info);
+            }
         })
-
-        alert("Login success!")
-        this.props.history.push('/home');
+        
+        
+        
     }
     
 

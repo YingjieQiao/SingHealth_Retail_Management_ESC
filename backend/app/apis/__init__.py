@@ -37,10 +37,15 @@ def user_signup():
 @apis.route('/login', methods=['GET', 'POST'])
 def user_login():
     body = request.get_json()
-    user = User.objects.get(email=body.get('email'))
-    authorized = user.check_password(body.get('password'))
-    if not authorized:
-        return {'result': False}, 401
+    try:
+        user = User.objects.get(email=body.get('email'))
+        authorized = user.check_password(body.get('password'))
+        if not authorized:
+            return {'result': False, 'info': "password error"}, 401
+    except:
+        return {'result': False, 'info': "user does not exist"}, 401
+    #TODO add info to global log file
+
     return {'result': True}, 200
 
 
