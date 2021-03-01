@@ -2,7 +2,7 @@
 
 
 
-### to start the app
+### to run the app
 
 1. start a python virtual environment and install backend dependencies using `pip install -r requirements.txt`
 
@@ -19,7 +19,11 @@ stop: `brew services stop mongodb-community@4.4`
 https://docs.mongodb.com/manual/administration/install-community/
 
 
-3. todo
+3. start frontend app and backend app in 2 terminal windows (you need to have both FE & BE running)
+
+start frontend: `yarn start`
+
+start backend: `yarn start-api`
 
 ---
 
