@@ -30,7 +30,7 @@ export const SidebarData = [
     cName: 'nav-text'
   },
   {
-    title: 'Messages',
+    title: 'Profile',
     path: '/home',
     icon: <BsIcons.BsPerson />,
     cName: 'nav-text'
