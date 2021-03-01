@@ -5,18 +5,19 @@ import Register from './Components/Register'
 import Login from './Components/Login'
 import Home from './Components/home'
 import {Route, BrowserRouter as Router,Switch,Link} from "react-router-dom";
-
+import Navbar from './Components/Navbar';
 function App() {
   return (
     <Router>
     <div className="App">
+
 
     <Switch>
     <Route path="/" exact component={Login}/>
     <Route path="/Register" exact component={Register}/>
     <Route path="/home" exact component={Home}/>
     </Switch>
-
+    
     </div>
 
     </Router>
