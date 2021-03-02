@@ -47,14 +47,18 @@ class Login extends Component {
           .then(res => {
             console.log(res.data);
             if (res.data.result === true) {
-                alert("Login success!")
+                alert("Login success!","yolo")
                 this.props.history.push('/home');
             } else {
                 alert(res.data.info);
             }
         })
-        .catch(function (error) {        console.log(error.response.status) 
-            //401        console.log(error.response.data.error) // Please Authenticate 
+        .catch(function (error) {
+            console.log(error.response.status) // 401
+            console.log(error.response.data.error) //Please Authenticate or whatever returned from server
+          if(error.response.status==401){
+            alert("Login unsuccess!")
+          }
         })
         
         
