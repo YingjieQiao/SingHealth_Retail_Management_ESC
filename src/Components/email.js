@@ -26,12 +26,12 @@ class Login extends Component {
     
     subjecthandler = (event) => {
         this.setState({
-            email: event.target.value
+            subject: event.target.value
         })
     } 
    contenthandler = (event) => {
         this.setState({
-            email: event.target.value
+            content: event.target.value
         })
     }
 
