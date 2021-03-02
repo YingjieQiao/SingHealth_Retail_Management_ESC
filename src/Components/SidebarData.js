@@ -25,7 +25,7 @@ export const SidebarData = [
   },
   {
     title: 'inbox',
-    path: '/home',
+    path: '/email',
     icon: <FaIcons.FaInbox />,
     cName: 'nav-text'
   },
