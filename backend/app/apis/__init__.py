@@ -3,6 +3,10 @@ from app.models import User
 import boto3
 from botocore.exceptions import ClientError
 import logging
+from PIL import Image
+import os
+
+from . import s3_methods
 
 
 apis = Blueprint('apis', __name__)
@@ -49,48 +53,23 @@ def user_login():
     return {'result': True}, 200
 
 
-@apis.route('/upload_file')
-def upload_file(file_name, bucket, object_name=None):
-    """Upload a file to an S3 bucket
+@apis.route('/upload_file', methods=['GET', 'POST'])
+def upload_file():
+    body = request.files['file']
 
-    :param file_name: File to upload
-    :param bucket: Bucket to upload to
-    :param object_name: S3 object name. If not specified then file_name is used
-    :return: True if file was uploaded, else False
-    """
+    img = Image.open(body.stream)
+    rgb_img = img.convert('RGB')
+    rgb_img.save("recogImage.jpg")
 
-    if object_name is None:
-        object_name = file_name
+    s3_methods.upload_file('recogImage.jpg', 'escapp-bucket', None)
 
-    s3_client = boto3.client('s3')
-    try:
-        response = s3_client.upload_file(file_name, bucket, object_name)
-        #TODO log the response in the logger
-    except ClientError as e:
-        logging.error(e)
-        return False
-    return True
+    os.remove(os.getcwd() + "/recogImage.jpg")
+    #TODO in-memory storage like redis?
+
+    return {'result': True}, 200
 
 
 @apis.route('/download_file')
-def download_file(file_name, bucket, object_name):
-    """Download a file from an S3 bucket
-
-    :param file_name: File to download
-    :param bucket: Bucket to download from
-    :param object_name: S3 object name.
-    :return: True if file was downloaded, else False
-    """
-
-    if object_name is None:
-        return False
-
-    s3 = boto3.client('s3')
-    try:
-        response = s3.download_file(bucket, object_name, file_name)
-        #TODO log the response in the logger
-    except ClientError as e:
-        logging.error(e)
-        return False
-    return True
+def download_file():
+    return {'result': True}, 200
 
