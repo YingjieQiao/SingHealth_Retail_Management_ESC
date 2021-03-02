@@ -53,6 +53,9 @@ class Login extends Component {
                 alert(res.data.info);
             }
         })
+        .catch(function (error) {        console.log(error.response.status) 
+            //401        console.log(error.response.data.error) // Please Authenticate 
+        })
         
         
         
