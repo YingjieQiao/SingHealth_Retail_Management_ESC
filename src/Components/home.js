@@ -1,9 +1,13 @@
-import React from 'react'
+import React from 'react';
+import Navbar from './Navbar';
 
+function Home() {
+  return (
+    <div className='home'>
+            <Navbar/>
+        <h1>Home</h1>
+    </div>
+  );
+}
 
-// function Greet(){
-//     return <h1>Hello ishaan</h1>
-
-// }
-const Home = () => <h1 >Home</h1>
-export default Home
+export default Home;
