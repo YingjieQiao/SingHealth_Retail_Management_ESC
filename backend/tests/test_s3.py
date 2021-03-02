@@ -24,7 +24,7 @@ def upload(file_name, bucket, object_name=None):
     return True
 
 
-def download(file_name, bucket, object_name):
+def download(s3, file_name, bucket, object_name):
     """Download a file from an S3 bucket
 
     :param file_name: File to download
@@ -34,9 +34,10 @@ def download(file_name, bucket, object_name):
     """
 
     if object_name is None:
-        return False
+        object_name = file_name
 
-    s3 = boto3.client('s3')
+    if s3 == None:
+        s3 = boto3.client('s3')
     try:
         response = s3.download_file(bucket, object_name, file_name)
     except ClientError as e:
@@ -45,6 +46,20 @@ def download(file_name, bucket, object_name):
     return True
 
 
+def list_all_objects(bucket, username, timeInput, dateInput):
+    s3_client = boto3.client('s3')
+
+    for key in s3_client.list_objects(Bucket=bucket)['Contents']:
+        ls = key['Key'].split('_')
+        
+        if (ls[0] == username):
+            print(key['Key'])
+            download(s3_client, key['Key'], bucket, None)
+            pass
+
+
 if __name__ == "__main__":
     # upload('testpic.png', 'escapp-bucket', 'images/test2.png')
-    download('downloaded_pic2.png', 'escapp-bucket', 'images/testpic.png')
+    # download(None, 'YingjieQiao_time_date.jpg', 'escapp-bucket', 'YingjieQiao_time_date.jpg')
+    # list_all_objects('escapp-bucket', 'YingjieQiao', None, None)
+    print("done")
