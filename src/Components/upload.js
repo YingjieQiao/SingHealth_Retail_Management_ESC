@@ -36,11 +36,20 @@ class Upload extends Component {
         });
     }
 
-    onUploadButtonHandler = () => {
+    onUploadButtonHandler = event => {
+        event.preventDefault();
+
         const data = new FormData();
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+            'Access-Control-Allow-Origin': '*'
+        };
+
         data.append("file", this.state.selectedFile);
-        axios.post("http://localhost:5000/upload", data, {
-        }).then( res => {
+        axios.post("http://localhost:5000/upload_file", data, headers
+        ).then( res => {
+            console.log(data);
+            // console.log(data.file)
             console.log(res.statusText);
         })
         this.setState({reviewPhotoMsg: ""});
