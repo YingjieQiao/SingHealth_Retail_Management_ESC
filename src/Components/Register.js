@@ -92,9 +92,16 @@ class Register extends Component {
             REpassword: '',
             location: "",
         })
+
+        if (firstName === "" || lastName === "" || email === "" || mobile === "" || 
+            password === "" || REpassword === "" || location === "") {
+                alert(`Not all values are filled`)
+        } else {
+            alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
+            this.props.history.push('/');
+        }
         
-        alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
-        this.props.history.push('/home');
+        
     }
 
 
