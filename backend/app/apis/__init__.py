@@ -62,6 +62,7 @@ def upload_file():
 
     img = Image.open(body.stream)
     rgb_img = img.convert('RGB')
+    ##TODO username from frontend as file name prefix
     rgb_img.save("recogImage.jpg")
 
     s3_methods.upload_file('recogImage.jpg', 'escapp-bucket', None)
@@ -74,5 +75,18 @@ def upload_file():
 
 @apis.route('/download_file')
 def download_file():
-    return {'result': True}, 200
+    body = request.get_json()
+    # username = body.get('username')
+    username = 'YingjieQiao'
+
+    data = s3_methods.download_user_objects('escapp-bucket', username, None, None)
+    
+    mypath = os.getcwd()
+    for filename in os.listdir(mypath):
+        filename_full = os.path.join(mypath, filename)
+        if (os.path.isfile(filename_full) 
+            and not filename.endswith(".py") and filename != '.DS_Store'):
+            os.remove(filename_full)
+
+    return {'result': True, 'photoData': data}, 200
 

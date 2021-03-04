@@ -24,7 +24,7 @@ class Upload extends Component {
                 </div>
                 <h2>Review photo</h2>
                 <p>{this.state.reviewPhotoMsg}</p>
-                <button type="button" className="btn btn-success m-2">Submit</button>
+                <button type="button" className="btn btn-success m-2" onClick={this.testHandler}>Submit</button>
             </div>
         );
     }
@@ -53,6 +53,17 @@ class Upload extends Component {
             console.log(res.statusText);
         })
         this.setState({reviewPhotoMsg: ""});
+    }
+
+    testHandler = event => {
+        axios.get("http://localhost:5000/download_file")
+        .then(
+            res => {
+                console.log(res)
+            }
+        )
+
+        console.log("done")
     }
     
 }
