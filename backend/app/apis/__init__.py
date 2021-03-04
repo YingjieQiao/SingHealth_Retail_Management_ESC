@@ -75,7 +75,7 @@ def upload_file():
 
     rgb_img.save(filename)
 
-    s3_methods.upload_file(filename, 'escapp-bucket', None)
+    s3_methods.upload_file(filename, 'escapp-bucket-dev', None)
 
     os.remove(os.getcwd() + "/" + filename)
     #TODO in-memory storage like redis?
@@ -89,7 +89,7 @@ def download_file():
     # username = body.get('username')
     username = 'YingjieQiao'
 
-    data = s3_methods.download_user_objects('escapp-bucket', username, None, None)
+    data = s3_methods.download_user_objects('escapp-bucket-dev', username, None, None)
     
     mypath = os.getcwd()
     for filename in os.listdir(mypath):
