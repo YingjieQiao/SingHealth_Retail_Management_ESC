@@ -6,7 +6,7 @@ import logging
 from PIL import Image
 import os
 
-from . import s3_methods
+# from . import s3_methods
 
 
 apis = Blueprint('apis', __name__)
@@ -90,3 +90,33 @@ def download_file():
 
     return {'result': True, 'photoData': data}, 200
 
+@apis.route('/email', methods=['GET', 'POST'])
+def email():
+
+    data = request.get_json(silent=True)
+    print("It may be working")
+    email = data.get('email')
+    subject = data.get('subject')
+    body = data.get('body')
+    print(email,subject,body)
+    try:
+        token = s.dumps(email, salt='email-confirm')
+
+        msg = Message(subject, sender='***', recipients=[email])
+
+        # link = url_for('confirm_email', token=token, _external=True)
+        link = "lol"
+        msg.body = body #+"\n\n Your link is {}".format(link)
+    except:
+        print("error occured lmao")
+        return {'result': False, 'info': "user does not exist"}, 401
+
+    # email = request.form['email']
+    
+
+    # with app.open_resource("picture.png") as fp:
+    #     msg.attach("picture.png", "picture/png", fp.read())
+    # with app.open_resource("train.csv") as fp:
+    #     msg.attach("train.csv", "train/csv", fp.read())
+
+    mail.send(msg)

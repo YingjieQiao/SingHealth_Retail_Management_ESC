@@ -3,6 +3,8 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from app.models import db
 from app.config import Config
+from itsdangerous import URLSafeTimedSerializer
+from flask_mail import Mail
 
 
 def create_app(config_class=Config):
@@ -18,4 +20,9 @@ def create_app(config_class=Config):
     from app.apis import apis
     app.register_blueprint(apis)
 
+    s = URLSafeTimedSerializer('Thisisasecret!')
+
+    mail = Mail(app)
+
     return app
+
