@@ -48,12 +48,12 @@ def user_login():
 
         authorized = user.check_password(body.get('password'))
         if not authorized:
-            return {'result': False, 'info': "password error"}, 401
+            return {'result': False, 'info': "password error"}
     except:
-        return {'result': False, 'info': "user does not exist"}, 401
+        return {'result': False, 'info': "user does not exist"}
     #TODO add info to global log file
 
-    return {'result': True, 'firstName': firstName, 'lastName': lastName}, 200
+    return {'result': True, 'firstName': firstName, 'lastName': lastName}
 
 
 @apis.route('/upload_file', methods=['GET', 'POST'])
