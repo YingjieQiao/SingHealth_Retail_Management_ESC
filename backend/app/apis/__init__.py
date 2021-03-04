@@ -136,3 +136,5 @@ def email():
         msg.attach("train.csv", "train/csv", fp.read())
 
     mail.send(msg)
+
+    return {"result": True}, 200
