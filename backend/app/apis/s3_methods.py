@@ -20,7 +20,10 @@ def upload_file(file_name, bucket, object_name):
     if object_name is None:
         object_name = file_name
 
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3',
+                aws_access_key_id=os.environ.get('ACCESS_KEY'),
+                aws_secret_access_key=os.environ.get('SECRET_KEY'),
+                aws_session_token=os.environ.get('SESSION_TOKEN'))
     try:
         response = s3_client.upload_file(file_name, bucket, object_name)
         #TODO log the response in the logger
@@ -45,7 +48,10 @@ def download(s3, file_name, bucket, object_name):
         object_name = file_name
 
     if s3 == None:
-        s3 = boto3.client('s3')
+        s3 = boto3.client('s3',
+                aws_access_key_id=os.environ.get('ACCESS_KEY'),
+                aws_secret_access_key=os.environ.get('SECRET_KEY'),
+                aws_session_token=os.environ.get('SESSION_TOKEN'))
     try:
         s3.download_file(bucket, object_name, file_name)
         filename_full = os.getcwd() + '/' + file_name
@@ -55,7 +61,10 @@ def download(s3, file_name, bucket, object_name):
 
 
 def download_user_objects(bucket, username, timeInput, dateInput):
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3',
+                aws_access_key_id=os.environ.get('ACCESS_KEY'),
+                aws_secret_access_key=os.environ.get('SECRET_KEY'),
+                aws_session_token=os.environ.get('SESSION_TOKEN'))
     res = []
 
     for key in s3_client.list_objects(Bucket=bucket)['Contents']:
