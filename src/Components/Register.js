@@ -62,42 +62,56 @@ class Register extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault()
+        if( this.state.firstName==""|
+            this.state.lastName==""|
+            this.state.email==""|
+            this.state.mobile==""|
+            this.state.password==""|
+            this.state.location==""){
+                alert(` Registered UnSuccessfully !!!!\n some parameters are empty`)
+                this.props.history.push('/Register');
+            }
+        else if(this.state.password!=this.state.REpassword){
+            alert(` pasword did not match!! !!!!`)
+            this.props.history.push('/Register');
+        }    
+        else{
+            
+                const user = {
+                    firstName: this.state.firstName,
+                    lastName: this.state.lastName,
+                    email: this.state.email,
+                    mobile: this.state.mobile,
+                    password: this.state.password,
+                    location: this.state.location
+                };
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                };
+            
+                axios.post(`http://localhost:5000/signup`, user, headers)
+                    .then(res => {
+                      console.log(res);
+                      console.log(res.data);
+                })
+            
+                console.log(this.state);
+                this.setState({
+                    firstName: "",
+                    lastName: "",
+                    email:"",
+                    mobile: "",
+                    password: '',
+                    REpassword: '',
+                    location: "",
+                })
+
+                alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
+                this.props.history.push('/');
+            }
+            }
         
-        const user = {
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            email: this.state.email,
-            mobile: this.state.mobile,
-            password: this.state.password,
-            location: this.state.location
-        };
-        const headers = {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-        };
-
-        axios.post(`http://localhost:5000/signup`, user, headers)
-            .then(res => {
-              console.log(res);
-              console.log(res.data);
-        })
-
-        console.log(this.state);
-        this.setState({
-            firstName: "",
-            lastName: "",
-            email:"",
-            mobile: "",
-            password: '',
-            REpassword: '',
-            location: "",
-        })
-        
-        alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
-        this.props.history.push('/');
-    }
-
-
 
 
     render() {
