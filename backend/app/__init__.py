@@ -6,7 +6,6 @@ from app.config import Config
 from itsdangerous import URLSafeTimedSerializer
 from flask_mail import Mail
 
-mail = None
 
 def create_app(config_class=Config):
     app = Flask(__name__)
