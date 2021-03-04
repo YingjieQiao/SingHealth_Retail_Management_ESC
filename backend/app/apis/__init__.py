@@ -17,7 +17,7 @@ s = URLSafeTimedSerializer('Thisisasecret!')
 
 apis = Blueprint('apis', __name__)
 
-
+# mail = Mail(apis)
 @apis.route('/')
 def get_homepage():
     # for testing
@@ -100,11 +100,9 @@ def download_file():
 def email():
 
     data = request.get_json(silent=True)
-    print("It may be working")
     email = data.get('email')
     subject = data.get('subject')
     body = data.get('content')
-    print(email,subject,body)
     try:
         token = s.dumps(email, salt='email-confirm')
 
@@ -116,6 +114,8 @@ def email():
     except:
         print("error occured lmao")
         return {'result': False, 'info': "user does not exist"}, 401
+
+    ### Too attach pictures to the email
 
     # email = request.form['email']
     
