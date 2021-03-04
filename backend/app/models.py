@@ -4,8 +4,8 @@ from flask_bcrypt import generate_password_hash, check_password_hash
 db = MongoEngine()
 
 class User(db.Document):
-    firstName = db.StringField(required=True, unique=True)
-    lastName = db.StringField(required=True, unique=True)
+    firstName = db.StringField(required=True, unique=False)
+    lastName = db.StringField(required=True, unique=False)
     email = db.StringField(required=True, unique=True)
     password = db.StringField(required=True, unique=False, min_length=8)
     location = db.StringField(required=True, unique=False)
