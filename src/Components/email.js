@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import './CSS/todo.css'
-import Register from './Register'
+
 import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-router-dom";
 import axios from 'axios';
-
+import Navbar from './Navbar';
 
 class Login extends Component {
     constructor(props) {
@@ -11,7 +11,8 @@ class Login extends Component {
 
         this.state = {
             email: "",
-            password: "",
+            subject: "",
+            content:"",
         }
         this.handleSubmit=this.handleSubmit.bind(this)
     }
@@ -23,27 +24,32 @@ class Login extends Component {
     }
 
     
-    passwordhandler = (event) => {
+    subjecthandler = (event) => {
         this.setState({
-            password: event.target.value
+            subject: event.target.value
+        })
+    } 
+   contenthandler = (event) => {
+        this.setState({
+            content: event.target.value
         })
     }
 
-//yolo
 
     handleSubmit = event => {
         event.preventDefault();
     
         const user = {
-          password: this.state.password,
-          email: this.state.email
+          subject: this.state.subject,
+          email: this.state.email,
+          content: this.state.content
         };
         const headers = {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
         };
     
-        axios.post(`http://localhost:5000/login`, user, headers)
+        axios.post('http://localhost:5000/email', user, headers)
           .then(res => {
             console.log(res.data);
             if (res.data.result === true) {
@@ -52,7 +58,8 @@ class Login extends Component {
             } else {
                 alert(res.data.info);
             }
-        })
+        }
+        )
         
         
         
@@ -63,20 +70,16 @@ class Login extends Component {
     render() {
         return (
             <div>
-                 <nav>
-                        <p>yolo</p>
-                   </nav>
-                <Route path="/Register" exact component={Register}/>        
-                <form onSubmit={this.handleSubmit}>
-                    <h1>LOGIN</h1>
-                    <label>Email :</label> <input type="text" value={this.state.email} onChange={this.emailhandler} placeholder="Email..." /><br />
-                    <label>Password :</label> <input type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password..." /><br />
-                    <input type="submit" value="Log In" />
-                    <li>
-                         <label>new tenent?  </label>
-                        <Link to="/Register">Register</Link>
+            <Navbar/>
 
-                     </li>
+     
+                <form onSubmit={this.handleSubmit}>
+                    <h1>Send email</h1>
+                    <label>Email :</label> <input type="text" value={this.state.email} onChange={this.emailhandler} placeholder="Email..." /><br />
+                    <label>Subject :</label> <input type="text" value={this.state.subject} onChange={this.subjecthandler} placeholder="subject..." /><br />
+                    <label>Content :</label> <input type="text" value={this.state.content} onChange={this.contenthandler} placeholder="content..." /><br />            
+                    <input type="submit" value="Send" />
+
                 </form>
 
             </div>

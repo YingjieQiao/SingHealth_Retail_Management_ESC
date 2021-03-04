@@ -1,12 +1,18 @@
 from flask import Blueprint, request
 from app.models import User
+from app.__init__ import mail
 import boto3
 from botocore.exceptions import ClientError
 import logging
 from PIL import Image
 import os
+from flask_mail import Message
+from itsdangerous import URLSafeTimedSerializer
 
 # from . import s3_methods
+
+
+s = URLSafeTimedSerializer('Thisisasecret!')
 
 
 apis = Blueprint('apis', __name__)
@@ -97,15 +103,15 @@ def email():
     print("It may be working")
     email = data.get('email')
     subject = data.get('subject')
-    body = data.get('body')
+    body = data.get('content')
     print(email,subject,body)
     try:
         token = s.dumps(email, salt='email-confirm')
 
-        msg = Message(subject, sender='***', recipients=[email])
+        msg = Message(subject, sender='starboypp69@mymail.sutd.edu.sg', recipients=[email])
 
         # link = url_for('confirm_email', token=token, _external=True)
-        link = "lol"
+        # link = "lol"
         msg.body = body #+"\n\n Your link is {}".format(link)
     except:
         print("error occured lmao")
