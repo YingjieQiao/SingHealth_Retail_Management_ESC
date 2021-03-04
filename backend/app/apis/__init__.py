@@ -5,6 +5,7 @@ from botocore.exceptions import ClientError
 import logging
 from PIL import Image
 import os
+from datetime import datetime
 
 from . import s3_methods
 
@@ -62,12 +63,21 @@ def upload_file():
 
     img = Image.open(body.stream)
     rgb_img = img.convert('RGB')
-    ##TODO username from frontend as file name prefix
-    rgb_img.save("recogImage.jpg")
+    
+    username = "YingjieQiao"
+    now = datetime.now() # current date and time
+    dateTime = now.strftime("%m/%d/%Y %H:%M:%S")
+    dateTimeArr = dateTime.split(" ")
+    date_ = dateTimeArr[0]
+    time_ = dateTimeArr[1]
+    date_ = date_.replace("/", "-")
+    filename = username + "_" + date_ + "_" + time_ + ".jpg"
 
-    s3_methods.upload_file('recogImage.jpg', 'escapp-bucket', None)
+    rgb_img.save(filename)
 
-    os.remove(os.getcwd() + "/recogImage.jpg")
+    s3_methods.upload_file(filename, 'escapp-bucket', None)
+
+    os.remove(os.getcwd() + "/" + filename)
     #TODO in-memory storage like redis?
 
     return {'result': True}, 200
