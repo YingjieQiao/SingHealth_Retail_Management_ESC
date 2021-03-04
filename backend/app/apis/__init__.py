@@ -9,7 +9,7 @@ import os
 from flask_mail import Message
 from itsdangerous import URLSafeTimedSerializer
 
-# from . import s3_methods
+from . import s3_methods
 
 
 s = URLSafeTimedSerializer('Thisisasecret!')
