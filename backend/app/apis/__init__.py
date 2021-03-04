@@ -1,18 +1,24 @@
 from flask import Blueprint, request
 from app.models import User
+from app.__init__ import mail
 import boto3
 from botocore.exceptions import ClientError
 import logging
 from PIL import Image
 import os
+from flask_mail import Message
+from itsdangerous import URLSafeTimedSerializer
 from datetime import datetime
 
 from . import s3_methods
 
 
+s = URLSafeTimedSerializer('Thisisasecret!')
+
+
 apis = Blueprint('apis', __name__)
 
-
+# mail = Mail(apis)
 @apis.route('/')
 def get_homepage():
     # for testing
@@ -100,3 +106,33 @@ def download_file():
 
     return {'result': True, 'photoData': data}, 200
 
+@apis.route('/email', methods=['GET', 'POST'])
+def email():
+
+    data = request.get_json(silent=True)
+    email = data.get('email')
+    subject = data.get('subject')
+    body = data.get('content')
+    try:
+        token = s.dumps(email, salt='email-confirm')
+
+        msg = Message(subject, sender='starboypp69@mymail.sutd.edu.sg', recipients=[email])
+
+        # link = url_for('confirm_email', token=token, _external=True)
+        # link = "lol"
+        msg.body = body #+"\n\n Your link is {}".format(link)
+    except:
+        print("error occured lmao")
+        return {'result': False, 'info': "user does not exist"}, 401
+
+    ### Too attach pictures to the email
+
+    # email = request.form['email']
+    
+
+    with apis.open_resource("picture.png") as fp:
+        msg.attach("picture.png", "picture/png", fp.read())
+    with apis.open_resource("train.csv") as fp:
+        msg.attach("train.csv", "train/csv", fp.read())
+
+    mail.send(msg)
