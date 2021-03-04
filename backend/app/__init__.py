@@ -6,7 +6,9 @@ from app.config import Config
 from itsdangerous import URLSafeTimedSerializer
 from flask_mail import Mail
 
+# mail = Mail()
 
+mail = Mail()
 def create_app(config_class=Config):
     app = Flask(__name__)
     
@@ -20,8 +22,7 @@ def create_app(config_class=Config):
     from app.apis import apis
     app.register_blueprint(apis)
 
-
-    mail = Mail(app)
+    mail.init_app(app)
 
     return app
 
