@@ -28,7 +28,6 @@ https://docs.mongodb.com/manual/administration/install-community/
 
     - `export SECRET_KEY=xxx`
 
-    - `export SESSION_TOKEN=xxx`
 
 The credentials are shared privately in the group.
 
