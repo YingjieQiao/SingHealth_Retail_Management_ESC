@@ -1,6 +1,7 @@
 import boto3
 from botocore.exceptions import ClientError
 import logging
+import os
 
 
 def upload(file_name, bucket, object_name=None):
@@ -15,7 +16,10 @@ def upload(file_name, bucket, object_name=None):
     if object_name is None:
         object_name = file_name
 
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3',
+                aws_access_key_id=os.environ.get('ACCESS_KEY'),
+                aws_secret_access_key=os.environ.get('SECRET_KEY'),
+                aws_session_token=os.environ.get('SESSION_TOKEN'))
     try:
         response = s3_client.upload_file(file_name, bucket, object_name)
     except ClientError as e:
@@ -37,7 +41,10 @@ def download(s3, file_name, bucket, object_name):
         object_name = file_name
 
     if s3 == None:
-        s3 = boto3.client('s3')
+        s3 = boto3.client('s3',
+                aws_access_key_id=os.environ.get('ACCESS_KEY'),
+                aws_secret_access_key=os.environ.get('SECRET_KEY'),
+                aws_session_token=os.environ.get('SESSION_TOKEN'))
     try:
         response = s3.download_file(bucket, object_name, file_name)
     except ClientError as e:
@@ -47,19 +54,22 @@ def download(s3, file_name, bucket, object_name):
 
 
 def list_all_objects(bucket, username, timeInput, dateInput):
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3',
+                aws_access_key_id=os.environ.get('ACCESS_KEY'),
+                aws_secret_access_key=os.environ.get('SECRET_KEY'),
+                aws_session_token=os.environ.get('SESSION_TOKEN'))
 
     for key in s3_client.list_objects(Bucket=bucket)['Contents']:
         ls = key['Key'].split('_')
         
         if (ls[0] == username):
             print(key['Key'])
-            download(s3_client, key['Key'], bucket, None)
+            # download(s3_client, key['Key'], bucket, None)
             pass
 
 
 if __name__ == "__main__":
     # upload('testpic.png', 'escapp-bucket', 'images/test2.png')
     # download(None, 'YingjieQiao_time_date.jpg', 'escapp-bucket', 'YingjieQiao_time_date.jpg')
-    # list_all_objects('escapp-bucket', 'YingjieQiao', None, None)
+    list_all_objects('escapp-bucket', 'YingjieQiao', None, None)
     print("done")

@@ -18,8 +18,22 @@ stop: `brew services stop mongodb-community@4.4`
 
 https://docs.mongodb.com/manual/administration/install-community/
 
+3. add the AWS credentials to your environment variables of your current python virtual environment
 
-3. start frontend app and backend app in 2 terminal windows (you need to have both FE & BE running)
+- start a python virtual environment
+
+- set up the env variables by typing the followings:
+
+    - `export ACCESS_KEY=xxx`
+
+    - `export SECRET_KEY=xxx`
+
+    - `export SESSION_TOKEN=xxx`
+
+The credentials are shared privately in the group.
+
+
+4. start frontend app and backend app in 2 terminal windows (you need to have both FE & BE running)
 
 start frontend: `yarn start`
 
