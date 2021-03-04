@@ -68,7 +68,7 @@ class Upload extends Component {
                 console.log(res);
                 
                 for (var i = 0; i < res.data.photoData.length; i++) {
-                    let photoData = res.data.photoData[0];
+                    let photoData = res.data.photoData[i];
                     let imgsrc = "data:image/jpeg;base64," + photoData;
                     this.setState({imageSource: imgsrc});
                     this.setState({numberOfImage: [this.state.numberOfImage, i]});

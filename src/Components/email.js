@@ -53,13 +53,12 @@ class Login extends Component {
           .then(res => {
             console.log(res.data);
             if (res.data.result === true) {
-                alert("Login success!")
+                alert("Email sent success!")
                 this.props.history.push('/home');
             } else {
                 alert(res.data.info);
             }
-        }
-        )
+        })
         
         
         
