@@ -9,7 +9,7 @@ class Upload extends Component {
         selectedFile: null,
         reviewPhotoMsg: "You have not upload any photo",
         numberOfImage: [],
-        imageSource: ""
+        imageSource: []
     };
 
     render() { 
@@ -28,7 +28,7 @@ class Upload extends Component {
                 <p>{this.state.reviewPhotoMsg}</p>
                 <button type="button" className="btn btn-primary m-2" onClick={this.testHandler}>Update</button>
                 <div>
-                    { this.state.numberOfImage.map(image => <img src={this.state.imageSource} alt="image" key={image} width="300" height="300" />) }
+                    { this.state.numberOfImage.map(image => <img src={this.state.imageSource[image]} alt={image} key={image} width="300" height="300" />) }
                 </div>
             </div>
         );
@@ -68,10 +68,15 @@ class Upload extends Component {
                 console.log(res);
                 
                 for (var i = 0; i < res.data.photoData.length; i++) {
-                    let photoData = res.data.photoData[0];
+                    let photoData = res.data.photoData[i];
                     let imgsrc = "data:image/jpeg;base64," + photoData;
-                    this.setState({imageSource: imgsrc});
-                    this.setState({numberOfImage: [this.state.numberOfImage, i]});
+                    var newImageArray = this.state.imageSource;
+                    newImageArray.push(imgsrc);
+                    this.setState({imageSource: newImageArray});
+
+                    var newNumberOfImageArray = this.state.numberOfImage;
+                    newNumberOfImageArray.push(i);
+                    this.setState({numberOfImage: newNumberOfImageArray});
                 }
 
             }
