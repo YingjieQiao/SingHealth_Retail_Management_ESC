@@ -7,7 +7,9 @@ class Upload extends Component {
 
     state = {
         selectedFile: null,
-        reviewPhotoMsg: "You have not upload any photo"
+        reviewPhotoMsg: "You have not upload any photo",
+        numberOfImage: [],
+        imageSource: ""
     };
 
     render() { 
@@ -20,11 +22,14 @@ class Upload extends Component {
                     <input type="file" name="file" onChange={this.onChooseFileHandler} style={{display: "block", margin: '10px'}}/>
                 </div>
                 <div>
-                    <button type="button" className="btn btn-success m-2" onClick={this.onUploadButtonHandler} >Upload</button>
+                    <button type="button" className="btn btn-primary m-2" onClick={this.onUploadButtonHandler} >Upload</button>
                 </div>
                 <h2>Review photo</h2>
                 <p>{this.state.reviewPhotoMsg}</p>
-                <button type="button" className="btn btn-success m-2" onClick={this.testHandler}>Submit</button>
+                <button type="button" className="btn btn-primary m-2" onClick={this.testHandler}>Update</button>
+                <div>
+                    { this.state.numberOfImage.map(image => <img src={this.state.imageSource} alt="image" key={image} width="300" height="300" />) }
+                </div>
             </div>
         );
     }
@@ -55,11 +60,20 @@ class Upload extends Component {
         this.setState({reviewPhotoMsg: ""});
     }
 
+
     testHandler = event => {
         axios.get("http://localhost:5000/download_file")
         .then(
             res => {
-                console.log(res)
+                console.log(res);
+                
+                for (var i = 0; i < res.data.photoData.length; i++) {
+                    let photoData = res.data.photoData[0];
+                    let imgsrc = "data:image/jpeg;base64," + photoData;
+                    this.setState({imageSource: imgsrc});
+                    this.setState({numberOfImage: [this.state.numberOfImage, i]});
+                }
+
             }
         )
 
