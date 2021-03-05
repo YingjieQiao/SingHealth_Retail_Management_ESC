@@ -108,7 +108,7 @@ class Register extends Component {
                 })
 
                 alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
-                this.props.history.push('/');
+                this.props.history.push('/home');
             }
             }
         
