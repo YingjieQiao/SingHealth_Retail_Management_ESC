@@ -1,24 +1,32 @@
 from flask import Blueprint, request
 from app.models import User
-from app.__init__ import mail
 import boto3
 from botocore.exceptions import ClientError
 import logging
 from PIL import Image
 import os
-from flask_mail import Message
 from itsdangerous import URLSafeTimedSerializer
+import email, smtplib, ssl
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from datetime import datetime
+
+sender_email = "starboypp69@gmail.com"
+password = "MDR-XB450AP"
+
 
 from . import s3_methods
 
+# Create a multipart message and set headers
+
+from . import s3_methods
 
 s = URLSafeTimedSerializer('Thisisasecret!')
 
-
 apis = Blueprint('apis', __name__)
 
-# mail = Mail(apis)
 @apis.route('/')
 def get_homepage():
     # for testing
@@ -110,31 +118,48 @@ def download_file():
 def email():
 
     data = request.get_json(silent=True)
-    email = data.get('email')
+    receiver_email = data.get('email')
     subject = data.get('subject')
     body = data.get('content')
+    print(receiver_email,subject,body)
     try:
-        token = s.dumps(email, salt='email-confirm')
 
-        msg = Message(subject, sender='starboypp69@mymail.sutd.edu.sg', recipients=[email])
-
-        # link = url_for('confirm_email', token=token, _external=True)
-        # link = "lol"
-        msg.body = body #+"\n\n Your link is {}".format(link)
+        message = MIMEMultipart()
+        message["From"] = sender_email
+        message["To"] = receiver_email
+        message["Subject"] = subject
+        message.attach(MIMEText(body, "plain"))
     except:
-        print("error occured lmao")
+        print("error occured")
         return {'result': False, 'info': "user does not exist"}, 401
 
-    ### Too attach pictures to the email
+    message.attach(MIMEText(body, "plain"))
 
-    # email = request.form['email']
-    
+    filename = "picture.png"  # In same directory as script
 
-    """with apis.open_resource("picture.png") as fp:
-        msg.attach("picture.png", "picture/png", fp.read())
-    with apis.open_resource("train.csv") as fp:
-        msg.attach("train.csv", "train/csv", fp.read())"""
+    with apis.open_resource(filename) as attachment:
+    # Add file as application/octet-stream
+    # Email client can usually download this automatically as attachment
+        part = MIMEBase("application", "octet-stream")
+        part.set_payload(attachment.read())
 
-    mail.send(msg)
+    # Encode file in ASCII characters to send by email    
+    encoders.encode_base64(part)
 
-    return {"result": True}, 200
+    # Add header as key/value pair to attachment part
+    part.add_header(
+        "Content-Disposition",
+        f"attachment; filename= {filename}",
+    )
+
+
+    # Add attachment to message and convert message to string
+    message.attach(part)
+    text = message.as_string()
+
+    # Log in to server using secure context and send email
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+        server.login(sender_email, password)
+        server.sendmail(sender_email, receiver_email, text)
+    return {'result': True, 'info': "Email was shared"}, 200
