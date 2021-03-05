@@ -1,21 +1,21 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, url_for
 from app.models import User
 import boto3
 from botocore.exceptions import ClientError
 import logging
 from PIL import Image
 import os
-from itsdangerous import URLSafeTimedSerializer
 from datetime import datetime
 import ssl
-
 from . import s3_methods
 import email, smtplib, ssl
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 
+s = URLSafeTimedSerializer('Thisisasecret!')
 
 
 sender_email = "starboypp69@gmail.com"
@@ -48,7 +48,53 @@ def user_signup():
         'location': body['location']
     }
 
-    return response, 200
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    email = body['email']
+    message["To"] = email
+    message["Subject"] = "Registeration Confirmation for SingHealth Account"
+
+    token = s.dumps(email, salt='register-tenant')
+
+    link = url_for('apis.registeration_confirmation', token=token, _external=True)
+
+    body = "Thank you for registering to SingHealth, Please click on the link given below to confirm your registeration \n\n {}".format(link)
+
+    message.attach(MIMEText(body, "plain"))
+
+    
+    filename = "picture.png"  # In same directory as script
+
+    with apis.open_resource(filename) as attachment:
+    # Add file as application/octet-stream
+    # Email client can usually download this automatically as attachment
+        part = MIMEBase("application", "octet-stream")
+        part.set_payload(attachment.read())
+
+    # Encode file in ASCII characters to send by email    
+    encoders.encode_base64(part)
+
+    part.add_header(
+        "Content-Disposition",
+        f"attachment; filename= {filename}",
+    )
+
+    message.attach(part)
+    text = message.as_string()
+
+    # Log in to server using secure context and send email
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+        server.login(sender_email, password)
+        server.sendmail(sender_email, email, text)
+    return {'result': True, 'info': "Registeration Confirmation link was shared"}, 200
+
+@apis.route('/registeration_confirmation', methods=['GET', 'POST'])
+def registeration_confirmation():
+    pass
+
+
+    
 
 
 @apis.route('/login', methods=['GET', 'POST'])
@@ -130,8 +176,6 @@ def email():
     except:
         print("error occured")
         return {'result': False, 'info': "user does not exist"}, 401
-
-    message.attach(MIMEText(body, "plain"))
 
     # attaching a picture
 
