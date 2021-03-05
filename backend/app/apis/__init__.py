@@ -130,10 +130,10 @@ def email():
     # email = request.form['email']
     
 
-    with apis.open_resource("picture.png") as fp:
+    """with apis.open_resource("picture.png") as fp:
         msg.attach("picture.png", "picture/png", fp.read())
     with apis.open_resource("train.csv") as fp:
-        msg.attach("train.csv", "train/csv", fp.read())
+        msg.attach("train.csv", "train/csv", fp.read())"""
 
     mail.send(msg)
 

@@ -58,6 +58,7 @@ class Upload extends Component {
             console.log(res.statusText);
         })
         this.setState({reviewPhotoMsg: ""});
+        alert("Upload success!")
     }
 
 
