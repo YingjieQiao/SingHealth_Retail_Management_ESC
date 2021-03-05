@@ -3,6 +3,7 @@ from app.config import Config
 from app import create_app
 from app.models import db
 
+
 class TestConfig(Config):
     TESTING = True
 
