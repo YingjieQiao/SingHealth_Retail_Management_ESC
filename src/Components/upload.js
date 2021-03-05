@@ -24,12 +24,6 @@ class Upload extends Component {
                 <div>
                     <button type="button" className="btn btn-primary m-2" onClick={this.onUploadButtonHandler} >Upload</button>
                 </div>
-                <h2>Review photo</h2>
-                <p>{this.state.reviewPhotoMsg}</p>
-                <button type="button" className="btn btn-primary m-2" onClick={this.testHandler}>Update</button>
-                <div>
-                    { this.state.numberOfImage.map(image => <img src={this.state.imageSource[image]} alt={image} key={image} width="300" height="300" />) }
-                </div>
             </div>
         );
     }
@@ -54,36 +48,10 @@ class Upload extends Component {
         axios.post("http://localhost:5000/upload_file", data, headers
         ).then( res => {
             console.log(data);
-            // console.log(data.file)
             console.log(res.statusText);
         })
-        this.setState({reviewPhotoMsg: ""});
+        
         alert("Upload success!")
-    }
-
-
-    testHandler = event => {
-        axios.get("http://localhost:5000/download_file")
-        .then(
-            res => {
-                console.log(res);
-                
-                for (var i = 0; i < res.data.photoData.length; i++) {
-                    let photoData = res.data.photoData[i];
-                    let imgsrc = "data:image/jpeg;base64," + photoData;
-                    var newImageArray = this.state.imageSource;
-                    newImageArray.push(imgsrc);
-                    this.setState({imageSource: newImageArray});
-
-                    var newNumberOfImageArray = this.state.numberOfImage;
-                    newNumberOfImageArray.push(i);
-                    this.setState({numberOfImage: newNumberOfImageArray});
-                }
-
-            }
-        )
-
-        console.log("done")
     }
     
 }

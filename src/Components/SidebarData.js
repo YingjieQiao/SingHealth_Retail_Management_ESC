@@ -19,7 +19,7 @@ export const SidebarData = [
   },
   {
     title: 'View Photos',
-    path: '/home',
+    path: '/viewPhoto',
     icon: <FaIcons.FaImages />,
     cName: 'nav-text'
   },
