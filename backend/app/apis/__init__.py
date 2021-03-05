@@ -13,15 +13,10 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime
 
+from . import s3_methods
+
 sender_email = "starboypp69@gmail.com"
 password = "MDR-XB450AP"
-
-
-from . import s3_methods
-
-# Create a multipart message and set headers
-
-from . import s3_methods
 
 s = URLSafeTimedSerializer('Thisisasecret!')
 
