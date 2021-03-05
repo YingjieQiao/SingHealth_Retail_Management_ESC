@@ -7,6 +7,7 @@ from PIL import Image
 import os
 from itsdangerous import URLSafeTimedSerializer
 from datetime import datetime
+import ssl
 
 from . import s3_methods
 import email, smtplib, ssl
@@ -16,7 +17,6 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-from . import s3_methods
 
 sender_email = "starboypp69@gmail.com"
 password = "MDR-XB450AP"
@@ -151,11 +151,7 @@ def email():
         "Content-Disposition",
         f"attachment; filename= {filename}",
     )
-<<<<<<< Updated upstream
 
-
-=======
->>>>>>> Stashed changes
     # Add attachment to message and convert message to string
     message.attach(part)
     text = message.as_string()
