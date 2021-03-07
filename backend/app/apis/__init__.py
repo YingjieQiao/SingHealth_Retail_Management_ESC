@@ -50,11 +50,15 @@ def user_signup():
         'verify' : 0
     }
 
-    message = MIMEMultipart()
-    message["From"] = sender_email
-    email = body['email']
-    message["To"] = email
-    message["Subject"] = "Registeration Confirmation for SingHealth Account"
+    try:
+        message = MIMEMultipart()
+        message["From"] = sender_email
+        email = body['email']
+        message["To"] = email
+        message["Subject"] = "Registeration Confirmation for SingHealth Account"
+    except:
+        print("error occured")
+        return {'result': False, 'info': "user does not exist"}, 401
 
     token = s.dumps(email, salt='register')
 
@@ -85,27 +89,61 @@ def registeration_confirmation(token):
     except SignatureExpired:
         return {'result': False, 'info': "Link has expired"}, 200
 
-
-
-    
-
-
 @apis.route('/login', methods=['GET', 'POST'])
 def user_login():
     body = request.get_json()
     try:
         user = User.objects.get(email=body.get('email'))
-        firstName = user.firstName
-        lastName = user.lastName
-
         authorized = user.check_password(body.get('password'))
         if not authorized:
             return {'result': False, 'info': "password error"}
     except:
         return {'result': False, 'info': "user does not exist"}
+
+    try:
+        message = MIMEMultipart()
+        message["From"] = sender_email
+        email = body.get('email')
+        message["To"] = email
+        message["Subject"] = "Link to login to SingHealth"
+    except:
+        print("error occured")
+        return {'result': False, 'info': "user does not exist"}, 401
+
+    token = s.dumps(body.get('email'), salt='login')
+
+    link = url_for('apis.login_2FA', token=token, _external=True)
+
+    body = "Please click on the link given below for 2FA  \n\n {}".format(link)
+
+    message.attach(MIMEText(body, "plain"))
+
+    text = message.as_string()
+
+    # Log in to server using secure context and send email
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+        server.login(sender_email, password)
+        server.sendmail(sender_email, email, text)
     #TODO add info to global log file
 
-    return {'result': True, 'firstName': firstName, 'lastName': lastName}
+    return {'result': True, 'info': "2FA sent"}, 200
+
+
+@apis.route('/login_verified/<token>')
+def login_2FA(token):
+
+    try:
+        email = s.loads(token, salt='login', max_age=120) #age needs to be increased to allow longer duration for the link to exist
+        try:
+            user = User.objects.get(email=email)
+            firstName = user.firstName
+            lastName = user.lastName
+        except:
+            return {'result': False, 'info': "2FA error"}, 401
+        return {'result': True, 'firstName': firstName, 'lastName': lastName}, 200
+    except SignatureExpired:
+        return {'result': False, 'info': "Link has expired"}, 200
 
 
 @apis.route('/upload_file', methods=['GET', 'POST'])
