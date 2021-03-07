@@ -6,10 +6,11 @@ db = MongoEngine()
 class User(db.Document):
     firstName = db.StringField(required=True, unique=False)
     lastName = db.StringField(required=True, unique=False)
-    email = db.StringField(required=True, unique=False)
+    email = db.StringField(required=True, unique=True)
     password = db.StringField(required=True, unique=False, min_length=8)
     location = db.StringField(required=True, unique=False)
     mobile = db.IntField(required=True, unique=False)
+    verify = db.IntField(required=True, unique=False)
 
 
     def hash_password(self):
@@ -17,4 +18,9 @@ class User(db.Document):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+    
+    def registeration_verify(email):
+        f = User.only(email)
+        print(f)
+        # f.verify = 1
 

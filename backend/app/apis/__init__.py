@@ -34,6 +34,7 @@ def get_homepage():
 @apis.route('/signup', methods=['GET', 'POST'])
 def user_signup():
     body = request.get_json()
+    body['verify'] = 0
     user = User(**body)
     user.hash_password()
     user.save()
@@ -45,7 +46,8 @@ def user_signup():
         'lastName': body['lastName'],
         'email': body['email'],
         'mobile': body['mobile'],
-        'location': body['location']
+        'location': body['location'],
+        'verify' : 0
     }
 
     message = MIMEMultipart()
@@ -54,7 +56,7 @@ def user_signup():
     message["To"] = email
     message["Subject"] = "Registeration Confirmation for SingHealth Account"
 
-    token = s.dumps(email, salt='register-tenant')
+    token = s.dumps(email, salt='register')
 
     link = url_for('apis.registeration_confirmation', token=token, _external=True)
 
@@ -62,24 +64,6 @@ def user_signup():
 
     message.attach(MIMEText(body, "plain"))
 
-    
-    filename = "picture.png"  # In same directory as script
-
-    with apis.open_resource(filename) as attachment:
-    # Add file as application/octet-stream
-    # Email client can usually download this automatically as attachment
-        part = MIMEBase("application", "octet-stream")
-        part.set_payload(attachment.read())
-
-    # Encode file in ASCII characters to send by email    
-    encoders.encode_base64(part)
-
-    part.add_header(
-        "Content-Disposition",
-        f"attachment; filename= {filename}",
-    )
-
-    message.attach(part)
     text = message.as_string()
 
     # Log in to server using secure context and send email
@@ -89,9 +73,18 @@ def user_signup():
         server.sendmail(sender_email, email, text)
     return {'result': True, 'info': "Registeration Confirmation link was shared"}, 200
 
-@apis.route('/registeration_confirmation', methods=['GET', 'POST'])
-def registeration_confirmation():
-    pass
+@apis.route('/registeration_confirmation/<token>')
+def registeration_confirmation(token):
+
+    try:
+        email = s.loads(token, salt='register', max_age=3600) #age needs to be increased to allow longer duration for the link to exist
+        # User.registeration_verify(email)
+        User.objects(email=email).update_one(verify=1)
+
+        return {'result': True, 'info': "Registeration Confirmed"}, 200
+    except SignatureExpired:
+        return {'result': False, 'info': "Link has expired"}, 200
+
 
 
     
