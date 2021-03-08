@@ -58,7 +58,7 @@ def user_signup():
         message["Subject"] = "Registeration Confirmation for SingHealth Account"
     except:
         print("error occured")
-        return {'result': False, 'info': "user does not exist"}, 401
+        return {'result': False, 'info': "user does not exist"}
 
     token = s.dumps(email, salt='register')
 
@@ -108,7 +108,7 @@ def user_login():
         message["Subject"] = "Link to login to SingHealth"
     except:
         print("error occured")
-        return {'result': False, 'info': "user does not exist"}, 401
+        return {'result': False, 'info': "user does not exist"}
 
     token = s.dumps(body.get('email'), salt='login')
 
@@ -140,7 +140,7 @@ def login_2FA(token):
             firstName = user.firstName
             lastName = user.lastName
         except:
-            return {'result': False, 'info': "2FA error"}, 401
+            return {'result': False, 'info': "2FA error"}
         return {'result': True, 'firstName': firstName, 'lastName': lastName}, 200
     except SignatureExpired:
         return {'result': False, 'info': "Link has expired"}, 200
@@ -206,7 +206,7 @@ def email():
         message.attach(MIMEText(body, "plain"))
     except:
         print("error occured")
-        return {'result': False, 'info': "user does not exist"}, 401
+        return {'result': False, 'info': "user does not exist"}
 
     # attaching a picture
 
