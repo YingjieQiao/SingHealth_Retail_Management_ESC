@@ -29,3 +29,4 @@ yarn-error.log*
 .flaskenv
 /backend/.flaskenv
 /backend/tests/.pytest_cache
+/backend/flask_session
