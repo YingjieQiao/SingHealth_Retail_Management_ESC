@@ -127,7 +127,7 @@ def user_login():
         server.sendmail(sender_email, email, text)
     #TODO add info to global log file
 
-    return {'result': True, 'info': "2FA sent"}, 200
+    return {'result': True, 'info': "2FA sent", "token":token}, 200
 
 
 @apis.route('/login_verified/<token>')
