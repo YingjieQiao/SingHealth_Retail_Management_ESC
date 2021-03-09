@@ -1,4 +1,5 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, session
+from flask_session import Session
 from app.models import User
 import boto3
 from botocore.exceptions import ClientError
@@ -9,7 +10,7 @@ from itsdangerous import URLSafeTimedSerializer
 from datetime import datetime
 import ssl
 
-from . import s3_methods
+from . import settings, s3_methods
 import email, smtplib, ssl
 from email import encoders
 from email.mime.base import MIMEBase
@@ -66,6 +67,8 @@ def user_login():
         return {'result': False, 'info': "user does not exist"}
     #TODO add info to global log file
 
+    settings.username = firstName + lastName
+
     return {'result': True, 'firstName': firstName, 'lastName': lastName}
 
 
@@ -99,7 +102,7 @@ def upload_file():
 def download_file():
     body = request.get_json()
     # username = body.get('username')
-    username = 'YingjieQiao'
+    username = settings.username
 
     data = s3_methods.download_user_objects('escapp-bucket-dev', username, None, None)
     
