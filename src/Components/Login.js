@@ -49,11 +49,11 @@ class Login extends Component {
             if (res.data.result === true) {
                 alert("Login success!","yolo")
 
-                this.props.history.push({
-                pathname:'/Login_verified',
-                search: '?query=abc',
-                state: { detail: res.data.token }
-                });
+                this.props.history.push(
+                '/Login_verified'
+                // search:   res.data.token ,
+                // state: { detail: res.data.token }
+                );
 
             } else {
                 alert("Login unsuccessful:( \n"+res.data.info);

@@ -134,7 +134,7 @@ def user_login():
     return {'result': True, 'info': "2FA sent", "token":token}, 200
 
 
-@apis.route('/login_verified/<token>')
+@apis.route('/login_verified')
 def login_2FA(token):
 
     try:
