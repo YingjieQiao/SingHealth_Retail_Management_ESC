@@ -23,7 +23,7 @@ class DataDashboard extends Component {
             alert('tenantName is: ' + this.state.tenantName);
             // TODO: Check if tenant exist
 
-            // Navigate to Tenant's performance score baord if successful
+            // Navigate to Tenant's performance score board if successful
             this.props.history.push({
                 pathname: '/dataDashboardTenant',
                 state: { tenantName: this.state.tenantName }
