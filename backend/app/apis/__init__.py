@@ -114,11 +114,11 @@ def user_login():
 
     token = s.dumps(body.get('email'), salt='login')
 
-    link = url_for('apis.login_2FA', token=token, _external=True)
+    link = url_for('apis.login_verified', token=token, _external=True)
     link = link.replace("5000","3000")
     print(link)
 
-    body = "Please click on the link given below for 2FA  \n\n {}".format(link)
+    body = "Please click on the link given below for 2FA  \n\n {}".format(token)
 
     message.attach(MIMEText(body, "plain"))
 
@@ -134,20 +134,20 @@ def user_login():
     return {'result': True, 'info': "2FA sent", "token":token}, 200
 
 
-@apis.route('/login_verified')
-def login_2FA(token):
+@apis.route('/login_verified', methods=['GET', 'POST'])
+def login_verified():
 
+    body = request.get_json()
     try:
-        email = s.loads(token, salt='login', max_age=120) #age needs to be increased to allow longer duration for the link to exist
-        try:
-            user = User.objects.get(email=email)
-            firstName = user.firstName
-            lastName = user.lastName
-        except:
-            return {'result': False, 'info': "2FA error"}
-        return {'result': True, 'firstName': firstName, 'lastName': lastName}, 200
-    except SignatureExpired:
-        return {'result': False, 'info': "Link has expired"}, 200
+        email = s.loads(body.get("token"), salt='login', max_age=120) #age needs to be increased to allow longer duration for the link to exist
+        user = User.objects.get(email=email)
+        firstName = user.firstName
+        lastName = user.lastName
+        return {'result': True, 'firstName': firstName, 'lastName': lastName}, 200 #this returns the details of the user 
+    except:
+        return {'result': False, 'info': "2FA error"}
+    # except SignatureExpired:
+    #     return {'result': False, 'info': "Link has expired"}, 200
 
 
 @apis.route('/upload_file', methods=['GET', 'POST'])

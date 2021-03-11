@@ -7,12 +7,13 @@ import { useLocation } from "react-router-dom";
 
 class login_verified extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       Enter_Token : ""
     }
-    this.handleClick = this.handleClick.bind(this);
+    this.handleSubmit=this.handleSubmit.bind(this)
   }
+
   tokenhandler = (event) => {
     this.setState({
         Enter_Token: event.target.value
@@ -52,7 +53,7 @@ class login_verified extends Component {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
     };
-
+    console.log("dat");
     axios.post(`http://localhost:5000/login_verified`, user, headers)
       .then(res => {
         console.log(res.data);
@@ -71,9 +72,11 @@ class login_verified extends Component {
   render() {
     return (
     <div>
-      <h1>Login Verification</h1>
-      <label>Enter Token :</label> <input type="text" value={this.state.email} onChange={this.emailhandler} placeholder="Token" /><br />
-      <button onClick={this.handleSubmit}>Click Me</button>;
+       <form onSubmit={this.handleSubmit}>
+        <h1>Login Verification</h1>
+        <label>Enter Token :</label> <input type="text" value={this.state.Enter_Token} onChange={this.tokenhandler} placeholder="Token" /><br />
+        <input type="submit" value="Log In" />
+        </form>
     </div>
     )
   }
