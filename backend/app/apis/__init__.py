@@ -1,12 +1,30 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, session
+from flask_session import Session
 from app.models import User
 import boto3
 from botocore.exceptions import ClientError
 import logging
+from PIL import Image
+import os
+from itsdangerous import URLSafeTimedSerializer
+from datetime import datetime
+import ssl
 
+from . import settings, s3_methods
+import email, smtplib, ssl
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+
+
+sender_email = "starboypp69@gmail.com"
+password = "MDR-XB450AP"
+
+s = URLSafeTimedSerializer('Thisisasecret!')
 
 apis = Blueprint('apis', __name__)
-
 
 @apis.route('/')
 def get_homepage():
@@ -37,55 +55,113 @@ def user_signup():
 @apis.route('/login', methods=['GET', 'POST'])
 def user_login():
     body = request.get_json()
-    user = User.objects.get(email=body.get('email'))
-    authorized = user.check_password(body.get('password'))
-    if not authorized:
-        return {'result': False}, 401
+    try:
+        user = User.objects.get(email=body.get('email'))
+        firstName = user.firstName
+        lastName = user.lastName
+
+        authorized = user.check_password(body.get('password'))
+        if not authorized:
+            return {'result': False, 'info': "password error"}
+    except:
+        return {'result': False, 'info': "user does not exist"}
+    #TODO add info to global log file
+
+    settings.username = firstName + lastName
+
+    return {'result': True, 'firstName': firstName, 'lastName': lastName}
+
+
+@apis.route('/upload_file', methods=['GET', 'POST'])
+def upload_file():
+    body = request.files['file']
+
+    img = Image.open(body.stream)
+    rgb_img = img.convert('RGB')
+    
+    username = "YingjieQiao"
+    now = datetime.now() # current date and time
+    dateTime = now.strftime("%m/%d/%Y %H:%M:%S")
+    dateTimeArr = dateTime.split(" ")
+    date_ = dateTimeArr[0]
+    time_ = dateTimeArr[1]
+    date_ = date_.replace("/", "-")
+    filename = username + "_" + date_ + "_" + time_ + ".jpg"
+
+    rgb_img.save(filename)
+
+    s3_methods.upload_file(filename, 'escapp-bucket-dev', None)
+
+    os.remove(os.getcwd() + "/" + filename)
+    #TODO in-memory storage like redis?
+
     return {'result': True}, 200
 
 
-@apis.route('/upload_file')
-def upload_file(file_name, bucket, object_name=None):
-    """Upload a file to an S3 bucket
-
-    :param file_name: File to upload
-    :param bucket: Bucket to upload to
-    :param object_name: S3 object name. If not specified then file_name is used
-    :return: True if file was uploaded, else False
-    """
-
-    if object_name is None:
-        object_name = file_name
-
-    s3_client = boto3.client('s3')
-    try:
-        response = s3_client.upload_file(file_name, bucket, object_name)
-        #TODO log the response in the logger
-    except ClientError as e:
-        logging.error(e)
-        return False
-    return True
-
-
 @apis.route('/download_file')
-def download_file(file_name, bucket, object_name):
-    """Download a file from an S3 bucket
+def download_file():
+    body = request.get_json()
+    # username = body.get('username')
+    username = settings.username
 
-    :param file_name: File to download
-    :param bucket: Bucket to download from
-    :param object_name: S3 object name.
-    :return: True if file was downloaded, else False
-    """
+    data = s3_methods.download_user_objects('escapp-bucket-dev', username, None, None)
+    
+    mypath = os.getcwd()
+    for filename in os.listdir(mypath):
+        filename_full = os.path.join(mypath, filename)
+        if (os.path.isfile(filename_full) 
+            and not filename.endswith(".py") and filename != '.DS_Store'):
+            os.remove(filename_full)
 
-    if object_name is None:
-        return False
+    return {'result': True, 'photoData': data}, 200
 
-    s3 = boto3.client('s3')
+@apis.route('/email', methods=['GET', 'POST'])
+def email():
+
+    data = request.get_json(silent=True)
+    receiver_email = data.get('email')
+    subject = data.get('subject')
+    body = data.get('content')
+    print(receiver_email,subject,body)
     try:
-        response = s3.download_file(bucket, object_name, file_name)
-        #TODO log the response in the logger
-    except ClientError as e:
-        logging.error(e)
-        return False
-    return True
 
+        message = MIMEMultipart()
+        message["From"] = sender_email
+        message["To"] = receiver_email
+        message["Subject"] = subject
+        message.attach(MIMEText(body, "plain"))
+    except:
+        print("error occured")
+        return {'result': False, 'info': "user does not exist"}, 401
+
+    message.attach(MIMEText(body, "plain"))
+
+    # attaching a picture
+
+    filename = "picture.png"  # In same directory as script
+
+    with apis.open_resource(filename) as attachment:
+    # Add file as application/octet-stream
+    # Email client can usually download this automatically as attachment
+        part = MIMEBase("application", "octet-stream")
+        part.set_payload(attachment.read())
+
+    # Encode file in ASCII characters to send by email    
+    encoders.encode_base64(part)
+
+    # Add header as key/value pair to attachment part
+    part.add_header(
+        "Content-Disposition",
+        f"attachment; filename= {filename}",
+    )
+
+    # Add attachment to message and convert message to string
+    message.attach(part)
+    text = message.as_string()
+
+    # Log in to server using secure context and send email
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+        server.login(sender_email, password)
+        server.sendmail(sender_email, receiver_email, text)
+    return {'result': True, 'info': "Email was shared"}, 200

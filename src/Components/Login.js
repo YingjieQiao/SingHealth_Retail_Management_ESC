@@ -45,12 +45,25 @@ class Login extends Component {
     
         axios.post(`http://localhost:5000/login`, user, headers)
           .then(res => {
-            console.log(res);
             console.log(res.data);
+            if (res.data.result === true) {
+                alert("Login success!","yolo")
+                this.props.history.push('/home');
+            } else {
+                alert("Login unsuccessful:( \n"+res.data.info);
+            }
         })
-
-        alert("Login success!")
-        this.props.history.push('/home');
+        .catch(function (error,res) {
+            console.log(error.response.status) // 401
+            console.log(error.response.data.error) //Please Authenticate or whatever returned from server
+          if(error.response.status==401){
+            alert("Login unsuccess!")
+            alert(res.data.info);
+          }
+        })
+        
+        
+        
     }
     
 
@@ -58,7 +71,9 @@ class Login extends Component {
     render() {
         return (
             <div>
-                
+                 <nav>
+                        <p>yolo</p>
+                   </nav>
                 <Route path="/Register" exact component={Register}/>        
                 <form onSubmit={this.handleSubmit}>
                     <h1>LOGIN</h1>

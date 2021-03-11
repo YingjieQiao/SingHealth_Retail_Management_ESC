@@ -3,3 +3,4 @@ class Config():
     MONGODB_SETTINGS = {
         'host': 'mongodb://localhost/escapp'
     }
+    
