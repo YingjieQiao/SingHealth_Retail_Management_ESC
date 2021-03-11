@@ -9,6 +9,7 @@ import email from './Components/email';
 import viewPhoto from './Components/viewPhoto';
 import dataDashboard from './Components/dataDashboard';
 import dataDashboardTenant from './Components/dataDashboardTenant';
+import compareTenant from './Components/compareTenant';
 import {Route, BrowserRouter as Router,Switch,Link} from "react-router-dom";
 import Navbar from './Components/Navbar';
 
@@ -27,6 +28,7 @@ function App() {
       <Route path="/viewPhoto" exact component={viewPhoto}/>
       <Route path="/dataDashboard" exact component={dataDashboard}/>
       <Route path="/dataDashboardTenant" exact component={dataDashboardTenant}/>
+      <Route path="/compareTenant" exact component={compareTenant}/>
     </Switch>
     
     </div>
