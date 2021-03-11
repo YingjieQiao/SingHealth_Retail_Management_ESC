@@ -25,4 +25,57 @@ class Photo(db.Document):
     notes = db.StringField(required=True, unique=False)
     staffName = db.StringField(required=True, unique=False)
     tenantName = db.StringField(required=True, unique=False)
-    
+
+class Audit_FB(db.Document):
+    date = db.StringField(required=True, unique=False)
+    staffName = db.StringField(required=True, unique=False)
+    staffDepartment = db.StringField(required=True, unique=False)
+    totalScore = db.FloatField(required=True, unique=False)
+    profScore = db.FloatField(required=True, unique=False)
+    profListScore = db.ListField(required=True, unique=False)
+    housekeepingScore = db.FloatField(required=True, unique=False)
+    houskeepingListScore = db.ListField(required=True, unique=False)
+    foodHygieneScore = db.FloatField(required=True, unique=False)
+    foodHygieneListScore = db.ListField(required=True, unique=False)
+    healthierChoiceScore = db.FloatField(required=True, unique=False)
+    healthierChoiceListScore = db.ListField(required=True, unique=False)
+    workSafetyScore = db.FloatField(required=True, unique=False)
+    workSafetyListScore = db.ListField(required=True, unique=False)
+    comments = db.StringField(required=False, unique=False)
+
+    def computeTotalScore(self):
+        self.profScore = sum(self.profListScore)
+        self.housekeepingScore = sum(self.houskeepingListScore)
+        self.foodHygieneScore = sum(self.foodHygieneListScore)
+        self.healthierChoiceScore = sum(self.healthierChoiceListScore)
+        self.workSafetyScore = sum(self.workSafetyListScore)
+        self.totalScore = 0.1*self.profScore + 0.2*self.housekeepingScore + 0.35*self.foodHygieneScore + 0.15*self.healthierChoiceScore + 0.2*self.workSafetyScore
+
+
+class Audit_non_FB(db.Document):
+    date = db.StringField(required=True, unique=False)
+    staffName = db.StringField(required=True, unique=False)
+    staffDepartment = db.StringField(required=True, unique=False)
+    totalScore = db.FloatField(required=True, unique=False)
+    profScore = db.FloatField(required=True, unique=False)
+    profListScore = db.ListField(required=True, unique=False)
+    housekeepingScore = db.FloatField(required=True, unique=False)
+    houskeepingListScore = db.ListField(required=True, unique=False)
+    workSafetyScore = db.FloatField(required=True, unique=False)
+    workSafetyListScore = db.ListField(required=True, unique=False)
+    comments = db.StringField(required=False, unique=False)
+
+    def computeTotalScore(self):
+        self.profScore = sum(self.profListScore)
+        self.housekeepingScore = sum(self.houskeepingListScore)
+        self.workSafetyScore = sum(self.workSafetyListScore)
+        self.totalScore = 0.2*self.profScore + 0.4*self.housekeepingScore + 0.4*self.workSafetyScore
+
+
+class Covid_Compliance(db.Document):
+    date = db.StringField(required=True, unique=False)
+    staffName = db.StringField(required=True, unique=False)
+    staffDepartment = db.StringField(required=True, unique=False)
+    comments = db.StringField(required=False, unique=False)
+    safetyFrontend = db.ListField(required=True, unique=False)
+    safetyBackend = db.ListField(required=True, unique=False)
