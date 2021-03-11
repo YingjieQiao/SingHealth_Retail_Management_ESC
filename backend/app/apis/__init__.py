@@ -63,6 +63,8 @@ def user_signup():
     token = s.dumps(email, salt='register')
 
     link = url_for('apis.registeration_confirmation', token=token, _external=True)
+    link = link.replace("5000","3000")
+    print(link)
 
     body = "Thank you for registering to SingHealth, Please click on the link given below to confirm your registeration \n\n {}".format(link)
 
@@ -113,6 +115,8 @@ def user_login():
     token = s.dumps(body.get('email'), salt='login')
 
     link = url_for('apis.login_2FA', token=token, _external=True)
+    link = link.replace("5000","3000")
+    print(link)
 
     body = "Please click on the link given below for 2FA  \n\n {}".format(link)
 
