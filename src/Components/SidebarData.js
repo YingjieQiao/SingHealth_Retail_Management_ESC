@@ -49,6 +49,12 @@ export const SidebarData = [
     cName: 'nav-text'
   },
   {
+    title: 'New Audit',
+    path: '/audit',
+    icon: <AiIcons.AiOutlineAudit />,
+    cName: 'nav-text'
+  },
+  {
     title: 'Sign Out',
     path: '/',
     icon: <FaIcons.FaSignOutAlt />,
