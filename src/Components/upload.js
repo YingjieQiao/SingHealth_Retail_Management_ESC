@@ -78,32 +78,41 @@ class Upload extends Component {
         axios.get("http://localhost:5000/get_current_username").then(
             res => {
                 console.log(res);
-                this.setState({staffName: res.data.result});
+                // this.setState({staffName: res.data.result});
+                this.setState({staffName: res.data.result}, this.checkStaffName);
                 console.log("staff name set: " + res.data.result);
             }
         )
+    }
 
-        const photo = {
-            caseID: this.state.caseID,
-            tags: this.state.tags,
-            date: this.state.date,
-            time: this.state.time,
-            notes: this.state.notes,
-            staffName: this.state.staffName,
-            tenantName: this.state.tenantName
-        };
-        const headers = {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-        };
+    checkStaffName = () => {
+        if (this.state.staffName.length != 0) {
+            // proceeds to upload info
+            const photo = {
+                caseID: this.state.caseID,
+                tags: this.state.tags,
+                date: this.state.date,
+                time: this.state.time,
+                notes: this.state.notes,
+                staffName: this.state.staffName,
+                tenantName: this.state.tenantName
+            };
+            const headers = {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            };
+        
+            axios.post(`http://localhost:5000/upload_photo_info`, photo, headers)
+                .then(res => {
+                    console.log(photo);
+                    console.log(res);
+            })
     
-        axios.post(`http://localhost:5000/upload_photo_info`, photo, headers)
-            .then(res => {
-                console.log(photo);
-                console.log(res);
-        })
-
-        alert("photo information upload success!")
+            alert("photo information upload success!");
+        } else {
+            // Not allowed to upload info
+            alert("staff name is empty");
+        }
     }
 
 
