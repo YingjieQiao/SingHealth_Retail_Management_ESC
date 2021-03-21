@@ -101,7 +101,6 @@ class Upload extends Component {
             .then(res => {
                 console.log(photo);
                 console.log(res);
-                console.log(res.data);
         })
 
         alert("photo information upload success!")
