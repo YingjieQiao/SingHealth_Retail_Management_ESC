@@ -16,7 +16,7 @@ class Upload extends Component {
         time: "",
         notes: "",
         staffName: "",
-        tenantName: "someone",
+        tenantName: "",
     };
 
     render() { 
@@ -49,6 +49,13 @@ class Upload extends Component {
                             onChange={this.timeHandler} placeholder="time..." /><br />
                         <label>notes :</label> <input type="text" 
                             value={this.state.notes} onChange={this.notesHandler} placeholder="notes..." /><br />
+
+                        <label>tenant :</label><select onChange={this.tenantHandler} defaultValue="none">
+                            <option defaultValue>Select tenant</option>
+                            <option value="KFC">KFC</option>
+                            <option value="711">711</option>
+                            <option value="good tenant">good tenant</option>
+                        </select><br />
 
                     </form >
 
@@ -98,6 +105,13 @@ class Upload extends Component {
         })
 
         alert("photo information upload success!")
+    }
+
+
+    tenantHandler = (event) => {
+        this.setState({
+            tenantName: event.target.value
+        })
     }
 
     notesHandler = (event) => {
