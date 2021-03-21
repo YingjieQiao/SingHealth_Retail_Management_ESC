@@ -30,6 +30,7 @@ class viewPhoto extends Component {
         .then(
             res => {
                 console.log(res);
+                // res.photoAttrData is an array of dictionary, each dictionary contains the info about this photo
 
                 this.setState({reviewPhotoMsg: ""});
                 

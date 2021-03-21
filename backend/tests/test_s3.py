@@ -61,6 +61,8 @@ def list_all_objects(bucket, username, timeInput, dateInput):
         
         if (ls[0] == username):
             print(key['Key'])
+            print(ls[1])
+            print(ls[2][:-4])
             # download(s3_client, key['Key'], bucket, None)
             pass
 

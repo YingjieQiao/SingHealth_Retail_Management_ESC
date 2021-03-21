@@ -1,14 +1,9 @@
 from flask import Blueprint, request, session, jsonify
-from flask_session import Session
 from app.models import User, Photo
-import boto3
-from botocore.exceptions import ClientError
-import logging
 from PIL import Image
 import os
 from itsdangerous import URLSafeTimedSerializer
 from datetime import datetime
-import ssl
 
 from . import settings, s3_methods
 import email, smtplib, ssl
@@ -80,7 +75,7 @@ def upload_file():
     img = Image.open(body.stream)
     rgb_img = img.convert('RGB')
     
-    username = "YingjieQiao"
+    username = settings.username
     now = datetime.now() # current date and time
     dateTime = now.strftime("%m/%d/%Y %H:%M:%S")
     dateTimeArr = dateTime.split(" ")
@@ -103,9 +98,13 @@ def upload_file():
 def download_file():
     body = request.get_json()
     username = settings.username
+    timeInput = None
+    dateInput = None
 
-    data = s3_methods.download_user_objects('escapp-bucket-dev', username, None, None)
-    
+    res = s3_methods.download_user_objects('escapp-bucket-dev', username, timeInput, dateInput)
+    photoData = res[0]
+    photoAttrData = res[1]
+
     mypath = os.getcwd()
     for filename in os.listdir(mypath):
         filename_full = os.path.join(mypath, filename)
@@ -113,7 +112,7 @@ def download_file():
             and not filename.endswith(".py") and filename != '.DS_Store'):
             os.remove(filename_full)
 
-    return {'result': True, 'photoData': data}, 200
+    return {'result': True, 'photoData': photoData, 'photoAttrData': photoAttrData}, 200
 
 
 @apis.route('/upload_photo_info', methods=['GET', 'POST'])
@@ -126,6 +125,7 @@ def upload_photo_info():
     return {'result': True}, 200
 
 
+'''
 @apis.route('/get_photo_info', methods=['GET', 'POST'])
 def get_photo_info():
     """
@@ -147,6 +147,7 @@ def get_photo_info():
         return {'result': None, 'status': False}, 500
 
     return {'result': photos, 'status': True}, 200
+'''
 
 
 @apis.route('/email', methods=['GET', 'POST'])
