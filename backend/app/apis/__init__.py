@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session
+from flask import Blueprint, request, session, jsonify
 from flask_session import Session
 from app.models import User, Photo
 import boto3
@@ -124,6 +124,29 @@ def upload_photo_info():
     photo.save()
 
     return {'result': True}, 200
+
+
+@apis.route('/get_photo_info', methods=['GET', 'POST'])
+def get_photo_info():
+    """
+    get the information assciated with a given photo name
+    """
+
+    body = request.get_json()
+    filename = body.get('filename')
+    filename_parts = filename.split('_')
+    date_ = filename_parts[1]
+    time_ = filename_parts[2][:-4]
+
+    if settings.username == "":
+        settings.username = "YingjieQiao"
+
+    try:
+        photos = Photo.objects(date=date_, time=time_, staffName=settings.username)
+    except:
+        return {'result': None, 'status': False}, 500
+
+    return {'result': photos, 'status': True}, 200
 
 
 @apis.route('/email', methods=['GET', 'POST'])

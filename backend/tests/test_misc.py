@@ -30,6 +30,17 @@ def datetime_to_str():
     print(filename)
 
 
+def test_split_filename():
+    filename = "YingjieQiao_03-04-2021_23:41:41.jpg"
+    filename_parts = filename.split('_')
+    date_ = filename_parts[1]
+    time_ = filename_parts[2][:-4]
+    print(date_)
+    print(time_)
+
+
+
 if __name__ == "__main__":
     #list_files()
-    datetime_to_str()
+    #datetime_to_str()
+    test_split_filename()
