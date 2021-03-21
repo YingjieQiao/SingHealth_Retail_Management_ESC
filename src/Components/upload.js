@@ -9,7 +9,14 @@ class Upload extends Component {
         selectedFile: null,
         reviewPhotoMsg: "You have not upload any photo",
         numberOfImage: [],
-        imageSource: []
+        imageSource: [],
+        caseID: Date.now().toString(),
+        tags: "",
+        date: "",
+        time: "",
+        notes: "",
+        staffName: "",
+        tenantName: "someone",
     };
 
     render() { 
@@ -24,9 +31,101 @@ class Upload extends Component {
                 <div>
                     <button type="button" className="btn btn-primary m-2" onClick={this.onUploadButtonHandler} >Upload</button>
                 </div>
+
+                <div>
+                    <form onSubmit={this.handlePhotoSubmit}>
+                        <h1>Photo Information</h1>
+
+                        <label>tags :</label><select onChange={this.tagsHandler} defaultValue="none">
+                            <option defaultValue>Select tags</option>
+                            <option value="tag1">tag1</option>
+                            <option value="tag2">tag2</option>
+                            <option value="tag3">tag3</option>
+                        </select><br />
+
+                        <label>date :</label> <input name="date" type="text" value={this.state.date} 
+                            onChange={this.dateHandler} placeholder="date..." /><br />
+                        <label>time :</label> <input type="text" value={this.state.time} 
+                            onChange={this.timeHandler} placeholder="time..." /><br />
+                        <label>notes :</label> <input type="text" 
+                            value={this.state.notes} onChange={this.notesHandler} placeholder="notes..." /><br />
+
+                    </form >
+
+                    <div>
+                        <button type="button" className="btn btn-primary m-2" 
+                            onClick={this.photoInfoButtonHandler} >Upload Photo Information</button>
+                    </div>
+                </div>
             </div>
+
+            
         );
     }
+
+
+    photoInfoButtonHandler = (event) => {
+        event.preventDefault()
+
+        // set staff username
+        axios.get("http://localhost:5000/get_current_username").then(
+            res => {
+                console.log(res);
+                this.setState({staffName: res.data.result});
+                console.log("staff name set: " + res.data.result);
+            }
+        )
+
+        const photo = {
+            caseID: this.state.caseID,
+            tags: this.state.tags,
+            date: this.state.date,
+            time: this.state.time,
+            notes: this.state.notes,
+            staffName: this.state.staffName,
+            tenantName: this.state.tenantName
+        };
+        const headers = {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        };
+    
+        axios.post(`http://localhost:5000/upload_photo_info`, photo, headers)
+            .then(res => {
+                console.log(photo);
+                console.log(res);
+                console.log(res.data);
+        })
+
+        alert("photo information upload success!")
+    }
+
+    notesHandler = (event) => {
+        this.setState({
+            notes: event.target.value
+        })
+    }
+
+    dateHandler = (event) => {
+        this.setState({
+            date: event.target.value
+        })
+    }
+
+
+    timeHandler = (event) => {
+        this.setState({
+            time: event.target.value
+        })
+    }
+
+
+    tagsHandler = (event) => {
+        this.setState({
+            tags: event.target.value
+        })
+    }
+
 
     onChooseFileHandler = event => {
         this.setState({
@@ -34,6 +133,7 @@ class Upload extends Component {
             loaded: 0
         });
     }
+
 
     onUploadButtonHandler = event => {
         event.preventDefault();
@@ -53,6 +153,60 @@ class Upload extends Component {
         
         alert("Upload success!")
     }
+
+
+    handlePhotoSubmit = (event) => {
+        event.preventDefault()
+        if( this.state.firstName==""|
+            this.state.lastName==""|
+            this.state.email==""|
+            this.state.mobile==""|
+            this.state.password==""|
+            this.state.location==""){
+                alert(` Registered UnSuccessfully !!!!\n some parameters are empty`)
+                this.props.history.push('/Register');
+            }
+        else if(this.state.password!=this.state.REpassword){
+            alert(` pasword did not match!! !!!!`)
+            this.props.history.push('/Register');
+        }    
+        else{
+            
+                const user = {
+                    firstName: this.state.firstName,
+                    lastName: this.state.lastName,
+                    email: this.state.email,
+                    mobile: this.state.mobile,
+                    password: this.state.password,
+                    location: this.state.location
+                };
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                };
+            
+                axios.post(`http://localhost:5000/signup`, user, headers)
+                    .then(res => {
+                      console.log(res);
+                      console.log(res.data);
+                })
+            
+                console.log(this.state);
+                this.setState({
+                    firstName: "",
+                    lastName: "",
+                    email:"",
+                    mobile: "",
+                    password: '',
+                    REpassword: '',
+                    location: "",
+                })
+
+                alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
+                this.props.history.push('/home');
+            }
+    }
+        
     
 }
 

@@ -19,10 +19,10 @@ class User(db.Document):
 
 
 class Photo(db.Document):
-    tag = db.StringField(required=True, unique=False)
+    caseID = db.StringField(required=True, unique=True) # no of seconds since January 1, 1970, 00:00:00 at UTC
+    tags = db.StringField(required=True, unique=False)
     date = db.StringField(required=True, unique=False)
     time = db.StringField(required=True, unique=False)
     notes = db.StringField(required=True, unique=False)
     staffName = db.StringField(required=True, unique=False)
     tenantName = db.StringField(required=True, unique=False)
-    

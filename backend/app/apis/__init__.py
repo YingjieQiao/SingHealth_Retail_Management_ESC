@@ -1,6 +1,6 @@
 from flask import Blueprint, request, session
 from flask_session import Session
-from app.models import User
+from app.models import User, Photo
 import boto3
 from botocore.exceptions import ClientError
 import logging
@@ -18,7 +18,6 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-
 sender_email = "starboypp69@gmail.com"
 password = "MDR-XB450AP"
 
@@ -26,10 +25,11 @@ s = URLSafeTimedSerializer('Thisisasecret!')
 
 apis = Blueprint('apis', __name__)
 
-@apis.route('/')
-def get_homepage():
-    # for testing
-    return '<h1>hello there</h1>'
+
+@apis.route('/get_current_username', methods=['GET', 'POST'])
+def get_current_username():
+    print(settings.username)
+    return {"result": settings.username}, 200
 
 
 @apis.route('/signup', methods=['GET', 'POST'])
@@ -68,6 +68,7 @@ def user_login():
     #TODO add info to global log file
 
     settings.username = firstName + lastName
+    print(settings.username)
 
     return {'result': True, 'firstName': firstName, 'lastName': lastName}
 
@@ -101,7 +102,6 @@ def upload_file():
 @apis.route('/download_file')
 def download_file():
     body = request.get_json()
-    # username = body.get('username')
     username = settings.username
 
     data = s3_methods.download_user_objects('escapp-bucket-dev', username, None, None)
@@ -114,6 +114,17 @@ def download_file():
             os.remove(filename_full)
 
     return {'result': True, 'photoData': data}, 200
+
+
+@apis.route('/upload_photo_info', methods=['GET', 'POST'])
+def upload_photo_info():
+    body = request.get_json()
+
+    photo = Photo(**body)
+    photo.save()
+
+    return {'result': True}, 200
+
 
 @apis.route('/email', methods=['GET', 'POST'])
 def email():
