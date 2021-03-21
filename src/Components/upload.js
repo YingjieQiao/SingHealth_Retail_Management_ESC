@@ -28,9 +28,9 @@ class Upload extends Component {
                     <ImUpload3 size="50" style={{display: "block", marginLeft: "auto", marginRight: "auto", marginTop: "10px"}}/>
                     <input type="file" name="file" onChange={this.onChooseFileHandler} style={{display: "block", margin: '10px'}}/>
                 </div>
-                <div>
+                {/* <div>
                     <button type="button" className="btn btn-primary m-2" onClick={this.onUploadButtonHandler} >Upload</button>
-                </div>
+                </div> */}
 
                 <div>
                     <form>
@@ -42,11 +42,7 @@ class Upload extends Component {
                             <option value="tag2">tag2</option>
                             <option value="tag3">tag3</option>
                         </select><br />
-
-                        <label>date :</label> <input name="date" type="text" value={this.state.date} 
-                            onChange={this.dateHandler} placeholder="date..." /><br />
-                        <label>time :</label> <input type="text" value={this.state.time} 
-                            onChange={this.timeHandler} placeholder="time..." /><br />
+                        
                         <label>notes :</label> <input type="text" 
                             value={this.state.notes} onChange={this.notesHandler} placeholder="notes..." /><br />
 
@@ -75,12 +71,13 @@ class Upload extends Component {
         event.preventDefault()
 
         // set staff username
-        axios.get("http://localhost:5000/get_current_username").then(
+        axios.get("http://localhost:5000/get_current_username_and_datetime").then(
             res => {
                 console.log(res);
                 // this.setState({staffName: res.data.result});
-                this.setState({staffName: res.data.result}, this.checkStaffName);
-                console.log("staff name set: " + res.data.result);
+                this.setState({staffName: res.data.username, 
+                    time: res.data.time, date: res.data.date}, this.checkStaffName);
+                console.log("staff name set: " + res.data.username + " and time set: " + res.data.time);
             }
         )
     }
@@ -107,7 +104,19 @@ class Upload extends Component {
                     console.log(photo);
                     console.log(res);
             })
-    
+            
+            // upload photo to S3 after uploading notes
+            const data = new FormData();
+
+            data.append("file", this.state.selectedFile);
+            data.append("time", this.state.time)
+            data.append("date", this.state.date)
+            axios.post("http://localhost:5000/upload_file", data, headers
+            ).then( res => {
+                console.log(data);
+                console.log(res.statusText);
+            })
+                
             alert("photo information upload success!");
         } else {
             // Not allowed to upload info
@@ -128,19 +137,6 @@ class Upload extends Component {
         })
     }
 
-    dateHandler = (event) => {
-        this.setState({
-            date: event.target.value
-        })
-    }
-
-
-    timeHandler = (event) => {
-        this.setState({
-            time: event.target.value
-        })
-    }
-
 
     tagsHandler = (event) => {
         this.setState({
@@ -157,7 +153,7 @@ class Upload extends Component {
     }
 
 
-    onUploadButtonHandler = event => {
+   /*  onUploadButtonHandler = event => {
         event.preventDefault();
 
         const data = new FormData();
@@ -167,6 +163,8 @@ class Upload extends Component {
         };
 
         data.append("file", this.state.selectedFile);
+        data.append("time", this.state.time)
+        data.append("date", this.state.date)
         axios.post("http://localhost:5000/upload_file", data, headers
         ).then( res => {
             console.log(data);
@@ -174,7 +172,7 @@ class Upload extends Component {
         })
         
         alert("Upload success!")
-    }
+    } */
 
     
 }

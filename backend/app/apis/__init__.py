@@ -21,10 +21,16 @@ s = URLSafeTimedSerializer('Thisisasecret!')
 apis = Blueprint('apis', __name__)
 
 
-@apis.route('/get_current_username', methods=['GET', 'POST'])
+@apis.route('/get_current_username_and_datetime', methods=['GET', 'POST'])
 def get_current_username():
-    print(settings.username)
-    return {"result": settings.username}, 200
+    now = datetime.now() # current date and time
+    dateTime = now.strftime("%m/%d/%Y %H:%M:%S")
+    dateTimeArr = dateTime.split(" ")
+    date_ = dateTimeArr[0]
+    date_ = date_.replace("/", "-")
+    time_ = dateTimeArr[1]
+
+    return {"username": settings.username, "time": time_, "date": date_}, 200
 
 
 @apis.route('/signup', methods=['GET', 'POST'])
@@ -71,18 +77,14 @@ def user_login():
 @apis.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
     body = request.files['file']
+    time_ = request.form['time']
+    date_ = request.form['date']
+
+    username = settings.username
+    filename = username + "_" + date_ + "_" + time_ + ".jpg"
 
     img = Image.open(body.stream)
     rgb_img = img.convert('RGB')
-    
-    username = settings.username
-    now = datetime.now() # current date and time
-    dateTime = now.strftime("%m/%d/%Y %H:%M:%S")
-    dateTimeArr = dateTime.split(" ")
-    date_ = dateTimeArr[0]
-    time_ = dateTimeArr[1]
-    date_ = date_.replace("/", "-")
-    filename = username + "_" + date_ + "_" + time_ + ".jpg"
 
     rgb_img.save(filename)
 
@@ -118,6 +120,14 @@ def download_file():
 @apis.route('/upload_photo_info', methods=['GET', 'POST'])
 def upload_photo_info():
     body = request.get_json()
+
+    now = datetime.now() # current date and time
+    dateTime = now.strftime("%m/%d/%Y %H:%M:%S")
+    dateTimeArr = dateTime.split(" ")
+    time_ = dateTimeArr[1]
+    body['time'] = time_
+
+    print(body)
 
     photo = Photo(**body)
     photo.save()
