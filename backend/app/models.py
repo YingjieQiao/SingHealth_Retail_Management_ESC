@@ -11,11 +11,13 @@ class User(db.Document):
     location = db.StringField(required=True, unique=False)
     mobile = db.IntField(required=True, unique=False)
 
+
     def hash_password(self):
        self.password = generate_password_hash(self.password).decode('utf8')
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+    
 
 
 class Photo(db.Document):
