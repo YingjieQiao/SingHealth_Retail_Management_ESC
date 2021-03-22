@@ -22,7 +22,7 @@ apis = Blueprint('apis', __name__)
 
 
 @apis.route('/get_current_username_and_datetime', methods=['GET', 'POST'])
-def get_current_username():
+def get_current_username_and_datetime():
     now = datetime.now() # current date and time
     dateTime = now.strftime("%m/%d/%Y %H:%M:%S")
     dateTimeArr = dateTime.split(" ")
@@ -91,7 +91,11 @@ def upload_file():
 
     rgb_img.save(filename)
 
-    s3_methods.upload_file(filename, 'escapp-bucket-dev', None)
+    try:
+        s3_methods.upload_file(filename, 'escapp-bucket-dev', None)
+    except Exception as e:
+        print("Error occurred: ", e) #TODO change to logging
+        return {'result': False}, 500
 
     os.remove(os.getcwd() + "/" + filename)
     #TODO in-memory storage like redis?
@@ -108,7 +112,11 @@ def download_file():
     timeInput = None
     dateInput = None
 
-    res = s3_methods.download_user_objects('escapp-bucket-dev', username, timeInput, dateInput)
+    try:
+        res = s3_methods.download_user_objects('escapp-bucket-dev', username, timeInput, dateInput)
+    except Exception as e:
+        print("Error occurred: ", e) #TODO change to logging
+        return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
     photoData = res[0]
     photoAttrData = res[1]
 
@@ -126,16 +134,14 @@ def download_file():
 def upload_photo_info():
     body = request.get_json()
 
-    now = datetime.now() # current date and time
-    dateTime = now.strftime("%m/%d/%Y %H:%M:%S")
-    dateTimeArr = dateTime.split(" ")
-    time_ = dateTimeArr[1]
-    body['time'] = time_
-
     print(body)
 
-    photo = Photo(**body)
-    photo.save()
+    try:
+        photo = Photo(**body)
+        photo.save()
+    except Exception as e:
+        print("Error occurred: ", e) #TODO change to logging
+        return {'result': False}, 500
 
     return {'result': True}, 200
 

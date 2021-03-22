@@ -1,20 +1,69 @@
 from tests import TestBase
 import json
 
+
 class TestUser(TestBase):
-    TEST_PHOTO_ACCESS = {
-        "filename": "YingjieQiao_03-04-2021_23:41:41.jpg"
+    TEST_PHOTO_INFO_UPLOAD_PASS1 = {
+        "tags": "tag1",
+        "date": "01-01-2020",
+        "time": "00:00:00",
+        "notes": "UNIT TEST ENTRY",
+        "staffName": "UnitTester",
+        "tenantName": "KFC"
+    }
+
+    TEST_PHOTO_INFO_UPLOAD_PASS2 = {
+        "tags": "tag2",
+        "date": "01-02-2020",
+        "time": "00:02:00",
+        "notes": "UNIT TEST ENTRY",
+        "staffName": "UnitTester",
+        "tenantName": "711"
+    }
+
+    TEST_PHOTO_INFO_UPLOAD_FAIL1 = {
 
     }
 
-    TEST_PHOTO_ACCESS_JSON = json.dumps(TEST_PHOTO_ACCESS)
+    TEST_PHOTO_INFO_UPLOAD_FAIL2 = {
+        "tags": "tag2",
+        "date": "01-02-2020",
+        "time": "00:02:00",
+        "notes": "UNIT TEST ENTRY",
+        "staffName": "UnitTester",
+        "tenantName": "711",
+        "a column that does not exist": False,
+        "breakit": ""
+    }
 
-    def test_db_get(self):
-        rv = self.client.post('/get_photo_info', data=self.TEST_PHOTO_ACCESS_JSON,
+    TEST_PHOTO_INFO_UPLOAD_PASS1_JSON = json.dumps(TEST_PHOTO_INFO_UPLOAD_PASS1)
+    TEST_PHOTO_INFO_UPLOAD_PASS2_JSON = json.dumps(TEST_PHOTO_INFO_UPLOAD_PASS2)
+    TEST_PHOTO_INFO_UPLOAD_FAIL1_JSON = json.dumps(TEST_PHOTO_INFO_UPLOAD_FAIL1)
+    TEST_PHOTO_INFO_UPLOAD_FAIL2_JSON = json.dumps(TEST_PHOTO_INFO_UPLOAD_FAIL2)
+
+    def test_db_upload_pass1(self):
+        rv = self.client.post('/upload_photo_info', data=self.TEST_PHOTO_INFO_UPLOAD_PASS1_JSON,
                               content_type='application/json')
         assert rv.status_code == 200
-        print(rv.data)
-        assert type(rv.json['result'][0]) == dict
-        assert rv.json['result'][0]["staffName"] == "YingjieQiao"
-        assert rv.json['result'][0]["date"] == "03-04-2021"
-        assert rv.json['result'][0]["time"] == "23:41:41"
+        assert rv.json['result'] == True
+
+
+    def test_db_upload_pass2(self):
+        rv = self.client.post('/upload_photo_info', data=self.TEST_PHOTO_INFO_UPLOAD_PASS2_JSON,
+                              content_type='application/json')
+        assert rv.status_code == 200
+        assert rv.json['result'] == True
+
+
+    def test_db_upload_fail1(self):
+        rv = self.client.post('/upload_photo_info', data=self.TEST_PHOTO_INFO_UPLOAD_FAIL1_JSON,
+                              content_type='application/json')
+        assert rv.status_code == 500
+        assert rv.json['result'] == False
+
+
+    def test_db_upload_fail2(self):
+        rv = self.client.post('/upload_photo_info', data=self.TEST_PHOTO_INFO_UPLOAD_FAIL2_JSON,
+                              content_type='application/json')
+        assert rv.status_code == 500
+        assert rv.json['result'] == False

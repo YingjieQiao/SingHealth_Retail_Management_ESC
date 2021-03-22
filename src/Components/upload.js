@@ -10,7 +10,6 @@ class Upload extends Component {
         reviewPhotoMsg: "You have not upload any photo",
         numberOfImage: [],
         imageSource: [],
-        caseID: Date.now().toString(),
         tags: "",
         date: "",
         time: "",
@@ -86,7 +85,6 @@ class Upload extends Component {
         if (this.state.staffName.length != 0) {
             // proceeds to upload info
             const photo = {
-                caseID: this.state.caseID,
                 tags: this.state.tags,
                 date: this.state.date,
                 time: this.state.time,
