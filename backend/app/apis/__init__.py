@@ -1,4 +1,5 @@
-from flask import Blueprint, request, url_for
+from flask import Blueprint, request, url_for, session
+from flask_session import Session
 from app.models import User
 import boto3
 from botocore.exceptions import ClientError
@@ -7,7 +8,8 @@ from PIL import Image
 import os
 from datetime import datetime
 import ssl
-from . import s3_methods
+
+from . import settings, s3_methods
 import email, smtplib, ssl
 from email import encoders
 from email.mime.base import MIMEBase
@@ -145,6 +147,7 @@ def login_verified():
         user = User.objects.get(email=email)
         firstName = user.firstName
         lastName = user.lastName
+        settings.username = firstName + lastName
         return {'result': True, 'firstName': firstName, 'lastName': lastName}, 200 #this returns the details of the user 
     except:
         return {'result': False, 'info': "2FA error"}
@@ -182,7 +185,7 @@ def upload_file():
 def download_file():
     body = request.get_json()
     # username = body.get('username')
-    username = 'YingjieQiao'
+    username = settings.username
 
     data = s3_methods.download_user_objects('escapp-bucket-dev', username, None, None)
     

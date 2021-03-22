@@ -19,3 +19,12 @@ class User(db.Document):
         return check_password_hash(self.password, password)
     
 
+
+class Photo(db.Document):
+    tag = db.StringField(required=True, unique=False)
+    date = db.StringField(required=True, unique=False)
+    time = db.StringField(required=True, unique=False)
+    notes = db.StringField(required=True, unique=False)
+    staffName = db.StringField(required=True, unique=False)
+    tenantName = db.StringField(required=True, unique=False)
+    
