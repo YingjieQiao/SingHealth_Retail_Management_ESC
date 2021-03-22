@@ -1,6 +1,6 @@
-from flask import Blueprint, request, session
+from flask import Blueprint, request, session, send_from_directory, current_app
 from flask_session import Session
-from app.models import User
+from app.models import User, Photo
 import boto3
 from botocore.exceptions import ClientError
 import logging
@@ -10,7 +10,8 @@ from itsdangerous import URLSafeTimedSerializer
 from datetime import datetime
 import ssl
 
-from . import settings, s3_methods
+from . import settings, s3_methods, utils
+
 import email, smtplib, ssl
 from email import encoders
 from email.mime.base import MIMEBase
@@ -40,16 +41,7 @@ def user_signup():
     user.save()
     userid = user.id
 
-    response = {
-        'id': str(userid),
-        'firstName': body['firstName'],
-        'lastName': body['lastName'],
-        'email': body['email'],
-        'mobile': body['mobile'],
-        'location': body['location']
-    }
-
-    return response, 200
+    return {'result': True}, 200
 
 
 @apis.route('/login', methods=['GET', 'POST'])
@@ -69,7 +61,8 @@ def user_login():
 
     settings.username = firstName + lastName
 
-    return {'result': True, 'firstName': firstName, 'lastName': lastName}
+    return {'result': True, 'firstName': firstName, 'lastName': lastName,
+             'staff': user.staff, 'tenant': user.tenant, 'admin': user.admin}
 
 
 @apis.route('/upload_file', methods=['GET', 'POST'])
@@ -114,6 +107,53 @@ def download_file():
             os.remove(filename_full)
 
     return {'result': True, 'photoData': data}, 200
+
+
+@apis.route('/admin_query')
+def admin_query():
+    #TODO
+    body = request.get_json()
+    tableName = body['tableName']
+    firstName = body['firstName']
+    lastName = body['lastName']
+
+    users = User.objects(firstName=firstName, lastName=lastName, staffName=settings.username)
+
+    return {'result': True, 'data': users}, 200
+
+
+@apis.route('/display_data', methods=['GET'])
+def display_data():
+    body = request.get_json()
+    tableName = body['tableName']
+    mapping = {
+        'User': 0,
+        'Photo': 1
+    }
+
+    res = utils.get_data()
+    data = res[mapping[tableName]]
+
+    return {'result': True, 'data': data}, 200
+
+
+@apis.route('/download_data_csv', methods=['GET', 'POST'])
+def download_data_csv():
+    body = request.get_json()
+    tableName = body['tableName']
+    mapping = {
+        'User': 0,
+        'Photo': 1
+    }
+
+    res = utils.get_data()
+    data = res[mapping[tableName]]
+
+    dataDict = utils.mongo_object_to_dict(data)
+    fileName = utils.write_to_csv(dataDict, tableName)
+    return {'result': True}, 200
+    #return send_from_directory(current_app.config['ASSET_DIR'], fileName)
+
 
 @apis.route('/email', methods=['GET', 'POST'])
 def email():
