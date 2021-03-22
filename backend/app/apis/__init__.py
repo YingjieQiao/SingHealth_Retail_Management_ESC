@@ -34,7 +34,6 @@ def get_homepage():
 @apis.route('/signup', methods=['GET', 'POST'])
 def user_signup():
     body = request.get_json()
-    body['verify'] = 0
     user = User(**body)
     user.hash_password()
     user.save()
@@ -47,49 +46,52 @@ def user_signup():
         'email': body['email'],
         'mobile': body['mobile'],
         'location': body['location'],
-        'verify' : 0
     }
 
-    try:
-        message = MIMEMultipart()
-        message["From"] = sender_email
-        email = body['email']
-        message["To"] = email
-        message["Subject"] = "Registeration Confirmation for SingHealth Account"
-    except:
-        print("error occured")
-        return {'result': False, 'info': "user does not exist"}
+    # code to verify user
 
-    token = s.dumps(email, salt='register')
+    # try:
+    #     message = MIMEMultipart()
+    #     message["From"] = sender_email
+    #     email = body['email']
+    #     message["To"] = email
+    #     message["Subject"] = "Registeration Confirmation for SingHealth Account"
+    # except:
+    #     print("error occured")
+    #     return {'result': False, 'info': "user does not exist"}
 
-    link = url_for('apis.registeration_confirmation', token=token, _external=True)
-    link = link.replace("5000","3000")
-    print(link)
+    # token = s.dumps(email, salt='register')
 
-    body = "Thank you for registering to SingHealth, Please click on the link given below to confirm your registeration \n\n {}".format(link)
+    # link = url_for('apis.registeration_confirmation', token=token, _external=True)
+    # link = link.replace("5000","3000")
+    # print(link)
 
-    message.attach(MIMEText(body, "plain"))
+    # body = "Thank you for registering to SingHealth, Please click on the link given below to confirm your registeration \n\n {}".format(link)
 
-    text = message.as_string()
+    # message.attach(MIMEText(body, "plain"))
 
-    # Log in to server using secure context and send email
-    context = ssl.create_default_context()
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-        server.login(sender_email, password)
-        server.sendmail(sender_email, email, text)
+    # text = message.as_string()
+
+    # # Log in to server using secure context and send email
+    # context = ssl.create_default_context()
+    # with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+    #     server.login(sender_email, password)
+    #     server.sendmail(sender_email, email, text)
     return {'result': True, 'info': "Registeration Confirmation link was shared"}, 200
 
-@apis.route('/registeration_confirmation/<token>')
-def registeration_confirmation(token):
+# Code to verify the link for user registration, not being used for now
 
-    try:
-        email = s.loads(token, salt='register', max_age=3600) #age needs to be increased to allow longer duration for the link to exist
-        # User.registeration_verify(email)
-        User.objects(email=email).update_one(verify=1)
+# @apis.route('/registeration_confirmation/<token>')
+# def registeration_confirmation(token):
 
-        return {'result': True, 'info': "Registeration Confirmed"}, 200
-    except SignatureExpired:
-        return {'result': False, 'info': "Link has expired"}, 200
+#     try:
+#         email = s.loads(token, salt='register', max_age=3600) #age needs to be increased to allow longer duration for the link to exist
+#         # User.registeration_verify(email)
+#         User.objects(email=email).update_one(verify=1)
+
+#         return {'result': True, 'info': "Registeration Confirmed"}, 200
+#     except SignatureExpired:
+#         return {'result': False, 'info': "Link has expired"}, 200
 
 @apis.route('/login', methods=['GET', 'POST'])
 def user_login():
