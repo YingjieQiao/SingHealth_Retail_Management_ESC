@@ -81,6 +81,9 @@ def upload_file():
     date_ = request.form['date']
 
     username = settings.username
+    if username == "":
+        username = 'YingjieQiao'
+        print("testing s3 download") #TODO change to logging
     filename = username + "_" + date_ + "_" + time_ + ".jpg"
 
     img = Image.open(body.stream)
@@ -96,10 +99,12 @@ def upload_file():
     return {'result': True}, 200
 
 
-@apis.route('/download_file')
+@apis.route('/download_file', methods=['GET', 'POST'])
 def download_file():
-    body = request.get_json()
     username = settings.username
+    if username == "":
+        username = 'YingjieQiao'
+        print("testing s3 download") #TODO change to logging
     timeInput = None
     dateInput = None
 
