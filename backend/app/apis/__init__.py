@@ -165,3 +165,41 @@ def email():
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, text)
     return {'result': True, 'info': "Email was shared"}, 200
+
+@apis.route('/tenant_exists', methods=['GET', 'POST'])
+def tenant_exists():
+    
+    try:
+        body = request.get_json(silent=True)
+        user = User.objects.get(email=body.get('tenantName'))
+        
+        if user != None:
+            return {'result': True, 'user_type': "temp"}
+        else:
+            return {'result': False}
+    except:
+        print("error")
+        return {'result': False}
+
+@apis.route('/tenant_list', methods=['GET', 'POST'])
+def tenant_list():
+    
+    # The statement below can be used to filter entried from the table
+    # tenant_list = User.objects.filter(email = "1234")
+
+    tenant_list = User.objects.all()
+
+    try:
+        
+        temp_ls = []
+        for i in tenant_list:
+            temp_ls.append({'firstName': i['firstName'], 'lastName': i['lastName'], 'email': i["email"]}) # need to hash email when sent to front-end, being used as an id to find graphs later
+        
+        if tenant_list != None:
+            return {'result': True, 'user_type': "temp", 'tenant_list': temp_ls}
+        else:
+            return {'result': False}
+    except:
+        print("error")
+        return {'result': False}
+

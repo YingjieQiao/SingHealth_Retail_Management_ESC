@@ -10,6 +10,7 @@ class User(db.Document):
     password = db.StringField(required=True, unique=False, min_length=8)
     location = db.StringField(required=True, unique=False)
     mobile = db.IntField(required=True, unique=False)
+    meta = {'strict': False}
 
     def hash_password(self):
        self.password = generate_password_hash(self.password).decode('utf8')

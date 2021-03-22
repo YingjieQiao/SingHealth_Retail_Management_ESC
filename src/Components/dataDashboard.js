@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import Navbar from './Navbar';
+import axios from 'axios';
+import { MdSystemUpdate } from 'react-icons/md';
 
 class DataDashboard extends Component {
 
@@ -22,7 +24,28 @@ class DataDashboard extends Component {
         } else {
             alert('tenantName is: ' + this.state.tenantName);
             // TODO: Check if tenant exist
-
+            const det = {
+                tenantName: this.state.tenantName
+            }
+            
+            const headers = {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            };
+            console.log('Show error notification!')
+            axios.post(`http://localhost:5000/tenant_exists`, det, headers)
+            .then(res => {
+                console.log(res.data);
+                if (res.data.result === true) {
+                    alert("Tenant exists!","yolo");
+                } else {
+                    alert("Tenant does not exist");
+                }
+            }).catch(
+                function (error) {
+                  console.log('Error!')
+                  return Promise.reject(error)
+                })
             // Navigate to Tenant's performance score board if successful
             this.props.history.push({
                 pathname: '/dataDashboardTenant',
