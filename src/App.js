@@ -6,10 +6,10 @@ import Login from './Components/Login';
 import Home from './Components/home';
 import Upload from './Components/upload';
 import email from './Components/email';
-import viewPhoto from './Components/viewPhoto'
+import viewPhoto from './Components/viewPhoto';
 import {Route, BrowserRouter as Router,Switch,Link} from "react-router-dom";
 import Navbar from './Components/Navbar';
-
+import Adminhome from './Components/adminhome';
 function App() {
 
   return (
@@ -23,6 +23,7 @@ function App() {
       <Route path="/upload" exact component={Upload}/>
       <Route path="/email" exact component={email}/>
       <Route path="/viewPhoto" exact component={viewPhoto}/>
+      <Route path="/adminhome" exact component={Adminhome}/>
     </Switch>
     
     </div>

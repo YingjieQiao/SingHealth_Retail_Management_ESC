@@ -85,6 +85,11 @@ class Login extends Component {
                         <Link to="/Register">Register</Link>
 
                      </li>
+                     <li>
+                         <label>admin home link   </label>
+                        <Link to="/Adminhome">admin</Link>
+
+                     </li>
                 </form>
 
             </div>
