@@ -150,9 +150,9 @@ def download_data_csv():
     data = res[mapping[tableName]]
 
     dataDict = utils.mongo_object_to_dict(data)
-    fileName = utils.write_to_csv(dataDict, tableName)
-    return {'result': True}, 200
-    #return send_from_directory(current_app.config['ASSET_DIR'], fileName)
+    filePath, fileName = utils.write_to_csv(dataDict, tableName)
+
+    return send_from_directory(filePath, fileName)
 
 
 @apis.route('/email', methods=['GET', 'POST'])

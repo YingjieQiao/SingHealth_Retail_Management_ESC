@@ -51,7 +51,8 @@ def write_to_csv(inputData, dataType):
         else:
             fileHeaders.append(key)
 
-    with open(current_app.config['ASSET_DIR'] + fileName, mode='w') as csvFile:
+    filePath = os.getcwd() + "/assets/"
+    with open(filePath + fileName, mode='w') as csvFile:
         writer = csv.DictWriter(csvFile, fieldnames=fileHeaders)
         writer.writeheader()
         for i in range(0, len(inputData)):
@@ -61,4 +62,4 @@ def write_to_csv(inputData, dataType):
                 row[header] = value
             writer.writerow(row)
 
-    return fileName
+    return filePath, fileName

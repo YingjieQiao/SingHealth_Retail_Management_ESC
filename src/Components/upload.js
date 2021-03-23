@@ -38,20 +38,22 @@ class Upload extends Component {
     onUploadButtonHandler = event => {
         event.preventDefault();
 
-        const data = new FormData();
+        
         const headers = {
             'Content-Type': 'multipart/form-data',
             'Access-Control-Allow-Origin': '*'
         };
 
-        data.append("file", this.state.selectedFile);
-        axios.post("http://localhost:5000/upload_file", data, headers
+        const payload = {
+            tableName: "User"
+        };
+
+        axios.post("http://localhost:5000/upload_file", payload, headers
         ).then( res => {
-            console.log(data);
-            console.log(res.statusText);
+            console.log(res.data);
         })
         
-        alert("Upload success!")
+        alert("done")
     }
     
 }
