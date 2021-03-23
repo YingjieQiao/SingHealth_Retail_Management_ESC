@@ -2,7 +2,9 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Register from './Components/Register';
+//import Registeration_Confirmation from './Components/Registeration_Confirmation';
 import Login from './Components/Login';
+import Login_verified from './Components/login_verified';
 import Home from './Components/home';
 import Upload from './Components/upload';
 import email from './Components/email';
@@ -19,6 +21,7 @@ function App() {
     <Switch>
       <Route path="/" exact component={Login}/>
       <Route path="/Register" exact component={Register}/>
+      <Route path="/Login_verified" exact component={Login_verified}/>
       <Route path="/home" exact component={Home}/>
       <Route path="/upload" exact component={Upload}/>
       <Route path="/email" exact component={email}/>

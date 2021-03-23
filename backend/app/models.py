@@ -20,6 +20,7 @@ class User(db.Document):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+    
 
 
 class Photo(db.Document):
