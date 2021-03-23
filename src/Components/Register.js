@@ -17,6 +17,9 @@ class Register extends Component {
             password: "",
             REpassword: "",
             location: "",
+            staff:false,
+            tenent:false,
+            admin:false,
 
 
         }
@@ -59,6 +62,33 @@ class Register extends Component {
             location: event.target.value
         })
     }
+    userhandler = (event) => {
+        if (event.target.value=="Tenent"){
+            this.setState({
+            tenent: true,
+            staff: false,
+            admin:false 
+        })}
+        else if (event.target.value=="Staff"){
+            this.setState({
+            tenent: false,
+            staff: true,
+            admin:false 
+        })}
+        else if (event.target.value=="Admin"){
+            this.setState({
+            tenent: false,
+            staff: false,
+            admin:true 
+        })}
+        else{
+            this.setState({
+            tenent: false,
+            staff: false,
+            admin:false 
+        })}
+        
+    }
 
     handleSubmit = (event) => {
         event.preventDefault()
@@ -67,7 +97,9 @@ class Register extends Component {
             this.state.email==""|
             this.state.mobile==""|
             this.state.password==""|
-            this.state.location==""){
+            this.state.location==""|
+            this.state.user==""
+            ){
                 alert(` Registered UnSuccessfully !!!!\n some parameters are empty`)
                 this.props.history.push('/Register');
             }
@@ -83,7 +115,8 @@ class Register extends Component {
                     email: this.state.email,
                     mobile: this.state.mobile,
                     password: this.state.password,
-                    location: this.state.location
+                    location: this.state.location,
+                    user:this.state.user
                 };
                 const headers = {
                     'Content-Type': 'application/json',
@@ -105,6 +138,7 @@ class Register extends Component {
                     password: '',
                     REpassword: '',
                     location: "",
+                    staff: "false",
                 })
 
                 alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
@@ -133,6 +167,12 @@ class Register extends Component {
                         <option value="SUTD">SUTD</option>
                         <option value="NUS">NUS</option>
                         <option value="None">None</option>
+                    </select><br />
+                    <label>Type of user :</label><select onChange={this.userhandler} defaultValue="none">
+                        <option defaultValue>Select user</option>
+                        <option value="Tenent">Tenent</option>
+                        <option value="Staff">staff</option>
+                        <option value="Admin">Admin</option>
                     </select><br />
 
                     <input type="submit" value="Submit"  />
