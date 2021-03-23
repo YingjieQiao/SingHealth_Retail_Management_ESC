@@ -78,7 +78,7 @@ class AuditChecklistTest extends Component {
                     <label>Comments:</label>
                     <input onInput={this.saveComment} type="text" />
                 </form>
-                <button type="button" onClick={this.handleSubmit}>Submit</button>
+                <button type="submit" onClick={this.handleSubmit}>Submit</button>
 
             </div>
         )
@@ -132,6 +132,7 @@ class AuditChecklistTest extends Component {
     }
 
     handleSubmit = event  => {
+        event.preventDefault();
         console.log("final: ", this.state.scoreDict);
 
         if (Object.keys(this.state.scoreDict).length != this.state.dataLength || this.state.auditee.length == 0 || this.state.auditor.length == 0 || this.state.auditorDepartment == 0) {
@@ -140,7 +141,7 @@ class AuditChecklistTest extends Component {
             alert("Please fill up all fields");
         } else { 
             // all data has been filled
-
+            
         }
     }
 

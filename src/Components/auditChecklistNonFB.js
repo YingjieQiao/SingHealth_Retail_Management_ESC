@@ -199,7 +199,7 @@ class AuditChecklistNonFB extends Component {
                     <label>Comments:</label>
                     <input type="text" />
                 </form>
-                <button type="button" onClick={this.handleSubmit}>Submit</button>
+                <button type="submit" onClick={this.handleSubmit}>Submit</button>
 
             </div>
         )
@@ -215,6 +215,7 @@ class AuditChecklistNonFB extends Component {
     }
 
     handleSubmit = event  => {
+        event.preventDefault();
         console.log("final: ", this.state.scoreDict);
 
         if (Object.keys(this.state.scoreDict).length != this.state.numQuestion) {
@@ -240,17 +241,12 @@ class AuditChecklistNonFB extends Component {
             let workSafetyHealthScore = 0;
 
             for (let k in this.state.scoreDict) {
-                console.log(k + ' is ' + this.state.scoreDict[k]);
                 if (k <= 6) {
                     profStaffHydScore += parseInt(this.state.scoreDict[k]);
-                    // this.setState({profStaffHydScore: profStaffHydScore});
                 } else if ( k >= 7 &&  k <= 18) {
                     houseGeneralScore += parseInt(this.state.scoreDict[k]);
-                    // this.setState({houseGeneralScore: houseGeneralScore});
                 } else if (k >= 19 ) {
                     workSafetyHealthScore += parseInt(this.state.scoreDict[k]);
-                    // this.setState({workSafetyHealthScore: workSafetyHealthScore});
-                    // console.log("score3: ", this.state.workSafetyHealthScore);
                 }
             }
 
