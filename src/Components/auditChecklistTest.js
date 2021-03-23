@@ -141,7 +141,8 @@ class AuditChecklistTest extends Component {
             alert("Please fill up all fields");
         } else { 
             // all data has been filled
-            
+            // proceeds to send data to backend
+
         }
     }
 

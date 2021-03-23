@@ -222,7 +222,8 @@ class AuditChecklistNonFB extends Component {
             console.log("empty field");
             
         } else { 
-            
+            // all data has been filled
+            // proceeds to send data to backend
         }
     }
 
