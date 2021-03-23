@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import axios from "axios";
 
 class AuditChecklistNonFB extends Component {
 
@@ -224,6 +225,7 @@ class AuditChecklistNonFB extends Component {
         } else { 
             // all data has been filled
             // proceeds to send data to backend
+
         }
     }
 
@@ -263,9 +265,6 @@ class AuditChecklistNonFB extends Component {
                 workSafetyHealthScore: workSafetyHealthScore,
                 totoalScore: total
             });
-            console.log("score1: ", this.state.profStaffHydScore);
-            console.log("score2: ", this.state.houseGeneralScore);
-            console.log("score3: ", this.state.workSafetyHealthScore);
 
         }
     }

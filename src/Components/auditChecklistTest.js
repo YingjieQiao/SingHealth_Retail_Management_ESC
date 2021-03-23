@@ -1,4 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import axios from "axios";
+
 
 class AuditChecklistTest extends Component {
 
@@ -142,7 +144,18 @@ class AuditChecklistTest extends Component {
         } else { 
             // all data has been filled
             // proceeds to send data to backend
-
+            const data = new FormData();
+            const headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Access-Control-Allow-Origin': '*'
+            };
+    
+            data.append("auditChecklist", this.state.scoreDict);
+            axios.post("http://localhost:5000/auditChecklist", data, headers
+            ).then( res => {
+                console.log(data);
+                console.log(res.statusText);
+            })
         }
     }
 
@@ -156,7 +169,6 @@ class AuditChecklistTest extends Component {
             let workSafetyHealthScore = 0;
 
             for (let k in this.state.scoreDict) {
-                console.log(k + ' is ' + this.state.scoreDict[k]);
                 if (k <= 6) {
                     profStaffHydScore += parseInt(this.state.scoreDict[k]);
                 } else if ( k >= 7 &&  k <= 18) {
