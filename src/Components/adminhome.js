@@ -4,21 +4,14 @@ import axios from "axios";
 
 
 class Adminhome extends Component {
-	render() {
-		return (
-			<div>
-                <button onClick={this.testHandler}>
-					test
-				</button>
-
-            </div>
-
-			
-		  );
-		
-	}
-
-	testHandler = event => {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isToggleOn: true
+    };
+    this.testHandler = this.testHandler.bind(this);
+  }
+  testHandler = event => {
 		event.preventDefault();
 	
 		const headers = {
@@ -38,6 +31,20 @@ class Adminhome extends Component {
 		alert("Upload success!")
 	
 	}
+	render() {
+		return (
+			<div>
+                <h1>Admin Home</h1>
+                <button onClick={this.testHandler}>test</button>
+
+            </div>
+
+			
+		  );
+		
+	}
+
+	
 }
 
 
