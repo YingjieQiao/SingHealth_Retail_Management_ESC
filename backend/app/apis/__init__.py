@@ -107,7 +107,7 @@ def upload_file():
 def download_file():
     username = settings.username
     if username == "":
-        username = 'YingjieQiao'
+        username = 'UnitTester'
         print("testing s3 download") #TODO change to logging
     timeInput = None
     dateInput = None
@@ -150,12 +150,12 @@ def upload_photo_info():
 def rectify_photo():
     body = request.get_json()
     body['rectified'] = True
-    time_ = request.form['time']
-    date_ = request.form['date']
+    time_ = body['time']
+    date_ = body['date']
     print(body)
 
     if settings.username == "":
-        settings.username = "YingjieQiao"
+        settings.username = "UnitTester"
         print("testing") #TODO change to logging
 
     try:
@@ -163,7 +163,7 @@ def rectify_photo():
         photoInfo.update(**body)
     except:
         print("error") #TODO: change to logging
-        return None
+        return {'result': False}, 500
 
     return {'result': True}, 200
 

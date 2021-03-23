@@ -4,7 +4,7 @@ from io import BytesIO
 
 import boto3
 from botocore.exceptions import ClientError
-import os
+import os, json
 from PIL import Image
 from app.models import Photo
 from . import settings
@@ -70,22 +70,24 @@ def download_user_objects(bucket, username, timeInput, dateInput):
 
     for key in s3_client.list_objects(Bucket=bucket)['Contents']:
         ls = key['Key'].split('_')
+        date_ = ls[1]
+        time_ = ls[2][:-4]
         if (ls[0] == username):
-            photoPath = download(s3_client, key['Key'], bucket, None)
-            img = Image.open(photoPath)
-            in_mem_file = BytesIO()
-            img.save(in_mem_file, format='JPEG')
-            in_mem_file.seek(0)
-            img_data = in_mem_file.read()
-            encoded_img_bytes = base64.b64encode(img_data)
-            encoded_img_string = encoded_img_bytes.decode('ascii')
-            
-            photoData.append(encoded_img_string)
-
-            date_ = ls[1]
-            time_ = ls[2][:-4]
             photoInfo = get_photo_info(date_, time_)
-            photoAttrData.append(photoInfo)
+
+            if (photoInfo[0]['rectified'] == False):
+                photoAttrData.append(photoInfo)
+
+                photoPath = download(s3_client, key['Key'], bucket, None)
+                img = Image.open(photoPath)
+                in_mem_file = BytesIO()
+                img.save(in_mem_file, format='JPEG')
+                in_mem_file.seek(0)
+                img_data = in_mem_file.read()
+                encoded_img_bytes = base64.b64encode(img_data)
+                encoded_img_string = encoded_img_bytes.decode('ascii')
+                
+                photoData.append(encoded_img_string)
             
     return photoData, photoAttrData
 
@@ -96,7 +98,7 @@ def get_photo_info(date_, time_):
     """
 
     if settings.username == "":
-        settings.username = "YingjieQiao"
+        settings.username = "UnitTester"
         print("testing") #TODO change to logging
 
     try:

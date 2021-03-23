@@ -25,7 +25,7 @@ def datetime_to_str():
     dateTime = now.strftime("%m/%d/%Y %H:%M:%S")
     print("date and time:",dateTime)
     
-    username = "YingjieQiao"
+    username = "UnitTester"
     dateTimeArr = dateTime.split(" ")
     date_ = dateTimeArr[0]
     time_ = dateTimeArr[1]
