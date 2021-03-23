@@ -97,6 +97,7 @@ def get_photo_info(date_, time_):
 
     if settings.username == "":
         settings.username = "YingjieQiao"
+        print("testing") #TODO change to logging
 
     try:
         photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)

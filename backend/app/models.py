@@ -25,3 +25,4 @@ class Photo(db.Document):
     notes = db.StringField(required=True, unique=False)
     staffName = db.StringField(required=True, unique=False)
     tenantName = db.StringField(required=True, unique=False)
+    rectified = db.BooleanField(required=True, unique=False)

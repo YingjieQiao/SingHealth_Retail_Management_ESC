@@ -146,29 +146,26 @@ def upload_photo_info():
     return {'result': True}, 200
 
 
-'''
-@apis.route('/get_photo_info', methods=['GET', 'POST'])
-def get_photo_info():
-    """
-    get the information assciated with a given photo name
-    """
-
+@apis.route('/rectify_photo', methods=['GET', 'POST'])
+def rectify_photo():
     body = request.get_json()
-    filename = body.get('filename')
-    filename_parts = filename.split('_')
-    date_ = filename_parts[1]
-    time_ = filename_parts[2][:-4]
+    body['rectified'] = True
+    time_ = request.form['time']
+    date_ = request.form['date']
+    print(body)
 
     if settings.username == "":
         settings.username = "YingjieQiao"
+        print("testing") #TODO change to logging
 
     try:
-        photos = Photo.objects(date=date_, time=time_, staffName=settings.username)
+        photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)
+        photoInfo.update(**body)
     except:
-        return {'result': None, 'status': False}, 500
+        print("error") #TODO: change to logging
+        return None
 
-    return {'result': photos, 'status': True}, 200
-'''
+    return {'result': True}, 200
 
 
 @apis.route('/email', methods=['GET', 'POST'])

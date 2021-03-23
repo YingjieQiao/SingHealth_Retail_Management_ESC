@@ -16,6 +16,7 @@ class Upload extends Component {
         notes: "",
         staffName: "",
         tenantName: "",
+        rectified: false
     };
 
     render() { 
@@ -90,7 +91,8 @@ class Upload extends Component {
                 time: this.state.time,
                 notes: this.state.notes,
                 staffName: this.state.staffName,
-                tenantName: this.state.tenantName
+                tenantName: this.state.tenantName,
+                rectified: this.state.rectified
             };
             const headers = {
                 'Content-Type': 'application/json',

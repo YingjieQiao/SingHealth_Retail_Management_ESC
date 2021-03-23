@@ -9,7 +9,8 @@ class TestUser(TestBase):
         "time": "00:00:00",
         "notes": "UNIT TEST ENTRY",
         "staffName": "UnitTester",
-        "tenantName": "KFC"
+        "tenantName": "KFC",
+        "rectified": False
     }
 
     TEST_PHOTO_INFO_UPLOAD_PASS2 = {
@@ -18,7 +19,8 @@ class TestUser(TestBase):
         "time": "00:02:00",
         "notes": "UNIT TEST ENTRY",
         "staffName": "UnitTester",
-        "tenantName": "711"
+        "tenantName": "711",
+        "rectified": False
     }
 
     TEST_PHOTO_INFO_UPLOAD_FAIL1 = {
@@ -32,6 +34,7 @@ class TestUser(TestBase):
         "notes": "UNIT TEST ENTRY",
         "staffName": "UnitTester",
         "tenantName": "711",
+        "rectified": False,
         "a column that does not exist": False,
         "breakit": ""
     }
