@@ -6,9 +6,9 @@ class AuditChecklistTest extends Component {
 
     state = { 
         dataLength: 7,
-        auditor: "",
+        auditorName: "",
         auditorDepartment: "",
-        auditee: "",
+        auditeeName: "",
         profStaffHydScore: 0,
         houseGeneralScore: 0,
         workSafetyHealthScore: 0,
@@ -54,21 +54,21 @@ class AuditChecklistTest extends Component {
                     <h4>Professionalism</h4>
                     <div class="form-group">
                         <label>Shop is open and ready to service patients/visitors according to operating hours.</label>
-                        <input type="number" pattern='^([0-9]|([1-9][0-9])|100)$' id="001" onInput={this.handler1}/>
+                        <input type="number" pattern='^([0-9]|([1-9][0-9])|10)$' id="profScore" onInput={this.handler1}/>
                     </div>
 
                     <h3>2. Housekeeping &#38; General Cleanliness (40%)</h3>
                     <h4>General Environment Cleanliness</h4>
                     <div class="form-group">
                         <label>Adequate and regular pest control. Pest control record.</label>
-                        <input type="number" pattern='^([0-9]|([1-9][0-9])|100)$' id="007" onInput={this.handler1}/>
+                        <input type="number" pattern='^([0-9]|([1-9][0-9])|100)$' id="housekeepingScore" onInput={this.handler1}/>
                     </div>
 
                     <h3>Workplace Safety &#38; Health (40%)</h3>
                     <h4>General Safety</h4>
                     <div class="form-group">
                         <label>MSDS for all industrial chemicals are available and up to date.</label>
-                        <input type="number" pattern='^([0-9]|([1-9][0-9])|100)$' id="019" onInput={this.handler1}/>
+                        <input type="number" pattern='^([0-9]|([1-9][0-9])|100)$' id="workSafetyScore" onInput={this.handler1}/>
                     </div>
                     <button type="button" onClick={this.tabulateScore}>Tabulate scores</button>
 
@@ -89,10 +89,10 @@ class AuditChecklistTest extends Component {
     handleAuditor = event => {
         var newScoreDict = this.state.scoreDict;
         if (event.target.value !== -1) {
-            newScoreDict["auditor"] = event.target.value;
-            this.setState({auditor: event.target.value, scoreDict: newScoreDict});
+            newScoreDict["auditorName"] = event.target.value;
+            this.setState({auditorName: event.target.value, scoreDict: newScoreDict});
         } else {
-            newScoreDict["auditor"] = "";
+            newScoreDict["auditorName"] = "";
             this.setState({scoreDict: newScoreDict});
         }
     }
@@ -100,10 +100,10 @@ class AuditChecklistTest extends Component {
     handleAuditee = event => {
         var newScoreDict = this.state.scoreDict;
         if (event.target.value !== -1) {
-            newScoreDict["auditee"] = event.target.value;
-            this.setState({auditee: event.target.value, scoreDict: newScoreDict});
+            newScoreDict["auditeeName"] = event.target.value;
+            this.setState({auditeeName: event.target.value, scoreDict: newScoreDict});
         } else {
-            newScoreDict["auditee"] = "";
+            newScoreDict["auditeeName"] = "";
             this.setState({scoreDict: newScoreDict});
         }
     }
@@ -137,10 +137,10 @@ class AuditChecklistTest extends Component {
         event.preventDefault();
         console.log("final: ", this.state.scoreDict);
 
-        if (Object.keys(this.state.scoreDict).length < this.state.dataLength || this.state.auditee.length === 0 || this.state.auditor.length === 0 || this.state.auditorDepartment.length === 0) {
+        if (Object.keys(this.state.scoreDict).length < this.state.dataLength || this.state.auditeeName.length === 0 || this.state.auditorName.length === 0 || this.state.auditorDepartment.length === 0) {
             console.log("empty field");
-            console.log(Object.keys(this.state.scoreDict).length, this.state.auditee.length, this.state.auditor, this.state.auditorDepartment);
             alert("Please fill up all fields");
+            console.log(Object.keys(this.state.scoreDict).length < this.state.dataLength, this.state.auditeeName.length === 0,  this.state.auditorName.length === 0,  this.state.auditorDepartment.length === 0);
         } else { 
             // all data has been filled
             // proceeds to send data to backend

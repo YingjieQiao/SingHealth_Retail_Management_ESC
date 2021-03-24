@@ -208,7 +208,7 @@ def tenant_list():
 
 @apis.route('/auditChecklist', methods=['GET', 'POST'])
 def audit_checklist():
-    ts = datetime.datetime.now().timestamp()
+    ts = datetime.now().timestamp()
     print(ts)
     body = request.get_json()
     audit = Audit_non_FB(**body)

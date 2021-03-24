@@ -59,16 +59,17 @@ class Audit_FB(db.Document):
 
 class Audit_non_FB(db.Document):
     timestamp = db.FloatField(required=True, unique=False)
-    staffName = db.StringField(required=True, unique=False)
-    staffDepartment = db.StringField(required=True, unique=False)
+    auditorName = db.StringField(required=True, unique=False)
+    auditorDepartment = db.StringField(required=True, unique=False)
+    auditeeName = db.StringField(required=True, unique=False)
     totalScore = db.FloatField(required=True, unique=False)
     profScore = db.FloatField(required=True, unique=False)
-    profListScore = db.ListField(required=True, unique=False)
+    profListScore = db.ListField(required=False, unique=False)
     housekeepingScore = db.FloatField(required=True, unique=False)
-    houskeepingListScore = db.ListField(required=True, unique=False)
+    houskeepingListScore = db.ListField(required=False, unique=False)
     workSafetyScore = db.FloatField(required=True, unique=False)
-    workSafetyListScore = db.ListField(required=True, unique=False)
-    comments = db.StringField(required=False, unique=False)
+    workSafetyListScore = db.ListField(required=False, unique=False)
+    comment = db.StringField(required=False, unique=False)
 
     def computeTotalScore(self):
         self.profScore = sum(self.profListScore)
