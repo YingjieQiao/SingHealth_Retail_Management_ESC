@@ -3,7 +3,7 @@ import './CSS/todo.css'
 import Register from './Register'
 import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-router-dom";
 import axios from 'axios';
-
+import login_verified from './login_verified'
 
 class Login extends Component {
     constructor(props) {
@@ -48,19 +48,25 @@ class Login extends Component {
             console.log(res.data);
             if (res.data.result === true) {
                 alert("Login success!","yolo")
-                this.props.history.push('/home');
+
+                this.props.history.push(
+                '/Login_verified'
+                // search:   res.data.token ,
+                // state: { detail: res.data.token }
+                );
+
             } else {
                 alert("Login unsuccessful:( \n"+res.data.info);
             }
         })
-        .catch(function (error,res) {
-            console.log(error.response.status) // 401
-            console.log(error.response.data.error) //Please Authenticate or whatever returned from server
-          if(error.response.status==401){
-            alert("Login unsuccess!")
-            alert(res.data.info);
-          }
-        })
+        // .catch(function (error,res) {
+        //     console.log(error.response.status) // 401
+        //     console.log(error.response.data.error) //Please Authenticate or whatever returned from server
+        //   if(error.response.status==401){
+        //     alert("Login unsuccess!")
+        //     alert(res.data.info);
+        //   }
+        // })
         
         
         

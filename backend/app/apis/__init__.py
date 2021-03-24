@@ -1,8 +1,10 @@
-from flask import Blueprint, request, session, jsonify
+from flask import Blueprint, request, session, jsonify, url_for
 from app.models import User, Photo
+import boto3
+from botocore.exceptions import ClientError
+import logging
 from PIL import Image
 import os
-from itsdangerous import URLSafeTimedSerializer
 from datetime import datetime
 
 from . import settings, s3_methods
@@ -11,7 +13,9 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 
+s = URLSafeTimedSerializer('Thisisasecret!')
 
 sender_email = "starboypp69@gmail.com"
 password = "MDR-XB450AP"
@@ -47,31 +51,114 @@ def user_signup():
         'lastName': body['lastName'],
         'email': body['email'],
         'mobile': body['mobile'],
-        'location': body['location']
+        'location': body['location'],
     }
 
-    return response, 200
+    # code to verify user
 
+    # try:
+    #     message = MIMEMultipart()
+    #     message["From"] = sender_email
+    #     email = body['email']
+    #     message["To"] = email
+    #     message["Subject"] = "Registeration Confirmation for SingHealth Account"
+    # except:
+    #     print("error occured")
+    #     return {'result': False, 'info': "user does not exist"}
+
+    # token = s.dumps(email, salt='register')
+
+    # link = url_for('apis.registeration_confirmation', token=token, _external=True)
+    # link = link.replace("5000","3000")
+    # print(link)
+
+    # body = "Thank you for registering to SingHealth, Please click on the link given below to confirm your registeration \n\n {}".format(link)
+
+    # message.attach(MIMEText(body, "plain"))
+
+    # text = message.as_string()
+
+    # # Log in to server using secure context and send email
+    # context = ssl.create_default_context()
+    # with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+    #     server.login(sender_email, password)
+    #     server.sendmail(sender_email, email, text)
+    return {'result': True, 'info': "Registeration Confirmation link was shared"}, 200
+
+# Code to verify the link for user registration, not being used for now
+
+# @apis.route('/registeration_confirmation/<token>')
+# def registeration_confirmation(token):
+
+#     try:
+#         email = s.loads(token, salt='register', max_age=3600) #age needs to be increased to allow longer duration for the link to exist
+#         # User.registeration_verify(email)
+#         User.objects(email=email).update_one(verify=1)
+
+#         return {'result': True, 'info': "Registeration Confirmed"}, 200
+#     except SignatureExpired:
+#         return {'result': False, 'info': "Link has expired"}, 200
 
 @apis.route('/login', methods=['GET', 'POST'])
 def user_login():
     body = request.get_json()
     try:
         user = User.objects.get(email=body.get('email'))
-        firstName = user.firstName
-        lastName = user.lastName
-
         authorized = user.check_password(body.get('password'))
         if not authorized:
             return {'result': False, 'info': "password error"}
     except:
         return {'result': False, 'info': "user does not exist"}
+
+    try:
+        message = MIMEMultipart()
+        message["From"] = sender_email
+        email = body.get('email')
+        message["To"] = email
+        message["Subject"] = "Link to login to SingHealth"
+    except:
+        print("error occured")
+        return {'result': False, 'info': "user does not exist"}
+
+    token = s.dumps(body.get('email'), salt='login')
+
+    link = url_for('apis.login_verified', token=token, _external=True)
+    link = link.replace("5000","3000")
+    print(link)
+
+    body = "Please click on the link given below for 2FA  \n\n {}".format(token)
+
+    message.attach(MIMEText(body, "plain"))
+
+    text = message.as_string()
+
+    # Log in to server using secure context and send email
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+        server.login(sender_email, password)
+        server.sendmail(sender_email, email, text)
     #TODO add info to global log file
 
     settings.username = firstName + lastName
     print(settings.username)
+    return {'result': True, 'info': "2FA sent", "token":token}, 200
 
-    return {'result': True, 'firstName': firstName, 'lastName': lastName}
+
+@apis.route('/login_verified', methods=['GET', 'POST'])
+def login_verified():
+
+    body = request.get_json()
+    try:
+        email = s.loads(body.get("token"), salt='login', max_age=120) #age needs to be increased to allow longer duration for the link to exist
+        user = User.objects.get(email=email)
+        firstName = user.firstName
+        lastName = user.lastName
+        settings.username = firstName + lastName
+        return {'result': True, 'firstName': firstName, 'lastName': lastName}, 200 #this returns the details of the user 
+    except:
+        return {'result': False, 'info': "2FA error"}
+    # except SignatureExpired:
+    #     return {'result': False, 'info': "Link has expired"}, 200
 
 
 @apis.route('/upload_file', methods=['GET', 'POST'])
@@ -185,9 +272,7 @@ def email():
         message.attach(MIMEText(body, "plain"))
     except:
         print("error occured")
-        return {'result': False, 'info': "user does not exist"}, 401
-
-    message.attach(MIMEText(body, "plain"))
+        return {'result': False, 'info': "user does not exist"}
 
     # attaching a picture
 
