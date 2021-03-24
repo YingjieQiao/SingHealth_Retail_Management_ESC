@@ -58,7 +58,7 @@ class Audit_FB(db.Document):
 
 
 class Audit_non_FB(db.Document):
-    date = db.StringField(required=True, unique=False)
+    timestamp = db.FloatField(required=True, unique=False)
     staffName = db.StringField(required=True, unique=False)
     staffDepartment = db.StringField(required=True, unique=False)
     totalScore = db.FloatField(required=True, unique=False)

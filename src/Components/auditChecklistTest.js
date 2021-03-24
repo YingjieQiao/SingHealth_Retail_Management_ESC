@@ -137,26 +137,26 @@ class AuditChecklistTest extends Component {
         event.preventDefault();
         console.log("final: ", this.state.scoreDict);
 
-        if (Object.keys(this.state.scoreDict).length !== this.state.dataLength || this.state.auditee.length === 0 || this.state.auditor.length === 0 || this.state.auditorDepartment === 0) {
+        if (Object.keys(this.state.scoreDict).length < this.state.dataLength || this.state.auditee.length === 0 || this.state.auditor.length === 0 || this.state.auditorDepartment.length === 0) {
             console.log("empty field");
-            console.log("does it work");
-            console.log(Object.keys(this.state.scoreDict).length, this.state.auditee, this.state.auditor, this.state.auditorDepartment);
+            console.log(Object.keys(this.state.scoreDict).length, this.state.auditee.length, this.state.auditor, this.state.auditorDepartment);
             alert("Please fill up all fields");
-            
-            console.log(,this.state.auditee.length === 0, this.state.auditor.length === 0, this.state.auditorDepartment === 0);
         } else { 
             // all data has been filled
             // proceeds to send data to backend
             const data = new FormData();
+            console.log(data);
             const headers = {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Access-Control-Allow-Origin': '*'
             };
-    
+            console.log(this.state.scoreDict);
             data.append("auditChecklist", this.state.scoreDict);
-            axios.post("http://localhost:5000/auditChecklist", data, headers
+            console.log(data);
+            
+            axios.post("http://localhost:5000/auditChecklist", this.state.scoreDict, headers
             ).then( res => {
-                console.log(data);
+                // console.log(data);
                 console.log(res.statusText);
             })
         }

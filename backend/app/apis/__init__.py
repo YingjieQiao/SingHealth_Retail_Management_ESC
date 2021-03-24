@@ -1,6 +1,6 @@
 from flask import Blueprint, request, session
 from flask_session import Session
-from app.models import User
+from app.models import User, Audit_non_FB
 import boto3
 from botocore.exceptions import ClientError
 import logging
@@ -208,7 +208,12 @@ def tenant_list():
 
 @apis.route('/auditChecklist', methods=['GET', 'POST'])
 def audit_checklist():
-    body = request.get_json(silent=True)
-    print(body)
+    ts = datetime.datetime.now().timestamp()
+    print(ts)
+    body = request.get_json()
+    audit = Audit_non_FB(**body)
+    audit.timestamp = ts
+    audit.computeTotalScore()
+    audit.save()
     return {'statusText': True}
 
