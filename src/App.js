@@ -12,6 +12,7 @@ import viewPhoto from './Components/viewPhoto';
 import {Route, BrowserRouter as Router,Switch,Link} from "react-router-dom";
 import Navbar from './Components/Navbar';
 import Adminhome from './Components/adminhome';
+import Table from './Components/Table';
 function App() {
 
   return (
@@ -27,6 +28,7 @@ function App() {
       <Route path="/email" exact component={email}/>
       <Route path="/viewPhoto" exact component={viewPhoto}/>
       <Route path="/adminhome" exact component={Adminhome}/>
+      <Route path="/table" exact component={Table}/>
     </Switch>
     
     </div>

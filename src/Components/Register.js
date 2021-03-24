@@ -92,8 +92,8 @@ class Register extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault()
-        if( this.state.firstName==""|
-            this.state.lastName==""|
+        if( this.state.firstName===""|
+            this.state.lastName===""|
             this.state.email==""|
             this.state.mobile==""|
             this.state.password==""|

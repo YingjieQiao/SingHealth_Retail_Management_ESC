@@ -219,7 +219,7 @@ def admin_query():
     return {'result': True, 'data': users}, 200
 
 
-@apis.route('/display_data', methods=['GET'])
+@apis.route('/display_data', methods=['GET', 'POST'])
 def display_data():
     body = request.get_json()
     tableName = body['tableName']
