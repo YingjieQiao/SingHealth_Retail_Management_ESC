@@ -49,6 +49,8 @@ class viewPhoto extends Component {
                     return this.state.photoAttrData[index]["tags"];
                 case "date":
                     return this.state.photoAttrData[index]["date"];
+                case "time":
+                    return this.state.photoAttrData[index]["time"];
                 case "notes":
                     return this.state.photoAttrData[index]["notes"];
                 case "staffName":
