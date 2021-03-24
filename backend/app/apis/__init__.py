@@ -1,13 +1,11 @@
-from flask import Blueprint, request, url_for, session
-from flask_session import Session
-from app.models import User
+from flask import Blueprint, request, session, jsonify, url_for
+from app.models import User, Photo
 import boto3
 from botocore.exceptions import ClientError
 import logging
 from PIL import Image
 import os
 from datetime import datetime
-import ssl
 
 from . import settings, s3_methods
 import email, smtplib, ssl
@@ -19,7 +17,6 @@ from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 
 s = URLSafeTimedSerializer('Thisisasecret!')
 
-
 sender_email = "starboypp69@gmail.com"
 password = "MDR-XB450AP"
 
@@ -27,10 +24,17 @@ s = URLSafeTimedSerializer('Thisisasecret!')
 
 apis = Blueprint('apis', __name__)
 
-@apis.route('/')
-def get_homepage():
-    # for testing
-    return '<h1>hello there</h1>'
+
+@apis.route('/get_current_username_and_datetime', methods=['GET', 'POST'])
+def get_current_username_and_datetime():
+    now = datetime.now() # current date and time
+    dateTime = now.strftime("%m/%d/%Y %H:%M:%S")
+    dateTimeArr = dateTime.split(" ")
+    date_ = dateTimeArr[0]
+    date_ = date_.replace("/", "-")
+    time_ = dateTimeArr[1]
+
+    return {"username": settings.username, "time": time_, "date": date_}, 200
 
 
 @apis.route('/signup', methods=['GET', 'POST'])
@@ -100,6 +104,8 @@ def user_login():
     body = request.get_json()
     try:
         user = User.objects.get(email=body.get('email'))
+        firstName = user.firstName
+        lastName = user.lastName
         authorized = user.check_password(body.get('password'))
         if not authorized:
             return {'result': False, 'info': "password error"}
@@ -135,6 +141,8 @@ def user_login():
         server.sendmail(sender_email, email, text)
     #TODO add info to global log file
 
+    settings.username = firstName + lastName
+    print(settings.username)
     return {'result': True, 'info': "2FA sent", "token":token}, 200
 
 
@@ -158,22 +166,25 @@ def login_verified():
 @apis.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
     body = request.files['file']
+    time_ = request.form['time']
+    date_ = request.form['date']
+
+    username = settings.username
+    if username == "":
+        username = 'YingjieQiao'
+        print("testing s3 download") #TODO change to logging
+    filename = username + "_" + date_ + "_" + time_ + ".jpg"
 
     img = Image.open(body.stream)
     rgb_img = img.convert('RGB')
-    
-    username = "YingjieQiao"
-    now = datetime.now() # current date and time
-    dateTime = now.strftime("%m/%d/%Y %H:%M:%S")
-    dateTimeArr = dateTime.split(" ")
-    date_ = dateTimeArr[0]
-    time_ = dateTimeArr[1]
-    date_ = date_.replace("/", "-")
-    filename = username + "_" + date_ + "_" + time_ + ".jpg"
 
     rgb_img.save(filename)
 
-    s3_methods.upload_file(filename, 'escapp-bucket-dev', None)
+    try:
+        s3_methods.upload_file(filename, 'escapp-bucket-dev', None)
+    except Exception as e:
+        print("Error occurred: ", e) #TODO change to logging
+        return {'result': False}, 500
 
     os.remove(os.getcwd() + "/" + filename)
     #TODO in-memory storage like redis?
@@ -181,14 +192,23 @@ def upload_file():
     return {'result': True}, 200
 
 
-@apis.route('/download_file')
+@apis.route('/download_file', methods=['GET', 'POST'])
 def download_file():
-    body = request.get_json()
-    # username = body.get('username')
     username = settings.username
+    if username == "":
+        username = 'UnitTester'
+        print("testing s3 download") #TODO change to logging
+    timeInput = None
+    dateInput = None
 
-    data = s3_methods.download_user_objects('escapp-bucket-dev', username, None, None)
-    
+    try:
+        res = s3_methods.download_user_objects('escapp-bucket-dev', username, timeInput, dateInput)
+    except Exception as e:
+        print("Error occurred: ", e) #TODO change to logging
+        return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
+    photoData = res[0]
+    photoAttrData = res[1]
+
     mypath = os.getcwd()
     for filename in os.listdir(mypath):
         filename_full = os.path.join(mypath, filename)
@@ -196,7 +216,46 @@ def download_file():
             and not filename.endswith(".py") and filename != '.DS_Store'):
             os.remove(filename_full)
 
-    return {'result': True, 'photoData': data}, 200
+    return {'result': True, 'photoData': photoData, 'photoAttrData': photoAttrData}, 200
+
+
+@apis.route('/upload_photo_info', methods=['GET', 'POST'])
+def upload_photo_info():
+    body = request.get_json()
+
+    print(body)
+
+    try:
+        photo = Photo(**body)
+        photo.save()
+    except Exception as e:
+        print("Error occurred: ", e) #TODO change to logging
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+@apis.route('/rectify_photo', methods=['GET', 'POST'])
+def rectify_photo():
+    body = request.get_json()
+    body['rectified'] = True
+    time_ = body['time']
+    date_ = body['date']
+    print(body)
+
+    if settings.username == "":
+        settings.username = "UnitTester"
+        print("testing") #TODO change to logging
+
+    try:
+        photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)
+        photoInfo.update(**body)
+    except:
+        print("error") #TODO: change to logging
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
 
 @apis.route('/email', methods=['GET', 'POST'])
 def email():

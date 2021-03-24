@@ -21,10 +21,10 @@ class User(db.Document):
 
 
 class Photo(db.Document):
-    tag = db.StringField(required=True, unique=False)
+    tags = db.StringField(required=True, unique=False)
     date = db.StringField(required=True, unique=False)
     time = db.StringField(required=True, unique=False)
     notes = db.StringField(required=True, unique=False)
     staffName = db.StringField(required=True, unique=False)
     tenantName = db.StringField(required=True, unique=False)
-    
+    rectified = db.BooleanField(required=True, unique=False)
