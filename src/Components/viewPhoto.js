@@ -40,6 +40,8 @@ class viewPhoto extends Component {
     }
 
     handleInfo = (index, data) => {
+        
+
         if (this.state.photoAttrData.length === 0){
             return "-";
         } else {
@@ -108,6 +110,28 @@ class viewPhoto extends Component {
         event.preventDefault();
 
         const index = event.target.id;
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        };
+        
+        const currPhoto = {
+            tags: this.state.photoAttrData[index]["tags"],
+            date: this.state.photoAttrData[index]["date"],
+            time: this.state.photoAttrData[index]["time"],
+            notes: this.state.photoAttrData[index]["notes"],
+            staffName: this.state.photoAttrData[index]["staffName"],
+            tenantName: this.state.photoAttrData[index]["tenantName"],
+            rectified: this.state.photoAttrData[index]["rectified"]
+        };
+
+        axios.post(`http://localhost:5000/rectify_photo`, currPhoto, headers)
+            .then(res => {
+                console.log(currPhoto);
+                console.log(res);
+        })
+
 
         let newPhotoAttr = this.state.photoAttrData;
         newPhotoAttr[index]["rectified"] = true;
