@@ -104,6 +104,8 @@ def user_login():
     body = request.get_json()
     try:
         user = User.objects.get(email=body.get('email'))
+        firstName = user.firstName
+        lastName = user.lastName
         authorized = user.check_password(body.get('password'))
         if not authorized:
             return {'result': False, 'info': "password error"}
