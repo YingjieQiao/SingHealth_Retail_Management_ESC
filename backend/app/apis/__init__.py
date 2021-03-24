@@ -37,6 +37,7 @@ def user_signup():
     body = request.get_json()
     user = User(**body)
     user.hash_password()
+    user.setfnb(True)
     user.save()
     userid = user.id
 
@@ -171,12 +172,14 @@ def tenant_exists():
     
     try:
         body = request.get_json(silent=True)
-        user = User.objects.get(email=body.get('tenantName'))
-        
-        if user != None:
-            return {'result': True, 'user_type': "temp"}
-        else:
+        user = User.objects.get(email=body.get('tenantName'))      
+        if user == None:
             return {'result': False}
+        
+        covid_list = Covid_Compliance.objects.filter(email = "1234")
+        
+
+        
     except:
         print("error")
         return {'result': False}
@@ -202,4 +205,10 @@ def tenant_list():
     except:
         print("error")
         return {'result': False}
+
+@apis.route('/auditChecklist', methods=['GET', 'POST'])
+def audit_checklist():
+    body = request.get_json(silent=True)
+    print(body)
+    return {'statusText': True}
 

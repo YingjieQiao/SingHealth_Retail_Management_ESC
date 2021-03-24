@@ -5,7 +5,7 @@ import axios from "axios";
 class AuditChecklistTest extends Component {
 
     state = { 
-        dataLength: 6,
+        dataLength: 7,
         auditor: "",
         auditorDepartment: "",
         auditee: "",
@@ -88,7 +88,7 @@ class AuditChecklistTest extends Component {
 
     handleAuditor = event => {
         var newScoreDict = this.state.scoreDict;
-        if (event.target.value != -1) {
+        if (event.target.value !== -1) {
             newScoreDict["auditor"] = event.target.value;
             this.setState({auditor: event.target.value, scoreDict: newScoreDict});
         } else {
@@ -99,7 +99,7 @@ class AuditChecklistTest extends Component {
 
     handleAuditee = event => {
         var newScoreDict = this.state.scoreDict;
-        if (event.target.value != -1) {
+        if (event.target.value !== -1) {
             newScoreDict["auditee"] = event.target.value;
             this.setState({auditee: event.target.value, scoreDict: newScoreDict});
         } else {
@@ -110,7 +110,7 @@ class AuditChecklistTest extends Component {
 
     handleDepartment = event => {
         var newScoreDict = this.state.scoreDict;
-        if (event.target.value != -1) {
+        if (event.target.value !== -1) {
             newScoreDict["auditorDepartment"] = event.target.value;
             this.setState({auditorDepartment: event.target.value, scoreDict: newScoreDict});
         } else {
@@ -137,10 +137,13 @@ class AuditChecklistTest extends Component {
         event.preventDefault();
         console.log("final: ", this.state.scoreDict);
 
-        if (Object.keys(this.state.scoreDict).length != this.state.dataLength || this.state.auditee.length == 0 || this.state.auditor.length == 0 || this.state.auditorDepartment == 0) {
+        if (Object.keys(this.state.scoreDict).length !== this.state.dataLength || this.state.auditee.length === 0 || this.state.auditor.length === 0 || this.state.auditorDepartment === 0) {
             console.log("empty field");
+            console.log("does it work");
             console.log(Object.keys(this.state.scoreDict).length, this.state.auditee, this.state.auditor, this.state.auditorDepartment);
             alert("Please fill up all fields");
+            
+            console.log(,this.state.auditee.length === 0, this.state.auditor.length === 0, this.state.auditorDepartment === 0);
         } else { 
             // all data has been filled
             // proceeds to send data to backend
@@ -160,7 +163,7 @@ class AuditChecklistTest extends Component {
     }
 
     tabulateScore = event => {
-        if (Object.keys(this.state.scoreDict).length != this.state.dataLength) {
+        if (Object.keys(this.state.scoreDict).length !== this.state.dataLength) {
             console.log("empty field");
         } else {
             // all data has been filled
