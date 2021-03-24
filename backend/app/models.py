@@ -58,7 +58,7 @@ class Audit_FB(db.Document):
 
 
 class Audit_non_FB(db.Document):
-    timestamp = db.FloatField(required=True, unique=False)
+    timestamp = db.StringField(required=True, unique=False)
     auditorName = db.StringField(required=True, unique=False)
     auditorDepartment = db.StringField(required=True, unique=False)
     auditeeName = db.StringField(required=True, unique=False)
