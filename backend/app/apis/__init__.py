@@ -16,6 +16,11 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+ 
+# new library added, please take note
+# import seaborn as sns
+import pandas as pd
+import numpy as np
 
 
 
@@ -170,19 +175,36 @@ def email():
 @apis.route('/tenant_exists', methods=['GET', 'POST'])
 def tenant_exists():
     
-    try:
-        body = request.get_json(silent=True)
-        user = User.objects.get(email=body.get('tenantName'))      
-        if user == None:
-            return {'result': False}
+    body = request.get_json(silent=True)
+    # try:
+    #     user = User.objects.get(email=body.get('tenantName'))      
+    #     if user == None:
+    #         return {'result': False}
+    # except:
+    #     return {'result': False}
         
-        covid_list = Covid_Compliance.objects.filter(email = "1234")
-        
+    audit_ls = Audit_non_FB.objects(auditeeName = body.get('tenantName'))
 
-        
-    except:
-        print("error")
-        return {'result': False}
+    temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.totalScore] for i in audit_ls]
+    df = pd.DataFrame(temp_ls)
+    df.columns = ['timestamp','profScore', 'housekeepingScore', 'workSafetyScore','totalScore']
+    df['timestamp'] = pd.to_datetime(df['timestamp'])
+    df.index = df['timestamp'] 
+    # delete timestamp
+    print(df)
+    df_year = df.resample('Y').mean()
+    df_month = df.resample('M').mean()
+    df_week = df.resample('W').mean()
+    df_day = df.resample('D').mean()
+    print(df_day)
+
+    lines = df.plot.line() # works
+
+    # plt.savefig('books_read.png')
+
+    # sns.lineplot(data=data, palette="tab10", linewidth=2.5)
+
+    return {'result': True}
 
 @apis.route('/tenant_list', methods=['GET', 'POST'])
 def tenant_list():
@@ -208,11 +230,11 @@ def tenant_list():
 
 @apis.route('/auditChecklist', methods=['GET', 'POST'])
 def audit_checklist():
-    ts = datetime.now().timestamp()
+    ts = datetime.now().today()
     print(ts)
     body = request.get_json()
     audit = Audit_non_FB(**body)
-    audit.timestamp = ts
+    audit.timestamp = str(ts)
     audit.computeTotalScore()
     audit.save()
     return {'statusText': True}
