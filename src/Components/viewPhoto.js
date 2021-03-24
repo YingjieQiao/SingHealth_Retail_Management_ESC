@@ -10,7 +10,6 @@ class viewPhoto extends Component {
         imageSource: [],
         photoAttrData: []
     };
-
     
     render() { 
         return (
@@ -110,27 +109,24 @@ class viewPhoto extends Component {
 
         const index = event.target.id;
 
-        var newPhotoAttr = this.state.photoAttrData;
+        let newPhotoAttr = this.state.photoAttrData;
         newPhotoAttr[index]["rectified"] = true;
         this.setState({photoAttrData: newPhotoAttr});
 
         let newNumArray = this.state.numberOfImage;
-        newNumArray.splice(index, 1);
-        let orArray = this.state.imageSource
-        orArray.splice(index, 1);
+        newNumArray.pop();
+
+        let newImgArray = this.state.imageSource
+        newImgArray.splice(index, 1);
+
         let newPhotoAttrData = this.state.photoAttrData;
         newPhotoAttrData.splice(index, 1);
-        this.setState({
-            imageSource: orArray,
-            numberOfImage: newNumArray,
-            photoAttrData: newPhotoAttrData
-        });
 
-        console.log("newArray: ", this.state.photoAttrData);
+        this.setState(imageSource => {return newImgArray});
+        this.setState(photoAttrData => {return newPhotoAttrData});
+        this.setState(numberOfImage => {return newImgArray});
         
     }
-
-
 
 }
 
