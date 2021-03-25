@@ -41,10 +41,14 @@ def get_current_username_and_datetime():
 @apis.route('/signup', methods=['GET', 'POST'])
 def user_signup():
     body = request.get_json()
-    user = User(**body)
-    user.hash_password()
-    user.save()
-    userid = user.id
+    try:
+        user = User(**body)
+        user.hash_password()
+        user.save()
+        userid = user.id
+    except Exception as e:
+        print("error: ", e)
+        return {'result': False, 'info': "Registeration Failed"}, 500
 
     response = {
         'id': str(userid),
@@ -84,7 +88,7 @@ def user_signup():
     # with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
     #     server.login(sender_email, password)
     #     server.sendmail(sender_email, email, text)
-    return {'result': True, 'info': "Registeration Confirmation link was shared"}, 200
+    return {'result': True, 'info': "Registeration Success"}, 200
 
 # Code to verify the link for user registration, not being used for now
 

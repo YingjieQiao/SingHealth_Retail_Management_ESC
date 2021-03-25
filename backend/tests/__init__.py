@@ -1,9 +1,9 @@
 from app.config import Config
 from app import create_app
-from app.models import Photo
+from app.models import Photo, User
 import boto3
 from botocore.exceptions import ClientError
-import os
+import os, json
 
 
 class TestConfig(Config):
@@ -31,3 +31,11 @@ class TestBase:
 
         for testFile in testFiles:
             s3.delete_object(Bucket='escapp-bucket-dev', Key=testFile)
+
+
+    def clean_user_post_test(self):
+        testUsers = User.objects(lastName="TEST")
+        testUsers.delete()
+        realUsers = User.objects()
+        res = json.loads(realUsers.to_json())
+        return len(res) == 4
