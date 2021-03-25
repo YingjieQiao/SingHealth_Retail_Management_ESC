@@ -6,26 +6,79 @@ import { MdSystemUpdate } from 'react-icons/md';
 class DataDashboard extends Component {
 
     state = {
-        tenantName: null
+        tenantArray: [],
+        tenant: "",
+        numOfTenant: []
     }
 
-    handleChange = event => {
-        this.setState({
-            tenantName: event.target.value
-        });
-        if (this.state.tenantName === null ){
-            this.getButtonClasses();
+    componentDidMount() {
+        axios.get("http://localhost:5000/tenant_list")
+        .then(
+            res => {
+                console.log(res);
+
+                for (var i = 0; i < res.data.tenant_list.length; i++) {
+                    let newArray1 = this.state.tenantArray;
+                    let newArray2 = this.state.numOfTenant;
+                    newArray1.push(res.data.tenant_list[i]);
+                    newArray2.push(i);
+                    this.setState({tenantArray: newArray1, numOfTenant: newArray2});
+                }
+
+            }
+        )
+    }
+
+    render() {
+        let classes = this.getButtonClasses();
+
+        return (
+            <div>
+                <Navbar/>
+                <h2>Data Dashboard</h2>
+                <h3>Get Tenant's Statistics</h3>
+                <form>
+                    <div>
+                        <label>Name of Tenant:</label>
+                        <select class="custom-select my-1 mr-sm-2" onChange={this.saveTenant}>
+                            <option selected>Choose...</option>
+                            { this.state.numOfTenant.map(index => <option value={index.toString()}>{this.handleTenant(index)}</option> ) }
+                        </select>
+                    </div>
+                </form>
+                <button type="submit" class={this.getButtonClasses()} onClick={this.handleSubmit}>Find</button>
+
+            </div>
+        )
+    }
+
+    handleTenant = (index) => {
+        if (this.state.tenantArray.length === 0){
+            return "-";
+        } else {
+            return this.state.tenantArray[index]["firstName"] + " " + this.state.tenantArray[index]["lastName"];
+        }
+    }
+
+    saveTenant = (event) => {
+        const data = event.target.value;
+        if (data === "Choose...") {
+            this.setState({tenant: ""});
+        } else {
+            const index = parseInt(data);
+            this.setState({tenant: this.state.tenantArray[index]["email"]});
         }
     }
 
     handleSubmit = event => {
-        if (this.state.tenantName === null || this.state.tenantName == "") {
-            alert("Error: No input");
-        } else {
-            alert('tenantName is: ' + this.state.tenantName);
-            // TODO: Check if tenant exist
+        if (this.state.tenant.length === 0) {
+            alert("Please select a tenant to retrieve their statistics");
+        }
+        else {
+            // proceeds to retrieve tenant's statistics
+            console.log("result: ", this.state.tenant);
             const det = {
-                tenantName: this.state.tenantName
+                tenant: this.state.tenant
             }
             
             const headers = {
@@ -49,33 +102,24 @@ class DataDashboard extends Component {
             // Navigate to Tenant's performance score board if successful
             this.props.history.push({
                 pathname: '/dataDashboardTenant',
-                state: { tenantName: this.state.tenantName }
+                state: { tenant: this.state.tenant }
             });
 
         }
     }
 
-    render() {
-        let classes = this.getButtonClasses();
-
-        return (
-            <div>
-                <Navbar/>
-                <h2>Data Dashboard</h2>
-                <h3>Get Tenant's Statistics</h3>
-                <form>
-                    <label>Name of Tenant:</label>
-                    <input type="text" value={this.state.tenantName} onChange={this.handleChange} placeholder="Name of Tenant"/>
-                </form>
-                <button type="submit" class={this.getButtonClasses()} onClick={this.handleSubmit}>Find</button>
-
-            </div>
-        )
+    validateField = () => {
+        if (this.state.tenant.length === 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
     getButtonClasses() {
         let classes = 'btn btn-';
-        classes += this.state.tenantName === (null || "" ) ? 'secondary' : 'primary';
+        classes += this.validateField() === false ? 'secondary' : 'primary';
         return classes;
     }
 }
