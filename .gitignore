@@ -25,6 +25,7 @@ yarn-debug.log*
 yarn-error.log*
 
 .vscode
+.pytest_cache
 /.idea
 .flaskenv
 /backend/.flaskenv

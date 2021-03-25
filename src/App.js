@@ -8,10 +8,11 @@ import Login_verified from './Components/login_verified';
 import Home from './Components/home';
 import Upload from './Components/upload';
 import email from './Components/email';
-import viewPhoto from './Components/viewPhoto'
+import viewPhoto from './Components/viewPhoto';
 import {Route, BrowserRouter as Router,Switch,Link} from "react-router-dom";
 import Navbar from './Components/Navbar';
-
+import Adminhome from './Components/adminhome';
+import Table from './Components/Table';
 function App() {
 
   return (
@@ -19,13 +20,15 @@ function App() {
     <div className="App">
 
     <Switch>
-    <Route path="/" exact component={Login}/>
-    <Route path="/Register" exact component={Register}/>
-    <Route path="/Login_verified" exact component={Login_verified}/>
-    <Route path="/home" exact component={Home}/>
-    <Route path="/upload" exact component={Upload}/>
-    <Route path="/email" exact component={email}/>
-    <Route path="/viewPhoto" exact component={viewPhoto}/>
+      <Route path="/" exact component={Login}/>
+      <Route path="/Register" exact component={Register}/>
+      <Route path="/Login_verified" exact component={Login_verified}/>
+      <Route path="/home" exact component={Home}/>
+      <Route path="/upload" exact component={Upload}/>
+      <Route path="/email" exact component={email}/>
+      <Route path="/viewPhoto" exact component={viewPhoto}/>
+      <Route path="/adminhome" exact component={Adminhome}/>
+      <Route path="/table" exact component={Table}/>
     </Switch>
     
     </div>

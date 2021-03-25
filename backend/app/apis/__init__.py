@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, jsonify, url_for, current_app
+from flask import Blueprint, request, session, jsonify, url_for, current_app, send_from_directory
 from app.models import User, Photo
 import boto3
 from botocore.exceptions import ClientError
@@ -7,7 +7,8 @@ from PIL import Image
 import os
 from datetime import datetime
 
-from . import settings, s3_methods
+from . import settings, s3_methods, utils
+
 import email, smtplib, ssl
 from email import encoders
 from email.mime.base import MIMEBase
@@ -113,6 +114,8 @@ def user_login():
     except:
         return {'result': False, 'info': "user does not exist or payload error"}, 500
 
+    settings.username = firstName + lastName
+
     try:
         message = MIMEMultipart()
         message["From"] = sender_email
@@ -143,7 +146,9 @@ def user_login():
 
     settings.username = firstName + lastName
     print(settings.username)
-    return {'result': True, 'info': "2FA sent", "token":token}, 200
+    return {'result': True, 'info': "2FA sent", "token":token,
+             'firstName': firstName, 'lastName': lastName,
+             'staff': user.staff, 'tenant': user.tenant, 'admin': user.admin}
 
 
 @apis.route('/login_verified', methods=['GET', 'POST'])
@@ -155,8 +160,11 @@ def login_verified():
         user = User.objects.get(email=email)
         firstName = user.firstName
         lastName = user.lastName
+        staff=user.staff
+        admin=user.admin
+        tenant=user.tenant
         settings.username = firstName + lastName
-        return {'result': True, 'firstName': firstName, 'lastName': lastName}, 200 #this returns the details of the user 
+        return {'result': True, 'firstName': firstName, 'lastName': lastName, 'staff':staff, 'admin':admin, 'tenant':tenant}, 200 #this returns the details of the user 
     except:
         return {'result': False, 'info': "2FA error"}, 500
     # except SignatureExpired:
@@ -260,6 +268,64 @@ def rectify_photo():
         photoInfo.update(**body)
     except Exception as e:
         print("error: ", e) #TODO: change to logging
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+
+@apis.route('/admin_query')
+def admin_query():
+    #TODO
+    body = request.get_json()
+    tableName = body['tableName']
+    firstName = body['firstName']
+    lastName = body['lastName']
+
+    users = User.objects(firstName=firstName, lastName=lastName, staffName=settings.username)
+
+    return {'result': True, 'data': users}, 200
+
+
+@apis.route('/display_data', methods=['GET', 'POST'])
+def display_data():
+    body = request.get_json()
+    tableName = body['tableName']
+    mapping = {
+        'User': 0,
+        'Photo': 1
+    }
+
+    res = utils.get_data()
+    data = res[mapping[tableName]]
+
+    return {'result': True, 'data': data}, 200
+
+
+@apis.route('/download_data_csv', methods=['GET', 'POST'])
+def download_data_csv():
+    body = request.get_json()
+    tableName = body['tableName']
+    mapping = {
+        'User': 0,
+        'Photo': 1
+    }
+
+    res = utils.get_data()
+    data = res[mapping[tableName]]
+
+    dataDict = utils.mongo_object_to_dict(data)
+    filePath, fileName = utils.write_to_csv(dataDict, tableName)
+
+    return send_from_directory(filePath, fileName, as_attachment=True)
+
+
+@apis.route('/remove_temp_files', methods=['GET', 'POST'])
+def remove_temp_files():
+    try:
+        utils.clear_assets()
+    except Exception as e:
+        print("error: ", e)
         return {'result': False}, 500
 
     return {'result': True}, 200

@@ -11,6 +11,9 @@ class User(db.Document):
     location = db.StringField(required=True, unique=False)
     mobile = db.IntField(required=True, unique=False)
 
+    staff = db.BooleanField(required=True, default=False)
+    tenant = db.BooleanField(required=True, default=False)
+    admin = db.BooleanField(required=True, default=False)
 
     def hash_password(self):
        self.password = generate_password_hash(self.password).decode('utf8')
