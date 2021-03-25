@@ -13,6 +13,7 @@ class Adminhome extends Component {
     super(props);
     this.state = {
       DataType:"User",
+      DataTypefinal:"User",
       count:0,
       displayTable:false,
       stundent:[],
@@ -26,6 +27,7 @@ class Adminhome extends Component {
     this.testHandler2 = this.testHandler2.bind(this);
   }
   Datahandler = (event) => {
+
     this.setState({
         DataType: event.target.value
     })
@@ -86,14 +88,14 @@ class Adminhome extends Component {
 
   testHandler2 = event => {
 		event.preventDefault();
-	
+    this.state.DataTypefinal=this.state.DataType;
 		const headers = {
 			'Content-Type': 'multipart/form-data',
 			'Access-Control-Allow-Origin': '*'
 		};
 	
 		const data = {
-			tableName: this.state.DataType
+			tableName: this.state.DataTypefinal
 		};
 
     axios.post("http://localhost:5000//display_data", data, headers
@@ -102,7 +104,7 @@ class Adminhome extends Component {
       this.state.student=res.data.data;
       console.log(this.state.student);
       this.state.count=0;
-      if (this.state.DataType=="User"){
+      if (this.state.DataTypefinal=="User"){
       this.state.students= [{ id: '', firstName: '',lastName: '',  mobile: '',email: '', location: '' }];
       }
       else{
@@ -118,7 +120,7 @@ class Adminhome extends Component {
 		})
     if(this.state.displayTable===true){
       console.log("\n\n truning false");  
-      this.state.displayTable=false;
+      //this.state.displayTable=false;
       
     }
     else{
@@ -182,7 +184,7 @@ rendervalue(){
        <table id='students'>
           <tbody>
              <tr>{this.renderTableHeader()}</tr>
-             {(this.state.DataType=="User") ?this.renderTableDataUser():this.renderTableDataPhoto()}
+             {(this.state.DataTypefinal=="User") ?this.renderTableDataUser():this.renderTableDataPhoto()}
           </tbody>
        </table>
     </div>
