@@ -126,7 +126,9 @@ class Register extends Component {
                     mobile: this.state.mobile,
                     password: this.state.password,
                     location: this.state.location,
-                    user:this.state.user
+                    tenant: this.state.tenant,
+                    staff: this.state.staff,
+                    admin:this.state.admin 
                 };
                 const headers = {
                     'Content-Type': 'application/json',
