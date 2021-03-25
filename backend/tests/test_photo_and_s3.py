@@ -65,36 +65,12 @@ class TestPhoto(TestBase):
         "breakit": ""
     }
 
-    TEST_PHOTO_RECTIFY_1 = {
-        "tags": "tag2",
-        "date": "01-01-2222",
-        "time": "00:00:00",
-        "notes": "UNIT TEST ENTRY",
-        "staffName": "UnitTester",
-        "tenantName": "711",
-        "rectified": False
-    }
-
-
-    TEST_PHOTO_RECTIFY_2 = {
-        "tags": "tag2",
-        "date": "01-02-2222",
-        "time": "00:02:00",
-        "notes": "UNIT TEST ENTRY",
-        "staffName": "UnitTester",
-        "tenantName": "711",
-        "rectified": False,
-        "breakit": "this col does not exist"
-    }
-
     TEST_PHOTO_INFO_UPLOAD_PASS_1_JSON = json.dumps(TEST_PHOTO_INFO_UPLOAD_PASS_1)
     TEST_PHOTO_INFO_UPLOAD_PASS_2_JSON = json.dumps(TEST_PHOTO_INFO_UPLOAD_PASS_2)
     TEST_PHOTO_INFO_UPLOAD_FAIL_1_JSON = json.dumps(TEST_PHOTO_INFO_UPLOAD_FAIL_1)
     TEST_PHOTO_INFO_UPLOAD_FAIL_2_JSON = json.dumps(TEST_PHOTO_INFO_UPLOAD_FAIL_2)
-    TEST_PHOTO_RECTIFY_1_JSON = json.dumps(TEST_PHOTO_RECTIFY_1)
-    TEST_PHOTO_RECTIFY_2_JSON = json.dumps(TEST_PHOTO_RECTIFY_2)
 
-    def test_db_upload_pass_1(self):
+    def test_db_and_s3_upload_pass_1(self):
         rv = self.client.post('/upload_photo_info', data=self.TEST_PHOTO_INFO_UPLOAD_PASS_1_JSON,
                               content_type='application/json')
 
@@ -108,7 +84,7 @@ class TestPhoto(TestBase):
         assert rv2.json['result'] == True
 
 
-    def test_db_upload_pass_2(self):
+    def test_db_and_s3_upload_pass_2(self):
         rv = self.client.post('/upload_photo_info', data=self.TEST_PHOTO_INFO_UPLOAD_PASS_2_JSON,
                               content_type='application/json')
         assert rv.status_code == 200
@@ -121,19 +97,64 @@ class TestPhoto(TestBase):
         assert rv2.json['result'] == True
 
 
-    def test_db_upload_fail_1(self):
+    def test_db_and_s3_upload_fail_1(self):
         rv = self.client.post('/upload_photo_info', data=self.TEST_PHOTO_INFO_UPLOAD_FAIL_1_JSON,
                               content_type='multipart/form-data')
         assert rv.status_code == 500
         assert rv.json['result'] == False
 
 
-    def test_db_upload_fail_2(self):
+    def test_db_and_s3_upload_fail_2(self):
         rv = self.client.post('/upload_photo_info', data=self.TEST_PHOTO_INFO_UPLOAD_FAIL_2_JSON,
                               content_type='application/json')
         assert rv.status_code == 500
         assert rv.json['result'] == False
 
+
+class TestPreRectifyS3(TestBase):
+
+    def test_s3_download_1(self):
+        rv = self.client.get('/download_file',
+                              content_type='multipart/form-data')
+        assert rv.status_code == 200
+        assert rv.json['result'] == True
+        assert type(rv.json['photoData']) == list
+        assert len(rv.json['photoData']) == 2
+        assert type(rv.json['photoAttrData']) == list
+        assert len(rv.json['photoAttrData']) == 2
+
+
+    def test_s3_download_2(self):
+        rv = self.client.post('/download_file',
+                              content_type='application/json')
+        assert rv.status_code == 405
+
+
+class TestRectify(TestBase):
+
+    TEST_PHOTO_RECTIFY_1 = {
+        "tags": "tag2",
+        "date": "01-01-2222",
+        "time": "00:00:00",
+        "notes": "UNIT TEST ENTRY",
+        "staffName": "UnitTester",
+        "tenantName": "711",
+        "rectified": False
+    }
+
+    TEST_PHOTO_RECTIFY_2 = {
+        "tags": "tag2",
+        "date": "01-02-2222",
+        "time": "00:02:00",
+        "notes": "UNIT TEST ENTRY",
+        "staffName": "UnitTester",
+        "tenantName": "711",
+        "rectified": False,
+        "breakit": "this col does not exist"
+    }
+
+    TEST_PHOTO_RECTIFY_1_JSON = json.dumps(TEST_PHOTO_RECTIFY_1)
+    TEST_PHOTO_RECTIFY_2_JSON = json.dumps(TEST_PHOTO_RECTIFY_2)
 
     def test_photo_rectify_1(self):
         rv = self.client.post('/rectify_photo', data=self.TEST_PHOTO_RECTIFY_1_JSON,
@@ -149,7 +170,7 @@ class TestPhoto(TestBase):
         assert rv.json['result'] == False
 
 
-class TestPhoto_2(TestBase):
+class TestPostRectifyView(TestBase):
     TEST_FILES = ["UnitTester_01-01-2222_00:00:00.jpg", "UnitTester_01-02-2222_00:02:00.jpg"]
 
     def test_post_rectify_1(self):

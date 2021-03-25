@@ -200,7 +200,7 @@ def upload_file():
     return {'result': True}, 200
 
 
-@apis.route('/download_file', methods=['GET', 'POST'])
+@apis.route('/download_file', methods=['GET'])
 def download_file():
     username = settings.username
     if username == "":

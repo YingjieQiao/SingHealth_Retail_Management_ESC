@@ -17,7 +17,8 @@ class TestBase:
         self._app_context = self.app.app_context()
         self._app_context.push()
 
-
+    # remove dummy entries in database and S3 to keep them clean,
+    # only containing "real" files
     def clean_db_post_test(self):
         testPhotos = Photo.objects(staffName="UnitTester")
         testPhotos.delete()
