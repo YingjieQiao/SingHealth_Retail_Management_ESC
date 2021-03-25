@@ -41,16 +41,16 @@ class CompareTenant extends Component {
                 <form>
                     <div>
                         <label>Name of institution/cluster 1</label>
-                        <select class="custom-select my-1 mr-sm-2" id="range" onChange={this.saveInstitute1}>
+                        <select class="custom-select my-1 mr-sm-2" onChange={this.saveInstitute1}>
                             <option selected>Choose...</option>
-                            { this.state.numOfInstitue.map(index => <option value={this.handleInstitue(index)}>{this.handleInstitue(index)}</option> ) }
+                            { this.state.numOfInstitue.map(index => <option value={index.toString()}>{this.handleInstitue(index)}</option> ) }
                         </select>
                     </div>
                     <div>
                         <label>Name of institution/cluster 2</label>
-                        <select class="custom-select my-1 mr-sm-2" id="range" onChange={this.saveInstitute2}>
+                        <select class="custom-select my-1 mr-sm-2" onChange={this.saveInstitute2}>
                             <option selected>Choose...</option>
-                            { this.state.numOfInstitue.map(index => <option value={this.handleInstitue(index)}>{this.handleInstitue(index)}</option> ) }
+                            { this.state.numOfInstitue.map(index => <option value={index.toString()}>{this.handleInstitue(index)}</option> ) }
                         </select>
                     </div>
                     <div>
@@ -65,7 +65,7 @@ class CompareTenant extends Component {
                     </div>
                 </form>
                 <div>
-                    <button type="button" class={this.getButtonClasses()} onClick={this.submit}>Compare</button>
+                    <button type="button" class={this.getButtonClasses()} onClick={this.compare}>Compare</button>
                 </div>
             </div>
         )
@@ -75,16 +75,25 @@ class CompareTenant extends Component {
         if (this.state.instituteArray.length === 0){
             return "-";
         } else {
-            return this.state.instituteArray[index]["email"];
+            return this.state.instituteArray[index]["firstName"] + " " + this.state.instituteArray[index]["lastName"];
         }
     }
 
+    institute1Id = (index) => {
+        // let s1 = "institute1" + ""+ index.toString();
+        // console.log("s1: ", s1);
+        // return s1;
+    }
+
     saveInstitute1 = (event) => {
+        // console.log("key: ", event.target);
         const data = event.target.value;
         if (data === "Choose...") {
             this.setState({institute1: ""});
         } else {
-            this.setState({institute1: data});
+            const index = parseInt(data);
+            this.setState({institute1: this.state.instituteArray[index]["email"]});
+            // this.setState({institute1: data});
         }
     }
 
@@ -93,7 +102,8 @@ class CompareTenant extends Component {
         if (data === "Choose...") {
             this.setState({institute2: ""});
         } else {
-            this.setState({institute2: data});
+            const index = parseInt(data);
+            this.setState({institute2: this.state.instituteArray[index]["email"]});
         }
     }
 
@@ -124,13 +134,28 @@ class CompareTenant extends Component {
 
     }
 
-    submit = event => {
+    convertRangeToString = () => {
+        switch (this.state.selectedRange) {
+            case "1":
+                return "yearly";
+            case "2":
+                return "monthly";
+            case "3":
+                return "weekly";
+            case "4":
+                return "7days";
+            default:
+                return "";
+        }
+    }
+
+    compare = event => {
         event.preventDefault();
 
         let compareTenantList = {
             institute1: this.state.institute1,
             institute2: this.state.institute2,
-            selectedRange: this.state.selectedRange,
+            selectedRange: this.convertRangeToString()
         };
 
         console.log("result: ", compareTenantList);
