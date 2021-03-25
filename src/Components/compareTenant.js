@@ -160,7 +160,7 @@ class CompareTenant extends Component {
         };
 
         data.append("compareTenantList", compareTenantList);
-        axios.post("http://localhost:5000/compare_tenant", data, headers
+        axios.post("http://localhost:5000/compare_tenant", compareTenantList, headers
         ).then( res => {
             console.log(data);
             console.log(res.statusText);

@@ -75,7 +75,7 @@ class Audit_non_FB(db.Document):
         self.profScore = sum(self.profListScore)
         self.housekeepingScore = sum(self.houskeepingListScore)
         self.workSafetyScore = sum(self.workSafetyListScore)
-        self.totalScore = 0.2*self.profScore + 0.4*self.housekeepingScore + 0.4*self.workSafetyScore
+        self.totalScore = self.profScore + self.housekeepingScore + self.workSafetyScore
 
 
 class Covid_Compliance(db.Document):
