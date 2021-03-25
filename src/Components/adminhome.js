@@ -61,7 +61,11 @@ class Adminhome extends Component {
 					[res.data], 
 					{type: 'application/csv'});
 					const fileURL = URL.createObjectURL(file);
-					window.open(fileURL);
+           const tempLink = document.createElement('a');
+          tempLink.href = fileURL;
+          tempLink.setAttribute('download', 'filename.csv');
+          tempLink.click();
+					// window.open(fileURL);
 				// csvExporter.generateCsv(this.state.students);
      }); 
 

@@ -51,8 +51,9 @@ def write_to_csv(inputData, dataType):
         else:
             fileHeaders.append(key)
 
-    filePath = os.path.join(os.getcwd(), "assets")
-    with open(filePath + fileName, mode='w') as csvFile:
+    filePath = os.path.join(os.getcwd(), "assets\\")
+    print(os.path.join(filePath + fileName))
+    with open(os.path.join(filePath + fileName), mode='w') as csvFile:
         writer = csv.DictWriter(csvFile, fieldnames=fileHeaders)
         writer.writeheader()
         for i in range(0, len(inputData)):
