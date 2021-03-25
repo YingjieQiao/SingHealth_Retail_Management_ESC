@@ -178,7 +178,7 @@ def login_verified():
 @apis.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
     if current_app.config['TESTING']:
-        testFilePath = os.getcwd() + "/testAssets/image.jpg"
+        testFilePath = os.getcwd() + "/assets/image.jpg"
         body = Image.open(testFilePath)
     else:
         body = request.files['file']
@@ -277,51 +277,44 @@ def rectify_photo():
     return {'result': True}, 200
 
 
-
-@apis.route('/admin_query')
-def admin_query():
-    #TODO
-    body = request.get_json()
-    tableName = body['tableName']
-    firstName = body['firstName']
-    lastName = body['lastName']
-
-    users = User.objects(firstName=firstName, lastName=lastName, staffName=settings.username)
-
-    return {'result': True, 'data': users}, 200
-
-
-@apis.route('/display_data', methods=['GET', 'POST'])
+@apis.route('/display_data', methods=['POST'])
 def display_data():
-    body = request.get_json()
-    tableName = body['tableName']
-    mapping = {
-        'User': 0,
-        'Photo': 1
-    }
-
-    res = utils.get_data()
+    try:
+        body = request.get_json()
+        tableName = body['tableName']
+        mapping = {
+            'User': 0,
+            'Photo': 1
+        }
+        res = utils.get_data()
+    except Exception as e:
+        print("error: ", e)
+        return {'result': False, 'data': None, 'info': 'failed'}, 500
     data = res[mapping[tableName]]
 
-    return {'result': True, 'data': data}, 200
+    return {'result': True, 'data': data, 'info': 'success'}, 200
 
 
-@apis.route('/download_data_csv', methods=['GET', 'POST'])
+@apis.route('/download_data_csv', methods=['POST'])
 def download_data_csv():
-    body = request.get_json()
-    tableName = body['tableName']
-    mapping = {
-        'User': 0,
-        'Photo': 1
-    }
+    try:
+        body = request.get_json()
+        tableName = body['tableName']
+        mapping = {
+            'User': 0,
+            'Photo': 1
+        }
 
-    res = utils.get_data()
-    data = res[mapping[tableName]]
+        res = utils.get_data()
+        data = res[mapping[tableName]]
 
-    dataDict = utils.mongo_object_to_dict(data)
-    filePath, fileName = utils.write_to_csv(dataDict, tableName)
+        dataDict = utils.mongo_object_to_dict(data)
+        filePath, fileName = utils.write_to_csv(dataDict, tableName)
+    except Exception as e:
+        print("error, ", e)
+        return {'result': False, 'data': None, 'info': 'failed'}, 500
 
-    return send_from_directory(filePath, fileName, as_attachment=True)
+    return send_from_directory(filePath, fileName, as_attachment=True), 200
 
 
 @apis.route('/remove_temp_files', methods=['GET', 'POST'])
