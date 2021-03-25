@@ -132,10 +132,48 @@ class AuditChecklistTest extends Component {
 
     saveScore = event => {
         var newScoreDict = this.state.scoreDict;
-        newScoreDict[event.target.id] = event.target.value;
+        if (event.target.value >= 0) {
+            newScoreDict[event.target.id] = event.target.value;
+        } else {
+            newScoreDict[event.target.id] = 0;
+        }
         this.setState({scoreDict: newScoreDict});
+        this.updateSectionScore(event.target.id, event.target.value);
+    }
 
-        console.log(this.state.scoreDict);
+    updateSectionScore = (qnId, qnValue) => {
+        let newProfStaffHydScore = this.state.profStaffHydScore;
+        let newHouseGeneralScore = this.state.houseGeneralScore;
+        let newWorkSafetyHealthScore = this.state.workSafetyHealthScore;
+        let newFinalDict = this.state.finalDict;
+
+        // formula: score = (currentScore  / (numQ * maxScoreForOneQ) ) * weightageForTheSection
+        if (qnId <= 6) {
+            newProfStaffHydScore += parseInt(qnValue);
+            newProfStaffHydScore = (newProfStaffHydScore / 10) * 20;
+            newFinalDict["profStaffHydScore"] = newProfStaffHydScore;
+
+        }
+        else if (qnId >= 7 &&  qnId <= 18) {
+            newHouseGeneralScore += parseInt(qnValue);
+            newHouseGeneralScore = (newHouseGeneralScore / 10) * 40;
+            newFinalDict["houseGeneralScore"] = newHouseGeneralScore;
+        }
+        else if (qnId >= 19) {
+            newWorkSafetyHealthScore += parseInt(qnValue);
+            newWorkSafetyHealthScore = (newWorkSafetyHealthScore / 10) * 40;
+            newFinalDict["workSafetyHealthScore"] = newWorkSafetyHealthScore;
+        }
+
+        let total = newProfStaffHydScore + newHouseGeneralScore + newHouseGeneralScore;
+
+        this.setState({
+            profStaffHydScore: newProfStaffHydScore,
+            houseGeneralScore: newHouseGeneralScore,
+            workSafetyHealthScore: newHouseGeneralScore,
+            totoalScore: total,
+            finalDict: newFinalDict
+        });
     }
 
     saveComment = event => {
