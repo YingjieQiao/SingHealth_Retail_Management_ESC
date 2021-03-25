@@ -4,7 +4,7 @@ import Register from './Register'
 import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-router-dom";
 import axios from 'axios';
 import login_verified from './login_verified'
-
+// import { ExportToCsv } from 'export-to-csv';
 class Login extends Component {
     constructor(props) {
         super(props)
@@ -87,8 +87,13 @@ class Login extends Component {
                     <label>Password :</label> <input type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password..." /><br />
                     <input type="submit" value="Log In" />
                     <li>
-                         <label>new tenent?  </label>
+                         <label>new tenant?  </label>
                         <Link to="/Register">Register</Link>
+
+                     </li>
+                     <li>
+                         <label>admin home link   </label>
+                        <Link to="/Adminhome">admin</Link>
 
                      </li>
                 </form>

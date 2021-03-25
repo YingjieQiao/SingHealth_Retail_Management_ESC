@@ -59,9 +59,15 @@ class login_verified extends Component {
         console.log(res.data);
         if (res.data.result === true) {
             alert("Login success!")
-
+            if(res.data.tenant){
             this.props.history.push('/home');
-
+            }
+            else if(res.data.staff){
+              this.props.history.push('/home');
+              }
+              else{
+                this.props.history.push('/Adminhome');
+              }
         } else {
             alert("Login unsuccessful:( \n"+res.data.info);
             this.props.history.push('/');
