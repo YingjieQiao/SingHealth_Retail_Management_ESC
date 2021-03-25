@@ -2,6 +2,8 @@ from tests import TestBase
 import json, os
 
 """
+S3, database, photo related functions
+
 Testing flow:
 
 upload photo + related info filled in:
@@ -9,12 +11,16 @@ upload photo + related info filled in:
     - success testcase 2: update photo to s3 and entry in mongodb
     - failed testcase 1: missing required entry in payload
     - failed testcase 2: extra entry in payload
-    
+
+download photo + associated data:
+    - success testcase 1: correct number of photo and photo-data
+    - failed testcase 1: wrong HTTP request handle
+
 rectify photo:
     - success testcase 1: change `rectified` to True
-    - failed test case 1: extra entry in payload
+    - failed testcase 1: extra entry in payload
     
-get number of photos post rectiry:
+get number of photos post rectify:
     - success testcase: the number of photos whose `rectified == False` is correct
 """
 

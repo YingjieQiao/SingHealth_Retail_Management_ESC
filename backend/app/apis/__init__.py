@@ -107,10 +107,11 @@ def user_login():
         firstName = user.firstName
         lastName = user.lastName
         authorized = user.check_password(body.get('password'))
+        print(authorized)
         if not authorized:
-            return {'result': False, 'info': "password error"}
+            return {'result': False, 'info': "password error"}, 500
     except:
-        return {'result': False, 'info': "user does not exist"}
+        return {'result': False, 'info': "user does not exist or payload error"}, 500
 
     try:
         message = MIMEMultipart()
@@ -120,13 +121,12 @@ def user_login():
         message["Subject"] = "Link to login to SingHealth"
     except:
         print("error occured")
-        return {'result': False, 'info': "user does not exist"}
+        return {'result': False, 'info': "user does not exist"}, 500
 
     token = s.dumps(body.get('email'), salt='login')
 
     link = url_for('apis.login_verified', token=token, _external=True)
     link = link.replace("5000","3000")
-    print(link)
 
     body = "Please click on the link given below for 2FA  \n\n {}".format(token)
 
@@ -158,7 +158,7 @@ def login_verified():
         settings.username = firstName + lastName
         return {'result': True, 'firstName': firstName, 'lastName': lastName}, 200 #this returns the details of the user 
     except:
-        return {'result': False, 'info': "2FA error"}
+        return {'result': False, 'info': "2FA error"}, 500
     # except SignatureExpired:
     #     return {'result': False, 'info': "Link has expired"}, 200
 
