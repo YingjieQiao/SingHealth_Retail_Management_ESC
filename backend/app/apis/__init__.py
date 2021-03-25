@@ -22,6 +22,7 @@ from email.mime.text import MIMEText
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import base64
 
 
 
@@ -191,20 +192,14 @@ def tenant_exists():
     df.columns = ['timestamp','profScore', 'housekeepingScore', 'workSafetyScore','totalScore']
     df['timestamp'] = pd.to_datetime(df['timestamp'])
     df.index = df['timestamp'] 
-    # delete timestamp
-    print(df)
     df_year = df.resample('Y').mean()
     df_month = df.resample('M').mean()
     df_week = df.resample('W').mean()
     df_day = df.resample('D').mean()
-    print(df_day)
 
-
-    # f = plt.figure()
     plt.switch_backend('agg')
     plt.figure(figsize = (10, 6))
     plt.ylim((0,100))
-    print(list(df_day['profScore']))
     plt.plot(df_day.index,list(df_day['profScore']), color='blue')
     plt.plot(df_day.index,list(df_day['housekeepingScore']), color='orange')
     plt.plot(df_day.index,list(df_day['workSafetyScore']), color='green')
@@ -219,15 +214,131 @@ def tenant_exists():
     plt.ylabel('Score')
     values = [str(i)[:-9] for i in list(df_day.index)] 
     plt.xticks(df_day.index,values)
-    # f.savefig("foo.pdf", bbox_inches='tight')
-    plt.savefig('audit.png', bbox_inches='tight')
+    plt.savefig('audit_day.png', bbox_inches='tight')
     plt.close()
-    # plt.show()
 
+    plt.switch_backend('agg')
+    plt.figure(figsize = (10, 6))
+    plt.ylim((0,100))
+    plt.plot(df_week.index,list(df_week['profScore']), color='blue')
+    plt.plot(df_week.index,list(df_week['housekeepingScore']), color='orange')
+    plt.plot(df_week.index,list(df_week['workSafetyScore']), color='green')
+    plt.plot(df_week.index,list(df_week['totalScore']), color='red')
+    plt.plot(df_week.index,list(df_week['profScore']), 'o', color='blue')
+    plt.plot(df_week.index,list(df_week['housekeepingScore']), 'o', color='orange')
+    plt.plot(df_week.index,list(df_week['workSafetyScore']), 'o', color='green')
+    plt.plot(df_week.index,list(df_week['totalScore']), 'o', color='red')
+    plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
+    plt.title(body.get('tenantName') + "'s Audity Score")
+    plt.xlabel('Time Period')
+    plt.ylabel('Score')
+    values = [str(i)[:-9] for i in list(df_week.index)] 
+    plt.xticks(df_week.index,values)
+    plt.savefig('audit_week.png', bbox_inches='tight')
+    plt.close()
 
-    # sns.lineplot(data=data, palette="tab10", linewidth=2.5)
+    plt.switch_backend('agg')
+    plt.figure(figsize = (10, 6))
+    plt.ylim((0,100))
+    plt.plot(df_month.index,list(df_month['profScore']), color='blue')
+    plt.plot(df_month.index,list(df_month['housekeepingScore']), color='orange')
+    plt.plot(df_month.index,list(df_month['workSafetyScore']), color='green')
+    plt.plot(df_month.index,list(df_month['totalScore']), color='red')
+    plt.plot(df_month.index,list(df_month['profScore']), 'o', color='blue')
+    plt.plot(df_month.index,list(df_month['housekeepingScore']), 'o', color='orange')
+    plt.plot(df_month.index,list(df_month['workSafetyScore']), 'o', color='green')
+    plt.plot(df_month.index,list(df_month['totalScore']), 'o', color='red')
+    plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
+    plt.title(body.get('tenantName') + "'s Audity Score")
+    plt.xlabel('Time Period')
+    plt.ylabel('Score')
+    values = [str(i)[:-9] for i in list(df_month.index)] 
+    plt.xticks(df_month.index,values)
+    plt.savefig('audit_month.png', bbox_inches='tight')
+    plt.close()
 
-    return {'result': True}
+    plt.switch_backend('agg')
+    plt.figure(figsize = (10, 6))
+    plt.ylim((0,100))
+    plt.plot(df_year.index,list(df_year['profScore']), color='blue')
+    plt.plot(df_year.index,list(df_year['housekeepingScore']), color='orange')
+    plt.plot(df_year.index,list(df_year['workSafetyScore']), color='green')
+    plt.plot(df_year.index,list(df_year['totalScore']), color='red')
+    plt.plot(df_year.index,list(df_year['profScore']), 'o', color='blue')
+    plt.plot(df_year.index,list(df_year['housekeepingScore']), 'o', color='orange')
+    plt.plot(df_year.index,list(df_year['workSafetyScore']), 'o', color='green')
+    plt.plot(df_year.index,list(df_year['totalScore']), 'o', color='red')
+    plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
+    plt.title(body.get('tenantName') + "'s Audity Score")
+    plt.xlabel('Time Period')
+    plt.ylabel('Score')
+    values = [str(i)[:-9] for i in list(df_year.index)] 
+    plt.xticks(df_year.index,values)
+    plt.savefig('audit_year.png', bbox_inches='tight')
+    plt.close()
+
+    with open("audit_day.png", "rb") as img_file:
+        audit_day = str(base64.b64encode(img_file.read()))
+    with open("audit_week.png", "rb") as img_file:
+        audit_week = str(base64.b64encode(img_file.read()))
+    with open("audit_month.png", "rb") as img_file:
+        audit_month = str(base64.b64encode(img_file.read()))
+    with open("audit_year.png", "rb") as img_file:
+        audit_year = str(base64.b64encode(img_file.read()))
+    
+    df = df.drop(columns=["timestamp"])
+    df.insert(4, 'timestamp', df.index.tolist())
+    df.reset_index(drop=True, inplace=True) 
+    
+    df_day['timestamp'] = df_day.index
+    df_week['timestamp'] = df_week.index
+    df_month['timestamp'] = df_month.index
+    df_year['timestamp'] = df_year.index
+
+    print(df_day.values.T.tolist())
+
+    print(df.values.T.tolist())
+    
+    # df_day.to_json("audit_day.json")
+    # audit_day_csv = make_response(df_day.to_csv())
+
+    # resp.headers["Content-Disposition"] = "attachment; filename=audit_day.csv"
+    # resp.headers["Content-Type"] = "text/csv"
+    # df_day.to_json("audit_day.json")
+    # audit_week_csv = make_response(df_week.to_csv())
+    # resp.headers["Content-Disposition"] = "attachment; filename=audit_week.csv"
+    # resp.headers["Content-Type"] = "text/csv"
+    # df_day.to_json("audit_day.json")
+    # audit_day_csv = make_response(df_day.to_csv())
+    # resp.headers["Content-Disposition"] = "attachment; filename=audit_day.csv"
+    # resp.headers["Content-Type"] = "text/csv"
+    # df_day.to_json("audit_day.json")
+    # audit_day_csv = make_response(df_day.to_csv())
+    # resp.headers["Content-Disposition"] = "attachment; filename=audit_day.csv"
+    # resp.headers["Content-Type"] = "text/csv"
+    # df_day.to_json("audit_day.json")
+    # audit_day_csv = make_response(df_day.to_csv())
+    # resp.headers["Content-Disposition"] = "attachment; filename=audit_day.csv"
+    # resp.headers["Content-Type"] = "text/csv"
+
+    # with open("audit_day.json", "r") as file:
+    #     audit_day_csv = base64.b64encode(file.read())
+    # with open("audit_week.json", "r") as file:
+    #     audit_week_csv = base64.b64encode(file.read())
+    # with open("audit_month.json", "r") as file:
+    #     audit_month_csv = base64.b64encode(file.read())
+    # with open("audit_year.json", "r") as file:
+    #     audit_year_csv = base64.b64encode(file.read())
+
+    # df.to_csv("audit.json")
+
+    # with open("audit.json", "r") as file:
+    #     audit_csv = base64.b64encode(file.read())
+
+    for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png"]:#, "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv", "audit.csv"]:
+        os.remove(i)
+
+    return {'result': True, "audit_day_img": audit_day, "audit_week_img": audit_week, "audit_month_img": audit_month, "audit_year_img": audit_year, "columns": list(df_day.columns), "audit_day_csv": df_day.values.T.tolist(), "audit_week_csv": df_week.values.T.tolist(), "audit_month_csv": df_month.values.T.tolist(), "audit_year_csv": df_year.values.T.tolist(), "audit_csv": df.values.T.tolist()}
 
 @apis.route('/tenant_list', methods=['GET', 'POST'])
 def tenant_list():
