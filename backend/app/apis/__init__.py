@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, send_from_directory, current_app, url_for, jsonify
+from flask import Blueprint, request, session, jsonify, url_for, current_app, send_from_directory
 from app.models import User, Photo
 import boto3
 from botocore.exceptions import ClientError
@@ -41,10 +41,14 @@ def get_current_username_and_datetime():
 @apis.route('/signup', methods=['GET', 'POST'])
 def user_signup():
     body = request.get_json()
-    user = User(**body)
-    user.hash_password()
-    user.save()
-    userid = user.id
+    try:
+        user = User(**body)
+        user.hash_password()
+        user.save()
+        userid = user.id
+    except Exception as e:
+        print("error: ", e)
+        return {'result': False, 'info': "Registeration Failed"}, 500
 
     response = {
         'id': str(userid),
@@ -84,7 +88,7 @@ def user_signup():
     # with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
     #     server.login(sender_email, password)
     #     server.sendmail(sender_email, email, text)
-    return {'result': True, 'info': "Registeration Confirmation link was shared"}, 200
+    return {'result': True, 'info': "Registeration Success"}, 200
 
 # Code to verify the link for user registration, not being used for now
 
@@ -108,10 +112,11 @@ def user_login():
         firstName = user.firstName
         lastName = user.lastName
         authorized = user.check_password(body.get('password'))
+        print(authorized)
         if not authorized:
-            return {'result': False, 'info': "password error"}
+            return {'result': False, 'info': "password error"}, 500
     except:
-        return {'result': False, 'info': "user does not exist"}
+        return {'result': False, 'info': "user does not exist or payload error"}, 500
 
     settings.username = firstName + lastName
 
@@ -123,13 +128,12 @@ def user_login():
         message["Subject"] = "Link to login to SingHealth"
     except:
         print("error occured")
-        return {'result': False, 'info': "user does not exist"}
+        return {'result': False, 'info': "user does not exist"}, 500
 
     token = s.dumps(body.get('email'), salt='login')
 
     link = url_for('apis.login_verified', token=token, _external=True)
     link = link.replace("5000","3000")
-    print(link)
 
     body = "Please click on the link given below for 2FA  \n\n {}".format(token)
 
@@ -166,27 +170,35 @@ def login_verified():
         settings.username = firstName + lastName
         return {'result': True, 'firstName': firstName, 'lastName': lastName, 'staff':staff, 'admin':admin, 'tenant':tenant}, 200 #this returns the details of the user 
     except:
-        return {'result': False, 'info': "2FA error"}
+        return {'result': False, 'info': "2FA error"}, 500
     # except SignatureExpired:
     #     return {'result': False, 'info': "Link has expired"}, 200
 
 
 @apis.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
-    body = request.files['file']
+    if current_app.config['TESTING']:
+        testFilePath = os.getcwd() + "/assets/image.jpg"
+        body = Image.open(testFilePath)
+    else:
+        body = request.files['file']
+        
     time_ = request.form['time']
     date_ = request.form['date']
 
     username = settings.username
     if username == "":
-        username = 'YingjieQiao'
+        username = 'UnitTester'
         print("testing s3 download") #TODO change to logging
     filename = username + "_" + date_ + "_" + time_ + ".jpg"
 
-    img = Image.open(body.stream)
-    rgb_img = img.convert('RGB')
-
-    rgb_img.save(filename)
+    if current_app.config['TESTING']:
+        rgb_img = body.convert('RGB')
+        rgb_img.save(filename)
+    else:
+        img = Image.open(body.stream)
+        rgb_img = img.convert('RGB')
+        rgb_img.save(filename)
 
     try:
         s3_methods.upload_file(filename, 'escapp-bucket-dev', None)
@@ -200,7 +212,7 @@ def upload_file():
     return {'result': True}, 200
 
 
-@apis.route('/download_file', methods=['GET', 'POST'])
+@apis.route('/download_file', methods=['GET'])
 def download_file():
     username = settings.username
     if username == "":
@@ -258,58 +270,51 @@ def rectify_photo():
     try:
         photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)
         photoInfo.update(**body)
-    except:
-        print("error") #TODO: change to logging
+    except Exception as e:
+        print("error: ", e) #TODO: change to logging
         return {'result': False}, 500
 
     return {'result': True}, 200
 
 
-
-@apis.route('/admin_query')
-def admin_query():
-    #TODO
-    body = request.get_json()
-    tableName = body['tableName']
-    firstName = body['firstName']
-    lastName = body['lastName']
-
-    users = User.objects(firstName=firstName, lastName=lastName, staffName=settings.username)
-
-    return {'result': True, 'data': users}, 200
-
-
-@apis.route('/display_data', methods=['GET', 'POST'])
+@apis.route('/display_data', methods=['POST'])
 def display_data():
-    body = request.get_json()
-    tableName = body['tableName']
-    mapping = {
-        'User': 0,
-        'Photo': 1
-    }
-
-    res = utils.get_data()
+    try:
+        body = request.get_json()
+        tableName = body['tableName']
+        mapping = {
+            'User': 0,
+            'Photo': 1
+        }
+        res = utils.get_data()
+    except Exception as e:
+        print("error: ", e)
+        return {'result': False, 'data': None, 'info': 'failed'}, 500
     data = res[mapping[tableName]]
 
-    return {'result': True, 'data': data}, 200
+    return {'result': True, 'data': data, 'info': 'success'}, 200
 
 
-@apis.route('/download_data_csv', methods=['GET', 'POST'])
+@apis.route('/download_data_csv', methods=['POST'])
 def download_data_csv():
-    body = request.get_json()
-    tableName = body['tableName']
-    mapping = {
-        'User': 0,
-        'Photo': 1
-    }
+    try:
+        body = request.get_json()
+        tableName = body['tableName']
+        mapping = {
+            'User': 0,
+            'Photo': 1
+        }
 
-    res = utils.get_data()
-    data = res[mapping[tableName]]
+        res = utils.get_data()
+        data = res[mapping[tableName]]
 
-    dataDict = utils.mongo_object_to_dict(data)
-    filePath, fileName = utils.write_to_csv(dataDict, tableName)
+        dataDict = utils.mongo_object_to_dict(data)
+        filePath, fileName = utils.write_to_csv(dataDict, tableName)
+    except Exception as e:
+        print("error, ", e)
+        return {'result': False, 'data': None, 'info': 'failed'}, 500
 
-    return send_from_directory(filePath, fileName, as_attachment=True)
+    return send_from_directory(filePath, fileName, as_attachment=True), 200
 
 
 @apis.route('/remove_temp_files', methods=['GET', 'POST'])

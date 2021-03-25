@@ -47,7 +47,7 @@ class Login extends Component {
           .then(res => {
             console.log(res.data);
             if (res.data.result === true) {
-                alert("Login success!","yolo")
+                alert("Please check your email for authentication token","yolo")
 
                 this.props.history.push(
                 '/Login_verified'
