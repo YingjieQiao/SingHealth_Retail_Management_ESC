@@ -21,6 +21,7 @@ from email.mime.text import MIMEText
 # import seaborn as sns
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 
@@ -198,9 +199,31 @@ def tenant_exists():
     df_day = df.resample('D').mean()
     print(df_day)
 
-    lines = df.plot.line() # works
 
-    # plt.savefig('books_read.png')
+    # f = plt.figure()
+    plt.switch_backend('agg')
+    plt.figure(figsize = (10, 6))
+    plt.ylim((0,100))
+    print(list(df_day['profScore']))
+    plt.plot(df_day.index,list(df_day['profScore']), color='blue')
+    plt.plot(df_day.index,list(df_day['housekeepingScore']), color='orange')
+    plt.plot(df_day.index,list(df_day['workSafetyScore']), color='green')
+    plt.plot(df_day.index,list(df_day['totalScore']), color='red')
+    plt.plot(df_day.index,list(df_day['profScore']), 'o', color='blue')
+    plt.plot(df_day.index,list(df_day['housekeepingScore']), 'o', color='orange')
+    plt.plot(df_day.index,list(df_day['workSafetyScore']), 'o', color='green')
+    plt.plot(df_day.index,list(df_day['totalScore']), 'o', color='red')
+    plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
+    plt.title(body.get('tenantName') + "'s Audity Score")
+    plt.xlabel('Time Period')
+    plt.ylabel('Score')
+    values = [str(i)[:-9] for i in list(df_day.index)] 
+    plt.xticks(df_day.index,values)
+    # f.savefig("foo.pdf", bbox_inches='tight')
+    plt.savefig('audit.png', bbox_inches='tight')
+    plt.close()
+    # plt.show()
+
 
     # sns.lineplot(data=data, palette="tab10", linewidth=2.5)
 
