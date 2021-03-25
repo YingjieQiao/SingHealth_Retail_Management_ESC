@@ -18,10 +18,7 @@ class Adminhome extends Component {
       stundent:[],
       temp:{},
       data:[],
-      students: [
-        { id: '', firstName: '',lastName: '',  mobile: '',email: '', location: '' },
-
-     ]
+      students: []
     };
     
     
@@ -105,8 +102,12 @@ class Adminhome extends Component {
       this.state.student=res.data.data;
       console.log(this.state.student);
       this.state.count=0;
-      this.state.students= [
-        { id: '', firstName: '',lastName: '',  mobile: '',email: '', location: '' }];
+      if (this.state.DataType=="User"){
+      this.state.students= [{ id: '', firstName: '',lastName: '',  mobile: '',email: '', location: '' }];
+      }
+      else{
+        this.state.students= [{ id: '', tags: '',date: '',  time: '',notes: '', staffName: '' , tenentName: '', rectified: ''}];
+      }
       this.state.student.forEach(element => {
         this.state.count++;
         element.id=this.state.count;
@@ -133,7 +134,7 @@ class Adminhome extends Component {
   //------------GENERATE PDF---------------------------------
 
   //--------------TABLE----------------------------------------------------
-  renderTableData() {
+  renderTableDataUser() {
     return this.state.students.map((student, index) => {
        const { id, firstName,lastName, mobile, email,location } = student //destructuring
        return (
@@ -149,7 +150,24 @@ class Adminhome extends Component {
        )
     })
  }
+ renderTableDataPhoto() {
+  return this.state.students.map((student, index) => {
+     const { id,tags, date,time, notes, staffName,tenentName,rectified } = student //destructuring
+     return (
 
+        <tr key={id}>
+           <td>{id}</td>
+           <td>{tags}</td>
+           <td>{date}</td>
+           <td>{time}</td>
+           <td>{notes}</td>
+           <td>{staffName}</td>
+           <td>{tenentName}</td>
+           <td>{rectified}</td>
+        </tr>
+     )
+  })
+}
  renderTableHeader() {
     let header = Object.keys(this.state.students[0])
     return header.map((key, index) => {
@@ -164,7 +182,7 @@ rendervalue(){
        <table id='students'>
           <tbody>
              <tr>{this.renderTableHeader()}</tr>
-             {this.renderTableData()}
+             {(this.state.DataType=="User") ?this.renderTableDataUser():this.renderTableDataPhoto()}
           </tbody>
        </table>
     </div>
