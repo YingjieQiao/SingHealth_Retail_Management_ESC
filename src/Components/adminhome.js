@@ -165,7 +165,7 @@ class Adminhome extends Component {
            <td>{notes}</td>
            <td>{staffName}</td>
            <td>{tenantName}</td>
-           <td>{rectified}</td>
+           <td>{rectified?"True":"False"}</td>
         </tr>
      )
   })
