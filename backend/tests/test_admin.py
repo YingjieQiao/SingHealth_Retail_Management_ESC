@@ -2,6 +2,9 @@ from tests import TestBase
 import json
 
 """
+
+2 testing classes:
+
 get db data:
     - success testcase 1: User data
     - success testcase 2: Photo data

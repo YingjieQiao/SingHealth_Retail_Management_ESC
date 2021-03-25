@@ -38,4 +38,4 @@ class TestBase:
         testUsers.delete()
         realUsers = User.objects()
         res = json.loads(realUsers.to_json())
-        return len(res) == 4
+        return len(res) == 5
