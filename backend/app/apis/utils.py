@@ -51,7 +51,7 @@ def write_to_csv(inputData, dataType):
         else:
             fileHeaders.append(key)
 
-    filePath = os.getcwd() + "/assets/"
+    filePath = os.path.join(os.getcwd(), "assets")
     with open(filePath + fileName, mode='w') as csvFile:
         writer = csv.DictWriter(csvFile, fieldnames=fileHeaders)
         writer.writeheader()
