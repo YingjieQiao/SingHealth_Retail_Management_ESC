@@ -87,7 +87,7 @@ class Login extends Component {
                     <label>Password :</label> <input type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password..." /><br />
                     <input type="submit" value="Log In" />
                     <li>
-                         <label>new tenent?  </label>
+                         <label>new tenant?  </label>
                         <Link to="/Register">Register</Link>
 
                      </li>

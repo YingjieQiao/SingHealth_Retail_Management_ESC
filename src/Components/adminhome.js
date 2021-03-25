@@ -106,7 +106,7 @@ class Adminhome extends Component {
       this.state.students= [{ id: '', firstName: '',lastName: '',  mobile: '',email: '', location: '' }];
       }
       else{
-        this.state.students= [{ id: '', tags: '',date: '',  time: '',notes: '', staffName: '' , tenentName: '', rectified: ''}];
+        this.state.students= [{ id: '', tags: '',date: '',  time: '',notes: '', staffName: '' , tenantName: '', rectified: ''}];
       }
       this.state.student.forEach(element => {
         this.state.count++;
@@ -152,7 +152,7 @@ class Adminhome extends Component {
  }
  renderTableDataPhoto() {
   return this.state.students.map((student, index) => {
-     const { id,tags, date,time, notes, staffName,tenentName,rectified } = student //destructuring
+     const { id,tags, date,time, notes, staffName,tenantName,rectified } = student //destructuring
      return (
 
         <tr key={id}>
@@ -162,7 +162,7 @@ class Adminhome extends Component {
            <td>{time}</td>
            <td>{notes}</td>
            <td>{staffName}</td>
-           <td>{tenentName}</td>
+           <td>{tenantName}</td>
            <td>{rectified}</td>
         </tr>
      )
