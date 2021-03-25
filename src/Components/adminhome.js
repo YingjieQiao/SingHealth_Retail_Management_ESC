@@ -69,7 +69,14 @@ class Adminhome extends Component {
 				// csvExporter.generateCsv(this.state.students);
      }); 
 
-		alert("Upload success!")
+		alert("Download success!")
+	 //TODO: use a callback to make sure the following call is only made after the previous post call is done
+	 
+	// axios.get("http://localhost:5000//remove_temp_files", headers
+	// 	).then(res => {
+	// 		console.log(res);
+	// 		}
+	// )
    // this.props.history.push( '/table' );
 	}
 
@@ -112,7 +119,7 @@ class Adminhome extends Component {
 
     }
     
-		alert("Upload success!")
+		alert("Data retrieval success!")
     //this.props.history.push( '/table' );
 
 	}

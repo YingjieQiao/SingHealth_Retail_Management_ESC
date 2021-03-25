@@ -1,6 +1,7 @@
 from app.models import User, Photo
 import csv, json, uuid, os
 from flask import current_app
+import shutil
 
 
 def get_data():
@@ -14,6 +15,14 @@ def mongo_object_to_dict(mongoObj):
     res = {}
     res = json.loads(mongoObj.to_json())
     return res
+
+
+def get_assets_folder_string():
+    if os.name == "posix":
+        assetsFolderName = "assets/"
+    else:
+        assetsFolderName = "assets\\"
+    return assetsFolderName
 
 
 def write_to_csv(inputData, dataType):
@@ -51,7 +60,8 @@ def write_to_csv(inputData, dataType):
         else:
             fileHeaders.append(key)
 
-    filePath = os.path.join(os.getcwd(), "assets\\")
+    assetsFolderName = get_assets_folder_string()
+    filePath = os.path.join(os.getcwd(), assetsFolderName)
     print(os.path.join(filePath + fileName))
     with open(os.path.join(filePath + fileName), mode='w') as csvFile:
         writer = csv.DictWriter(csvFile, fieldnames=fileHeaders)
@@ -64,3 +74,10 @@ def write_to_csv(inputData, dataType):
             writer.writerow(row)
 
     return filePath, fileName
+
+
+def clear_assets():
+    assetsFolderName = get_assets_folder_string()
+    assetsPath = os.path.join(os.getcwd(), assetsFolderName)
+
+    shutil.rmtree(assetsPath) 

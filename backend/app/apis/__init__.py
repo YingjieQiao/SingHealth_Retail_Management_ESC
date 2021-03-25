@@ -309,6 +309,17 @@ def download_data_csv():
     return send_from_directory(filePath, fileName, as_attachment=True)
 
 
+@apis.route('/remove_temp_files', methods=['GET', 'POST'])
+def remove_temp_files():
+    try:
+        utils.clear_assets()
+    except Exception as e:
+        print("error: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
 @apis.route('/email', methods=['GET', 'POST'])
 def email():
 
