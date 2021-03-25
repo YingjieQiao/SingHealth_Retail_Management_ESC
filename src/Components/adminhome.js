@@ -2,9 +2,9 @@ import React , { Component } from 'react';
 import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-router-dom";
 import axios from "axios";
 import './CSS/table.css'
-import { CSVLink } from 'react-csv';
+// import { CSVLink } from 'react-csv';
 
-import { ExportToCsv } from 'export-to-csv';
+// import { ExportToCsv } from 'export-to-csv';
 
 
 
@@ -31,7 +31,7 @@ class Adminhome extends Component {
 		event.preventDefault();
 	
 		const headers = {
-			'Content-Type': 'multipart/form-data',
+			'Content-Type': 'application/csv',
 			'Access-Control-Allow-Origin': '*'
 		};
 	
@@ -52,11 +52,17 @@ class Adminhome extends Component {
       // headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
     };
    
-  const csvExporter = new ExportToCsv(options);
+  	// const csvExporter = new ExportToCsv(options);
     axios.post("http://localhost:5000//download_data_csv", data, headers
 		).then(res => {
-      console.log(res.data);
-      csvExporter.generateCsv(this.state.students);
+				console.log(res.data);
+				console.log(res);
+				const file = new Blob(
+					[res.data], 
+					{type: 'application/csv'});
+					const fileURL = URL.createObjectURL(file);
+					window.open(fileURL);
+				// csvExporter.generateCsv(this.state.students);
      }); 
 
 		alert("Upload success!")

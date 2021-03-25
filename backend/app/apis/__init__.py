@@ -249,7 +249,7 @@ def download_data_csv():
     dataDict = utils.mongo_object_to_dict(data)
     filePath, fileName = utils.write_to_csv(dataDict, tableName)
 
-    return send_from_directory(filePath, fileName)
+    return send_from_directory(filePath, fileName, as_attachment=True)
 
 
 @apis.route('/email', methods=['GET', 'POST'])
