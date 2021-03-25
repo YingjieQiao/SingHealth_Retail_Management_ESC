@@ -1,10 +1,5 @@
-import base64
-
-from flask import Request
-from werkzeug.datastructures import FileStorage
-
 from tests import TestBase
-import json, os, io
+import json, os
 
 """
 Testing flow:
@@ -22,8 +17,6 @@ rectify photo:
 get number of photos post rectiry:
     - success testcase: the number of photos whose `rectified == False` is correct
 """
-
-RESULT = False
 
 class TestPhoto(TestBase):
     TEST_PHOTO_INFO_UPLOAD_PASS_1 = {
@@ -74,8 +67,8 @@ class TestPhoto(TestBase):
 
     TEST_PHOTO_RECTIFY_1 = {
         "tags": "tag2",
-        "date": "01-02-2020",
-        "time": "00:02:00",
+        "date": "01-01-2222",
+        "time": "00:00:00",
         "notes": "UNIT TEST ENTRY",
         "staffName": "UnitTester",
         "tenantName": "711",
@@ -85,7 +78,7 @@ class TestPhoto(TestBase):
 
     TEST_PHOTO_RECTIFY_2 = {
         "tags": "tag2",
-        "date": "01-02-2020",
+        "date": "01-02-2222",
         "time": "00:02:00",
         "notes": "UNIT TEST ENTRY",
         "staffName": "UnitTester",
@@ -147,8 +140,8 @@ class TestPhoto(TestBase):
                               content_type='application/json')
         assert rv.status_code == 200
         assert rv.json['result'] == True
-        
-        
+
+
     def test_photo_rectify_2(self):
         rv = self.client.post('/rectify_photo', data=self.TEST_PHOTO_RECTIFY_2_JSON,
                               content_type='application/json')
