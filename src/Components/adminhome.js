@@ -12,6 +12,7 @@ class Adminhome extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      DataType:"User",
       count:0,
       displayTable:false,
       stundent:[],
@@ -27,6 +28,11 @@ class Adminhome extends Component {
     this.testHandler1 = this.testHandler1.bind(this);
     this.testHandler2 = this.testHandler2.bind(this);
   }
+  Datahandler = (event) => {
+    this.setState({
+        DataType: event.target.value
+    })
+}
   testHandler1 = event => {
 		event.preventDefault();
 	
@@ -36,7 +42,7 @@ class Adminhome extends Component {
 		};
 	
 		const data = {
-			tableName: "User"
+			tableName: this.state.DataType
 		};
   
     const options = { 
@@ -79,6 +85,7 @@ class Adminhome extends Component {
 	// )
    // this.props.history.push( '/table' );
 	}
+  
 
   testHandler2 = event => {
 		event.preventDefault();
@@ -89,7 +96,7 @@ class Adminhome extends Component {
 		};
 	
 		const data = {
-			tableName: "User"
+			tableName: this.state.DataType
 		};
 
     axios.post("http://localhost:5000//display_data", data, headers
@@ -164,38 +171,52 @@ rendervalue(){
  )
 }
 	render() {
-    const headers = {
-			'Content-Type': 'multipart/form-data',
-			'Access-Control-Allow-Origin': '*'
-		};
+    // const headers = {
+		// 	'Content-Type': 'multipart/form-data',
+		// 	'Access-Control-Allow-Origin': '*'
+		// };
 	
-		const data = {
-			tableName: "User"
-		};
+		// const data = {
+		// 	tableName: this.state.DataType
+		// };
 
-    axios.post("http://localhost:5000//display_data", data, headers
-		).then(res => {
-		//	console.log(res.data.data);
-      this.state.student=res.data.data;
-      console.log(this.state.student);
-      this.state.count=0;
-      this.state.students= [
-        { id: '', firstName: '',lastName: '',  mobile: '',email: '', location: '' }];
-      this.state.student.forEach(element => {
-        this.state.count++;
-        element.id=this.state.count;
-        this.state.students.push(element);
-        //console.log(element.id=this.state.count);  
-     });
-    // this.forceUpdate();
-		})
+    // axios.post("http://localhost:5000//display_data", data, headers
+		// ).then(res => {
+		// //	console.log(res.data.data);
+    //   this.state.student=res.data.data;
+    //   console.log(this.state.student);
+    //   this.state.count=0;
+    //   this.state.students= [
+    //     { id: '', firstName: '',lastName: '',  mobile: '',email: '', location: '' }];
+    //   this.state.student.forEach(element => {
+    //     this.state.count++;
+    //     element.id=this.state.count;
+    //     this.state.students.push(element);
+    //     //console.log(element.id=this.state.count);  
+    //  });
+    // // this.forceUpdate();
+		// })
 		return (
 			<div>
         <h1>Admin Home</h1>
-
+        <label>Type of user :</label><select onChange={this.Datahandler} defaultValue="none">
+                        <option defaultValue>Select excel type</option>
+                        <option value="User">User</option>
+                        <option value="Photo">Photo</option>
+                    </select><br />
         <button onClick={this.testHandler1}>download_data_csv</button>
 
          <button onClick={this.testHandler2}>display_data</button>
+         
+         {/* <form onSubmit={this.testHandler2}>
+                    <label>Type of user :</label><select onChange={this.Datahandler} defaultValue="none">
+                        <option defaultValue>Select excel type</option>
+                        <option value="User">User</option>
+                        <option value="Photo">Photo</option>
+                    </select><br />
+
+                    <input type="submit" value="Submit"  />
+                </form > */}
         <div className='form-container'>
        {(this.state.displayTable) ?this.rendervalue():this.state.displayTable}
        </div>
