@@ -160,8 +160,11 @@ def login_verified():
         user = User.objects.get(email=email)
         firstName = user.firstName
         lastName = user.lastName
+        staff=user.staff
+        admin=user.admin
+        tenant=user.tenant
         settings.username = firstName + lastName
-        return {'result': True, 'firstName': firstName, 'lastName': lastName}, 200 #this returns the details of the user 
+        return {'result': True, 'firstName': firstName, 'lastName': lastName, 'staff':staff, 'admin':admin, 'tenant':tenant}, 200 #this returns the details of the user 
     except:
         return {'result': False, 'info': "2FA error"}
     # except SignatureExpired:

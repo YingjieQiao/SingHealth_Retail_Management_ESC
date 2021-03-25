@@ -18,7 +18,7 @@ class Register extends Component {
             REpassword: "",
             location: "",
             staff:false,
-            tenent:false,
+            tenant:false,
             admin:false,
 
 
@@ -65,27 +65,27 @@ class Register extends Component {
         })
     }
     userhandler = (event) => {
-        if (event.target.value=="Tenent"){
+        if (event.target.value=="Tenant"){
             this.setState({
-            tenent: true,
+            tenant: true,
             staff: false,
             admin:false 
         })}
         else if (event.target.value=="Staff"){
             this.setState({
-            tenent: false,
+            tenant: false,
             staff: true,
             admin:false 
         })}
         else if (event.target.value=="Admin"){
             this.setState({
-            tenent: false,
+            tenant: false,
             staff: false,
             admin:true 
         })}
         else{
             this.setState({
-            tenent: false,
+            tenant: false,
             staff: false,
             admin:false 
         })}
@@ -180,7 +180,7 @@ class Register extends Component {
                     </select><br />
                     <label>Type of user :</label><select onChange={this.userhandler} defaultValue="">
                         <option defaultValue>Select user</option>
-                        <option value="Tenent">Tenent</option>
+                        <option value="Tenant">Tenant</option>
                         <option value="Staff">staff</option>
 
                     </select><br />
