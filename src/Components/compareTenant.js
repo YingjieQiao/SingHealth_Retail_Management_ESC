@@ -79,21 +79,13 @@ class CompareTenant extends Component {
         }
     }
 
-    institute1Id = (index) => {
-        // let s1 = "institute1" + ""+ index.toString();
-        // console.log("s1: ", s1);
-        // return s1;
-    }
-
     saveInstitute1 = (event) => {
-        // console.log("key: ", event.target);
         const data = event.target.value;
         if (data === "Choose...") {
             this.setState({institute1: ""});
         } else {
             const index = parseInt(data);
             this.setState({institute1: this.state.instituteArray[index]["email"]});
-            // this.setState({institute1: data});
         }
     }
 
