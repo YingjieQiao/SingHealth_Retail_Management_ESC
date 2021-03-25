@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, jsonify, url_for
+from flask import Blueprint, request, session, jsonify, url_for, current_app
 from app.models import User, Photo
 import boto3
 from botocore.exceptions import ClientError
@@ -165,20 +165,28 @@ def login_verified():
 
 @apis.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
-    body = request.files['file']
+    if current_app.config['TESTING']:
+        testFilePath = os.getcwd() + "/testAssets/image.jpg"
+        body = Image.open(testFilePath)
+    else:
+        body = request.files['file']
+        
     time_ = request.form['time']
     date_ = request.form['date']
 
     username = settings.username
     if username == "":
-        username = 'YingjieQiao'
+        username = 'UnitTester'
         print("testing s3 download") #TODO change to logging
     filename = username + "_" + date_ + "_" + time_ + ".jpg"
 
-    img = Image.open(body.stream)
-    rgb_img = img.convert('RGB')
-
-    rgb_img.save(filename)
+    if current_app.config['TESTING']:
+        rgb_img = body.convert('RGB')
+        rgb_img.save(filename)
+    else:
+        img = Image.open(body.stream)
+        rgb_img = img.convert('RGB')
+        rgb_img.save(filename)
 
     try:
         s3_methods.upload_file(filename, 'escapp-bucket-dev', None)
@@ -250,8 +258,8 @@ def rectify_photo():
     try:
         photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)
         photoInfo.update(**body)
-    except:
-        print("error") #TODO: change to logging
+    except Exception as e:
+        print("error: ", e) #TODO: change to logging
         return {'result': False}, 500
 
     return {'result': True}, 200
