@@ -72,7 +72,7 @@ class AuditChecklistTest extends Component {
                         <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|10)$' id="019" onInput={this.saveScore}/>
                     </div>
 
-                    <button type="button" onClick={this.tabulateScore}>Tabulate scores</button>
+                    <button type="button" class={this.getButtonClasses()} onClick={this.tabulateScore}>Tabulate scores</button>
 
                     <h4>Scoring</h4>
                     <p>Professionalism &#38; Staff Hygiene: {this.state.profStaffHydScore} /20%</p>
@@ -82,7 +82,7 @@ class AuditChecklistTest extends Component {
                     <label>Comments:</label>
                     <input onInput={this.saveComment} type="text" />
                 </form>
-                <button type="submit" onClick={this.handleSubmit}>Submit</button>
+                <button type="submit" class={this.getButtonClasses()} onClick={this.handleSubmit}>Submit</button>
 
             </div>
         )
@@ -263,7 +263,22 @@ class AuditChecklistTest extends Component {
         }
     }
 
-    
+    validateData = () => {
+        if (Object.keys(this.state.finalDict).length === 1 ) {
+            return false;
+        }
+        else if (Object.keys(this.state.finalDict).length < Object.keys(this.state.dataLength).length) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    getButtonClasses() {
+        let classes = 'btn btn-';
+        classes += this.validateData() === false ? 'secondary' : 'primary';
+        return classes;
+    }
 
 }
 
