@@ -167,27 +167,27 @@ class Register extends Component {
 
                 <form onSubmit={this.handleSubmit}>
                     <h1>User Registration</h1>
-                    <label>First Name :</label> <input type="text" value={this.state.firstName} onChange={this.firsthandler} placeholder="FirstName..." /><br />
-                    <label>Last Name :</label> <input type="text" value={this.state.lastName} onChange={this.lasthandler} placeholder="LastName..." /><br />
-                    <label>email id :</label> <input type="text" value={this.state.email} onChange={this.emailhandler} placeholder="email id..." /><br />
-                    <label>mobile no :</label> <input type="number" value={this.state.mobile} onChange={this.mobilehandler} placeholder="Mobile number..." /><br />
-                    <label>Password :</label> <input type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password..." /><br />
-                    <label>RE-Password :</label> <input type="password" value={this.state.REpassword} onChange={this.REpasswordhandler} placeholder="RE-Password..." /><br />
+                    <label>First Name :</label> <input id="firstname" type="text" value={this.state.firstName} onChange={this.firsthandler} placeholder="FirstName..." /><br />
+                    <label>Last Name :</label> <input id="lastname" type="text" value={this.state.lastName} onChange={this.lasthandler} placeholder="LastName..." /><br />
+                    <label>email id :</label> <input id="emailid" type="text" value={this.state.email} onChange={this.emailhandler} placeholder="email id..." /><br />
+                    <label>mobile no :</label> <input id="mobile" type="number" value={this.state.mobile} onChange={this.mobilehandler} placeholder="Mobile number..." /><br />
+                    <label>Password :</label> <input id="password" type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password..." /><br />
+                    <label>RE-Password :</label> <input id="repassword" type="password" value={this.state.REpassword} onChange={this.REpasswordhandler} placeholder="RE-Password..." /><br />
 
-                    <label>location :</label><select onChange={this.locationhandler} defaultValue="">
+                    <label>location :</label><select id="location" onChange={this.locationhandler} defaultValue="">
                         <option defaultValue>Select location</option>
                         <option value="SUTD">SUTD</option>
                         <option value="NUS">NUS</option>
                         <option value="None">None</option>
                     </select><br />
-                    <label>Type of user :</label><select onChange={this.userhandler} defaultValue="">
+                    <label>Type of user :</label><select id="usertype" onChange={this.userhandler} defaultValue="">
                         <option defaultValue>Select user</option>
                         <option value="Tenant">Tenant</option>
                         <option value="Staff">staff</option>
 
                     </select><br />
 
-                    <input type="submit" value="Submit"  />
+                    <input id="submit" type="submit" value="Submit"  />
 
                     <li>
                          <label>Sign in? </label>

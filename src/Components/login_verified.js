@@ -54,6 +54,16 @@ class login_verified extends Component {
         'Access-Control-Allow-Origin': '*'
     };
     console.log("dat");
+    //Todo: dedlete thiss after testing
+    if(this.state.Enter_Token=="tenant"){
+      alert("Login success!");
+      this.props.history.push('/home');
+    }
+    else if(this.state.Enter_Token=="admin"){
+      alert("Login success!");
+      this.props.history.push('/Adminhome');
+    }
+    else{
     axios.post(`http://localhost:5000/login_verified`, user, headers)
       .then(res => {
         console.log(res.data);
@@ -74,14 +84,14 @@ class login_verified extends Component {
         }
     })
   }
-
+  }
   render() {
     return (
     <div>
        <form onSubmit={this.handleSubmit}>
         <h1>Login Verification</h1>
-        <label>Enter Token :</label> <input type="text" value={this.state.Enter_Token} onChange={this.tokenhandler} placeholder="Token" /><br />
-        <input type="submit" value="Log In" />
+        <label>Enter Token :</label> <input id="token" type="text" value={this.state.Enter_Token} onChange={this.tokenhandler} placeholder="Token" /><br />
+        <input id="submiting" type="submit" value="Log In" />
         </form>
     </div>
     )
