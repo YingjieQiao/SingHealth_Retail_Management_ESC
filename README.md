@@ -1,5 +1,6 @@
 # SingHealth Retail Management App
 
+![CI workflow](https://github.com/YingjieQiao/escapp/actions/workflows/ci.yml/badge.svg)
 
 
 ### to run the app

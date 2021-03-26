@@ -2,7 +2,9 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Register from './Components/Register';
+//import Registeration_Confirmation from './Components/Registeration_Confirmation';
 import Login from './Components/Login';
+import Login_verified from './Components/login_verified';
 import Home from './Components/home';
 import Upload from './Components/upload';
 import email from './Components/email';
@@ -13,7 +15,9 @@ import compareTenant from './Components/compareTenant';
 import audit from './Components/audit';
 import {Route, BrowserRouter as Router,Switch,Link} from "react-router-dom";
 import Navbar from './Components/Navbar';
-
+import Adminhome from './Components/adminhome';
+import Table from './Components/Table';
+import tenantHome from './Components/tenantHome'
 function App() {
 
   return (
@@ -23,6 +27,7 @@ function App() {
     <Switch>
       <Route path="/" exact component={Login}/>
       <Route path="/Register" exact component={Register}/>
+      <Route path="/Login_verified" exact component={Login_verified}/>
       <Route path="/home" exact component={Home}/>
       <Route path="/upload" exact component={Upload}/>
       <Route path="/email" exact component={email}/>
@@ -31,6 +36,9 @@ function App() {
       <Route path="/dataDashboardTenant" exact component={dataDashboardTenant}/>
       <Route path="/compareTenant" exact component={compareTenant}/>
       <Route path="/audit" exact component={audit}/>
+      <Route path="/adminhome" exact component={Adminhome}/>
+      <Route path="/table" exact component={Table}/>
+      <Route path="/tenantHome" exact component={tenantHome}/>
     </Switch>
     
     </div>

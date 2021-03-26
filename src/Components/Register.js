@@ -17,6 +17,9 @@ class Register extends Component {
             password: "",
             REpassword: "",
             location: "",
+            staff:false,
+            tenant:false,
+            admin:false,
 
 
         }
@@ -33,7 +36,9 @@ class Register extends Component {
             lastName: event.target.value
         })
     }
+
     emailhandler = (event) => {
+        
         this.setState({
             email: event.target.value
         })
@@ -59,19 +64,56 @@ class Register extends Component {
             location: event.target.value
         })
     }
+    userhandler = (event) => {
+        if (event.target.value=="Tenant"){
+            this.setState({
+            tenant: true,
+            staff: false,
+            admin:false 
+        })}
+        else if (event.target.value=="Staff"){
+            this.setState({
+            tenant: false,
+            staff: true,
+            admin:false 
+        })}
+        else if (event.target.value=="Admin"){
+            this.setState({
+            tenant: false,
+            staff: false,
+            admin:true 
+        })}
+        else{
+            this.setState({
+            tenant: false,
+            staff: false,
+            admin:false 
+        })}
+        
+    }
 
     handleSubmit = (event) => {
         event.preventDefault()
-        if( this.state.firstName==""|
-            this.state.lastName==""|
-            this.state.email==""|
-            this.state.mobile==""|
-            this.state.password==""|
-            this.state.location==""){
+        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if( this.state.firstName===""|
+            this.state.lastName===""|
+            this.state.email===""|
+            this.state.mobile===""|
+            this.state.password===""|
+            this.state.location===""|
+            this.state.user===""
+            ){
                 alert(` Registered UnSuccessfully !!!!\n some parameters are empty`)
                 this.props.history.push('/Register');
             }
-        else if(this.state.password!=this.state.REpassword){
+            
+    
+            else if ( !re.test(this.state.email) ) {
+                alert(` email not correct format!! !!!!`)
+                this.props.history.push('/Register');
+            }
+
+        else if(this.state.password!==this.state.REpassword){
             alert(` pasword did not match!! !!!!`)
             this.props.history.push('/Register');
         }    
@@ -83,7 +125,10 @@ class Register extends Component {
                     email: this.state.email,
                     mobile: this.state.mobile,
                     password: this.state.password,
-                    location: this.state.location
+                    location: this.state.location,
+                    tenant: this.state.tenant,
+                    staff: this.state.staff,
+                    admin:this.state.admin 
                 };
                 const headers = {
                     'Content-Type': 'application/json',
@@ -105,10 +150,11 @@ class Register extends Component {
                     password: '',
                     REpassword: '',
                     location: "",
+                    staff: "false",
                 })
 
                 alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
-                this.props.history.push('/home');
+                this.props.history.push('/');
             }
             }
         
@@ -128,11 +174,17 @@ class Register extends Component {
                     <label>Password :</label> <input type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password..." /><br />
                     <label>RE-Password :</label> <input type="password" value={this.state.REpassword} onChange={this.REpasswordhandler} placeholder="RE-Password..." /><br />
 
-                    <label>location :</label><select onChange={this.locationhandler} defaultValue="none">
+                    <label>location :</label><select onChange={this.locationhandler} defaultValue="">
                         <option defaultValue>Select location</option>
                         <option value="SUTD">SUTD</option>
                         <option value="NUS">NUS</option>
                         <option value="None">None</option>
+                    </select><br />
+                    <label>Type of user :</label><select onChange={this.userhandler} defaultValue="">
+                        <option defaultValue>Select user</option>
+                        <option value="Tenant">Tenant</option>
+                        <option value="Staff">staff</option>
+
                     </select><br />
 
                     <input type="submit" value="Submit"  />

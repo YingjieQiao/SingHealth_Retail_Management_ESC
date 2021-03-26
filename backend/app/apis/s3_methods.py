@@ -1,11 +1,14 @@
 import base64
+import logging
 from io import BytesIO
-
+import logging
 import boto3
 from botocore.exceptions import ClientError
-import os
+import os, json
 from PIL import Image
-
+from app.models import Photo
+from . import settings
+from flask import request
 
 
 def upload_file(file_name, bucket, object_name):
@@ -62,19 +65,46 @@ def download_user_objects(bucket, username, timeInput, dateInput):
     s3_client = boto3.client('s3',
                 aws_access_key_id=os.environ.get('ACCESS_KEY'),
                 aws_secret_access_key=os.environ.get('SECRET_KEY'))
-    res = []
+    photoData = []
+    photoAttrData = []
 
     for key in s3_client.list_objects(Bucket=bucket)['Contents']:
         ls = key['Key'].split('_')
+        date_ = ls[1]
+        time_ = ls[2][:-4]
         if (ls[0] == username):
-            photoPath = download(s3_client, key['Key'], bucket, None)
-            img = Image.open(photoPath)
-            in_mem_file = BytesIO()
-            img.save(in_mem_file, format='JPEG')
-            in_mem_file.seek(0)
-            img_data = in_mem_file.read()
-            encoded_img_bytes = base64.b64encode(img_data)
-            encoded_img_string = encoded_img_bytes.decode('ascii')
+            photoInfo = get_photo_info(date_, time_)
+
+            if (photoInfo[0]['rectified'] == False):
+                photoAttrData.append(photoInfo)
+
+                photoPath = download(s3_client, key['Key'], bucket, None)
+                img = Image.open(photoPath)
+                in_mem_file = BytesIO()
+                img.save(in_mem_file, format='JPEG')
+                in_mem_file.seek(0)
+                img_data = in_mem_file.read()
+                encoded_img_bytes = base64.b64encode(img_data)
+                encoded_img_string = encoded_img_bytes.decode('ascii')
+                
+                photoData.append(encoded_img_string)
             
-            res.append(encoded_img_string)
-    return res
+    return photoData, photoAttrData
+
+
+def get_photo_info(date_, time_):
+    """
+    get the information assciated with a given photo name
+    """
+
+    if settings.username == "":
+        settings.username = "UnitTester"
+        print("testing") #TODO change to logging
+
+    try:
+        photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)
+    except:
+        print("error") #TODO: change to logging
+        return None
+
+    return photoInfo

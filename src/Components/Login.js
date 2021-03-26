@@ -3,8 +3,8 @@ import './CSS/todo.css'
 import Register from './Register'
 import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-router-dom";
 import axios from 'axios';
-
-
+import login_verified from './login_verified'
+// import { ExportToCsv } from 'export-to-csv';
 class Login extends Component {
     constructor(props) {
         super(props)
@@ -47,20 +47,26 @@ class Login extends Component {
           .then(res => {
             console.log(res.data);
             if (res.data.result === true) {
-                alert("Login success!","yolo")
-                this.props.history.push('/home');
+                alert("Please check your email for authentication token","yolo")
+
+                this.props.history.push(
+                '/Login_verified'
+                // search:   res.data.token ,
+                // state: { detail: res.data.token }
+                );
+
             } else {
                 alert("Login unsuccessful:( \n"+res.data.info);
             }
         })
-        .catch(function (error,res) {
-            console.log(error.response.status) // 401
-            console.log(error.response.data.error) //Please Authenticate or whatever returned from server
-          if(error.response.status==401){
-            alert("Login unsuccess!")
-            alert(res.data.info);
-          }
-        })
+        // .catch(function (error,res) {
+        //     console.log(error.response.status) // 401
+        //     console.log(error.response.data.error) //Please Authenticate or whatever returned from server
+        //   if(error.response.status==401){
+        //     alert("Login unsuccess!")
+        //     alert(res.data.info);
+        //   }
+        // })
         
         
         
@@ -81,10 +87,15 @@ class Login extends Component {
                     <label>Password :</label> <input type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password..." /><br />
                     <input type="submit" value="Log In" />
                     <li>
-                         <label>new tenent?  </label>
+                         <label>new tenant?  </label>
                         <Link to="/Register">Register</Link>
 
                      </li>
+                     {/* <li>
+                         <label>admin home link   </label>
+                        <Link to="/Adminhome">admin</Link>
+
+                     </li> */}
                 </form>
 
             </div>

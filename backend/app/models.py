@@ -13,23 +13,31 @@ class User(db.Document):
     fnb = db.BooleanField(required=True, unique=False)
     meta = {'strict': False}
 
+    staff = db.BooleanField(required=True, default=False)
+    tenant = db.BooleanField(required=True, default=False)
+    admin = db.BooleanField(required=True, default=False)
+
     def hash_password(self):
        self.password = generate_password_hash(self.password).decode('utf8')
 
+
     def check_password(self, password):
         return check_password_hash(self.password, password)
+    
 
     def setfnb(self,val):
         self.fnb = val
 
 
 class Photo(db.Document):
-    tag = db.StringField(required=True, unique=False)
+    tags = db.StringField(required=True, unique=False)
     date = db.StringField(required=True, unique=False)
     time = db.StringField(required=True, unique=False)
     notes = db.StringField(required=True, unique=False)
     staffName = db.StringField(required=True, unique=False)
     tenantName = db.StringField(required=True, unique=False)
+    rectified = db.BooleanField(required=True, unique=False)
+
 
 class Audit_FB(db.Document):
     date = db.StringField(required=True, unique=False)
