@@ -1,11 +1,32 @@
 import React, { Component } from 'react'
 import Navbar from './Navbar';
+import axios from 'axios';
+
 
 class DataDashboardTenant extends Component {
 
     state = {
-        tenantName: this.props.location.state.tenantName,
+        tenant: this.props.location.state.tenant,
         graph: null
+    }
+
+
+    componentDidMount() {
+        axios.get("http://localhost:5000/tenant_exists")
+        .then(
+            res => {
+                console.log(res);
+
+                // for (var i = 0; i < res.data.tenant_list.length; i++) {
+                //     let newArray1 = this.state.instituteArray;
+                //     let newArray2 = this.state.numOfInstitue;
+                //     newArray1.push(res.data.tenant_list[i]);
+                //     newArray2.push(i);
+                //     this.setState({instituteArray: newArray1, numOfInstitue: newArray2});
+                // }
+
+            }
+        )
     }
 
     render() {
@@ -15,7 +36,7 @@ class DataDashboardTenant extends Component {
             <div>
                 <Navbar/>
                 <h2>Data Dashboard</h2>
-                <h3>{this.state.tenantName}'s Performance Score</h3>
+                <h3>{this.state.tenant}'s Performance Score</h3>
                 <div class="btn-group" role="group" aria-label="Performance Score Trend Variation">
                     <button type="button" class="btn btn-outline-primary" value="yearly" onClick={this.handleGetTrend}>Yearly</button>
                     <button type="button" class="btn btn-outline-primary" value="monthly" onClick={this.handleGetTrend}>Monthly</button>

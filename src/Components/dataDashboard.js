@@ -8,6 +8,7 @@ class DataDashboard extends Component {
     state = {
         tenantArray: [],
         tenant: "",
+        tenantName: "",
         numOfTenant: []
     }
 
@@ -63,10 +64,11 @@ class DataDashboard extends Component {
     saveTenant = (event) => {
         const data = event.target.value;
         if (data === "Choose...") {
-            this.setState({tenant: ""});
+            this.setState({tenant: "", tenantName: ""});
         } else {
             const index = parseInt(data);
-            this.setState({tenant: this.state.tenantArray[index]["email"]});
+            const name = this.state.tenantArray[index]["firstName"] + " " + this.state.tenantArray[index]["lastName"];
+            this.setState({tenant: this.state.tenantArray[index]["email"], tenantName: name});
         }
     }
 
@@ -76,29 +78,30 @@ class DataDashboard extends Component {
         }
         else {
             // proceeds to retrieve tenant's statistics
-            console.log("result: ", this.state.tenant);
-            const det = {
-                tenant: this.state.tenant
-            }
+            // console.log("result: ", this.state.tenant);
+            // const det = {
+            //     tenant: this.state.tenant
+            // }
             
-            const headers = {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            };
-            console.log('Show error notification!')
-            axios.post(`http://localhost:5000/tenant_exists`, det, headers)
-            .then(res => {
-                console.log(res.data);
-                if (res.data.result === true) {
-                    alert("Tenant exists!","yolo");
-                } else {
-                    alert("Tenant does not exist");
-                }
-            }).catch(
-                function (error) {
-                  console.log('Error!')
-                  return Promise.reject(error)
-                })
+            // const headers = {
+            //     'Content-Type': 'application/json',
+            //     'Access-Control-Allow-Origin': '*'
+            // };
+            // console.log('Show error notification!')
+            // axios.post(`http://localhost:5000/tenant_exists`, det, headers)
+            // .then(res => {
+            //     console.log(res.data);
+            //     if (res.data.result === true) {
+            //         alert("Tenant exists!","yolo");
+            //     } else {
+            //         alert("Tenant does not exist");
+            //     }
+            // }).catch(
+            //     function (error) {
+            //       console.log('Error!')
+            //       return Promise.reject(error)
+            //     });
+
             // Navigate to Tenant's performance score board if successful
             this.props.history.push({
                 pathname: '/dataDashboardTenant',
