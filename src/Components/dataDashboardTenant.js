@@ -7,7 +7,12 @@ class DataDashboardTenant extends Component {
 
     state = {
         tenant: this.props.location.state.tenant,
-        graph: null,
+        graphDict: {
+            day: false,
+            week: false,
+            month: false,
+            year: false
+        },
         imageDict: {
             day: "",
             week: "",
@@ -15,7 +20,13 @@ class DataDashboardTenant extends Component {
             year: ""
         },
         numOfImage: [],
-        imageArray: []
+        imageArray: [],
+        csvDict: {
+            day: [],
+            week: [],
+            month: [],
+            year: []
+        }
     }
 
 
@@ -88,6 +99,43 @@ class DataDashboardTenant extends Component {
                             newNumOfImage.push(counter++);
                             this.setState({numOfImage: newNumOfImage});
                             break;
+                        case "audit_day_csv":
+                            var newCsvDict = this.state.csvDict;
+                            newCsvDict["day"] = res.data["audit_day_csv"];
+                            this.setState({csvDict: newCsvDict});
+
+                            var newGraphDict = this.state.graphDict;
+                            newGraphDict["day"] = true;
+                            this.setState({graphDict: newGraphDict});
+                            break;
+                        case "audit_week_csv":
+                            var newCsvDict = this.state.csvDict;
+                            newCsvDict["week"] = res.data["audit_week_csv"];
+                            this.setState({csvDict: newCsvDict});
+
+                            var newGraphDict = this.state.graphDict;
+                            newGraphDict["week"] = true;
+                            this.setState({graphDict: newGraphDict});
+                            break;
+                        case "audit_month_csv":
+                            var newCsvDict = this.state.csvDict;
+                            newCsvDict["month"] = res.data["audit_month_csv"];
+                            this.setState({csvDict: newCsvDict});
+
+                            var newGraphDict = this.state.graphDict;
+                            newGraphDict["month"] = true;
+                            this.setState({graphDict: newGraphDict});
+
+                            break;
+                        case "audit_year_csv":
+                            var newCsvDict = this.state.csvDict;
+                            newCsvDict["year"] = res.data["audit_year_csv"];
+                            this.setState({csvDict: newCsvDict});
+
+                            var newGraphDict = this.state.graphDict;
+                            newGraphDict["year"] = true;
+                            this.setState({graphDict: newGraphDict});
+                            break;
                         default:
                             break;
                     }
@@ -118,16 +166,32 @@ class DataDashboardTenant extends Component {
                         return(
                             <div>
                                 <h4>{this.displayImageHeading(image)}</h4>
-                                <img src={this.state.imageArray[image]} alt={image} key={image} width="500" height="500" /> 
+                                <img src={this.getImageSrc(image)} alt={image} key={image} width="500" height="500" /> 
+                                {/* <img src={this.state.imageArray[image]} alt={image} key={image} width="500" height="500" />  */}
+                                <div>
+                                    <button type="button" class={this.getButtonClasses(this.handleExportButtonId(image))} id={this.handleExportButtonId(image)} onClick={this.handleExport}>Export {this.displayButtonLabel(image)} Graph to excel</button>
+                                </div>
                             </div>
                         )
                     })}
                 </div>
-                <div>
-                    <button type="button" class={this.getButtonClasses()} onClick={this.handleExport}>Export Graph to excel</button>
-                </div>
             </div>
         )
+    }
+
+    getImageSrc = (index) => {
+        switch (index) {
+            case 0:
+                return this.state.imageDict["year"];
+            case 1:
+                return this.state.imageDict["month"];
+            case 2:
+                return this.state.imageDict["week"];
+            case 3:
+                return this.state.imageDict["day"];
+            default:
+                return "";
+        }  
     }
 
     displayImageHeading = (index) => {
@@ -142,6 +206,36 @@ class DataDashboardTenant extends Component {
                 return "7 Days statistics";
             default:
                 return "No statistics available";
+        }
+    }
+
+    displayButtonLabel = (index) => {
+        switch (index) {
+            case 0:
+                return "Yearly";
+            case 1:
+                return "Monthly";
+            case 2:
+                return "Weekly";
+            case 3:
+                return "7 Days";
+            default:
+                return alert("This should not happen!");
+        }
+    }
+
+    handleExportButtonId = (index) => {
+        switch (index) {
+            case 0:
+                return "year";
+            case 1:
+                return "month";
+            case 2:
+                return "week";
+            case 3:
+                return "day";
+            default:
+                return alert("This should not happen!");
         }
     }
 
@@ -164,13 +258,57 @@ class DataDashboardTenant extends Component {
         }
     }
 
-    handleExport = event => {
-        // TODO: export graph to excel format
+    handleExport = (event) => {
+        console.log("key: ", event.target.id);
+
+        var csvRows = [];
+        switch(event.target.id) {
+            case "year":
+                var twoDiArray = this.state.csvDict["year"];
+                break;
+            case "month":
+                var twoDiArray = this.state.csvDict["month"];
+                break;
+            case "week":
+                var twoDiArray = this.state.csvDict["week"];
+                break;
+            case "day":
+                var twoDiArray = this.state.csvDict["day"];
+                break;
+            default:
+                break;
+        }
+
+        for (var i = 0; i < twoDiArray.length; ++i) {
+            for (var j = 0; j < twoDiArray[i].length; ++j) {
+                twoDiArray[i][j] = '\"' + twoDiArray[i][j] + '\"';  // Handle elements that contain commas
+            }
+            csvRows.push(twoDiArray[i].join(','));
+        }
+
+        var csvString = csvRows.join('\r\n');
+        var a         = document.createElement('a');
+        a.href        = 'data:attachment/csv,' + csvString;
+        a.target      = '_blank';
+        a.download    = 'myFile.csv';  
+        document.body.appendChild(a);
+        a.click();      
+        console.log(csvString);
+
     }
 
-    getButtonClasses() {
+    validateCsvAvailability = (data) => {
+        if (this.state.graphDict[data] === false) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    getButtonClasses(data) {
         let classes = 'btn btn-';
-        classes += this.state.graph === null ? 'secondary' : 'primary';
+        classes += this.validateCsvAvailability(data) === false ? 'secondary' : 'primary';
+        // classes += this.state.graph === null ? 'secondary' : 'primary';
         return classes;
     }
 }
