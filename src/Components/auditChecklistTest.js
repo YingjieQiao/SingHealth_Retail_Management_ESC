@@ -258,8 +258,6 @@ class AuditChecklistTest extends Component {
                 finalDict: newFinalDict
             });
 
-            console.log("newSectionScore: ", this.state.sectionScore);
-
         }
     }
 
@@ -267,7 +265,7 @@ class AuditChecklistTest extends Component {
         if (Object.keys(this.state.finalDict).length === 1 ) {
             return false;
         }
-        else if (Object.keys(this.state.finalDict).length < Object.keys(this.state.dataLength).length) {
+        else if (Object.keys(this.state.scoreDict).length < (this.state.dataLength - 1)) {
             return false;
         } else {
             return true;
