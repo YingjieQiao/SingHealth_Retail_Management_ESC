@@ -224,9 +224,9 @@ rendervalue(){
                         <option value="User">User</option>
                         <option value="Photo">Photo</option>
                     </select><br />
-        <button onClick={this.testHandler1}>download_data_csv</button>
+        <button id="download_data_csv" onClick={this.testHandler1}>download_data_csv</button>
 
-         <button onClick={this.testHandler2}>display_data</button>
+         <button id="display_data" onClick={this.testHandler2}>display_data</button>
          
          {/* <form onSubmit={this.testHandler2}>
                     <label>Type of user :</label><select onChange={this.Datahandler} defaultValue="none">
