@@ -41,7 +41,8 @@ class TestUserLogin(TestBase):
         "location": "SUTD",
         "staff": True,
         "tenant": False,
-        "admin": False
+        "admin": False,
+        "fnb": True
     }
 
     TEST_ACCOUNT_2 = {  # login failed testcase 2
@@ -74,7 +75,8 @@ class TestUserLogin(TestBase):
         "location": "SUTD",
         "staff": True,
         "tenant": False,
-        "admin": False
+        "admin": False,
+        "fnb": True
     }
 
     TEST_ACCOUNT_5 = {  # login failed testcase 5
@@ -86,7 +88,8 @@ class TestUserLogin(TestBase):
         "location": "SUTD",
         "staff": True,
         "tenant": False,
-        "admin": False
+        "admin": False,
+        "fnb": True
     }
 
     TEST_ACCOUNT_6 = {  # login failed testcase 5
@@ -98,7 +101,8 @@ class TestUserLogin(TestBase):
         "location": "SUTD",
         "staff": False,
         "tenant": True,
-        "admin": False
+        "admin": False,
+        "fnb": True
     }
 
     TEST_ACCOUNT_1_JSON = json.dumps(TEST_ACCOUNT_1)
@@ -203,7 +207,8 @@ class TestUserSignUp(TestBase):
         "location": "SUTD",
         "staff": True,
         "tenant": False,
-        "admin": False
+        "admin": False,
+        "fnb": True
     }
 
     TEST_ACCOUNT_2 = {  # signup success testcase 2
@@ -215,7 +220,8 @@ class TestUserSignUp(TestBase):
         "location": "SUTD",
         "staff": False,
         "tenant": True,
-        "admin": False
+        "admin": False,
+        "fnb": True
     }
 
     TEST_ACCOUNT_3 = {  # signup failed testcase 3
@@ -232,6 +238,7 @@ class TestUserSignUp(TestBase):
         "staff": False,
         "tenant": True,
         "admin": False,
+        "fnb": True,
         "extra column": "will break"
     }
 

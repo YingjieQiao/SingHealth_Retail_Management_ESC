@@ -9,6 +9,10 @@ import Home from './Components/home';
 import Upload from './Components/upload';
 import email from './Components/email';
 import viewPhoto from './Components/viewPhoto';
+import dataDashboard from './Components/dataDashboard';
+import dataDashboardTenant from './Components/dataDashboardTenant';
+import compareTenant from './Components/compareTenant';
+import audit from './Components/audit';
 import {Route, BrowserRouter as Router,Switch,Link} from "react-router-dom";
 import Navbar from './Components/Navbar';
 import Adminhome from './Components/adminhome';
@@ -28,6 +32,10 @@ function App() {
       <Route path="/upload" exact component={Upload}/>
       <Route path="/email" exact component={email}/>
       <Route path="/viewPhoto" exact component={viewPhoto}/>
+      <Route path="/dataDashboard" exact component={dataDashboard}/>
+      <Route path="/dataDashboardTenant" exact component={dataDashboardTenant}/>
+      <Route path="/compareTenant" exact component={compareTenant}/>
+      <Route path="/audit" exact component={audit}/>
       <Route path="/adminhome" exact component={Adminhome}/>
       <Route path="/table" exact component={Table}/>
       <Route path="/tenantHome" exact component={tenantHome}/>
