@@ -77,3 +77,8 @@ try:
     print("alert accepted")
 except TimeoutException:
     print("no alert")	
+
+# browser.get("http://localhost:3000/") # Load App pagebtw 
+links = browser.find_elements_by_tag_name('a')
+print(links)
+print("yolo")
