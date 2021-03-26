@@ -574,13 +574,21 @@ def tenant_list():
 @apis.route('/auditChecklist', methods=['GET', 'POST'])
 def audit_checklist():
     ts = datetime.now().today()
-    print(ts)
     body = request.get_json()
-    audit = Audit_non_FB(**body)
-    audit.timestamp = str(ts)
-    audit.computeTotalScore()
-    audit.save()
-    return {'statusText': True}
+    try:
+        body['workSafetyScore'] = body['workSafetyHealthScore']
+        body['profScore'] = body['profStaffHydScore']
+        body['housekeepingScore'] = body['houseGeneralScore']
+        body.pop('workSafetyHealthScore')
+        body.pop('profStaffHydScore')
+        body.pop('houseGeneralScore')
+        audit = Audit_non_FB(**body)
+        audit.timestamp = str(ts)
+        audit.computeTotalScore()
+        audit.save()
+        return {'statusText': True}, 200
+    except:
+        return {'statusText': False}, 500
 
 @apis.route('/compare_tenant', methods=['GET', 'POST'])
 def compare_tenant():
