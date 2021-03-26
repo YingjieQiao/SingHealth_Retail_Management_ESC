@@ -548,7 +548,7 @@ def tenant_exists():
     # for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png"]:#, "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv", "audit.csv"]:
     #     os.remove(i)
 
-    print(audit_day)
+    print(audit_day[2:-1])
 
     print(df_day.values.T.tolist())
 
