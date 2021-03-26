@@ -15,7 +15,7 @@ time.sleep(3)
 time.sleep(3)
 print("yolo")
 links = browser.find_elements_by_tag_name('a')
-print("yolo1w2212")
+
 print(links)
 time.sleep(3)				
 print("***Printing all link names***")
@@ -25,7 +25,7 @@ for elem in links:
     if href is not None:
         print(href)
 time.sleep(3)	
-print("***Printing all link addresses***")
+
 # print all the hyper links
 # for  i in range(links.size()) :
 # 	print(i + " " + links.get(i).getAttribute("href"))
