@@ -18,7 +18,7 @@ class DataDashboardTenant extends Component {
             tenant: this.state.tenant
         };
 
-        axios.get("http://localhost:5000/tenant_exists", data)
+        axios.post("http://localhost:5000/tenant_exists", data)
         .then(
             res => {
                 console.log(res);
