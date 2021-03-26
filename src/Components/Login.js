@@ -91,11 +91,11 @@ class Login extends Component {
                         <Link to="/Register">Register</Link>
 
                      </li>
-                     <li>
+                     {/* <li>
                          <label>admin home link   </label>
                         <Link to="/Adminhome">admin</Link>
 
-                     </li>
+                     </li> */}
                 </form>
 
             </div>

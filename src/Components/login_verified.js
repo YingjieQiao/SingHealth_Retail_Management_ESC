@@ -70,7 +70,7 @@ class login_verified extends Component {
         if (res.data.result === true) {
             alert("Login success!")
             if(res.data.tenant){
-            this.props.history.push('/home');
+            this.props.history.push('/tenantHome');
             }
             else if(res.data.staff){
               this.props.history.push('/home');

@@ -6,6 +6,8 @@ Authentication flow and Account registration test
 
 Testing flow:
 
+3 testing classes:
+
 login:
     - failed testcase 1: user doe not exist
     - failed testcase 2: user doe not exist and missing required columns
@@ -19,10 +21,17 @@ sign up:
     - success testcase 2: tenant account
     - failed testcase 1: missing columns
     - failed testcase 2: extra columns
+    
+clean up:
+    - remove dummy entries from the database
 """
 
 
 class TestUserLogin(TestBase):
+    """
+    Test login
+    """
+
     TEST_ACCOUNT_1 = { # login failed testcase 1
         'firstName': 'John',
         'lastName': 'Doe',
@@ -32,7 +41,8 @@ class TestUserLogin(TestBase):
         "location": "SUTD",
         "staff": True,
         "tenant": False,
-        "admin": False
+        "admin": False,
+        "fnb": True
     }
 
     TEST_ACCOUNT_2 = {  # login failed testcase 2
@@ -65,7 +75,8 @@ class TestUserLogin(TestBase):
         "location": "SUTD",
         "staff": True,
         "tenant": False,
-        "admin": False
+        "admin": False,
+        "fnb": True
     }
 
     TEST_ACCOUNT_5 = {  # login failed testcase 5
@@ -77,7 +88,8 @@ class TestUserLogin(TestBase):
         "location": "SUTD",
         "staff": True,
         "tenant": False,
-        "admin": False
+        "admin": False,
+        "fnb": True
     }
 
     TEST_ACCOUNT_6 = {  # login failed testcase 5
@@ -89,7 +101,8 @@ class TestUserLogin(TestBase):
         "location": "SUTD",
         "staff": False,
         "tenant": True,
-        "admin": False
+        "admin": False,
+        "fnb": True
     }
 
     TEST_ACCOUNT_1_JSON = json.dumps(TEST_ACCOUNT_1)
@@ -171,15 +184,18 @@ class TestUserLogin(TestBase):
 
 class TestUserSignUp(TestBase):
     """
-    firstName: this.state.firstName,
-    lastName: this.state.lastName,
-    email: this.state.email,
-    mobile: this.state.mobile,
-    password: this.state.password,
-    location: this.state.location,
-    tenant: this.state.tenant,
-    staff: this.state.staff,
-    admin:this.state.admin
+    Test sign up
+
+    signup endpoint payload:
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        email: this.state.email,
+        mobile: this.state.mobile,
+        password: this.state.password,
+        location: this.state.location,
+        tenant: this.state.tenant,
+        staff: this.state.staff,
+        admin:this.state.admin
     """
 
     TEST_ACCOUNT_1 = {  # signup success testcase 1
@@ -191,7 +207,8 @@ class TestUserSignUp(TestBase):
         "location": "SUTD",
         "staff": True,
         "tenant": False,
-        "admin": False
+        "admin": False,
+        "fnb": True
     }
 
     TEST_ACCOUNT_2 = {  # signup success testcase 2
@@ -203,7 +220,8 @@ class TestUserSignUp(TestBase):
         "location": "SUTD",
         "staff": False,
         "tenant": True,
-        "admin": False
+        "admin": False,
+        "fnb": True
     }
 
     TEST_ACCOUNT_3 = {  # signup failed testcase 3
@@ -220,6 +238,7 @@ class TestUserSignUp(TestBase):
         "staff": False,
         "tenant": True,
         "admin": False,
+        "fnb": True,
         "extra column": "will break"
     }
 
@@ -261,5 +280,8 @@ class TestUserSignUp(TestBase):
 
 
 class TestPostUserSignUp(TestBase):
+    """
+    clean up
+    """
     def test_cleanup(self):
         assert TestBase.clean_user_post_test(self) == True

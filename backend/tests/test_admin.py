@@ -2,6 +2,9 @@ from tests import TestBase
 import json
 
 """
+
+2 testing classes:
+
 get db data:
     - success testcase 1: User data
     - success testcase 2: Photo data
@@ -39,7 +42,7 @@ class TestUser(TestBase):
         assert rv.status_code == 200
         assert rv.json['info'] == 'success'
         assert type(rv.json['data']) == list
-        assert len(rv.json['data']) == 4
+
 
     def test_get_data_pass_2(self):
         rv = self.client.post('/display_data', data=self.DB_PAYLOAD_2_JSON,
@@ -48,7 +51,6 @@ class TestUser(TestBase):
         assert rv.status_code == 200
         assert rv.json['info'] == 'success'
         assert type(rv.json['data']) == list
-        assert len(rv.json['data']) == 10
 
 
     def test_get_data_fail_1(self):
