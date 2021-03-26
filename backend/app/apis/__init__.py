@@ -389,14 +389,10 @@ def email():
 def tenant_exists():
     
     body = request.get_json(silent=True)
-
-    print(body)
-
-    print(body.get('tenant'))
         
     audit_ls = Audit_non_FB.objects(auditeeName = body.get('tenant'))
 
-    if audit_ls == None:
+    if len(audit_ls) == 0:
         return {'status': False, 'info': "Not enough data entries"}
 
     print(audit_ls)
@@ -603,7 +599,7 @@ def compare_tenant():
     audit_ls_1 = Audit_non_FB.objects(auditeeName = body.get('institute1'))
     audit_ls_2 = Audit_non_FB.objects(auditeeName = body.get('institute2'))
 
-    if audit_ls_1 == None or audit_ls_2 == None:
+    if len(audit_ls_1) == None or len(audit_ls_2) == None:
         return {'status': False, 'info': "Not enough data entries"}
 
     temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.totalScore] for i in audit_ls_1]
