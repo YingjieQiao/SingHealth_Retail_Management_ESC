@@ -59,25 +59,21 @@ class TestAudit(TestBase):
     def test_audit_submit_pass_1(self):
         rv = self.client.post('/signup', data=self.TEST_ACCOUNT_1_JSON,
                               content_type='application/json')
-        rv = self.client.post('/auditChecklist', data=self.TEST_AUDIT_1,
-                              content_type='application/json')
         assert rv.status_code == 200
-        assert rv.json['statusText'] == True
+        rv = self.client.post('/tenant_exists', data=self.TEST_GRAPH_CSV_CALL_1,
+                              content_type='application/json')
+        assert rv.status_code == 500
+        assert rv.json['status'] == False
+        assert rv.json['info'] == "Not enough data entries"
 
     def test_audit_submit_fail_1(self):
-        rv = self.client.post('/auditChecklist', data=self.TEST_AUDIT_2,
+        rv = self.client.post('/signup', data=self.TEST_ACCOUNT_2_JSON,
                               content_type='application/json')
-        assert rv.status_code == 500
-        assert rv.json['statusText'] == False
-
-    def test_audit_submit_fail_2(self):
-        rv = self.client.post('/auditChecklist', data=self.TEST_AUDIT_3,
+        assert rv.status_code == 200
+        rv = self.client.post('/auditChecklist', data=self.TEST_AUDIT,
                               content_type='application/json')
-        assert rv.status_code == 500
-        assert rv.json['statusText'] == False
-
-    def test_audit_submit_fail_3(self):
-        rv = self.client.post('/auditChecklist', data=self.TEST_AUDIT_4,
+        assert rv.status_code == 200
+        rv = self.client.post('/tenant_exists', data=self.TEST_GRAPH_CSV_CALL_1,
                               content_type='application/json')
-        assert rv.status_code == 500
-        assert rv.json['statusText'] == False
+        assert rv.status_code == 200
+        assert rv.json['status'] == True
