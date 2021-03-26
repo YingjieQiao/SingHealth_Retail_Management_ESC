@@ -13,6 +13,7 @@ import {Route, BrowserRouter as Router,Switch,Link} from "react-router-dom";
 import Navbar from './Components/Navbar';
 import Adminhome from './Components/adminhome';
 import Table from './Components/Table';
+import tenantHome from './Components/tenantHome'
 function App() {
 
   return (
@@ -29,6 +30,7 @@ function App() {
       <Route path="/viewPhoto" exact component={viewPhoto}/>
       <Route path="/adminhome" exact component={Adminhome}/>
       <Route path="/table" exact component={Table}/>
+      <Route path="/tenantHome" exact component={tenantHome}/>
     </Switch>
     
     </div>
