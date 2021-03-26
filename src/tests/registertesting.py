@@ -116,6 +116,8 @@ try:
     print("alert accepted")
 except TimeoutException:
     print("no alert")	
+print("***testing ended successfully***")
+browser.quit()
 # print all the hyper links
 # for  i in range(links.size()) :
 # 	print(i + " " + links.get(i).getAttribute("href"))

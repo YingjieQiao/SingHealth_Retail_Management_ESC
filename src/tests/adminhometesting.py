@@ -136,3 +136,5 @@ try:
     print("alert accepted")
 except TimeoutException:
     print("no alert")
+print("***testing ended successfully***")
+browser.quit()
