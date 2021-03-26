@@ -108,7 +108,11 @@ class Adminhome extends Component {
       this.state.students= [{ id: '', firstName: '',lastName: '',  mobile: '',email: '', location: '' }];
       }
       else{
+<<<<<<< HEAD
         this.state.students= [{ id: '', tags: '',date: '',  time: '',notes: '', staffName: '' , tenantName: '', rectified: null}];
+=======
+        this.state.students= [{ id: '', tags: '',date: '',  time: '',notes: '', staffName: '' , tenantName: '', rectified:null }];
+>>>>>>> ade92af7c60a448ed498ad436775cf19b039deab
       }
       this.state.student.forEach(element => {
         this.state.count++;
@@ -165,7 +169,11 @@ class Adminhome extends Component {
            <td>{notes}</td>
            <td>{staffName}</td>
            <td>{tenantName}</td>
+<<<<<<< HEAD
            <td>{rectified?"True":rectified===null?"":"False"}</td>
+=======
+           <td>{rectified?"True": rectified==null?"":"False"}</td>
+>>>>>>> ade92af7c60a448ed498ad436775cf19b039deab
         </tr>
      )
   })

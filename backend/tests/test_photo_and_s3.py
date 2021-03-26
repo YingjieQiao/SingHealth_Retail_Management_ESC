@@ -6,6 +6,8 @@ S3, database, photo related functions
 
 Testing flow:
 
+4 testing classes
+
 upload photo + related info filled in:
     - success testcase 1: update photo to s3 and entry in mongodb
     - success testcase 2: update photo to s3 and entry in mongodb
@@ -22,9 +24,13 @@ rectify photo:
     
 get number of photos post rectify:
     - success testcase: the number of photos whose `rectified == False` is correct
+    (also remove dummy entries from the database)
 """
 
 class TestPhoto(TestBase):
+    """
+    Test uploading to S3 and mongo DB
+    """
     TEST_PHOTO_INFO_UPLOAD_PASS_1 = {
         "tags": "tag1",
         "date": "01-01-2222",
@@ -118,7 +124,11 @@ class TestPhoto(TestBase):
 
 
 class TestPreRectifyS3(TestBase):
+    """
+    Test the functionality of downloading file from S3 and
+    retriving data from mongo DB BEFORE rectifying any photos
 
+    """
     def test_s3_download_1(self):
         rv = self.client.get('/download_file',
                               content_type='multipart/form-data')
@@ -137,7 +147,11 @@ class TestPreRectifyS3(TestBase):
 
 
 class TestRectify(TestBase):
+    """
+        Test the functionality of downloading file from S3 and
+        retriving data from mongo DB AFTER rectifying any photos
 
+        """
     TEST_PHOTO_RECTIFY_1 = {
         "tags": "tag2",
         "date": "01-01-2222",
@@ -177,6 +191,9 @@ class TestRectify(TestBase):
 
 
 class TestPostRectifyView(TestBase):
+    """
+    Verify rectify works and clean up testing entries in DB
+    """
     TEST_FILES = ["UnitTester_01-01-2222_00:00:00.jpg", "UnitTester_01-02-2222_00:02:00.jpg"]
 
     def test_post_rectify_1(self):
