@@ -548,7 +548,11 @@ def tenant_exists():
     # for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png"]:#, "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv", "audit.csv"]:
     #     os.remove(i)
 
-    return {'result': True, "audit_day_img": audit_day, "audit_week_img": audit_week, "audit_month_img": audit_month, "audit_year_img": audit_year, "columns": list(df_day.columns), "audit_day_csv": df_day.values.T.tolist(), "audit_week_csv": df_week.values.T.tolist(), "audit_month_csv": df_month.values.T.tolist(), "audit_year_csv": df_year.values.T.tolist(), "audit_csv": df.values.T.tolist()}
+    print(audit_day)
+
+    print(df_day.values.T.tolist())
+
+    return {'result': True, "audit_day_img": audit_day[2:-1], "audit_week_img": audit_week[2:-1], "audit_month_img": audit_month[2:-1], "audit_year_img": audit_year[2:-1], "columns": list(df_day.columns), "audit_day_csv": df_day.values.T.tolist(), "audit_week_csv": df_week.values.T.tolist(), "audit_month_csv": df_month.values.T.tolist(), "audit_year_csv": df_year.values.T.tolist(), "audit_csv": df.values.T.tolist()}
 
 @apis.route('/tenant_list', methods=['GET', 'POST'])
 def tenant_list():
