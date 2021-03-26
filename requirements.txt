@@ -49,4 +49,4 @@ wrapt==1.12.1
 WTForms==2.3.3
 pandas==1.2.3
 numpy==1.18.1
-matplotlib.pyplot==3.3.4
+matplotlib==3.3.4
