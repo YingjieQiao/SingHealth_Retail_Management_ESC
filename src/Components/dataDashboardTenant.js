@@ -7,6 +7,7 @@ class DataDashboardTenant extends Component {
 
     state = {
         tenant: this.props.location.state.tenant,
+        tenantName: this.props.location.state.tenantName,
         graphDict: {
             day: false,
             week: false,
@@ -154,7 +155,7 @@ class DataDashboardTenant extends Component {
             <div>
                 <Navbar/>
                 <h2>Data Dashboard</h2>
-                <h3>{this.state.tenant}'s Performance Score</h3>
+                <h3>{this.state.tenantName}'s Performance Score</h3>
                 {/* <div class="btn-group" role="group" aria-label="Performance Score Trend Variation">
                     <button type="button" class="btn btn-outline-primary" value="yearly" onClick={this.handleGetTrend}>Yearly</button>
                     <button type="button" class="btn btn-outline-primary" value="monthly" onClick={this.handleGetTrend}>Monthly</button>
