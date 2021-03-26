@@ -234,28 +234,7 @@ class DataDashboardTenant extends Component {
         }
     }
 
-
-    handleGetTrend = event => {
-        switch(event.target.value) {
-            case "yearly":
-                break;
-            case "monthly":
-                // TODO: get 'monthly' graph 
-                break;
-            case "weekly":
-                // TODO: get 'weekly' graph
-                break;
-            case "7days":
-                // TODO: get '7days' graph
-                break;
-            default:
-                // TODO: get 'yearly' graph 
-        }
-    }
-
     handleExport = (event) => {
-        console.log("key: ", event.target.id);
-
         var csvRows = [];
         switch(event.target.id) {
             case "year":

@@ -150,21 +150,12 @@ class CompareTenant extends Component {
             selectedRange: this.convertRangeToString()
         };
 
-        console.log("result: ", compareTenantList);
-
         // proceeds to send to backend  
-        const data = new FormData();
-        const headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Access-Control-Allow-Origin': '*'
-        };
-
-        data.append("compareTenantList", compareTenantList);
-        axios.post("http://localhost:5000/compare_tenant", compareTenantList, headers
-        ).then( res => {
-            console.log(data);
-            console.log(res.statusText);
-        })
+        // Navigate to Tenant's performance score board if successful
+        this.props.history.push({
+            pathname: '/dataDashboardCompareTenant',
+            state: { compareTenantList: compareTenantList}
+        });
         
         alert("Send data success!");
     }
