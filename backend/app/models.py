@@ -79,10 +79,10 @@ class Audit_non_FB(db.Document):
     workSafetyListScore = db.ListField(required=False, unique=False)
     comment = db.StringField(required=False, unique=False)
 
-    def computeTotalScore(self):
-        self.profScore = sum(self.profListScore)
-        self.housekeepingScore = sum(self.houskeepingListScore)
-        self.workSafetyScore = sum(self.workSafetyListScore)
+    def computeTotalScore(self, ):
+        # self.profScore = sum(self.profListScore)
+        # self.housekeepingScore = sum(self.houskeepingListScore)
+        # self.workSafetyScore = sum(self.workSafetyListScore)
         self.totalScore = self.profScore + self.housekeepingScore + self.workSafetyScore
 
 

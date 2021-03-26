@@ -579,12 +579,14 @@ def audit_checklist():
     ts = datetime.now().today()
     print(ts)
     body = request.get_json()
+    print(body)
     body['workSafetyScore'] = body['workSafetyHealthScore'] 
-    body['housekeepingScore'] = body['profStaffHydScore'] 
-    body['housekeepingScore'] = body['houseGeneralScore']
+    body['profScore'] = body['profStaffHydScore'] 
+    body['housekeepingScore'] = 11 #body['houseGeneralScore']
     body.pop('workSafetyHealthScore')
     body.pop('profStaffHydScore')
     body.pop('houseGeneralScore')
+    print(body)
     audit = Audit_non_FB(**body)
     audit.timestamp = str(ts)
     audit.computeTotalScore()
