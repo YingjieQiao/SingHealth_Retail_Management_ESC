@@ -219,7 +219,7 @@ rendervalue(){
 		return (
 			<div>
         <h1>Admin Home</h1>
-        <label>Type of data :</label><select onChange={this.Datahandler} defaultValue="none">
+        <label>Type of data :</label><select id="data" onChange={this.Datahandler} defaultValue="none">
                         <option defaultValue>Select excel type</option>
                         <option value="User">User</option>
                         <option value="Photo">Photo</option>

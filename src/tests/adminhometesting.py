@@ -34,20 +34,37 @@ myUserName = "ishaan_nair@mymail.sutd.edu.sg"
 myPassword = "1234"
 tokenadmin = "admin"
 tokentenant = "tenant"
-mobile = "12345678"
+datatypeuser = "User"
+datatypePhoto = "Photo"
 myPassword = "1234"
 repassword="1234"
 location="SUTD"
 
 username = browser.find_element_by_id("email")
-time.sleep(1)	
 username.send_keys(myUserName)
 time.sleep(1)
 username = browser.find_element_by_id("password")
-time.sleep(1)	
 username.send_keys(myPassword)
 time.sleep(1)
 button = browser.find_element_by_id("submit").click()
+time.sleep(1)
+try:
+    WebDriverWait(browser, 10).until(EC.alert_is_present(),
+                                   'Timed out waiting for PA creation ' +
+                                   'confirmation popup to appear.')
+
+    alert = browser.switch_to.alert
+    print(alert)
+    alert.accept()
+    print("alert accepted")
+except TimeoutException:
+    print("no alert")	
+time.sleep(1)
+username = browser.find_element_by_id("token")
+time.sleep(1)
+username.send_keys(tokenadmin)
+time.sleep(1)
+button = browser.find_element_by_id("submiting").click()
 time.sleep(1)	
 try:
     WebDriverWait(browser, 10).until(EC.alert_is_present(),
@@ -60,11 +77,53 @@ try:
     print("alert accepted")
 except TimeoutException:
     print("no alert")	
-username = browser.find_element_by_id("token")
+
+username = browser.find_element_by_id("data")
+username.send_keys(datatypeuser)
 time.sleep(1)	
-username.send_keys(tokenadmin)
-time.sleep(1)
-button = browser.find_element_by_id("submiting").click()
+button = browser.find_element_by_id("display_data").click()
+try:
+    WebDriverWait(browser, 3).until(EC.alert_is_present(),
+                                   'Timed out waiting for PA creation ' +
+                                   'confirmation popup to appear.')
+
+    alert = browser.switch_to.alert
+    print(alert)
+    alert.accept()
+    print("alert accepted")
+except TimeoutException:
+    print("no alert")
+time.sleep(1)		
+button = browser.find_element_by_id("download_data_csv").click()
+try:
+    WebDriverWait(browser, 3).until(EC.alert_is_present(),
+                                   'Timed out waiting for PA creation ' +
+                                   'confirmation popup to appear.')
+
+    alert = browser.switch_to.alert
+    print(alert)
+    alert.accept()
+    print("alert accepted")
+except TimeoutException:
+    print("no alert")
+time.sleep(1)	
+username = browser.find_element_by_id("data")
+username.send_keys(datatypePhoto)
+time.sleep(1)	
+button = browser.find_element_by_id("display_data").click()
+try:
+    WebDriverWait(browser, 3).until(EC.alert_is_present(),
+                                   'Timed out waiting for PA creation ' +
+                                   'confirmation popup to appear.')
+
+    alert = browser.switch_to.alert
+    print(alert)
+    alert.accept()
+    print("alert accepted")
+except TimeoutException:
+    print("no alert")
+time.sleep(1)		
+button = browser.find_element_by_id("download_data_csv").click()
 time.sleep(1)	
 try:
     WebDriverWait(browser, 3).until(EC.alert_is_present(),
@@ -76,4 +135,4 @@ try:
     alert.accept()
     print("alert accepted")
 except TimeoutException:
-    print("no alert")	
+    print("no alert")

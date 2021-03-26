@@ -62,18 +62,23 @@ except TimeoutException:
     print("no alert")	
 username = browser.find_element_by_id("token")
 time.sleep(1)	
-username.send_keys(tokenadmin)
+username.send_keys(tokentenant)
 time.sleep(1)
 button = browser.find_element_by_id("submiting").click()
 time.sleep(1)	
 try:
-    WebDriverWait(browser, 3).until(EC.alert_is_present(),
+    WebDriverWait(browser, 10).until(EC.alert_is_present(),
                                    'Timed out waiting for PA creation ' +
                                    'confirmation popup to appear.')
 
     alert = browser.switch_to.alert
-    print(alert)
+    print(alert.text)
     alert.accept()
     print("alert accepted")
 except TimeoutException:
     print("no alert")	
+# browser.execute_script("arguments[0].click();", WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "li.navigationbar__item a[data-link-name='login'][href='/login']"))))
+
+time.sleep(1)	
+
+    
