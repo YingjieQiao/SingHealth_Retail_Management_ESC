@@ -15,7 +15,7 @@ get db data:
 
 class TestAudit(TestBase):
 
-    TEST_AUDIT_1 = {
+    TEST_AUDIT_1 = {  #  Correct data with correct column names
         "auditorName" : "Jerry",
         "auditorDepartment" : "Risk",
         "auditeeName" : "mihir_chhiber@mymail.sutd.edu.sg",
@@ -24,7 +24,7 @@ class TestAudit(TestBase):
         "houseGeneralScore": 7
     }
 
-    TEST_AUDIT_2 = {
+    TEST_AUDIT_2 = {  # Missing data
         "auditorName": "Jerry",
         "auditorDepartment": "Risk",
         "auditeeName": "mihir_chhiber@mymail.sutd.edu.sg",
@@ -32,7 +32,7 @@ class TestAudit(TestBase):
         "houseGeneralScore": 7
     }
 
-    TEST_AUDIT_3 = {
+    TEST_AUDIT_3 = {  # Extra data
         "auditorName": "Jerry",
         "auditorDepartment": "Risk",
         "auditeeName": "mihir_chhiber@mymail.sutd.edu.sg",
@@ -42,7 +42,7 @@ class TestAudit(TestBase):
         "test": 123
     }
 
-    TEST_AUDIT_4 = {
+    TEST_AUDIT_4 = {  # Incorrect data type
         "auditorName": "Jerry",
         "auditorDepartment": "Risk",
         "auditeeName": "mihir_chhiber@mymail.sutd.edu.sg",
