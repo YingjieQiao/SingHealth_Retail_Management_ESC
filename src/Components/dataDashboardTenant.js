@@ -36,6 +36,8 @@ class DataDashboardTenant extends Component {
             tenant: this.state.tenant
         };
 
+        console.log("name: ", this.state.tenant);
+
         axios.post("http://localhost:5000/tenant_exists", data)
         .then(
             res => {
@@ -155,7 +157,7 @@ class DataDashboardTenant extends Component {
             <div>
                 <Navbar/>
                 <h2>Data Dashboard</h2>
-                <h3>{this.state.tenantName}'s Performance Score</h3>
+                <h3>{this.state.tenant}'s Performance Score</h3>
                 <div>
                     {this.state.numOfImage.map(image => {
                         return(

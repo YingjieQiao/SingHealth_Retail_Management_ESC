@@ -79,9 +79,13 @@ class DataDashboard extends Component {
         else {
             // proceeds to retrieve tenant's statistics
             // Navigate to Tenant's performance score board if successful
+            // this.props.history.push({
+            //     pathname: '/dataDashboardTenant',
+            //     state: [{ tenant: this.state.tenant, tenantName: this.state.tenantName}]
+            // });
             this.props.history.push({
                 pathname: '/dataDashboardTenant',
-                state: [{ tenant: this.state.tenant, tenantName: this.state.tenantName}]
+                state: { tenant: this.state.tenant}
             });
 
         }
