@@ -151,29 +151,6 @@ class Upload extends Component {
             loaded: 0
         });
     }
-
-
-   /*  onUploadButtonHandler = event => {
-        event.preventDefault();
-
-        const data = new FormData();
-        const headers = {
-            'Content-Type': 'multipart/form-data',
-            'Access-Control-Allow-Origin': '*'
-        };
-
-        data.append("file", this.state.selectedFile);
-        data.append("time", this.state.time)
-        data.append("date", this.state.date)
-        axios.post("http://localhost:5000/upload_file", data, headers
-        ).then( res => {
-            console.log(data);
-            console.log(res.statusText);
-        })
-        
-        alert("Upload success!")
-    } */
-
     
 }
 

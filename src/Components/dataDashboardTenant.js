@@ -12,7 +12,13 @@ class DataDashboardTenant extends Component {
 
 
     componentDidMount() {
-        axios.get("http://localhost:5000/tenant_exists")
+        console.log("tenant: ", this.state.tenant);
+
+        const data = {
+            tenant: this.state.tenant
+        };
+
+        axios.get("http://localhost:5000/tenant_exists", data)
         .then(
             res => {
                 console.log(res);
@@ -26,7 +32,8 @@ class DataDashboardTenant extends Component {
                 // }
 
             }
-        )
+        );
+        
     }
 
     render() {
