@@ -29,7 +29,6 @@ class Audit extends Component {
                     </select>
                 </form>
                 <div>{this.displayAuditList()}</div>                
-                {/* <AuditChecklistTest /> */}
             </div>
         )
     }
@@ -52,7 +51,7 @@ class Audit extends Component {
             case "4":
                 break;
             default:
-                return <p style={{fontStyle: 'italic'}} className="text-info">Please choose a form.</p>
+                return <p style={{fontStyle: 'italic'}} className="text-info">Please choose a form.</p>;
         }
     }
 

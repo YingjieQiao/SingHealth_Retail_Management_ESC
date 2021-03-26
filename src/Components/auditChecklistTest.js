@@ -239,6 +239,7 @@ class AuditChecklistTest extends Component {
             ).then( res => {
                 // console.log(data);
                 console.log(res.statusText);
+                alert("The form has been successfully recorded.");
             });
         }
     }

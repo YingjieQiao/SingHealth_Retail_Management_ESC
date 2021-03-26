@@ -28,9 +28,6 @@ class Upload extends Component {
                     <ImUpload3 size="50" style={{display: "block", marginLeft: "auto", marginRight: "auto", marginTop: "10px"}}/>
                     <input type="file" name="file" onChange={this.onChooseFileHandler} style={{display: "block", margin: '10px'}}/>
                 </div>
-                {/* <div>
-                    <button type="button" className="btn btn-primary m-2" onClick={this.onUploadButtonHandler} >Upload</button>
-                </div> */}
 
                 <div>
                     <form>
