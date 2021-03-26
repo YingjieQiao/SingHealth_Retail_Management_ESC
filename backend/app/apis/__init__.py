@@ -390,9 +390,14 @@ def tenant_exists():
     
     body = request.get_json(silent=True)
 
+    print(body)
+
     print(body.get('tenant'))
         
     audit_ls = Audit_non_FB.objects(auditeeName = body.get('tenant'))
+
+    if audit_ls == None:
+        return {'status': False, 'info': "Not enough data entries"}
 
     print(audit_ls)
 
@@ -576,6 +581,12 @@ def audit_checklist():
     ts = datetime.now().today()
     print(ts)
     body = request.get_json()
+    body['workSafetyScore'] = body['workSafetyHealthScore'] 
+    body['housekeepingScore'] = body['profStaffHydScore'] 
+    body['housekeepingScore'] = body['houseGeneralScore']
+    body.pop('workSafetyHealthScore')
+    body.pop('profStaffHydScore')
+    body.pop('houseGeneralScore')
     audit = Audit_non_FB(**body)
     audit.timestamp = str(ts)
     audit.computeTotalScore()
@@ -591,6 +602,9 @@ def compare_tenant():
         
     audit_ls_1 = Audit_non_FB.objects(auditeeName = body.get('institute1'))
     audit_ls_2 = Audit_non_FB.objects(auditeeName = body.get('institute2'))
+
+    if audit_ls_1 == None or audit_ls_2 == None:
+        return {'status': False, 'info': "Not enough data entries"}
 
     temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.totalScore] for i in audit_ls_1]
     df_1 = pd.DataFrame(temp_ls)
