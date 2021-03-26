@@ -19,10 +19,28 @@ class AuditChecklistNonFB extends Component {
         finalDict: {
             comment: ""
         },
-        comment: ""
+        comment: "",
+        auditeeArray: [],
+        numOfAuditee: []
     }
 
-    
+    componentDidMount() {
+        axios.get("http://localhost:5000/tenant_list")
+        .then(
+            res => {
+                console.log(res);
+
+                for (var i = 0; i < res.data.tenant_list.length; i++) {
+                    let newArray1 = this.state.auditeeArray;
+                    let newArray2 = this.state.numOfAuditee;
+                    newArray1.push(res.data.tenant_list[i]);
+                    newArray2.push(i);
+                    this.setState({auditeeArray: newArray1, numOfAuditee: newArray2});
+                }
+
+            }
+        )
+    }
 
     render() {
 
@@ -31,27 +49,38 @@ class AuditChecklistNonFB extends Component {
                 <h2>New Audit</h2>
                 <h2>Audit Checklist (Non-F&#38;B)</h2>
                 <form>
-                    <label>Auditee:</label>
+                    <div>
+                        <label>Auditee:</label>
+                        <select class="custom-select my-1 mr-sm-2" onChange={this.saveAuditee}>
+                            <option selected>Choose...</option>
+                            { this.state.numOfAuditee.map(index => <option value={index.toString()}>{this.handleAuditee(index)}</option> ) }
+                        </select>
+                    </div>
+                    {/* <label>Auditee:</label>
                     <select class="custom-select my-1 mr-sm-2" id="auditeeName" onChange={this.handleAuditee}>
                         <option selected value="-1">Choose...</option>
                         <option value="KFC">KFC</option>
                         <option value="McD">McD</option>
                         <option value="MosB">MosB</option>
-                    </select>
-                    <label>Auditor:</label>
-                    <select class="custom-select my-1 mr-sm-2" id="auditorName" onChange={this.handleAuditor}>
-                        <option selected value="-1">Choose...</option>
-                        <option value="Tom">Tom</option>
-                        <option value="Jerry">Jerry</option>
-                        <option value="Charlie">Charlie</option>
-                    </select>
-                    <label>Auditor's Department:</label>
-                    <select class="custom-select my-1 mr-sm-2" id="auditorDepartment" onChange={this.handleDepartment}>
-                        <option selected value="-1">Choose...</option>
-                        <option value="CSR">CSR</option>
-                        <option value="HR">HR</option>
-                        <option value="Risk">Risk</option>
-                    </select>
+                    </select> */}
+                    <div>
+                        <label>Auditor:</label>
+                        <select class="custom-select my-1 mr-sm-2" id="auditorName" onChange={this.handleAuditor}>
+                            <option selected value="-1">Choose...</option>
+                            <option value="Tom">Tom</option>
+                            <option value="Jerry">Jerry</option>
+                            <option value="Charlie">Charlie</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Auditor's Department:</label>
+                        <select class="custom-select my-1 mr-sm-2" id="auditorDepartment" onChange={this.handleDepartment}>
+                            <option selected value="-1">Choose...</option>
+                            <option value="CSR">CSR</option>
+                            <option value="HR">HR</option>
+                            <option value="Risk">Risk</option>
+                        </select>
+                    </div>
 
                     <h3>1. Professionalism &#38; Staff Hygiene (10%)</h3>
                     <h4>Professionalism</h4>
@@ -223,6 +252,30 @@ class AuditChecklistNonFB extends Component {
         )
     }
 
+    saveAuditee = (event) => {
+        const data = event.target.value;
+        var newScoreDict = this.state.scoreDict;
+        var newFinalDict = this.state.finalDict;
+        if (data === "Choose...") {
+            newScoreDict["auditeeName"] = "";
+            newFinalDict["auditeeName"] = "";
+            this.setState({auditeeName: event.target.value, scoreDict: newScoreDict, finalDict: newFinalDict});
+        } else {
+            const index = parseInt(data);
+            newScoreDict["auditeeName"] = this.state.auditeeArray[index]["email"];
+            newFinalDict["auditeeName"] = this.state.auditeeArray[index]["email"];
+            this.setState({scoreDict: newScoreDict, finalDict: newFinalDict});
+        }
+    }
+
+    handleAuditee = (index) => {
+        if (this.state.auditeeArray.length === 0){
+            return "-";
+        } else {
+            return this.state.auditeeArray[index]["firstName"] + " " + this.state.auditeeArray[index]["lastName"];
+        }
+    }
+
     handleAuditor = event => {
         var newScoreDict = this.state.scoreDict;
         var newFinalDict = this.state.finalDict;
@@ -237,19 +290,19 @@ class AuditChecklistNonFB extends Component {
         }
     }
 
-    handleAuditee = event => {
-        var newScoreDict = this.state.scoreDict;
-        var newFinalDict = this.state.finalDict;
-        if (event.target.value !== -1) {
-            newScoreDict["auditeeName"] = event.target.value;
-            newFinalDict["auditeeName"] = event.target.value;
-            this.setState({auditeeName: event.target.value, scoreDict: newScoreDict, finalDict: newFinalDict});
-        } else {
-            newScoreDict["auditeeName"] = "";
-            newFinalDict["auditeeName"] = "";
-            this.setState({scoreDict: newScoreDict, finalDict: newFinalDict});
-        }
-    }
+    // handleAuditee = event => {
+    //     var newScoreDict = this.state.scoreDict;
+    //     var newFinalDict = this.state.finalDict;
+    //     if (event.target.value !== -1) {
+    //         newScoreDict["auditeeName"] = event.target.value;
+    //         newFinalDict["auditeeName"] = event.target.value;
+    //         this.setState({auditeeName: event.target.value, scoreDict: newScoreDict, finalDict: newFinalDict});
+    //     } else {
+    //         newScoreDict["auditeeName"] = "";
+    //         newFinalDict["auditeeName"] = "";
+    //         this.setState({scoreDict: newScoreDict, finalDict: newFinalDict});
+    //     }
+    // }
 
     handleDepartment = event => {
         var newScoreDict = this.state.scoreDict;
@@ -321,9 +374,7 @@ class AuditChecklistNonFB extends Component {
         event.preventDefault();
         console.log("final: ", this.state.finalDict);
 
-        console.log("length: ", Object.keys(this.state.finalDict).length);
-
-        if (Object.keys(this.state.finalDict).length < this.state.dataLength ) {
+        if (Object.keys(this.state.scoreDict).length < (this.state.dataLength - 1)) {
             console.log("empty field");
             alert("Please fill up all fields");
         } else { 

@@ -33,32 +33,38 @@ class Login extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-    
-        const user = {
-          password: this.state.password,
-          email: this.state.email
-        };
-        const headers = {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-        };
-    
-        axios.post(`http://localhost:5000/login`, user, headers)
-          .then(res => {
-            console.log(res.data);
-            if (res.data.result === true) {
-                alert("Please check your email for authentication token","yolo")
 
-                this.props.history.push(
-                '/Login_verified'
-                // search:   res.data.token ,
-                // state: { detail: res.data.token }
-                );
+        this.props.history.push(
+            '/Login_verified'
+            // search:   res.data.token ,
+            // state: { detail: res.data.token }
+        );
+    
+        // const user = {
+        //   password: this.state.password,
+        //   email: this.state.email
+        // };
+        // const headers = {
+        //     'Content-Type': 'application/json',
+        //     'Access-Control-Allow-Origin': '*'
+        // };
+    
+        // axios.post(`http://localhost:5000/login`, user, headers)
+        //   .then(res => {
+        //     console.log(res.data);
+        //     if (res.data.result === true) {
+        //         alert("Please check your email for authentication token","yolo")
 
-            } else {
-                alert("Login unsuccessful:( \n"+res.data.info);
-            }
-        })
+        //         this.props.history.push(
+        //         '/Login_verified'
+        //         // search:   res.data.token ,
+        //         // state: { detail: res.data.token }
+        //         );
+
+        //     } else {
+        //         alert("Login unsuccessful:( \n"+res.data.info);
+        //     }
+        // })
         // .catch(function (error,res) {
         //     console.log(error.response.status) // 401
         //     console.log(error.response.data.error) //Please Authenticate or whatever returned from server
