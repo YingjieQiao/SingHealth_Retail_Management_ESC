@@ -389,6 +389,9 @@ def email():
 def tenant_exists():
     
     body = request.get_json(silent=True)
+
+    # print(body)
+    # body['tenant'] = "mihir_chhiber@mymail.sutd.edu.sg"
         
     audit_ls = Audit_non_FB.objects(auditeeName = body.get('tenant'))
 
@@ -545,12 +548,12 @@ def tenant_exists():
     # with open("audit.json", "r") as file:
     #     audit_csv = base64.b64encode(file.read())
 
-    # for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png"]:#, "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv", "audit.csv"]:
-    #     os.remove(i)
+    for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png"]:#, "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv", "audit.csv"]:
+        os.remove(i)
 
     print(type(df_day.values.T.tolist()))
 
-    return {'result': True, "audit_day_img": audit_day[2:-1], "audit_week_img": audit_week[2:-1], "audit_month_img": audit_month[2:-1], "audit_year_img": audit_year[2:-1], "columns": list(df_day.columns), "audit_day_csv": df_day.values.T.tolist(), "audit_week_csv": df_week.values.T.tolist(), "audit_month_csv": df_month.values.T.tolist(), "audit_year_csv": df_year.values.T.tolist(), "audit_csv": df.values.T.tolist()}
+    return {'result': True, "audit_day_img": audit_day[2:-1], "audit_week_img": audit_week[2:-1], "audit_month_img": audit_month[2:-1], "audit_year_img": audit_year[2:-1], "columns": list(df_day.columns), "audit_day_csv": df_day.values.tolist(), "audit_week_csv": df_week.values.tolist(), "audit_month_csv": df_month.values.tolist(), "audit_year_csv": df_year.values.tolist(), "audit_csv": df.values.tolist()}
 
 @apis.route('/tenant_list', methods=['GET', 'POST'])
 def tenant_list():
@@ -582,7 +585,7 @@ def audit_checklist():
     print(body)
     body['workSafetyScore'] = body['workSafetyHealthScore'] 
     body['profScore'] = body['profStaffHydScore'] 
-    body['housekeepingScore'] = 11 #body['houseGeneralScore']
+    body['housekeepingScore'] = body['houseGeneralScore']
     body.pop('workSafetyHealthScore')
     body.pop('profStaffHydScore')
     body.pop('houseGeneralScore')
