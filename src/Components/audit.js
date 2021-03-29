@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Navbar from './Navbar';
 import AuditChecklistNonFB from './auditChecklistNonFB';
+import AuditChecklistFB from './auditChecklistFB';
 import AuditChecklistTest from './auditChecklistTest';
 
 class Audit extends Component {
@@ -43,7 +44,7 @@ class Audit extends Component {
     displayAuditList = () => {
         switch (this.state.auditType) {
             case "1":
-                break;
+                return <AuditChecklistFB />;
             case "2":
                 return <AuditChecklistNonFB />;
             case "3":

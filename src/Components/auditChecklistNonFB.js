@@ -56,13 +56,6 @@ class AuditChecklistNonFB extends Component {
                             { this.state.numOfAuditee.map(index => <option value={index.toString()}>{this.handleAuditee(index)}</option> ) }
                         </select>
                     </div>
-                    {/* <label>Auditee:</label>
-                    <select class="custom-select my-1 mr-sm-2" id="auditeeName" onChange={this.handleAuditee}>
-                        <option selected value="-1">Choose...</option>
-                        <option value="KFC">KFC</option>
-                        <option value="McD">McD</option>
-                        <option value="MosB">MosB</option>
-                    </select> */}
                     <div>
                         <label>Auditor:</label>
                         <select class="custom-select my-1 mr-sm-2" id="auditorName" onChange={this.handleAuditor}>
@@ -290,20 +283,6 @@ class AuditChecklistNonFB extends Component {
         }
     }
 
-    // handleAuditee = event => {
-    //     var newScoreDict = this.state.scoreDict;
-    //     var newFinalDict = this.state.finalDict;
-    //     if (event.target.value !== -1) {
-    //         newScoreDict["auditeeName"] = event.target.value;
-    //         newFinalDict["auditeeName"] = event.target.value;
-    //         this.setState({auditeeName: event.target.value, scoreDict: newScoreDict, finalDict: newFinalDict});
-    //     } else {
-    //         newScoreDict["auditeeName"] = "";
-    //         newFinalDict["auditeeName"] = "";
-    //         this.setState({scoreDict: newScoreDict, finalDict: newFinalDict});
-    //     }
-    // }
-
     handleDepartment = event => {
         var newScoreDict = this.state.scoreDict;
         var newFinalDict = this.state.finalDict;
@@ -358,7 +337,7 @@ class AuditChecklistNonFB extends Component {
         this.setState({
             profStaffHydScore: newProfStaffHydScore,
             houseGeneralScore: newHouseGeneralScore,
-            workSafetyHealthScore: newHouseGeneralScore,
+            workSafetyHealthScore: newWorkSafetyHealthScore,
             totoalScore: total,
             finalDict: newFinalDict
         });
