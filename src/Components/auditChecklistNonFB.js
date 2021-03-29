@@ -160,7 +160,7 @@ class AuditChecklistNonFB extends Component {
                         <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="018" onInput={this.saveScore}/>
                     </div>
 
-                    <h3>Workplace Safety &#38; Health (40%)</h3>
+                    <h3>3. Workplace Safety &#38; Health (40%)</h3>
                     <h4>General Safety</h4>
                     <div class="form-group">
                         <label>MSDS for all industrial chemicals are available and up to date.</label>
