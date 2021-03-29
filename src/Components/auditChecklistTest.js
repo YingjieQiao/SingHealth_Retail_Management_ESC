@@ -232,7 +232,6 @@ class AuditChecklistTest extends Component {
             
             axios.post("http://localhost:5000/auditChecklist", this.state.finalDict, headers
             ).then( res => {
-                // console.log(data);
                 console.log(res.statusText);
                 alert("The form has been successfully recorded.");
             });
