@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Navbar from './Navbar';
 import AuditChecklistNonFB from './auditChecklistNonFB';
 import AuditChecklistFB from './auditChecklistFB';
+import AuditChecklistCovid from './auditChecklistCovid';
 import AuditChecklistTest from './auditChecklistTest';
 
 class Audit extends Component {
@@ -50,7 +51,7 @@ class Audit extends Component {
             case "3":
                 return <AuditChecklistTest />;
             case "4":
-                break;
+                return <AuditChecklistCovid />;
             default:
                 return <p style={{fontStyle: 'italic'}} className="text-info">Please choose a form.</p>;
         }
