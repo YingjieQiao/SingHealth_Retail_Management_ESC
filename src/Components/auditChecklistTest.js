@@ -225,15 +225,10 @@ class AuditChecklistTest extends Component {
             // all data has been filled
             // proceeds to send data to backend
             
-            const data = new FormData();
-            console.log(data);
             const headers = {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Access-Control-Allow-Origin': '*'
             };
-            console.log(this.state.finalDict);
-            data.append("auditChecklist", this.state.finalDict);
-            console.log(data);
             
             axios.post("http://localhost:5000/auditChecklist", this.state.finalDict, headers
             ).then( res => {
