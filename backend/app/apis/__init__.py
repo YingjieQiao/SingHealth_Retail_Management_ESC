@@ -285,6 +285,24 @@ def rectify_photo():
     return {'result': True}, 200
 
 
+@apis.route('/get_incidents', methods=['GET', 'POST'])
+def get_incidents():
+    """
+    get non-compliances of tenant user
+    """
+    username = settings.username
+    if username == "":
+        username = 'UnitTester'
+        print("testing") #TODO change to logging
+    
+    try:
+        photoInfo = Photo.objects(tenantName=username, rectified=False)
+        return {"result": True, "tenantData": photoInfo}, 200
+    except Exception as e:
+        print("error: ", e) # logger
+        return {"result": False, "tenantData": None}, 500
+
+
 @apis.route('/display_data', methods=['POST'])
 def display_data():
     try:
