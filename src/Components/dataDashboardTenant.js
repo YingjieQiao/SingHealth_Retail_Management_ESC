@@ -21,13 +21,13 @@ class DataDashboardTenant extends Component {
             year: ""
         },
         numOfImage: [],
-        imageArray: [],
         csvDict: {
             day: [],
             week: [],
             month: [],
             year: []
-        }
+        },
+        timeChoice: "default"
     }
 
 
@@ -52,10 +52,6 @@ class DataDashboardTenant extends Component {
                             newImageDict["day"] = imgsrc;
                             this.setState({imageDict: newImageDict});
 
-                            var newImageArray = this.state.imageArray;
-                            newImageArray.push(imgsrc);
-                            this.setState({imageArray: newImageArray});
-
                             var newNumOfImage = this.state.numOfImage;
                             newNumOfImage.push(counter++);
                             this.setState({numOfImage: newNumOfImage});
@@ -65,10 +61,6 @@ class DataDashboardTenant extends Component {
                             var newImageDict = this.state.imageDict;
                             newImageDict["week"] = imgsrc;
                             this.setState({imageDict: newImageDict});
-
-                            var newImageArray = this.state.imageArray;
-                            newImageArray.push(imgsrc);
-                            this.setState({imageArray: newImageArray});
 
                             var newNumOfImage = this.state.numOfImage;
                             newNumOfImage.push(counter++);
@@ -80,10 +72,6 @@ class DataDashboardTenant extends Component {
                             newImageDict["month"] = imgsrc;
                             this.setState({imageDict: newImageDict});
 
-                            var newImageArray = this.state.imageArray;
-                            newImageArray.push(imgsrc);
-                            this.setState({imageArray: newImageArray});
-
                             var newNumOfImage = this.state.numOfImage;
                             newNumOfImage.push(counter++);
                             this.setState({numOfImage: newNumOfImage});
@@ -93,10 +81,6 @@ class DataDashboardTenant extends Component {
                             var newImageDict = this.state.imageDict;
                             newImageDict["year"] = imgsrc;
                             this.setState({imageDict: newImageDict});
-
-                            var newImageArray = this.state.imageArray;
-                            newImageArray.push(imgsrc);
-                            this.setState({imageArray: newImageArray});
 
                             var newNumOfImage = this.state.numOfImage;
                             newNumOfImage.push(counter++);
@@ -159,47 +143,97 @@ class DataDashboardTenant extends Component {
                 <h2>Data Dashboard</h2>
                 <h3>{this.state.tenant}'s Performance Score</h3>
                 <div>
-                    {this.state.numOfImage.map(image => {
-                        return(
-                            <div>
-                                <h4>{this.displayImageHeading(image)}</h4>
-                                <img src={this.getImageSrc(image)} alt={image} key={image} width="500" height="500" /> 
-                                {/* <img src={this.state.imageArray[image]} alt={image} key={image} width="500" height="500" />  */}
-                                <div>
-                                    <button type="button" class={this.getButtonClasses(this.handleExportButtonId(image))} id={this.handleExportButtonId(image)} onClick={this.handleExport}>Export {this.displayButtonLabel(image)} Graph to excel</button>
-                                </div>
-                            </div>
-                        )
-                    })}
+                    <label>Select a statistic to be displayed:</label>
+                    <select class="custom-select my-1 mr-sm-2" id="range" onChange={this.saveSelection}>
+                        <option selected value="default">Choose...</option>
+                        <option value="year">Yearly</option>
+                        <option value="month">Monthly</option>
+                        <option value="week">Weekly</option>
+                        <option value="day">7 days</option>
+                    </select>
                 </div>
+                <div>{this.displayImage()}</div>
+                <div>{this.displayExportButton()}</div>
             </div>
         )
     }
 
+    saveSelection = event => {
+        this.setState({
+            timeChoice: event.target.value
+        });
+    }
+
+    displayImage = () => {
+        if (this.state.timeChoice !== "default") {
+            const validateImage = this.checkIfImageExist(this.state.timeChoice);
+            const index = this.state.timeChoice;
+            if (validateImage === true) {
+                return (
+                <div>
+                    <h3>{this.displayImageHeading(index)}</h3>
+                    <img src={this.getImageSrc(index)} alt={index} key={index} width="500" height="500" />  
+                </div> );
+            }
+            else {
+                return <p style={{fontStyle: 'italic'}} className="text-primary">No available statistics is found.</p>;
+            }
+        } else {
+            return <p style={{fontStyle: 'italic'}} className="text-info">Please choose a statistic to be displayed.</p>;
+        }
+    }
+
     getImageSrc = (index) => {
         switch (index) {
-            case 0:
+            case "year":
                 return this.state.imageDict["year"];
-            case 1:
+            case "month":
                 return this.state.imageDict["month"];
-            case 2:
+            case "week":
                 return this.state.imageDict["week"];
-            case 3:
+            case "day":
                 return this.state.imageDict["day"];
             default:
                 return "";
         }  
     }
 
+    displayExportButton = () => {
+        if (this.state.timeChoice !== "default") {
+            const validateImage = this.checkIfImageExist(this.state.timeChoice);
+            const index = this.state.timeChoice;
+            if (validateImage === true) {
+                return <button type="button" class={this.getButtonClasses(this.handleExportButtonId(index))} id={this.handleExportButtonId(index)} onClick={this.handleExport}>Export {this.displayButtonLabel(index)} Graph to excel</button>;
+            }
+            else {
+                return <button type="button" className="btn btn-lg btn-secondary" disabled>Export Graph to excel</button> ;
+            }
+        } else {
+            return <button type="button" className="btn btn-lg btn-secondary" disabled>Export Graph to excel</button> ;
+        }
+    }
+
+    checkIfImageExist = (data) => {
+        const val = this.state.imageDict[data];
+        if (val === null || val === undefined){
+            return false;
+        }
+        else if (val !== ""){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     displayImageHeading = (index) => {
         switch (index) {
-            case 0:
+            case "year":
                 return "Yearly statistics";
-            case 1:
+            case "month":
                 return "Monthly statistics";
-            case 2:
+            case "week":
                 return "Weekly statistics";
-            case 3:
+            case "day":
                 return "7 Days statistics";
             default:
                 return "No statistics available";
@@ -208,16 +242,16 @@ class DataDashboardTenant extends Component {
 
     displayButtonLabel = (index) => {
         switch (index) {
-            case 0:
+            case "year":
                 return "Yearly";
-            case 1:
+            case "month":
                 return "Monthly";
-            case 2:
+            case "week":
                 return "Weekly";
-            case 3:
+            case "day":
                 return "7 Days";
             default:
-                return alert("This should not happen!");
+                break;
         }
     }
 
@@ -232,7 +266,7 @@ class DataDashboardTenant extends Component {
             case 3:
                 return "day";
             default:
-                return alert("This should not happen!");
+                break;
         }
     }
 
@@ -252,6 +286,7 @@ class DataDashboardTenant extends Component {
                 var twoDiArray = this.state.csvDict["day"];
                 break;
             default:
+                alert("There is no csv file to download.");
                 break;
         }
 
