@@ -281,7 +281,7 @@ class AuditChecklistCovid extends Component {
                 'Access-Control-Allow-Origin': '*'
             };
             
-            axios.post("http://localhost:5000/auditChecklist", this.state.scoreDict, headers
+            axios.post("http://localhost:5000/covidChecklist", this.state.scoreDict, headers
             ).then( res => {
                 console.log(res.statusText);
                 alert("The form has been successfully recorded.");

@@ -370,7 +370,7 @@ class AuditChecklistNonFB extends Component {
             data.append("auditChecklist", this.state.finalDict);
             console.log(data);
             
-            axios.post("http://localhost:5000/auditChecklist", this.state.finalDict, headers
+            axios.post("http://localhost:5000/auditChecklistNonFB", this.state.finalDict, headers
             ).then( res => {
                 // console.log(data);
                 console.log(res.statusText);
