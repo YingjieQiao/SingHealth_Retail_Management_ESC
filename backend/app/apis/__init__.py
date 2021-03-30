@@ -385,21 +385,19 @@ def email():
         server.sendmail(sender_email, receiver_email, text)
     return {'result': True, 'info': "Email was shared"}, 200
 
-@apis.route('/non_FB_data', methods=['GET', 'POST'])
-def non_FB_data():
+@apis.route('/FB_data', methods=['GET', 'POST'])
+def FB_data():
     
     body = request.get_json(silent=True)
         
-    audit_ls = Audit_non_FB.objects(auditeeName = body.get('tenant'))
+    audit_ls = Audit_FB.objects(auditeeName = body.get('tenant'))
 
     if len(audit_ls) == 0:
         return {'status': False, 'info': "Not enough data entries"}
 
-    print(audit_ls)
-
-    temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.totalScore] for i in audit_ls]
+    temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.healthierScore, i.foodHygieneScore ,i.totalScore] for i in audit_ls]
     df = pd.DataFrame(temp_ls)
-    df.columns = ['timestamp','profScore', 'housekeepingScore', 'workSafetyScore','totalScore']
+    df.columns = ['timestamp','profScore', 'housekeepingScore', 'workSafetyScore', 'healthierScore', 'foodHygieneScore','totalScore']
     df['timestamp'] = pd.to_datetime(df['timestamp'])
     df.index = df['timestamp'] 
     df_year = df.resample('Y').mean()
@@ -413,12 +411,16 @@ def non_FB_data():
     plt.plot(df_day.index,list(df_day['profScore']), color='blue')
     plt.plot(df_day.index,list(df_day['housekeepingScore']), color='orange')
     plt.plot(df_day.index,list(df_day['workSafetyScore']), color='green')
+    plt.plot(df_day.index,list(df_day['healthierScore']), color='yellow')
+    plt.plot(df_day.index,list(df_day['foodHygieneScore']), color='brown')
     plt.plot(df_day.index,list(df_day['totalScore']), color='red')
     plt.plot(df_day.index,list(df_day['profScore']), 'o', color='blue')
     plt.plot(df_day.index,list(df_day['housekeepingScore']), 'o', color='orange')
     plt.plot(df_day.index,list(df_day['workSafetyScore']), 'o', color='green')
+    plt.plot(df_day.index,list(df_day['healthierScore']), 'o', color='yellow')
+    plt.plot(df_day.index,list(df_day['foodHygieneScore']), 'o', color='brown')
     plt.plot(df_day.index,list(df_day['totalScore']), 'o', color='red')
-    plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
+    plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Healthier Score', 'Food Hygiene Score' 'Total Score'], loc='upper right')
     plt.title(body.get('tenant') + "'s Audity Score")
     plt.xlabel('Time Period')
     plt.ylabel('Score')
@@ -433,12 +435,16 @@ def non_FB_data():
     plt.plot(df_week.index,list(df_week['profScore']), color='blue')
     plt.plot(df_week.index,list(df_week['housekeepingScore']), color='orange')
     plt.plot(df_week.index,list(df_week['workSafetyScore']), color='green')
+    plt.plot(df_week.index,list(df_week['healthierScore']), color='yellow')
+    plt.plot(df_week.index,list(df_week['foodHygieneScore']), color='brown')
     plt.plot(df_week.index,list(df_week['totalScore']), color='red')
     plt.plot(df_week.index,list(df_week['profScore']), 'o', color='blue')
     plt.plot(df_week.index,list(df_week['housekeepingScore']), 'o', color='orange')
     plt.plot(df_week.index,list(df_week['workSafetyScore']), 'o', color='green')
+    plt.plot(df_week.index,list(df_week['healthierScore']), 'o', color='yellow')
+    plt.plot(df_week.index,list(df_week['foodHygieneScore']), 'o', color='brown')
     plt.plot(df_week.index,list(df_week['totalScore']), 'o', color='red')
-    plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
+    plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Healthier Score', 'Food Hygiene Score' 'Total Score'], loc='upper right')
     plt.title(body.get('tenant') + "'s Audity Score")
     plt.xlabel('Time Period')
     plt.ylabel('Score')
@@ -453,12 +459,16 @@ def non_FB_data():
     plt.plot(df_month.index,list(df_month['profScore']), color='blue')
     plt.plot(df_month.index,list(df_month['housekeepingScore']), color='orange')
     plt.plot(df_month.index,list(df_month['workSafetyScore']), color='green')
+    plt.plot(df_month.index,list(df_month['healthierScore']), color='yellow')
+    plt.plot(df_month.index,list(df_month['foodHygieneScore']), color='brown')
     plt.plot(df_month.index,list(df_month['totalScore']), color='red')
     plt.plot(df_month.index,list(df_month['profScore']), 'o', color='blue')
     plt.plot(df_month.index,list(df_month['housekeepingScore']), 'o', color='orange')
     plt.plot(df_month.index,list(df_month['workSafetyScore']), 'o', color='green')
+    plt.plot(df_month.index,list(df_month['healthierScore']), 'o', color='yellow')
+    plt.plot(df_month.index,list(df_month['foodHygieneScore']), 'o', color='brown')
     plt.plot(df_month.index,list(df_month['totalScore']), 'o', color='red')
-    plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
+    plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Healthier Score', 'Food Hygiene Score' 'Total Score'], loc='upper right')
     plt.title(body.get('tenant') + "'s Audity Score")
     plt.xlabel('Time Period')
     plt.ylabel('Score')
@@ -473,12 +483,16 @@ def non_FB_data():
     plt.plot(df_year.index,list(df_year['profScore']), color='blue')
     plt.plot(df_year.index,list(df_year['housekeepingScore']), color='orange')
     plt.plot(df_year.index,list(df_year['workSafetyScore']), color='green')
+    plt.plot(df_year.index,list(df_year['healthierScore']), color='yellow')
+    plt.plot(df_year.index,list(df_year['foodHygieneScore']), color='brown')
     plt.plot(df_year.index,list(df_year['totalScore']), color='red')
     plt.plot(df_year.index,list(df_year['profScore']), 'o', color='blue')
     plt.plot(df_year.index,list(df_year['housekeepingScore']), 'o', color='orange')
     plt.plot(df_year.index,list(df_year['workSafetyScore']), 'o', color='green')
+    plt.plot(df_year.index,list(df_year['healthierScore']), 'o', color='yellow')
+    plt.plot(df_year.index,list(df_year['foodHygieneScore']), 'o', color='brown')
     plt.plot(df_year.index,list(df_year['totalScore']), 'o', color='red')
-    plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
+    plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Healthier Score', 'Food Hygiene Score' 'Total Score'], loc='upper right')
     plt.title(body.get('tenant') + "'s Audity Score")
     plt.xlabel('Time Period')
     plt.ylabel('Score')
@@ -505,19 +519,15 @@ def non_FB_data():
     df_month['timestamp'] = df_month.index
     df_year['timestamp'] = df_year.index
 
-    print(df_day.values.T.tolist())
-
-    print(df.values.T.tolist())
-
     for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png"]:#, "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv", "audit.csv"]:
         os.remove(i)
 
-    print(type(df_day.values.T.tolist()))
+    print("returning data 1234")
 
     return {'result': True, "audit_day_img": audit_day[2:-1], "audit_week_img": audit_week[2:-1], "audit_month_img": audit_month[2:-1], "audit_year_img": audit_year[2:-1], "audit_day_csv": [list(df_day.columns)] + df_day.values.tolist(), "audit_week_csv": [list(df_day.columns)] + df_week.values.tolist(), "audit_month_csv": [list(df_day.columns)] + df_month.values.tolist(), "audit_year_csv": [list(df_day.columns)] + df_year.values.tolist(), "audit_csv": [list(df_day.columns)] + df.values.tolist()}
 
-@apis.route('/FB_data', methods=['GET', 'POST'])
-def FB_data():
+@apis.route('/non_FB_data', methods=['GET', 'POST'])
+def non_FB_data():
     
     body = request.get_json(silent=True)
 
@@ -638,14 +648,8 @@ def FB_data():
     df_month['timestamp'] = df_month.index
     df_year['timestamp'] = df_year.index
 
-    print(df_day.values.T.tolist())
-
-    print(df.values.T.tolist())
-
     for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png"]:#, "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv", "audit.csv"]:
         os.remove(i)
-
-    print(type(df_day.values.T.tolist()))
 
     return {'result': True, "audit_day_img": audit_day[2:-1], "audit_week_img": audit_week[2:-1], "audit_month_img": audit_month[2:-1], "audit_year_img": audit_year[2:-1], "audit_day_csv": [list(df_day.columns)] + df_day.values.tolist(), "audit_week_csv": [list(df_day.columns)] + df_week.values.tolist(), "audit_month_csv": [list(df_day.columns)] + df_month.values.tolist(), "audit_year_csv": [list(df_day.columns)] + df_year.values.tolist(), "audit_csv": [list(df_day.columns)] + df.values.tolist()}
 
@@ -741,8 +745,8 @@ def compare_tenant():
     audit_ls_1 = Audit_non_FB.objects(auditeeName = body.get('institute1'))
     audit_ls_2 = Audit_non_FB.objects(auditeeName = body.get('institute2'))
 
-    if len(audit_ls_1) == None or len(audit_ls_2) == None:
-        return {'status': False, 'info': "Not enough data entries"}
+    if len(audit_ls_1) == 0 or len(audit_ls_2) == 0:
+        return {'status': False, 'info': "Not enough data entries"},200
 
     temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.totalScore] for i in audit_ls_1]
     df_1 = pd.DataFrame(temp_ls)
