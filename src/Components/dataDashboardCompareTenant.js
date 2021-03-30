@@ -6,13 +6,20 @@ import axios from 'axios';
 class DataDashboardCompareTenant extends Component {
 
     state = {
-        tenant: this.props.location.state.tenant,
+        institute1: this.props.location.state.compareTenantList["institute1"],
+        institute2: this.props.location.state.compareTenantList["institute2"],
         graph: null
     }
 
 
     componentDidMount() {
-        axios.get("http://localhost:5000/compare_tenant")
+        console.log("institute1: ", this.state.institute1);
+        console.log("institute2: ", this.state.institute2);
+        const data = {
+            institute1: this.state.institute1,
+            institute2: this.state.institute2,
+        };
+        axios.post("http://localhost:5000/compare_tenant", data)
         .then(
             res => {
                 console.log(res);
