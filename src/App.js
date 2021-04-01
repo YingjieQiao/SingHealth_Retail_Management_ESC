@@ -18,6 +18,7 @@ import Navbar from './Components/Navbar';
 import Adminhome from './Components/adminhome';
 import Table from './Components/Table';
 import tenantHome from './Components/tenantHome'
+import tenantUpload from './Components/tenantUpload'
 function App() {
 
   return (
@@ -39,6 +40,7 @@ function App() {
       <Route path="/adminhome" exact component={Adminhome}/>
       <Route path="/table" exact component={Table}/>
       <Route path="/tenantHome" exact component={tenantHome}/>
+      <Route path="/tenantUpload" exact component={tenantUpload}/>
     </Switch>
     
     </div>

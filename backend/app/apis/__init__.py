@@ -1,5 +1,5 @@
 from flask import Blueprint, request, session, jsonify, url_for, current_app, send_from_directory
-from app.models import User, Audit_non_FB, Photo
+from app.models import User, Audit_non_FB, Photo, TenantPhoto
 import boto3
 from botocore.exceptions import ClientError
 import logging
@@ -256,6 +256,88 @@ def upload_photo_info():
     try:
         photo = Photo(**body)
         photo.save()
+    except Exception as e:
+        print("Error occurred: ", e) #TODO change to logging
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+#TODO refactor, update unittest
+@apis.route('/tenant_upload_file', methods=['GET', 'POST'])
+def tenant_upload_file():
+    if current_app.config['TESTING']:
+        testFilePath = os.getcwd() + "/assets/image.jpg"
+        body = Image.open(testFilePath)
+    else:
+        body = request.files['file']
+        
+    time_ = request.form['time']
+    date_ = request.form['date']
+
+    username = settings.username
+    if username == "":
+        username = 'UnitTester'
+        print("testing s3 download") #TODO change to logging
+    filename = username + "_" + date_ + "_" + time_ + ".jpg"
+
+    if current_app.config['TESTING']:
+        rgb_img = body.convert('RGB')
+        rgb_img.save(filename)
+    else:
+        img = Image.open(body.stream)
+        rgb_img = img.convert('RGB')
+        rgb_img.save(filename)
+
+    try:
+        s3_methods.upload_file(filename, 'escapp-bucket-dev-tenant', None)
+    except Exception as e:
+        print("Error occurred: ", e) #TODO change to logging
+        return {'result': False}, 500
+
+    os.remove(os.getcwd() + "/" + filename)
+    #TODO in-memory storage like redis?
+
+    return {'result': True}, 200
+
+
+@apis.route('/tenant_download_file', methods=['GET', 'POST'])
+def tenant_download_file():
+    username = settings.username
+    if username == "":
+        username = 'UnitTester'
+        print("testing s3 download") #TODO change to logging
+    timeInput = None
+    dateInput = None
+
+    try:
+        res = s3_methods.download_user_objects('escapp-bucket-dev-tenant', username, timeInput, dateInput)
+    except Exception as e:
+        print("Error occurred: ", e) #TODO change to logging
+        return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
+    photoData = res[0]
+    photoAttrData = res[1]
+
+    mypath = os.getcwd()
+    for filename in os.listdir(mypath):
+        filename_full = os.path.join(mypath, filename)
+        if (os.path.isfile(filename_full) 
+            and not filename.endswith(".py") and filename != '.DS_Store'):
+            os.remove(filename_full)
+
+    return {'result': True, 'photoData': photoData, 'photoAttrData': photoAttrData}, 200
+
+
+
+@apis.route('/tenant_upload_photo_info', methods=['GET', 'POST'])
+def tenant_upload_photo_info():
+    body = request.get_json()
+
+    print(body)
+
+    try:
+        tenantPhoto = TenantPhoto(**body)
+        tenantPhoto.save()
     except Exception as e:
         print("Error occurred: ", e) #TODO change to logging
         return {'result': False}, 500
