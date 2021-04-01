@@ -104,12 +104,12 @@ def check_if_tenant(username):
 
 
 def assign_s3_bucket(username):
-    bucketName = ""
+    bucketName, counterPart_bucketName = "", ""
     if (username == "UnitTester" or check_if_staff(username)):
-        bucketName = "escapp-bucket-dev"
+        bucketName, counterPart_bucketName = "escapp-bucket-dev", "escapp-bucket-dev-tenant"
     elif (check_if_staff(username)):
-        bucketName = "escapp-bucket-dev-tenant"
+        bucketName, counterPart_bucketName = "escapp-bucket-dev-tenant", "escapp-bucket-dev"
     else:
         print("something wrong")
 
-    return bucketName
+    return bucketName, counterPart_bucketName

@@ -208,7 +208,7 @@ def upload_file():
         rgb_img = img.convert('RGB')
         rgb_img.save(filename)
 
-    bucketName = utils.assign_s3_bucket(username)
+    bucketName, counterPart_bucketName = utils.assign_s3_bucket(username)
     if bucketName == "":
         print("username invalid: ", username)
         return {'result': False}, 500
@@ -225,8 +225,16 @@ def upload_file():
     return {'result': True}, 200
 
 
-@apis.route('/download_file', methods=['GET'])
+@apis.route('/download_file', methods=['POST'])
 def download_file():
+    try:
+        body = request.get_json()
+        print(body)
+        counterPart = body["counterPart"]
+    except Exception as e:
+        print("Error occurred: ", e) #TODO change to logging
+        return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
+
     username = settings.username
     if username == "":
         username = 'UnitTester'
@@ -234,16 +242,27 @@ def download_file():
     timeInput = None
     dateInput = None
 
-    bucketName = utils.assign_s3_bucket(username)
+    bucketName, counterPart_bucketName = utils.assign_s3_bucket(username)
     if bucketName == "":
         print("username invalid: ", username)
         return {'result': False}, 500
 
-    try:
-        res = s3_methods.download_user_objects(bucketName, username, timeInput, dateInput)
-    except Exception as e:
-        print("Error occurred: ", e) #TODO change to logging
-        return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
+    if not counterPart:
+        try:
+            res = s3_methods.download_user_objects(bucketName, username,
+                                                     timeInput, dateInput, counterPart)
+        except Exception as e:
+            print("Error occurred: ", e) #TODO change to logging
+            return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
+    else:
+        # staff: download tenant photo that is meant to send to the staff
+        # tenant: download staff photo that is meant to send to the tenant
+        try:
+            res = s3_methods.download_user_objects(counterPart_bucketName, username,
+                                                     timeInput, dateInput, counterPart)
+        except Exception as e:
+            print("Error occurred: ", e) #TODO change to logging
+            return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
     photoData = res[0]
     photoAttrData = res[1]
 
