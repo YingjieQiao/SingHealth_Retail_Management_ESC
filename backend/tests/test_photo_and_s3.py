@@ -16,7 +16,8 @@ upload photo + related info filled in:
 
 download photo + associated data:
     - success testcase 1: correct number of photo and photo-data
-    - failed testcase 1: wrong HTTP request handle
+    - failed testcase 1: payload incorrect
+    - failed testcase 2: wrong HTTP request
 
 rectify photo:
     - success testcase 1: change `rectified` to True
@@ -129,9 +130,21 @@ class TestPreRectifyS3(TestBase):
     retriving data from mongo DB BEFORE rectifying any photos
 
     """
-    def test_s3_download_1(self):
-        rv = self.client.get('/download_file',
-                              content_type='multipart/form-data')
+
+    TEST_PHOTO_DOWNLOAD_PASS_1 = {
+        "counterPart": False
+    }
+
+    TEST_PHOTO_DOWNLOAD_FAIL_1 = {
+        # empty payload
+    }
+
+    TEST_PHOTO_DOWNLOAD_PASS_1_JSON = json.dumps(TEST_PHOTO_DOWNLOAD_PASS_1)
+    TEST_PHOTO_DOWNLOAD_FAIL_1_JSON = json.dumps(TEST_PHOTO_DOWNLOAD_FAIL_1)
+
+    def test_s3_download_pass_1(self):
+        rv = self.client.post('/download_file', data=self.TEST_PHOTO_DOWNLOAD_PASS_1_JSON,
+                              content_type='application/json')
         assert rv.status_code == 200
         assert rv.json['result'] == True
         assert type(rv.json['photoData']) == list
@@ -140,8 +153,17 @@ class TestPreRectifyS3(TestBase):
         assert len(rv.json['photoAttrData']) == 2
 
 
-    def test_s3_download_2(self):
-        rv = self.client.post('/download_file',
+    def test_s3_download_fail_1(self):
+        rv = self.client.post('/download_file', data=self.TEST_PHOTO_DOWNLOAD_FAIL_1_JSON,
+                              content_type='application/json')
+        assert rv.status_code == 500
+        assert rv.json['result'] == False
+        assert rv.json['photoData'] == None
+        assert rv.json['photoAttrData'] == None
+
+
+    def test_s3_download_fail_2(self):
+        rv = self.client.get('/download_file',
                               content_type='application/json')
         assert rv.status_code == 405
 
@@ -195,9 +217,15 @@ class TestPostRectifyView(TestBase):
     Verify rectify works and clean up testing entries in DB
     """
     TEST_FILES = ["UnitTester_01-01-2222_00:00:00.jpg", "UnitTester_01-02-2222_00:02:00.jpg"]
+    TEST_PHOTO_RECTIFY_PASS_1 = {
+        "counterPart": False
+    }
+
+    TEST_PHOTO_RECTIFY_PASS_1_JSON = json.dumps(TEST_PHOTO_RECTIFY_PASS_1)
 
     def test_post_rectify_1(self):
-        rv = self.client.get('/download_file',
+
+        rv = self.client.post('/download_file', data = self.TEST_PHOTO_RECTIFY_PASS_1_JSON,
                               content_type='application/json')
         assert rv.status_code == 200
         assert rv.json['result'] == True
