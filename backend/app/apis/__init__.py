@@ -403,6 +403,7 @@ def email():
         server.sendmail(sender_email, receiver_email, text)
     return {'result': True, 'info': "Email was shared"}, 200
 
+
 @apis.route('/tenant_exists', methods=['GET', 'POST'])
 def tenant_exists():
     
