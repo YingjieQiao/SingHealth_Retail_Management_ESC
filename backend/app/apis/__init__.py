@@ -208,8 +208,8 @@ def upload_file():
     username = settings.username
     if username == "":
         username = 'UnitTester'
-        print("testing s3 download")
-        logger.info("testing s3 download")
+        print("testing s3 upload")
+        logger.info("testing s3 upload")
     filename = username + "_" + date_ + "_" + time_ + ".jpg"
 
     if current_app.config['TESTING']:
