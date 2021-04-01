@@ -182,7 +182,7 @@ def login_verified():
     # except SignatureExpired:
     #     return {'result': False, 'info': "Link has expired"}, 200
 
-
+    
 @apis.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
     if current_app.config['TESTING']:
@@ -208,8 +208,13 @@ def upload_file():
         rgb_img = img.convert('RGB')
         rgb_img.save(filename)
 
+    bucketName = utils.assign_s3_bucket(username)
+    if bucketName == "":
+        print("username invalid: ", username)
+        return {'result': False}, 500
+
     try:
-        s3_methods.upload_file(filename, 'escapp-bucket-dev', None)
+        s3_methods.upload_file(filename, bucketName, None)
     except Exception as e:
         print("Error occurred: ", e) #TODO change to logging
         return {'result': False}, 500
@@ -229,8 +234,13 @@ def download_file():
     timeInput = None
     dateInput = None
 
+    bucketName = utils.assign_s3_bucket(username)
+    if bucketName == "":
+        print("username invalid: ", username)
+        return {'result': False}, 500
+
     try:
-        res = s3_methods.download_user_objects('escapp-bucket-dev', username, timeInput, dateInput)
+        res = s3_methods.download_user_objects(bucketName, username, timeInput, dateInput)
     except Exception as e:
         print("Error occurred: ", e) #TODO change to logging
         return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
@@ -261,72 +271,6 @@ def upload_photo_info():
         return {'result': False}, 500
 
     return {'result': True}, 200
-
-
-#TODO refactor, update unittest
-@apis.route('/tenant_upload_file', methods=['GET', 'POST'])
-def tenant_upload_file():
-    if current_app.config['TESTING']:
-        testFilePath = os.getcwd() + "/assets/image.jpg"
-        body = Image.open(testFilePath)
-    else:
-        body = request.files['file']
-        
-    time_ = request.form['time']
-    date_ = request.form['date']
-
-    username = settings.username
-    if username == "":
-        username = 'UnitTester'
-        print("testing s3 download") #TODO change to logging
-    filename = username + "_" + date_ + "_" + time_ + ".jpg"
-
-    if current_app.config['TESTING']:
-        rgb_img = body.convert('RGB')
-        rgb_img.save(filename)
-    else:
-        img = Image.open(body.stream)
-        rgb_img = img.convert('RGB')
-        rgb_img.save(filename)
-
-    try:
-        s3_methods.upload_file(filename, 'escapp-bucket-dev-tenant', None)
-    except Exception as e:
-        print("Error occurred: ", e) #TODO change to logging
-        return {'result': False}, 500
-
-    os.remove(os.getcwd() + "/" + filename)
-    #TODO in-memory storage like redis?
-
-    return {'result': True}, 200
-
-
-@apis.route('/tenant_download_file', methods=['GET', 'POST'])
-def tenant_download_file():
-    username = settings.username
-    if username == "":
-        username = 'UnitTester'
-        print("testing s3 download") #TODO change to logging
-    timeInput = None
-    dateInput = None
-
-    try:
-        res = s3_methods.download_user_objects('escapp-bucket-dev-tenant', username, timeInput, dateInput)
-    except Exception as e:
-        print("Error occurred: ", e) #TODO change to logging
-        return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
-    photoData = res[0]
-    photoAttrData = res[1]
-
-    mypath = os.getcwd()
-    for filename in os.listdir(mypath):
-        filename_full = os.path.join(mypath, filename)
-        if (os.path.isfile(filename_full) 
-            and not filename.endswith(".py") and filename != '.DS_Store'):
-            os.remove(filename_full)
-
-    return {'result': True, 'photoData': photoData, 'photoAttrData': photoAttrData}, 200
-
 
 
 @apis.route('/tenant_upload_photo_info', methods=['GET', 'POST'])
