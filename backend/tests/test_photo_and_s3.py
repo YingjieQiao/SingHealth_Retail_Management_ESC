@@ -235,3 +235,4 @@ class TestPostRectifyView(TestBase):
         # remove unit test entries in database for cleaning
         TestBase.clean_db_post_test(self)
         TestBase.clean_s3_post_test(self, self.TEST_FILES)
+        #TODO delete off entries in notif table too
