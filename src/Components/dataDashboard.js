@@ -31,7 +31,6 @@ class DataDashboard extends Component {
     }
 
     render() {
-        let classes = this.getButtonClasses();
 
         return (
             <div>
@@ -79,13 +78,13 @@ class DataDashboard extends Component {
         else {
             // proceeds to retrieve tenant's statistics
             // Navigate to Tenant's performance score board if successful
-            // this.props.history.push({
-            //     pathname: '/dataDashboardTenant',
-            //     state: [{ tenant: this.state.tenant, tenantName: this.state.tenantName}]
-            // });
+            let tenantProfile = {
+                name: this.state.tenantName,
+                email: this.state.tenant
+            }
             this.props.history.push({
                 pathname: '/dataDashboardTenant',
-                state: { tenant: this.state.tenant}
+                state: { tenant: tenantProfile}
             });
 
         }
