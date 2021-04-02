@@ -8,8 +8,9 @@ class CompareTenant extends Component {
         instituteArray: [],
         institute1: "",
         institute2: "",
+        instituteName1: "",
+        instituteName2: "",
         numOfInstitue: [],
-        selectedRange: 0,
     }
 
     componentDidMount() {
@@ -32,7 +33,6 @@ class CompareTenant extends Component {
 
 
     render() {
-        let classes = this.getButtonClasses();
 
         return (
             <div>
@@ -51,16 +51,6 @@ class CompareTenant extends Component {
                         <select class="custom-select my-1 mr-sm-2" onChange={this.saveInstitute2}>
                             <option selected>Choose...</option>
                             { this.state.numOfInstitue.map(index => <option value={index.toString()}>{this.handleInstitue(index)}</option> ) }
-                        </select>
-                    </div>
-                    <div>
-                        <label >Select a range</label>
-                        <select class="custom-select my-1 mr-sm-2" id="range" onChange={this.saveRange}>
-                            <option selected>Choose...</option>
-                            <option value="1">Yearly</option>
-                            <option value="2">Monthly</option>
-                            <option value="3">Weekly</option>
-                            <option value="4">7 days</option>
                         </select>
                     </div>
                 </form>
@@ -82,39 +72,30 @@ class CompareTenant extends Component {
     saveInstitute1 = (event) => {
         const data = event.target.value;
         if (data === "Choose...") {
-            this.setState({institute1: ""});
+            this.setState({institute1: "", instituteName1: ""});
         } else {
             const index = parseInt(data);
-            this.setState({institute1: this.state.instituteArray[index]["email"]});
+            const name = this.state.instituteArray[index]["firstName"] + " " + this.state.instituteArray[index]["lastName"];
+            this.setState({institute1: this.state.instituteArray[index]["email"], instituteName1: name});
         }
     }
 
     saveInstitute2 = (event) => {
         const data = event.target.value;
         if (data === "Choose...") {
-            this.setState({institute2: ""});
+            this.setState({institute2: "", institute2: ""});
         } else {
             const index = parseInt(data);
-            this.setState({institute2: this.state.instituteArray[index]["email"]});
-        }
-    }
-
-    saveRange = event => {
-        const data = event.target.value;
-        if (data === "Choose...") {
-            this.setState({selectedRange: 0});
-        } else {
-            this.setState({selectedRange: data});
+            const name = this.state.instituteArray[index]["firstName"] + " " + this.state.instituteArray[index]["lastName"];
+            this.setState({institute2: this.state.instituteArray[index]["email"], instituteName2: name});
         }
     }
 
     validateField = () => {
         let institute1 = this.state.institute1;
         let institute2 = this.state.institute2;
-        let selectedRange = this.state.selectedRange;
-        console.log(institute1, institute2, selectedRange);
 
-        if (institute1.length === 0 || institute2.length === 0 || selectedRange === 0) {
+        if (institute1.length === 0 || institute2.length === 0) {
             return false;
         }
         else if (institute1 === institute2) {
@@ -126,28 +107,14 @@ class CompareTenant extends Component {
 
     }
 
-    convertRangeToString = () => {
-        switch (this.state.selectedRange) {
-            case "1":
-                return "yearly";
-            case "2":
-                return "monthly";
-            case "3":
-                return "weekly";
-            case "4":
-                return "7days";
-            default:
-                return "";
-        }
-    }
-
     compare = event => {
         event.preventDefault();
 
         let compareTenantList = {
             institute1: this.state.institute1,
             institute2: this.state.institute2,
-            selectedRange: this.convertRangeToString()
+            instituteName1: this.state.instituteName1,
+            instituteName2: this.state.instituteName2,
         };
 
         // proceeds to send to backend  
