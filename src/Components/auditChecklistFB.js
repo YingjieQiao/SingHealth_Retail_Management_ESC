@@ -138,7 +138,7 @@ class AuditChecklistFB extends Component {
                     <div class="form-group">
                         <label>Disposable gloves are changed regularly and/ or in between tasks.</label>
                         <ul>
-                            <li>Staff do not handle cash with gloved hands.</li>
+                            <li key="013">Staff do not handle cash with gloved hands.</li>
                         </ul>
                         <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="013" onInput={this.saveScore}/>
                     </div>
@@ -152,7 +152,7 @@ class AuditChecklistFB extends Component {
                     <div class="form-group">
                         <label>Adequate and regular pest control.</label>
                         <ul>
-                            <li>Pest control record.</li>
+                            <li key="015">Pest control record.</li>
                         </ul>
                         <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="015" onInput={this.saveScore}/>
                     </div>
@@ -207,9 +207,9 @@ class AuditChecklistFB extends Component {
                     <div class="form-group">
                         <label>Adequate number of covered waste pedal bins are available and waste is properly managed and disposed.</label>
                         <ul>
-                            <li>Waste bins are not over-filled.</li>
-                            <li>Waste Management: Proper disposal of food stuff and waste.</li>
-                            <li>Waste is properly bagged before disposing it at the waste disposal area/ bin centre.</li>
+                            <li key="028.1">Waste bins are not over-filled.</li>
+                            <li key="028.2">Waste Management: Proper disposal of food stuff and waste.</li>
+                            <li key="028.3">Waste is properly bagged before disposing it at the waste disposal area/ bin centre.</li>
                         </ul>
                         <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="028" onInput={this.saveScore}/>
                     </div>
@@ -234,7 +234,7 @@ class AuditChecklistFB extends Component {
                     <div class="form-group">
                         <label>Food and non-food are clearly segregated.</label>
                         <ul>
-                            <li>Non-food items (e.g. insecticides, detergents and other chemicals) are not stored together with the food items.</li>
+                            <li key="032">Non-food items (e.g. insecticides, detergents and other chemicals) are not stored together with the food items.</li>
                         </ul>
                         <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="032" onInput={this.saveScore}/>
                     </div>
@@ -261,7 +261,7 @@ class AuditChecklistFB extends Component {
                     <div class="form-group">
                         <label>Ice machine is clean and well maintained.</label>
                         <ul>
-                            <li>Only ice is stored in the ice machine to prevent contamination of the ice.</li>
+                            <li key="038">Only ice is stored in the ice machine to prevent contamination of the ice.</li>
                         </ul>
                         <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="038" onInput={this.saveScore}/>
                     </div>
@@ -323,7 +323,7 @@ class AuditChecklistFB extends Component {
                     <div class="form-group">
                         <label>Raw food and cooked food/ ready to serve food are clearly segregated.</label>
                         <ul>
-                            <li>Cold and/ or hot holding units are clean and well maintained.</li>
+                            <li key="052">Cold and/ or hot holding units are clean and well maintained.</li>
                         </ul>
                         <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="052" onInput={this.saveScore}/>
                     </div>
@@ -364,21 +364,21 @@ class AuditChecklistFB extends Component {
                     <div class="form-group">
                         <label>Frozen food is stored at a temperature of not more than &#45;12°C.</label>
                         <ul>
-                            <li>Freezer’s temperature: &#60; &#45;12°.</li>
+                            <li key="061">Freezer’s temperature: &#60; &#45;12°.</li>
                         </ul>
                         <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="061" onInput={this.saveScore}/>
                     </div>
                     <div class="form-group">
                         <label>Chilled food is stored at a temperature of not more than 4°C.</label>
                         <ul>
-                            <li>Chiller’s temperature: 0°C &#126; 4°C</li>
+                            <li key="062">Chiller’s temperature: 0°C &#126; 4°C</li>
                         </ul>
                         <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="062" onInput={this.saveScore}/>
                     </div>
                     <div class="form-group">
                         <label>Hot food are held above 60°C.</label>
                         <ul>
-                            <li>Food warmer’s temperature: &#62; 60°C</li>
+                            <li key="063">Food warmer’s temperature: &#62; 60°C</li>
                         </ul>
                         <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="063" onInput={this.saveScore}/>
                     </div>
@@ -404,7 +404,7 @@ class AuditChecklistFB extends Component {
                     <div class="form-group">
                         <label>Min. no. of healthier variety of food items per stall.</label>
                         <ul>
-                            <li>Lease Term: 50% of food items</li>
+                            <li key="068">Lease Term: 50% of food items</li>
                         </ul>
                         <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="068" onInput={this.saveScore}/>
                     </div>
