@@ -71,11 +71,24 @@ class viewPhoto extends Component {
     }
 
     testHandler = event => {
-        axios.get("http://localhost:5000/download_file")
+        const headers = {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        };
+
+        const payload = {
+            // False means downloading photo updated by himself/herself
+            // True means staff downloading photo uploaded by tenant 
+            // or tenant downloading photo updated by staff
+            'counterPart': false 
+        }
+
+        axios.post("http://localhost:5000/download_file", payload, headers)
         .then(
             res => {
                 console.log(res);
-                // res.photoAttrData is an array of dictionary, each dictionary contains the info about this photo
+                // res.photoAttrData is an array of dictionary, 
+                // each dictionary contains the info about this photo
 
                 this.setState({reviewPhotoMsg: ""});
                 
