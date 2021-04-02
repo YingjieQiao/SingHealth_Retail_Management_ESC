@@ -6,7 +6,7 @@ import boto3
 from botocore.exceptions import ClientError
 import os, json
 from PIL import Image
-from app.models import Photo
+from app.models import Photo, TenantPhoto
 from . import settings
 from flask import request
 
@@ -61,7 +61,7 @@ def download(s3, file_name, bucket, object_name):
     return filename_full
 
 
-def download_user_objects(bucket, username, timeInput, dateInput):
+def download_user_objects(bucket, username, timeInput, dateInput, counterPart):
     s3_client = boto3.client('s3',
                 aws_access_key_id=os.environ.get('ACCESS_KEY'),
                 aws_secret_access_key=os.environ.get('SECRET_KEY'))
@@ -73,7 +73,7 @@ def download_user_objects(bucket, username, timeInput, dateInput):
         date_ = ls[1]
         time_ = ls[2][:-4]
         if (ls[0] == username):
-            photoInfo = get_photo_info(date_, time_)
+            photoInfo = get_photo_info(date_, time_, counterPart)
 
             if (photoInfo[0]['rectified'] == False):
                 photoAttrData.append(photoInfo)
@@ -92,7 +92,7 @@ def download_user_objects(bucket, username, timeInput, dateInput):
     return photoData, photoAttrData
 
 
-def get_photo_info(date_, time_):
+def get_photo_info(date_, time_, counterPart):
     """
     get the information assciated with a given photo name
     """
@@ -101,10 +101,17 @@ def get_photo_info(date_, time_):
         settings.username = "UnitTester"
         print("testing") #TODO change to logging
 
-    try:
-        photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)
-    except:
-        print("error") #TODO: change to logging
-        return None
+    if not counterPart:
+        try:
+            photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)
+        except:
+            print("error") #TODO: change to logging
+            return None
+    else:
+        try:
+            photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=settings.username)
+        except:
+            print("error") #TODO: change to logging
+            return None
 
     return photoInfo
