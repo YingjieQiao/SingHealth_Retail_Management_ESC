@@ -84,7 +84,7 @@ def clear_assets():
 
 
 def check_if_staff(username):
-    users = User.objects.all()
+    users = User.objects(staff=True)
     for user in users:
         username_check = "".join([user["firstName"], user["lastName"]])
         if (username == username_check):
@@ -94,7 +94,7 @@ def check_if_staff(username):
 
 
 def check_if_tenant(username):
-    users = User.objects.all()
+    users = User.objects(tenant=True)
     for user in users:
         username_check = "".join([user["firstName"], user["lastName"]])
         if (username == username_check):
