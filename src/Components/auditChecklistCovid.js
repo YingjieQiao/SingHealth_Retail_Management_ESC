@@ -248,10 +248,10 @@ class AuditChecklistCovid extends Component {
 
     saveScore = event => {
         var newScoreDict = this.state.scoreDict;
-        if (event.target.value == "No") {
+        if (event.target.value === "No") {
             newScoreDict[event.target.id] = 0;
         } 
-        else if (event.target.value == "Yes") {
+        else if (event.target.value === "Yes") {
             newScoreDict[event.target.id] = 1;
         }
         else {
