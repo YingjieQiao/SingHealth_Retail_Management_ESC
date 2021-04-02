@@ -9,6 +9,18 @@ import { IconContext } from 'react-icons';
 function Navbar() {
   const [sidebar, setSidebar] = useState(false);
 
+  if(localStorage.getItem("usertype")==="staff"){
+    var staff=true;
+    var tenant= false;
+  }
+  else if(localStorage.getItem("usertype")==="tenant"){
+    var staff=false;
+    var tenant= true;
+  }
+  else{
+  var staff=false;
+  var tenant= false;
+}
   const showSidebar = () => setSidebar(!sidebar);
 
   return (
@@ -27,6 +39,7 @@ function Navbar() {
               </Link>
             </li>
             {SidebarData.map((item, index) => {
+              if(staff && item.id!="tenant"){
               return (
                 <li key={index} className={item.cName}>
                   <Link to={item.path}>
@@ -34,7 +47,16 @@ function Navbar() {
                     <span>{item.title}</span>
                   </Link>
                 </li>
-              );
+              );}
+              else if(tenant && item.id!="staff"){
+                return (
+                  <li key={index} className={item.cName}>
+                    <Link to={item.path}>
+                      {item.icon}
+                      <span>{item.title}</span>
+                    </Link>
+                  </li>
+                );}
             })}
           </ul>
         </nav>

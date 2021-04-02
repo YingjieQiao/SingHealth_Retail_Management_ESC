@@ -10,19 +10,44 @@ export const SidebarData = [
     title: 'Home',
     path: '/home',
     icon: <AiIcons.AiFillHome />,
-    cName: 'nav-text'
+    cName: 'nav-text',
+    id:"staff"
   },
+  {
+    title: 'tenant Home',
+    path: '/tenantHome',
+    icon: <AiIcons.AiFillHome />,
+    cName: 'nav-text',
+    id:"tenant"
+  },
+  
   {
     title: 'Upload Photos',
     path: '/upload',
     icon: <FaIcons.FaUpload />,
-    cName: 'nav-text'
+    cName: 'nav-text',
+    id:"staff"
   },
   {
-    title: 'View Photos',
+    title: 'tenant Upload',
+    path: '/upload',
+    icon: <FaIcons.FaUpload />,
+    cName: 'nav-text',
+    id:"tenant"
+  },
+  {
+    title: 'View Photo',
     path: '/viewPhoto',
     icon: <FaIcons.FaImages />,
-    cName: 'nav-text'
+    cName: 'nav-text',
+    id:"staff"
+  },
+  {
+    title: 'tenant View',
+    path: '/viewPhoto',
+    icon: <FaIcons.FaImages />,
+    cName: 'nav-text',
+    id:"tenant"
   },
   {
     title: 'inbox',
