@@ -1,5 +1,5 @@
 from flask import Blueprint, request, session, jsonify, url_for, current_app, send_from_directory
-from app.models import User, Audit_non_FB, Photo
+from app.models import User, Audit_non_FB, Photo, TenantPhoto
 import boto3
 from botocore.exceptions import ClientError
 import logging
@@ -32,6 +32,9 @@ s = URLSafeTimedSerializer('Thisisasecret!')
 
 apis = Blueprint('apis', __name__)
 
+logger = logging.getLogger("logger")
+#TODO remove all the print in the end
+#TODO more logging at successful executions
 
 @apis.route('/get_current_username_and_datetime', methods=['GET', 'POST'])
 def get_current_username_and_datetime():
@@ -56,6 +59,7 @@ def user_signup():
         userid = user.id
     except Exception as e:
         print("error: ", e)
+        logger.error("error in '/signup' endpoint: %s", e)
         return {'result': False, 'info': "Registeration Failed"}, 500
 
     response = {
@@ -96,6 +100,7 @@ def user_signup():
     # with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
     #     server.login(sender_email, password)
     #     server.sendmail(sender_email, email, text)
+    logger.info("username %s sign up success", body['firstName']+body['lastName'])
     return {'result': True, 'info': "Registeration Success"}, 200
 
 # Code to verify the link for user registration, not being used for now
@@ -122,8 +127,10 @@ def user_login():
         authorized = user.check_password(body.get('password'))
         print(authorized)
         if not authorized:
+            logger.error("error in '/login' endpoint: %s", "password error")
             return {'result': False, 'info': "password error"}, 500
     except:
+        logger.error("error in '/login' endpoint: %s", "user does not exist or payload error")
         return {'result': False, 'info': "user does not exist or payload error"}, 500
 
     settings.username = firstName + lastName
@@ -136,6 +143,7 @@ def user_login():
         message["Subject"] = "Link to login to SingHealth"
     except:
         print("error occured")
+        logger.error("error in '/login' endpoint: %s", "user does not exist")
         return {'result': False, 'info': "user does not exist"}, 500
 
     token = s.dumps(body.get('email'), salt='login')
@@ -154,10 +162,11 @@ def user_login():
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
         server.login(sender_email, password)
         server.sendmail(sender_email, email, text)
-    #TODO add info to global log file
 
     settings.username = firstName + lastName
     print(settings.username)
+    logger.info("%s is attemping to log in", firstName+lastName)
+
     return {'result': True, 'info': "2FA sent", "token":token,
              'firstName': firstName, 'lastName': lastName,
              'staff': user.staff, 'tenant': user.tenant, 'admin': user.admin}
@@ -176,13 +185,15 @@ def login_verified():
         admin=user.admin
         tenant=user.tenant
         settings.username = firstName + lastName
+        logger.info("%s has logged in", firstName+lastName)
         return {'result': True, 'firstName': firstName, 'lastName': lastName, 'staff':staff, 'admin':admin, 'tenant':tenant}, 200 #this returns the details of the user 
     except:
+        logger.info("%s 2FA error", firstName+lastName)
         return {'result': False, 'info': "2FA error"}, 500
     # except SignatureExpired:
     #     return {'result': False, 'info': "Link has expired"}, 200
 
-
+    
 @apis.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
     if current_app.config['TESTING']:
@@ -197,7 +208,8 @@ def upload_file():
     username = settings.username
     if username == "":
         username = 'UnitTester'
-        print("testing s3 download") #TODO change to logging
+        print("testing s3 upload")
+        logger.info("testing s3 upload")
     filename = username + "_" + date_ + "_" + time_ + ".jpg"
 
     if current_app.config['TESTING']:
@@ -208,10 +220,17 @@ def upload_file():
         rgb_img = img.convert('RGB')
         rgb_img.save(filename)
 
+    bucketName, counterPart_bucketName = utils.assign_s3_bucket(username)
+    if bucketName == "":
+        print("username invalid: ", username)
+        logger.error("In '/upload_file' endpoint, username invalid: ", username)
+        return {'result': False}, 500
+
     try:
-        s3_methods.upload_file(filename, 'escapp-bucket-dev', None)
+        s3_methods.upload_file(filename, bucketName, None)
     except Exception as e:
-        print("Error occurred: ", e) #TODO change to logging
+        print("Error occurred: ", e)
+        logger.error("In '/upload_file' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
     os.remove(os.getcwd() + "/" + filename)
@@ -220,20 +239,48 @@ def upload_file():
     return {'result': True}, 200
 
 
-@apis.route('/download_file', methods=['GET'])
+@apis.route('/download_file', methods=['POST'])
 def download_file():
+    try:
+        body = request.get_json()
+        counterPart = body["counterPart"]
+    except Exception as e:
+        print("Error occurred: ", e)
+        logger.error("In '/download_file' endpoint, error occurred: ", e)
+        return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
+
     username = settings.username
     if username == "":
         username = 'UnitTester'
-        print("testing s3 download") #TODO change to logging
+        print("testing s3 download")
+        logger.info("testing s3 download")
     timeInput = None
     dateInput = None
 
-    try:
-        res = s3_methods.download_user_objects('escapp-bucket-dev', username, timeInput, dateInput)
-    except Exception as e:
-        print("Error occurred: ", e) #TODO change to logging
-        return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
+    bucketName, counterPart_bucketName = utils.assign_s3_bucket(username)
+    if bucketName == "":
+        print("username invalid: ", username)
+        logger.error("In '/download_file' endpoint, username invalid: ", username)
+        return {'result': False}, 500
+
+    if not counterPart:
+        try:
+            res = s3_methods.download_user_objects(bucketName, username,
+                                                     timeInput, dateInput, counterPart)
+        except Exception as e:
+            print("Error occurred: ", e)
+            logger.error("In '/download_file' endpoint, error occurred: ", e)
+            return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
+    else:
+        # staff: download tenant photo that is meant to send to the staff
+        # tenant: download staff photo that is meant to send to the tenant
+        try:
+            res = s3_methods.download_user_objects(counterPart_bucketName, username,
+                                                     timeInput, dateInput, counterPart)
+        except Exception as e:
+            print("Error occurred: ", e)
+            logger.error("In '/download_file' endpoint, error occurred: ", e)
+            return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
     photoData = res[0]
     photoAttrData = res[1]
 
@@ -257,7 +304,25 @@ def upload_photo_info():
         photo = Photo(**body)
         photo.save()
     except Exception as e:
-        print("Error occurred: ", e) #TODO change to logging
+        print("Error occurred: ", e)
+        logger.error("In '/upload_photo_info' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+@apis.route('/tenant_upload_photo_info', methods=['GET', 'POST'])
+def tenant_upload_photo_info():
+    body = request.get_json()
+
+    print(body)
+
+    try:
+        tenantPhoto = TenantPhoto(**body)
+        tenantPhoto.save()
+    except Exception as e:
+        print("Error occurred: ", e)
+        logger.error("In '/tenant_upload_photo_info' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
     return {'result': True}, 200
@@ -273,13 +338,15 @@ def rectify_photo():
 
     if settings.username == "":
         settings.username = "UnitTester"
-        print("testing") #TODO change to logging
+        print("testing")
+        logger.info("testing '/rectify_photo' endpoint")
 
     try:
         photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)
         photoInfo.update(**body)
     except Exception as e:
-        print("error: ", e) #TODO: change to logging
+        print("error: ", e) 
+        logger.error("In '/rectify_photo' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
     return {'result': True}, 200
@@ -315,6 +382,7 @@ def display_data():
         res = utils.get_data()
     except Exception as e:
         print("error: ", e)
+        logger.error("In '/display_data' endpoint, error occurred: ", e)
         return {'result': False, 'data': None, 'info': 'failed'}, 500
     data = res[mapping[tableName]]
 
@@ -338,6 +406,7 @@ def download_data_csv():
         filePath, fileName = utils.write_to_csv(dataDict, tableName)
     except Exception as e:
         print("error, ", e)
+        logger.error("In '/download_data_csv' endpoint, error occurred: ", e)
         return {'result': False, 'data': None, 'info': 'failed'}, 500
 
     return send_from_directory(filePath, fileName, as_attachment=True), 200
@@ -349,6 +418,7 @@ def remove_temp_files():
         utils.clear_assets()
     except Exception as e:
         print("error: ", e)
+        logger.error("In '/remove_temp_files' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
     return {'result': True}, 200

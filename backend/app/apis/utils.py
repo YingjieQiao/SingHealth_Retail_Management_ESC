@@ -81,3 +81,35 @@ def clear_assets():
     assetsPath = os.path.join(os.getcwd(), assetsFolderName)
 
     shutil.rmtree(assetsPath) 
+
+
+def check_if_staff(username):
+    users = User.objects.all()
+    for user in users:
+        username_check = "".join([user["firstName"], user["lastName"]])
+        if (username == username_check):
+            print("found staff: ", username)
+            return True
+    return False
+
+
+def check_if_tenant(username):
+    users = User.objects.all()
+    for user in users:
+        username_check = "".join([user["firstName"], user["lastName"]])
+        if (username == username_check):
+            print("found tenant: ", username)
+            return True
+    return False
+
+
+def assign_s3_bucket(username):
+    bucketName, counterPart_bucketName = "", ""
+    if (username == "UnitTester" or check_if_staff(username)):
+        bucketName, counterPart_bucketName = "escapp-bucket-dev", "escapp-bucket-dev-tenant"
+    elif (check_if_staff(username)):
+        bucketName, counterPart_bucketName = "escapp-bucket-dev-tenant", "escapp-bucket-dev"
+    else:
+        print("something wrong")
+
+    return bucketName, counterPart_bucketName
