@@ -154,8 +154,8 @@ class AuditChecklistNonFB extends Component {
                     <div class="form-group">
                         <label>Waste is properly managed and disposed.</label>
                         <ul>
-                            <li>Waste bins are not over-filled.</li>
-                            <li>Waste Management: Proper disposal of general waste.</li>
+                            <li key="018.1">Waste bins are not over-filled.</li>
+                            <li key="018.2">Waste Management: Proper disposal of general waste.</li>
                         </ul>
                         <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="018" onInput={this.saveScore}/>
                     </div>
@@ -359,21 +359,15 @@ class AuditChecklistNonFB extends Component {
         } else { 
             // all data has been filled
             // proceeds to send data to backend
-            console.log("sent");
-            const data = new FormData();
-            console.log(data);
             const headers = {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Access-Control-Allow-Origin': '*'
             };
-            console.log(this.state.finalDict);
-            data.append("auditChecklist", this.state.finalDict);
-            console.log(data);
             
             axios.post("http://localhost:5000/auditChecklistNonFB", this.state.finalDict, headers
             ).then( res => {
-                // console.log(data);
                 console.log(res.statusText);
+                alert("The form has been successfully recorded.");
             });
         }
     }
