@@ -80,7 +80,7 @@ class Upload extends Component {
     }
 
     checkStaffName = () => {
-        if (this.state.staffName.length != 0) {
+        if (this.state.staffName.length !== 0) {
             // proceeds to upload info
             const photo = {
                 tags: this.state.tags,
