@@ -47,6 +47,35 @@ def get_current_username_and_datetime():
 
     return {"username": settings.username, "time": time_, "date": date_}, 200
 
+@apis.route('/check_if_staff', methods=['GET'])
+def check_if_staff():
+    if current_app.config['TESTING']:
+        flag = True
+    else:
+        flag = False
+
+    try:
+        res = utils.check_if_staff(settings.username, flag)
+    except Exception as e:
+        logger.error("error in '/check_if_staff' endpoint: %s", e)
+        return {"result": False}, 500
+    return {"result": res}, 200
+
+
+@apis.route('/check_if_tenant', methods=['GET'])
+def check_if_tenant():
+    if current_app.config['TESTING']:
+        flag = True
+    else:
+        flag = False
+        
+    try:
+        res = utils.check_if_tenant(settings.username, flag)
+    except Exception as e:
+        logger.error("error in '/check_if_tenant' endpoint: %s", e)
+        return {"result": False}, 500
+    return {"result": res}, 200
+
 
 @apis.route('/signup', methods=['GET', 'POST'])
 def user_signup():

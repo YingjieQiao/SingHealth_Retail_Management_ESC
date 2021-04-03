@@ -4,7 +4,7 @@ import Register from './Register'
 import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-router-dom";
 import axios from 'axios';
 import { useLocation } from "react-router-dom";
-
+import Navbar from './Navbar';
 class login_verified extends Component {
   constructor(props) {
     super(props)
@@ -60,12 +60,14 @@ class login_verified extends Component {
         if (res.data.result === true) {
             alert("Login success!")
             if(res.data.tenant){
+              localStorage.setItem("usertype","tenant")  ;
             this.props.history.push('/tenantHome');
             }
             else if(res.data.staff){
+              localStorage.setItem("usertype","staff")  ;
               this.props.history.push('/home');
               }
-              else{
+              else if(res.data.admin){
                 this.props.history.push('/Adminhome');
               }
         } else {
