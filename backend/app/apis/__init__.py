@@ -49,8 +49,13 @@ def get_current_username_and_datetime():
 
 @apis.route('/check_if_staff', methods=['GET'])
 def check_if_staff():
+    if current_app.config['TESTING']:
+        flag = True
+    else:
+        flag = False
+
     try:
-        res = utils.check_if_staff(settings.username)
+        res = utils.check_if_staff(settings.username, flag)
     except Exception as e:
         logger.error("error in '/check_if_staff' endpoint: %s", e)
         return {"result": False}, 500
@@ -59,8 +64,13 @@ def check_if_staff():
 
 @apis.route('/check_if_tenant', methods=['GET'])
 def check_if_tenant():
+    if current_app.config['TESTING']:
+        flag = True
+    else:
+        flag = False
+        
     try:
-        res = utils.check_if_tenant(settings.username)
+        res = utils.check_if_tenant(settings.username, flag)
     except Exception as e:
         logger.error("error in '/check_if_tenant' endpoint: %s", e)
         return {"result": False}, 500

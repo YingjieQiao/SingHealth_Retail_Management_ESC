@@ -83,8 +83,10 @@ def clear_assets():
     shutil.rmtree(assetsPath) 
 
 
-def check_if_staff(username):
-    users = User.objects(staff=True)
+def check_if_staff(username, flag):
+    if flag:
+        username = "UNITTEST"
+    users = User.objects(staff=True) # all?
     for user in users:
         username_check = "".join([user["firstName"], user["lastName"]])
         if (username == username_check):
@@ -93,7 +95,9 @@ def check_if_staff(username):
     return False
 
 
-def check_if_tenant(username):
+def check_if_tenant(username, flag):
+    if flag:
+        username = "UNITTEST"
     users = User.objects(tenant=True)
     for user in users:
         username_check = "".join([user["firstName"], user["lastName"]])
