@@ -18,10 +18,13 @@ class DataDashboardTenant extends Component {
             tenant: this.state.tenant
         };
 
-        axios.post("http://localhost:5000/non_FB_data", data)
+        axios.post("http://localhost:5000/dashboard_data", data)
         .then(
             res => {
+                console.log(res);
                 this.setState({dataDict: res.data});
+                // console.log(typeof this.state.dataDict.audit_day_img);
+                // console.log(this.state.dataDict["audit_day_img"]);
             }
         );
         

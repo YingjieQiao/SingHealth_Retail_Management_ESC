@@ -33,39 +33,32 @@ class Login extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-
-        this.props.history.push(
-            '/Login_verified'
-            // search:   res.data.token ,
-            // state: { detail: res.data.token }
-        );
     
-        // const user = {
-        //   password: this.state.password,
-        //   email: this.state.email
-        // };
-        
-        // const headers = {
-        //     'Content-Type': 'application/json',
-        //     'Access-Control-Allow-Origin': '*'
-        // };
+        const user = {
+          password: this.state.password,
+          email: this.state.email
+        };
+        const headers = {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        };
     
-        // axios.post(`http://localhost:5000/login`, user, headers)
-        //   .then(res => {
-        //     console.log(res.data);
-        //     if (res.data.result === true) {
-        //         alert("Please check your email for authentication token","yolo")
+        axios.post(`http://localhost:5000/login`, user, headers)
+          .then(res => {
+            console.log(res.data);
+            if (res.data.result === true) {
+                alert("Please check your email for authentication token","yolo")
 
-        //         this.props.history.push(
-        //         '/Login_verified'
-        //         // search:   res.data.token ,
-        //         // state: { detail: res.data.token }
-        //         );
+                this.props.history.push(
+                '/Login_verified'
+                // search:   res.data.token ,
+                // state: { detail: res.data.token }
+                );
 
-        //     } else {
-        //         alert("Login unsuccessful:( \n"+res.data.info);
-        //     }
-        // })
+            } else {
+                alert("Login unsuccessful:( \n"+res.data.info);
+            }
+        })
         // .catch(function (error,res) {
         //     console.log(error.response.status) // 401
         //     console.log(error.response.data.error) //Please Authenticate or whatever returned from server
@@ -90,9 +83,9 @@ class Login extends Component {
                 <Route path="/Register" exact component={Register}/>        
                 <form onSubmit={this.handleSubmit}>
                     <h1>LOGIN</h1>
-                    <label>Email :</label> <input type="text" value={this.state.email} onChange={this.emailhandler} placeholder="Email..." /><br />
-                    <label>Password :</label> <input type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password..." /><br />
-                    <input type="submit" value="Log In" />
+                    <label>Email :</label> <input id="email" type="text" value={this.state.email} onChange={this.emailhandler} placeholder="Email..." /><br />
+                    <label>Password :</label> <input id="password" type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password..." /><br />
+                    <input id="submit" type="submit" value="Log In" />
                     <li>
                          <label>new tenant?  </label>
                         <Link to="/Register">Register</Link>
@@ -101,7 +94,6 @@ class Login extends Component {
                      {/* <li>
                          <label>admin home link   </label>
                         <Link to="/Adminhome">admin</Link>
-
                      </li> */}
                 </form>
 

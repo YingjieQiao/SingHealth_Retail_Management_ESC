@@ -25,7 +25,7 @@ class AuditChecklistNonFB extends Component {
     }
 
     componentDidMount() {
-        axios.get("http://localhost:5000/tenant_list")
+        axios.get("http://localhost:5000/tenant_list_non_FB")
         .then(
             res => {
                 console.log(res);

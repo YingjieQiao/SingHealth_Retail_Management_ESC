@@ -32,7 +32,7 @@ class AuditChecklistFB extends Component {
     }
 
     componentDidMount() {
-        axios.get("http://localhost:5000/tenant_list")
+        axios.get("http://localhost:5000/tenant_list_FB")
         .then(
             res => {
                 console.log(res);
