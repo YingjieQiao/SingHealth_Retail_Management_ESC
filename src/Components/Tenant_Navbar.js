@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 //import { Link } from 'react-router-dom';
-import { SidebarData } from './SidebarData';
+import { tenant_SidebarData } from './tenant_SidebarData';
 import './Navbar.css';
 import axios from 'axios';
 import { IconContext } from 'react-icons';
 import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-router-dom";
-function Navbar() {
+function TenantNavbar() {
   const [sidebar, setSidebar] = useState(false);
   const showSidebar = () => setSidebar(!sidebar);
 
@@ -26,7 +26,7 @@ function Navbar() {
                 <AiIcons.AiOutlineClose />
               </Link>
             </li>
-            {SidebarData.map((item, index) => {
+            {tenant_SidebarData.map((item, index) => {
               return (
                 <li key={index} className={item.cName}>
                   <Link to={item.path}>
@@ -43,4 +43,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default TenantNavbar;

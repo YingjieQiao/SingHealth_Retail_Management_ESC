@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Navbar from './Navbar';
+import TenantNavbar from './Tenant_Navbar';
 import axios from "axios";
 import { ImUpload3 } from 'react-icons/im';
 
@@ -22,7 +22,7 @@ class Upload extends Component {
     render() { 
         return (
             <div style={{margin: "10px"}}>
-                <Navbar/>
+                <TenantNavbar/>
                 <h2>Upload photo</h2>
                 <div className="border border-dark" style={{display: "inline-block",margin: "10px"}}>
                     <ImUpload3 size="50" style={{display: "block", marginLeft: "auto", 

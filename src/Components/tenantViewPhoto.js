@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Navbar from './Navbar';
+import TenantNavbar from './Tenant_Navbar';
 import axios from "axios";
 
 class viewPhoto extends Component {
@@ -14,7 +14,7 @@ class viewPhoto extends Component {
     render() { 
         return (
             <div>
-                <Navbar/>
+                <TenantNavbar/>
                 <h2>View Photos</h2>
                 <p>{this.state.reviewPhotoMsg}</p>
                 <button type="button" className="btn btn-primary m-2" onClick={this.testHandler}>Update</button>

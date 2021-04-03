@@ -1,11 +1,11 @@
 import React from 'react';
-import Navbar from './Navbar';
+import TenantNavbar from './Tenant_Navbar';
 
 function tenantHome() {
   localStorage.setItem("usertype","tenant")  ;
   return (
     <div className='home'>
-            <Navbar usertype="tenant"/>
+            <TenantNavbar/>
         <h1>Tenant User Homepage</h1>
     </div>
   );
