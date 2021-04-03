@@ -15,7 +15,7 @@ class viewPhoto extends Component {
         return (
             <div>
                 <Navbar/>
-                <h2>View Photos</h2>
+                <h2>Tenant View Photos</h2>
                 <p>{this.state.reviewPhotoMsg}</p>
                 <button type="button" className="btn btn-primary m-2" onClick={this.testHandler}>Update</button>
                 <div>

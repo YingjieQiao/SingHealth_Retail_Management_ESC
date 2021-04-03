@@ -23,7 +23,7 @@ class Upload extends Component {
         return (
             <div style={{margin: "10px"}}>
                 <Navbar/>
-                <h2>Upload photo</h2>
+                <h2>Tenant Upload photo</h2>
                 <div className="border border-dark" style={{display: "inline-block",margin: "10px"}}>
                     <ImUpload3 size="50" style={{display: "block", marginLeft: "auto", 
                         marginRight: "auto", marginTop: "10px"}}/>

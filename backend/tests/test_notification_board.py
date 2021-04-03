@@ -121,11 +121,18 @@ class TestDeleteNotif(TestBase):
 
     def test_delete(self):
         rv = self.client.post('/tenant_delete_photo_notification',
-                              data=TEST_PHOTO_NOTIF_PASS_2_JSON,
+                              data=TEST_PHOTO_NOTIF_PASS_1_JSON,
                               content_type='application/json')
 
         assert rv.status_code == 200
         assert rv.json['result'] == True
+
+        rv2 = self.client.post('/tenant_delete_photo_notification',
+                              data=TEST_PHOTO_NOTIF_PASS_2_JSON,
+                              content_type='application/json')
+
+        assert rv2.status_code == 200
+        assert rv2.json['result'] == True
 
     def test_get(self):
         rv = self.client.get('/tenant_get_photo_notification',
@@ -134,4 +141,4 @@ class TestDeleteNotif(TestBase):
         assert rv.status_code == 200
         assert rv.json['result'] == True
         assert type(rv.json['tenantData']) == list
-        assert len(rv.json['tenantData']) == 1
+        assert len(rv.json['tenantData']) == 0
