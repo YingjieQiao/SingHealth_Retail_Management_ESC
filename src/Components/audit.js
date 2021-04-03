@@ -4,6 +4,8 @@ import AuditChecklistNonFB from './auditChecklistNonFB';
 import AuditChecklistFB from './auditChecklistFB';
 import AuditChecklistCovid from './auditChecklistCovid';
 import AuditChecklistTest from './auditChecklistTest';
+import styles from "./CSS/audit.module.css";
+
 
 class Audit extends Component {
 
@@ -20,7 +22,7 @@ class Audit extends Component {
         return (
             <div>
                 <Navbar/>
-                <form>
+                <form className={styles.form_layout}>
                     <label>Audit checklist for:</label>
                     <select class="custom-select my-1 mr-sm-2" id="auditType" onChange={this.handleAuditForm}>
                         <option selected value="-1">Choose...</option>
@@ -29,8 +31,8 @@ class Audit extends Component {
                         <option value="3">Non-F&#38;B Test</option>
                         <option value="4">Covid Safe Management Measures</option>
                     </select>
+                    <div>{this.displayAuditList()}</div>                
                 </form>
-                <div>{this.displayAuditList()}</div>                
             </div>
         )
     }
@@ -39,7 +41,6 @@ class Audit extends Component {
         this.setState({
             auditType: event.target.value
         });
-        console.log("type: ", event.target.value);
     }
 
     displayAuditList = () => {
