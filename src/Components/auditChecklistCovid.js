@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios";
+import styles from "./CSS/auditForm.module.css";
+
 
 class AuditChecklistCovid extends Component {
 
@@ -43,18 +45,23 @@ class AuditChecklistCovid extends Component {
 
         return (
             <div>                
-                <h2>New Audit</h2>
-                <h2>Audit Checklist (Non-F&#38;B)</h2>
-                <form>
-                    <div>
-                        <label>Auditee:</label>
-                        <select class="custom-select my-1 mr-sm-2" onChange={this.saveAuditee}>
+                <form className={styles.form}>
+                    <div className={styles.qn_body}>
+                        <label className={styles.title}>New Audit</label>
+                        <label className={styles.form_qn}>Audit Checklist (Non-F&#38;B)</label>
+                    </div>
+
+                    <div className={styles.qn_body} >
+                        <label className={styles.form_qn}>Auditee:</label>
+                        <select className={styles.form_qn} class="custom-select my-1 mr-sm-2" onChange={this.saveAuditee}>
                             <option selected>Choose...</option>
                             { this.state.numOfAuditee.map(index => <option value={index.toString()}>{this.handleAuditee(index)}</option> ) }
                         </select>
                     </div>
-                    <div>
-                        <label>Auditor:</label>
+
+                    
+                    <div className={styles.qn_body} >
+                        <label className={styles.form_qn}>Auditor:</label>
                         <select class="custom-select my-1 mr-sm-2" id="auditorName" onChange={this.handleAuditor}>
                             <option selected value="-1">Choose...</option>
                             <option value="Tom">Tom</option>
@@ -62,8 +69,8 @@ class AuditChecklistCovid extends Component {
                             <option value="Charlie">Charlie</option>
                         </select>
                     </div>
-                    <div>
-                        <label>Auditor's Department:</label>
+                    <div className={styles.qn_body}>
+                        <label className={styles.form_qn}>Auditor's Department:</label>
                         <select class="custom-select my-1 mr-sm-2" id="auditorDepartment" onChange={this.handleDepartment}>
                             <option selected value="-1">Choose...</option>
                             <option value="CSR">CSR</option>
@@ -71,133 +78,148 @@ class AuditChecklistCovid extends Component {
                             <option value="Risk">Risk</option>
                         </select>
                     </div>
-
-                    <h4>Part 1: Safe Management Measures for Front-of-house</h4>
-                    <div class="form-group">
-                        <label>SafeEntry has been implemented for dine-in customers.</label>
-                        { this.state.options.map(index => 
-                        <div>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value={index.toString()} id="001" onInput={this.saveScore}/>
-                            <label class="form-check-label" for="inlineCheckbox1">{index.toString()}</label>
-                        </div>
-                        ) }
+                    <div className={styles.qn_body}>
+                        <label className={styles.heading}>Part 1: Safe Management Measures for Front-of-house</label>
                     </div>
-                    <div class="form-group">
-                        <label>Temperature screening is conducted for customers of outlets that are located outside of institution’s temperature screening zone.</label>
-                        { this.state.options.map(index => 
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>SafeEntry has been implemented for dine-in customers.</label>
                         <div>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value={index.toString()} id="002" onInput={this.saveScore}/>
-                            <label class="form-check-label" for="inlineCheckbox1">{index.toString()}</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="001" id="001" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
                         </div>
-                        ) }
                     </div>
-                    <div class="form-group">
-                        <label>Table and seating arrangement adheres to the one-metre spacing between tables or groups. Where tables/seats are fixed, tables/seats should be marked out, ensuring at least one-metre spacing.</label>
-                        { this.state.options.map(index => 
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Temperature screening is conducted for customers of outlets that are located outside of institution’s temperature screening zone.</label>
                         <div>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value={index.toString()} id="003" onInput={this.saveScore}/>
-                            <label class="form-check-label" for="inlineCheckbox1">{index.toString()}</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="002" id="002" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
                         </div>
-                        ) }
                     </div>
-                    <div class="form-group">
-                        <label>Queue is demarcated to ensure at least one-metre spacing between customers such as entrances and cashier counters (e.g. through floor markers).</label>
-                        { this.state.options.map(index => 
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Table and seating arrangement adheres to the one-metre spacing between tables or groups. Where tables/seats are fixed, tables/seats should be marked out, ensuring at least one-metre spacing.</label>
                         <div>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value={index.toString()} id="004" onInput={this.saveScore}/>
-                            <label class="form-check-label" for="inlineCheckbox1">{index.toString()}</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="003" id="003" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
                         </div>
-                        ) }
                     </div>
-                    <div class="form-group">
-                        <label>Staff to ensure customers maintain safe distance of one-metre when queuing and seated.</label>
-                        { this.state.options.map(index => 
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Queue is demarcated to ensure at least one-metre spacing between customers such as entrances and cashier counters (e.g. through floor markers).</label>
                         <div>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value={index.toString()} id="005" onInput={this.saveScore}/>
-                            <label class="form-check-label" for="inlineCheckbox1">{index.toString()}</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="004" id="004" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
                         </div>
-                        ) }
                     </div>
-                    <div class="form-group">
-                        <label>Staff to ensure customers wear a mask at all times, unless eating or drinking.</label>
-                        { this.state.options.map(index => 
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Staff to ensure customers maintain safe distance of one-metre when queuing and seated.</label>
                         <div>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value={index.toString()} id="006" onInput={this.saveScore}/>
-                            <label class="form-check-label" for="inlineCheckbox1">{index.toString()}</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="005" id="005" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
                         </div>
-                        ) }
                     </div>
-                    <div class="form-group">
-                        <label>Hand sanitizers are placed at high touch areas (i.e. tray return, collection point, outlet entrance/exit).</label>
-                        { this.state.options.map(index => 
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Staff to ensure customers wear a mask at all times, unless eating or drinking.</label>
                         <div>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value={index.toString()} id="007" onInput={this.saveScore}/>
-                            <label class="form-check-label" for="inlineCheckbox1">{index.toString()}</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="006" id="006" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
                         </div>
-                        ) }
                     </div>
-                    <div class="form-group">
-                        <label>Outlet promotes use of cashless payment modes.</label>
-                        { this.state.options.map(index => 
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Hand sanitizers are placed at high touch areas (i.e. tray return, collection point, outlet entrance/exit).</label>
                         <div>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value={index.toString()} id="008" onInput={this.saveScore}/>
-                            <label class="form-check-label" for="inlineCheckbox1">{index.toString()}</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="007" id="007" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
                         </div>
-                        ) }
                     </div>
-
-
-                    <h4>Part 2: Staff Hygiene &#38; Safe Management Measures</h4>
-                    <div class="form-group">
-                        <label>All staff to wear a mask at all times, unless eating or drinking.</label>
-                        { this.state.options.map(index => 
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Outlet promotes use of cashless payment modes.</label>
                         <div>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value={index.toString()} id="009" onInput={this.saveScore}/>
-                            <label class="form-check-label" for="inlineCheckbox1">{index.toString()}</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="008" id="008" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
                         </div>
-                        ) }
                     </div>
-                    <div class="form-group">
-                        <label>Mask worn by staff is in the correct manner (i.e. cover nose and mouth, no hanging of mask under the chin/neck).</label>
-                        { this.state.options.map(index => 
+                    <div className={styles.qn_body}>
+                        <label className={styles.heading}>Part 1: Staff Hygiene &#38; Safe Management Measures</label>
+                    </div>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>All staff to wear a mask at all times, unless eating or drinking.</label>
                         <div>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value={index.toString()} id="010" onInput={this.saveScore}/>
-                            <label class="form-check-label" for="inlineCheckbox1">{index.toString()}</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="009" id="009" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
                         </div>
-                        ) }
                     </div>
-                    <div class="form-group">
-                        <label>All staff to record their temperature daily.</label>
-                        { this.state.options.map(index => 
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Mask worn by staff is in the correct manner (i.e. cover nose and mouth, no hanging of mask under the chin/neck).</label>
                         <div>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value={index.toString()} id="011" onInput={this.saveScore}/>
-                            <label class="form-check-label" for="inlineCheckbox1">{index.toString()}</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="010" id="010" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
                         </div>
-                        ) }
                     </div>
-                    <div class="form-group">
-                        <label>Staff to maintain safe distance of one-metre (where possible) and not congregate, including at common areas, and during break/meal times.</label>
-                        { this.state.options.map(index => 
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>All staff to record their temperature daily.</label>
                         <div>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value={index.toString()} id="012" onInput={this.saveScore}/>
-                            <label class="form-check-label" for="inlineCheckbox1">{index.toString()}</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="011" id="011" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
                         </div>
-                        ) }
                     </div>
-                    <div class="form-group">
-                        <label>Check with supervisor that all staff record SafeEntry check-in and check-out (Note: Supervisor is accountable for adherence)</label>
-                        { this.state.options.map(index => 
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Staff to maintain safe distance of one-metre (where possible) and not congregate, including at common areas, and during break/meal times.</label>
                         <div>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value={index.toString()} id="013" onInput={this.saveScore}/>
-                            <label class="form-check-label" for="inlineCheckbox1">{index.toString()}</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="012" id="012" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
                         </div>
-                        ) }
                     </div>
-
-                    <label>Comments:</label>
-                    <input onInput={this.saveComment} type="text" />
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Check with supervisor that all staff record SafeEntry check-in and check-out (Note: Supervisor is accountable for adherence).</label>
+                        <div>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="013" id="013" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        </div>
+                    </div>
+                    <div className={styles.qn_body}>
+                        <label className={styles.heading}>Comments:</label>
+                        <input className={styles.commentInput} onInput={this.saveComment} type="text" />
+                    </div>
+                    <button type="submit" class={this.getButtonClasses()} onClick={this.handleSubmit}>Submit</button>
                 </form>
-                <button type="submit" class={this.getButtonClasses()} onClick={this.handleSubmit}>Submit</button>
 
             </div>
         )
