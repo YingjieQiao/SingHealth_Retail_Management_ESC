@@ -1,7 +1,6 @@
 import base64
 import logging
 from io import BytesIO
-import logging
 import boto3
 from botocore.exceptions import ClientError
 import os, json
@@ -9,6 +8,8 @@ from PIL import Image
 from app.models import Photo, TenantPhoto
 from . import settings, utils
 from flask import request
+
+logger = logging.getLogger("logger")
 
 
 def upload_file(file_name, bucket, object_name):
@@ -30,7 +31,7 @@ def upload_file(file_name, bucket, object_name):
         response = s3_client.upload_file(file_name, bucket, object_name)
         #TODO log the response in the logger
     except ClientError as e:
-        logging.error(e)
+        print("error occurred: ", e)
         return False
     return True
 
@@ -57,7 +58,7 @@ def download(s3, file_name, bucket, object_name):
         s3.download_file(bucket, object_name, file_name)
         filename_full = os.getcwd() + '/' + file_name
     except ClientError as e:
-        logging.error(e)
+        logger.error("In 'download' function, error occurred: ", e)
     return filename_full
 
 
@@ -108,7 +109,8 @@ def get_photo_info(date_, time_, counterPart, username):
     print(date_, time_, counterPart)
     if settings.username == "":
         settings.username = "UnitTester"
-        print("testing") #TODO change to logging
+        print("testing")
+        logger.error("In 'get_photo_info' function, error occurred")
 
     if not counterPart:
         if utils.check_if_staff(username, False):
@@ -136,5 +138,6 @@ def get_photo_info(date_, time_, counterPart, username):
             except:
                 print("error") #TODO: change to logging
                 return None
+
 
     return photoInfo

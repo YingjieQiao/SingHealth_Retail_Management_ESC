@@ -81,11 +81,13 @@ class viewPhoto extends Component {
             'counterPart': false
         };
 
+
         axios.post("http://localhost:5000/download_file", payload, headers)
         .then(
             res => {
                 console.log(res);
-                // res.photoAttrData is an array of dictionary, each dictionary contains the info about this photo
+                // res.photoAttrData is an array of dictionary, 
+                // each dictionary contains the info about this photo
 
                 this.setState({reviewPhotoMsg: ""});
                 
