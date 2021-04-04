@@ -15,9 +15,9 @@ class viewPhoto extends Component {
         return (
             <div>
                 <TenantNavbar/>
-                <h2>View Photos</h2>
+                <h2>Tenant View Photos</h2>
                 <p>{this.state.reviewPhotoMsg}</p>
-                <button type="button" className="btn btn-primary m-2" onClick={this.testHandler}>Update</button>
+                <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoHandler}>View Previously Updated Photos</button>
                 <div>
                     {this.state.numberOfImage.map(image => {
                         return(
@@ -28,8 +28,6 @@ class viewPhoto extends Component {
                                 <p>Notes: {this.handleInfo(image, "notes")}</p>
                                 <p>Staff's Name: {this.handleInfo(image, "staffName")}</p>
                                 <p>Tenant's Name: {this.handleInfo(image, "tenantName")}</p>
-                                <p>Rectified: {this.handleInfo(image, "rectified")}</p>
-                                <button type="button" id={image} onClick={this.rectify} className="btn btn-primary m-2">Rectify</button>
                             </div>
                         )
                     })}
@@ -70,8 +68,17 @@ class viewPhoto extends Component {
         }
     }
 
-    testHandler = event => {
-        axios.get("http://localhost:5000/download_file")
+    showPhotoHandler = event => {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        };
+
+        const payload = {
+            'counterPart': false
+        };
+
+        axios.post("http://localhost:5000/download_file", payload, headers)
         .then(
             res => {
                 console.log(res);
@@ -106,51 +113,6 @@ class viewPhoto extends Component {
         console.log("done");
     }
 
-    rectify = event => {
-        event.preventDefault();
-
-        const index = event.target.id;
-
-        const headers = {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-        };
-        
-        const currPhoto = {
-            tags: this.state.photoAttrData[index]["tags"],
-            date: this.state.photoAttrData[index]["date"],
-            time: this.state.photoAttrData[index]["time"],
-            notes: this.state.photoAttrData[index]["notes"],
-            staffName: this.state.photoAttrData[index]["staffName"],
-            tenantName: this.state.photoAttrData[index]["tenantName"],
-            rectified: this.state.photoAttrData[index]["rectified"]
-        };
-
-        axios.post(`http://localhost:5000/rectify_photo`, currPhoto, headers)
-            .then(res => {
-                console.log(currPhoto);
-                console.log(res);
-        })
-
-
-        let newPhotoAttr = this.state.photoAttrData;
-        newPhotoAttr[index]["rectified"] = true;
-        this.setState({photoAttrData: newPhotoAttr});
-
-        let newNumArray = this.state.numberOfImage;
-        newNumArray.pop();
-
-        let newImgArray = this.state.imageSource
-        newImgArray.splice(index, 1);
-
-        let newPhotoAttrData = this.state.photoAttrData;
-        newPhotoAttrData.splice(index, 1);
-
-        this.setState(imageSource => {return newImgArray});
-        this.setState(photoAttrData => {return newPhotoAttrData});
-        this.setState(numberOfImage => {return newImgArray});
-        
-    }
 
 }
 

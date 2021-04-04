@@ -37,11 +37,11 @@ class Upload extends Component {
 
                         <label>tags :</label><select onChange={this.tagsHandler} defaultValue="none">
                             <option defaultValue>Select tags</option>
-                            <option value="tag1">Professionalism and Staff Hygiene</option>
-                            <option value="tag2">HouseKeeping and General Cleanliness</option>
-                            <option value="tag3">Food Hygiene</option>
-                            <option value="tag4">Healthier Choice</option>
-                            <option value="tag5">Workplace Safety and Health</option>
+                            <option value="Professionalism and Staff Hygiene">Professionalism and Staff Hygiene</option>
+                            <option value="HouseKeeping and General Cleanliness2">HouseKeeping and General Cleanliness</option>
+                            <option value="Food Hygiene">Food Hygiene</option>
+                            <option value="Healthier Choice">Healthier Choice</option>
+                            <option value="Workplace Safety and Health">Workplace Safety and Health</option>
                         </select><br />
                         
                         <label>notes :</label> <input type="text" 
@@ -49,9 +49,9 @@ class Upload extends Component {
 
                         <label>tenant :</label><select onChange={this.staffHandler} defaultValue="none">
                             <option defaultValue>Select staff to answer to</option>
-                            <option value="KFC">YingjieQiao</option>
-                            <option value="711">CarlJohnson</option>
-                            <option value="good tenant">good staff</option>
+                            <option value="YingjieQiao">YingjieQiao</option>
+                            <option value="CarlJohnson">CarlJohnson</option>
+                            <option value="good staff">good staff</option>
                         </select><br />
 
                     </form >
@@ -75,16 +75,15 @@ class Upload extends Component {
         axios.get("http://localhost:5000/get_current_username_and_datetime").then(
             res => {
                 console.log(res);
-                // this.setState({staffName: res.data.result});
-                this.setState({staffName: res.data.username, 
-                    time: res.data.time, date: res.data.date}, this.checkStaffName);
-                console.log("staff name set: " + res.data.username + " and time set: " + res.data.time);
+                this.setState({tenantName: res.data.username, 
+                    time: res.data.time, date: res.data.date}, this.checkTenantName);
+                console.log("tenant name set: " + res.data.username + " and time set: " + res.data.time);
             }
         )
     }
 
-    checkStaffName = () => {
-        if (this.state.staffName.length != 0) {
+    checkTenantName = () => {
+        if (this.state.tenantName.length != 0) {
             // proceeds to upload info
             const photo = {
                 tags: this.state.tags,
@@ -112,7 +111,7 @@ class Upload extends Component {
             data.append("file", this.state.selectedFile);
             data.append("time", this.state.time)
             data.append("date", this.state.date)
-            axios.post("http://localhost:5000/tenant_upload_file", data, headers
+            axios.post("http://localhost:5000/upload_file", data, headers
             ).then( res => {
                 console.log(data);
                 console.log(res.statusText);
@@ -128,7 +127,7 @@ class Upload extends Component {
 
     staffHandler = (event) => {
         this.setState({
-            tenantName: event.target.value
+            staffName: event.target.value
         })
     }
 

@@ -17,7 +17,7 @@ class viewPhoto extends Component {
                 <Navbar/>
                 <h2>View Photos</h2>
                 <p>{this.state.reviewPhotoMsg}</p>
-                <button type="button" className="btn btn-primary m-2" onClick={this.testHandler}>Update</button>
+                <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoHandler}>View Previously Updated Photos</button>
                 <div>
                     {this.state.numberOfImage.map(image => {
                         return(
@@ -70,8 +70,17 @@ class viewPhoto extends Component {
         }
     }
 
-    testHandler = event => {
-        axios.get("http://localhost:5000/download_file")
+    showPhotoHandler = event => {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        };
+
+        const payload = {
+            'counterPart': false
+        };
+
+        axios.post("http://localhost:5000/download_file", payload, headers)
         .then(
             res => {
                 console.log(res);

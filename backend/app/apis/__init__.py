@@ -249,7 +249,7 @@ def upload_file():
         rgb_img = img.convert('RGB')
         rgb_img.save(filename)
 
-    bucketName, counterPart_bucketName = utils.assign_s3_bucket(username)
+    bucketName, counterPart_bucketName = utils.assign_s3_bucket(username, False) # always False for upload
     if bucketName == "":
         print("username invalid: ", username)
         logger.error("In '/upload_file' endpoint, username invalid: ", username)
@@ -286,7 +286,7 @@ def download_file():
     timeInput = None
     dateInput = None
 
-    bucketName, counterPart_bucketName = utils.assign_s3_bucket(username)
+    bucketName, counterPart_bucketName = utils.assign_s3_bucket(username, counterPart)
     if bucketName == "":
         print("username invalid: ", username)
         logger.error("In '/download_file' endpoint, username invalid: ", username)
