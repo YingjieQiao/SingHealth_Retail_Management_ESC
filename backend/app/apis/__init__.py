@@ -257,7 +257,7 @@ def upload_file():
         rgb_img = img.convert('RGB')
         rgb_img.save(filename)
 
-    bucketName, counterPart_bucketName = utils.assign_s3_bucket(username, False) # always False for upload
+    bucketName, counterPart_bucketName = utils.assign_s3_bucket(username) # always False for upload
     if bucketName == "":
         print("username invalid: ", username)
         logger.error("In '/upload_file' endpoint, username invalid: ", username)
@@ -397,11 +397,12 @@ def tenant_get_photo_notification():
     """
     username = settings.username
     if username == "":
-        username = 'UnitTesterTenant'
+        username = 'RossGeller'
         print("testing") #TODO change to logging
     
     try:
         photoNotifications = PhotoNotification.objects(tenantName=username, deleted=False)
+        print(photoNotifications)
         return {"result": True, "tenantData": photoNotifications}, 200
     except Exception as e:
         print("error: ", e) # logger

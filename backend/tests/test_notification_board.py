@@ -142,3 +142,17 @@ class TestDeleteNotif(TestBase):
         assert rv.json['result'] == True
         assert type(rv.json['tenantData']) == list
         assert len(rv.json['tenantData']) == 0
+
+
+
+class TestTemp(TestBase):
+
+
+    def test_get(self):
+        rv = self.client.get('/tenant_get_photo_notification',
+                             content_type='application/json')
+
+        assert rv.status_code == 200
+        assert rv.json['result'] == True
+        assert type(rv.json['tenantData']) == list
+        assert len(rv.json['tenantData']) == 2
