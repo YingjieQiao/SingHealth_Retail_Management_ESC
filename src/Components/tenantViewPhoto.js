@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Navbar from './Navbar';
+import TenantNavbar from './Tenant_Navbar';
 import axios from "axios";
 
 class viewPhoto extends Component {
@@ -14,10 +14,12 @@ class viewPhoto extends Component {
     render() { 
         return (
             <div>
-                <Navbar/>
+                <TenantNavbar/>
                 <h2>Tenant View Photos</h2>
+                <h2>The button on the left is not working yet</h2>
                 <p>{this.state.reviewPhotoMsg}</p>
-                <button type="button" className="btn btn-primary m-2" onClick={this.testHandler}>Update</button>
+                <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoByStaffHandler}>View Photos Uploaded By Staff</button>
+                <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoByTenantHandler}>View Previously Uploaded Photos</button>
                 <div>
                     {this.state.numberOfImage.map(image => {
                         return(
@@ -28,8 +30,6 @@ class viewPhoto extends Component {
                                 <p>Notes: {this.handleInfo(image, "notes")}</p>
                                 <p>Staff's Name: {this.handleInfo(image, "staffName")}</p>
                                 <p>Tenant's Name: {this.handleInfo(image, "tenantName")}</p>
-                                <p>Rectified: {this.handleInfo(image, "rectified")}</p>
-                                <button type="button" id={image} onClick={this.rectify} className="btn btn-primary m-2">Rectify</button>
                             </div>
                         )
                     })}
@@ -70,8 +70,17 @@ class viewPhoto extends Component {
         }
     }
 
-    testHandler = event => {
-        axios.get("http://localhost:5000/download_file")
+    showPhotoByTenantHandler = event => {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        };
+
+        const payload = {
+            'counterPart': false
+        };
+
+        axios.post("http://localhost:5000/download_file", payload, headers)
         .then(
             res => {
                 console.log(res);
@@ -106,51 +115,51 @@ class viewPhoto extends Component {
         console.log("done");
     }
 
-    rectify = event => {
-        event.preventDefault();
-
-        const index = event.target.id;
-
+    showPhotoByStaffHandler = event => {
         const headers = {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
         };
-        
-        const currPhoto = {
-            tags: this.state.photoAttrData[index]["tags"],
-            date: this.state.photoAttrData[index]["date"],
-            time: this.state.photoAttrData[index]["time"],
-            notes: this.state.photoAttrData[index]["notes"],
-            staffName: this.state.photoAttrData[index]["staffName"],
-            tenantName: this.state.photoAttrData[index]["tenantName"],
-            rectified: this.state.photoAttrData[index]["rectified"]
+
+        const payload = {
+            'counterPart': true
         };
 
-        axios.post(`http://localhost:5000/rectify_photo`, currPhoto, headers)
-            .then(res => {
-                console.log(currPhoto);
+        axios.post("http://localhost:5000/download_file", payload, headers)
+        .then(
+            res => {
                 console.log(res);
-        })
+                // res.photoAttrData is an array of dictionary, each dictionary contains the info about this photo
 
+                this.setState({reviewPhotoMsg: ""});
+                
+                for (var i = 0; i < res.data.photoData.length; i++) {
+                    let photoData = res.data.photoData[i];
+                    let imgsrc = "data:image/jpeg;base64," + photoData;
+                    var newImageArray = this.state.imageSource;
+                    newImageArray.push(imgsrc);
+                    this.setState({imageSource: newImageArray});
 
-        let newPhotoAttr = this.state.photoAttrData;
-        newPhotoAttr[index]["rectified"] = true;
-        this.setState({photoAttrData: newPhotoAttr});
+                    var newNumberOfImageArray = this.state.numberOfImage;
+                    newNumberOfImageArray.push(i);
+                    this.setState({numberOfImage: newNumberOfImageArray});
+                }
 
-        let newNumArray = this.state.numberOfImage;
-        newNumArray.pop();
+                // store res.data.photoAttrData in state variable
+                const photoAttrArr = res.data.photoAttrData;
+                let photoAttr = [];
+                for (var i = 0; i < photoAttrArr.length; i++) {
+                    for (var j = 0; j < photoAttrArr[i].length; j++) {
+                        photoAttr.push(photoAttrArr[i][j]);
+                    }
+                }
+                this.setState({photoAttrData: photoAttr});
+            }
+        )
 
-        let newImgArray = this.state.imageSource
-        newImgArray.splice(index, 1);
-
-        let newPhotoAttrData = this.state.photoAttrData;
-        newPhotoAttrData.splice(index, 1);
-
-        this.setState(imageSource => {return newImgArray});
-        this.setState(photoAttrData => {return newPhotoAttrData});
-        this.setState(numberOfImage => {return newImgArray});
-        
+        console.log("showPhotoByStaffHandler");
     }
+
 
 }
 

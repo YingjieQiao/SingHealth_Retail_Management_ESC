@@ -6,7 +6,7 @@ from botocore.exceptions import ClientError
 import os, json
 from PIL import Image
 from app.models import Photo, TenantPhoto
-from . import settings
+from . import settings, utils
 from flask import request
 
 logger = logging.getLogger("logger")
@@ -74,7 +74,7 @@ def download_user_objects(bucket, username, timeInput, dateInput, counterPart):
         date_ = ls[1]
         time_ = ls[2][:-4]
         if (ls[0] == username):
-            photoInfo = get_photo_info(date_, time_, counterPart)
+            photoInfo = get_photo_info(date_, time_, counterPart, username)
 
             if (photoInfo[0]['rectified'] == False):
                 photoAttrData.append(photoInfo)
@@ -93,29 +93,42 @@ def download_user_objects(bucket, username, timeInput, dateInput, counterPart):
     return photoData, photoAttrData
 
 
-def get_photo_info(date_, time_, counterPart):
+def get_photo_info(date_, time_, counterPart, username):
     """
     get the information assciated with a given photo name
     """
-
+    print(date_, time_, counterPart)
     if settings.username == "":
         settings.username = "UnitTester"
         print("testing")
         logger.error("In 'get_photo_info' function, error occurred")
 
     if not counterPart:
-        try:
-            photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)
-        except:
-            print("error")
-            logger.error("In 'get_photo_info' function, error occurred")
-            return None
+        if utils.check_if_staff(username, False):
+            try:
+                photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)
+            except:
+                print("error") #TODO: change to logging
+                return None
+        else:
+            try:
+                photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=settings.username)
+            except:
+                print("error") #TODO: change to logging
+                return None
     else:
-        try:
-            photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=settings.username)
-        except:
-            print("error")
-            logger.error("In 'get_photo_info' function, error occurred")
-            return None
+        if utils.check_if_staff(username, False):
+            try:
+                photoInfo = TenantPhoto.objects(staffName=settings.username, rectified=False)
+            except:
+                print("error") #TODO: change to logging
+                return None
+        else:
+            try:
+                photoInfo = Photo.objects(tenantName=settings.username, rectified=False)
+            except:
+                print("error") #TODO: change to logging
+                return None
+
 
     return photoInfo

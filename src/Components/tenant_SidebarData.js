@@ -5,32 +5,31 @@ import * as IoIcons from 'react-icons/io';
 import * as BsIcons from 'react-icons/bs';
 import * as MdIcons from 'react-icons/md';
 
-export const SidebarData = [
+export const tenant_SidebarData = [
+
   {
-    title: 'Home',
-    path: '/home',
+    title: 'tenant Home',
+    path: '/tenantHome',
     icon: <AiIcons.AiFillHome />,
     cName: 'nav-text',
-    id:"staff"
+    id:"tenant"
   },
 
-  
   {
-    title: 'Upload Photos',
-    path: '/upload',
+    title: 'tenant Upload',
+    path: '/tenantUpload',
     icon: <FaIcons.FaUpload />,
     cName: 'nav-text',
-    id:"staff"
+    id:"tenant"
   },
 
   {
-    title: 'View Photo',
-    path: '/viewPhoto',
+    title: 'tenant View',
+    path: '/tenantViewPhoto',
     icon: <FaIcons.FaImages />,
     cName: 'nav-text',
-    id:"staff"
+    id:"tenant"
   },
-
   {
     title: 'inbox',
     path: '/email',
