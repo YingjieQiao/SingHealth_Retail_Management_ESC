@@ -11,6 +11,8 @@ class CompareTenant extends Component {
         instituteName1: "",
         instituteName2: "",
         numOfInstitue: [],
+        typeArray: ["F&B", "Non-F&B"],
+        typeSelection: ""
     }
 
     componentDidMount() {
@@ -40,17 +42,24 @@ class CompareTenant extends Component {
                 <h2>Compare between institutions/across clusters</h2>
                 <form>
                     <div>
-                        <label>Name of institution/cluster 1</label>
+                        <label>Name of institution/cluster 1:</label>
                         <select class="custom-select my-1 mr-sm-2" onChange={this.saveInstitute1}>
                             <option selected>Choose...</option>
                             { this.state.numOfInstitue.map(index => <option value={index.toString()}>{this.handleInstitue(index)}</option> ) }
                         </select>
                     </div>
                     <div>
-                        <label>Name of institution/cluster 2</label>
+                        <label>Name of institution/cluster 2:</label>
                         <select class="custom-select my-1 mr-sm-2" onChange={this.saveInstitute2}>
                             <option selected>Choose...</option>
                             { this.state.numOfInstitue.map(index => <option value={index.toString()}>{this.handleInstitue(index)}</option> ) }
+                        </select>
+                    </div>
+                    <div>
+                        <label>Type:</label>
+                        <select class="custom-select my-1 mr-sm-2" onChange={this.saveType}>
+                            <option selected>Choose...</option>
+                            { this.state.typeArray.map(index => <option value={index}>{index}</option> ) }
                         </select>
                     </div>
                 </form>
@@ -83,7 +92,7 @@ class CompareTenant extends Component {
     saveInstitute2 = (event) => {
         const data = event.target.value;
         if (data === "Choose...") {
-            this.setState({institute2: "", institute2: ""});
+            this.setState({institute2: "", instituteName2: ""});
         } else {
             const index = parseInt(data);
             const name = this.state.instituteArray[index]["firstName"] + " " + this.state.instituteArray[index]["lastName"];
@@ -91,11 +100,21 @@ class CompareTenant extends Component {
         }
     }
 
-    validateField = () => {
-        let institute1 = this.state.institute1;
-        let institute2 = this.state.institute2;
+    saveType = (event) => {
+        const data = event.target.value;
+        if (data === "Choose...") {
+            this.setState({typeSelection: ""});
+        } else {
+            this.setState({typeSelection: data});
+        }
+    }
 
-        if (institute1.length === 0 || institute2.length === 0) {
+    validateField = () => {
+        const institute1 = this.state.institute1;
+        const institute2 = this.state.institute2;
+        const typeSelection = this.state.typeSelection;
+
+        if (institute1.length === 0 || institute2.length === 0 || typeSelection.length === 0) {
             return false;
         }
         else if (institute1 === institute2) {
@@ -110,21 +129,30 @@ class CompareTenant extends Component {
     compare = event => {
         event.preventDefault();
 
-        let compareTenantList = {
-            institute1: this.state.institute1,
-            institute2: this.state.institute2,
-            instituteName1: this.state.instituteName1,
-            instituteName2: this.state.instituteName2,
-        };
-
-        // proceeds to send to backend  
-        // Navigate to Tenant's performance score board if successful
-        this.props.history.push({
-            pathname: '/dataDashboardCompareTenant',
-            state: { compareTenantList: compareTenantList}
-        });
+        try {
+            if (this.validateField()) {
+                let compareTenantList = {
+                    institute1: this.state.institute1,
+                    institute2: this.state.institute2,
+                    instituteName1: this.state.instituteName1,
+                    instituteName2: this.state.instituteName2,
+                    typeSelection: this.state.typeSelection
+                };
         
-        alert("Send data success!");
+                console.log(compareTenantList);
+                this.props.history.push({
+                    pathname: '/dataDashboardCompareTenant',
+                    state: { compareTenantList: compareTenantList}
+                });
+                
+                alert("Send data success!");
+            } else {
+                alert("Please fill up all fields.");
+            }
+        } catch (e) {
+            alert("Unsuccessful. Please try again.");
+        }
+
     }
 
     getButtonClasses() {
