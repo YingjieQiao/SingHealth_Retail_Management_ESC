@@ -17,7 +17,7 @@ export const tenant_SidebarData = [
 
   {
     title: 'tenant Upload',
-    path: '/upload',
+    path: '/tenantUpload',
     icon: <FaIcons.FaUpload />,
     cName: 'nav-text',
     id:"tenant"
@@ -25,7 +25,7 @@ export const tenant_SidebarData = [
 
   {
     title: 'tenant View',
-    path: '/viewPhoto',
+    path: '/tenantViewPhoto',
     icon: <FaIcons.FaImages />,
     cName: 'nav-text',
     id:"tenant"

@@ -23,7 +23,7 @@ class Upload extends Component {
         return (
             <div style={{margin: "10px"}}>
                 <Navbar/>
-                <h2>Upload photo</h2>
+                <h2>Staff Upload photo</h2>
                 <div className="border border-dark" style={{display: "inline-block",margin: "10px"}}>
                     <ImUpload3 size="50" style={{display: "block", marginLeft: "auto", marginRight: "auto", marginTop: "10px"}}/>
                     <input type="file" name="file" onChange={this.onChooseFileHandler} style={{display: "block", margin: '10px'}}/>
@@ -38,9 +38,11 @@ class Upload extends Component {
 
                         <label>tags :</label><select onChange={this.tagsHandler} defaultValue="none">
                             <option defaultValue>Select tags</option>
-                            <option value="tag1">tag1</option>
-                            <option value="tag2">tag2</option>
-                            <option value="tag3">tag3</option>
+                            <option value="tag1">Professionalism and Staff Hygiene</option>
+                            <option value="tag2">HouseKeeping and General Cleanliness</option>
+                            <option value="tag3">Food Hygiene</option>
+                            <option value="tag4">Healthier Choice</option>
+                            <option value="tag5">Workplace Safety and Health</option>
                         </select><br />
                         
                         <label>notes :</label> <input type="text" 
