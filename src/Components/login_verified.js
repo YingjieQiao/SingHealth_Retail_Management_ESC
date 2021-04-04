@@ -44,39 +44,37 @@ class login_verified extends Component {
   //}
   handleSubmit = event => {
     event.preventDefault();
-    
-    this.props.history.push('/tenantHome');
 
-    // const user = {
-    //   token: this.state.Enter_Token,
+    const user = {
+      token: this.state.Enter_Token,
 
-    // };
-    // const headers = {
-    //     'Content-Type': 'application/json',
-    //     'Access-Control-Allow-Origin': '*'
-    // };
-    // console.log("dat");
-    // axios.post(`http://localhost:5000/login_verified`, user, headers)
-    //   .then(res => {
-    //     console.log(res.data);
-    //     if (res.data.result === true) {
-    //         alert("Login success!")
-    //         if(res.data.tenant){
-    //           localStorage.setItem("usertype","tenant")  ;
-    //         this.props.history.push('/tenantHome');
-    //         }
-    //         else if(res.data.staff){
-    //           localStorage.setItem("usertype","staff")  ;
-    //           this.props.history.push('/home');
-    //           }
-    //           else if(res.data.admin){
-    //             this.props.history.push('/Adminhome');
-    //           }
-    //     } else {
-    //         alert("Login unsuccessful:( \n"+res.data.info);
-    //         this.props.history.push('/');
-    //     }
-    // })
+    };
+    const headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+    };
+    console.log("dat");
+    axios.post(`http://localhost:5000/login_verified`, user, headers)
+      .then(res => {
+        console.log(res.data);
+        if (res.data.result === true) {
+            alert("Login success!")
+            if(res.data.tenant){
+              localStorage.setItem("usertype","tenant")  ;
+            this.props.history.push('/tenantHome');
+            }
+            else if(res.data.staff){
+              localStorage.setItem("usertype","staff")  ;
+              this.props.history.push('/home');
+              }
+              else if(res.data.admin){
+                this.props.history.push('/Adminhome');
+              }
+        } else {
+            alert("Login unsuccessful:( \n"+res.data.info);
+            this.props.history.push('/');
+        }
+    })
   }
 
   render() {
