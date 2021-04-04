@@ -295,7 +295,7 @@ def download_file():
     if not counterPart:
         try:
             res = s3_methods.download_user_objects(bucketName, username,
-                                                     timeInput, dateInput, counterPart)
+                                                        timeInput, dateInput, counterPart)
         except Exception as e:
             print("Error occurred: ", e)
             logger.error("In '/download_file' endpoint, error occurred: ", e)
@@ -305,11 +305,12 @@ def download_file():
         # tenant: download staff photo that is meant to send to the tenant
         try:
             res = s3_methods.download_user_objects(counterPart_bucketName, username,
-                                                     timeInput, dateInput, counterPart)
+                                                        timeInput, dateInput, counterPart)
         except Exception as e:
             print("Error occurred: ", e)
             logger.error("In '/download_file' endpoint, error occurred: ", e)
             return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
+
     photoData = res[0]
     photoAttrData = res[1]
 

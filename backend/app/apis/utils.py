@@ -109,19 +109,12 @@ def check_if_tenant(username, flag):
 
 def assign_s3_bucket(username, counterPart):
     bucketName, counterPart_bucketName = "", ""
-    if not counterPart:
-        if (username == "UnitTester" or check_if_staff(username, False)):
-            bucketName, counterPart_bucketName = "escapp-bucket-dev", "escapp-bucket-dev-tenant"
-        elif (check_if_tenant(username, False)):
-            bucketName, counterPart_bucketName = "escapp-bucket-dev-tenant", "escapp-bucket-dev"
-        else:
-            print("something wrong")
+    if (username == "UnitTester" or check_if_staff(username, False)):
+        bucketName, counterPart_bucketName = "escapp-bucket-dev", "escapp-bucket-dev-tenant"
+    elif (check_if_tenant(username, False)):
+        bucketName, counterPart_bucketName = "escapp-bucket-dev-tenant", "escapp-bucket-dev"
     else:
-        if (username == "UnitTester" or check_if_staff(username, False)):
-            bucketName, counterPart_bucketName = "escapp-bucket-dev", "escapp-bucket-dev-tenant"
-        elif (check_if_tenant(username, False)):
-            bucketName, counterPart_bucketName = "escapp-bucket-dev-tenant", "escapp-bucket-dev"
-        else:
-            print("something wrong")
+        print("something wrong")
+
 
     return bucketName, counterPart_bucketName

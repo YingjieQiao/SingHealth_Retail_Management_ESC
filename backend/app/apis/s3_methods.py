@@ -117,13 +117,13 @@ def get_photo_info(date_, time_, counterPart, username):
     else:
         if utils.check_if_staff(username, False):
             try:
-                photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=settings.username)
+                photoInfo = TenantPhoto.objects(staffName=settings.username, rectified=False)
             except:
                 print("error") #TODO: change to logging
                 return None
         else:
             try:
-                photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)
+                photoInfo = Photo.objects(tenantName=settings.username, rectified=False)
             except:
                 print("error") #TODO: change to logging
                 return None
