@@ -14,9 +14,9 @@ class DataDashboardCompareTenant extends Component {
         timeChoice: "default",
         sendReport: false,
         emailContent: {
-            "email": "",
-            "subject": "",
-            "note": ""
+            email: "",
+            subject: "",
+            note: ""
         }
     }
 
