@@ -1,5 +1,5 @@
 from flask import Blueprint, request, session, jsonify, url_for, current_app, send_from_directory
-from app.models import User, Audit_non_FB, Photo, TenantPhoto
+from app.models import User, Audit_non_FB, Photo, TenantPhoto, PhotoNotification
 import boto3
 from botocore.exceptions import ClientError
 import logging
@@ -7,7 +7,7 @@ from PIL import Image
 import os
 from datetime import datetime
 
-from . import settings, s3_methods, utils
+from . import settings, s3_methods, utils, notif_methods
 
 import email, smtplib, ssl
 from email import encoders
@@ -333,6 +333,7 @@ def upload_photo_info():
     try:
         photo = Photo(**body)
         photo.save()
+        notif_methods.add_notification(body)
     except Exception as e:
         print("Error occurred: ", e)
         logger.error("In '/upload_photo_info' endpoint, error occurred: ", e)
@@ -377,6 +378,52 @@ def rectify_photo():
     except Exception as e:
         print("error: ", e) 
         logger.error("In '/rectify_photo' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+@apis.route('/tenant_get_photo_notification', methods=['GET', 'POST'])
+def tenant_get_photo_notification():
+    """
+    get non-compliance photos of tenant user
+    """
+    username = settings.username
+    if username == "":
+        username = 'UnitTester'
+        print("testing") #TODO change to logging
+    
+    try:
+        photoNotifications = PhotoNotification.objects(tenantName=username, deleted=False)
+        return {"result": True, "tenantData": photoNotifications}, 200
+    except Exception as e:
+        print("error: ", e) # logger
+        return {"result": False, "tenantData": None}, 500
+
+
+@apis.route('/tenant_delete_photo_notification', methods=['POST'])
+def tenant_delete_photo_notification():
+    body = request.get_json()
+
+    try:
+        notif_methods.tenant_update_photo_notification("delete", settings.username, body)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/tenant_delete_photo_notification' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+@apis.route('/tenant_read_photo_notification', methods=['POST'])
+def tenant_read_photo_notification():
+    body = request.get_json()
+
+    try:
+        notif_methods.tenant_update_photo_notification("read", settings.username, body)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/tenant_read_photo_notification' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
     return {'result': True}, 200
@@ -484,6 +531,7 @@ def email():
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, text)
     return {'result': True, 'info': "Email was shared"}, 200
+
 
 @apis.route('/tenant_exists', methods=['GET', 'POST'])
 def tenant_exists():
@@ -833,3 +881,27 @@ def compare_tenant():
         "audit_year_csv_2": df_year_2.values.T.tolist(), "audit_csv_1": df_1.values.T.tolist(), 
         "audit_csv_2": df_2.values.T.tolist()}
 
+
+
+### TEMPRORAT TESTING ENDPOINTS BELOW
+### THEY ARE FOR TESTING ONLY
+### THEY SHOULD NOT BE CALLED BY FRONTEND
+
+
+@apis.route('/test_add_notif', methods=['POST'])
+def add_notification():
+    """
+    :param: body: json, same format as Photo
+    add a column 'read' for nofitication
+    """
+    body = request.get_json()
+    try:
+        body['read'] = False
+        body['deleted'] = False
+        newPhotoNotification = PhotoNotification(**body)
+        newPhotoNotification.save()
+    except Exception as e:
+        print("error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
