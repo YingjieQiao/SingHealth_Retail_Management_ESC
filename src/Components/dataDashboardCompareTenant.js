@@ -11,8 +11,13 @@ class DataDashboardCompareTenant extends Component {
         instituteName1: this.props.location.state.compareTenantList["instituteName1"],
         instituteName2: this.props.location.state.compareTenantList["instituteName2"],
         dataDict: null,
-        timeChoice: "default"
-
+        timeChoice: "default",
+        sendReport: false,
+        emailContent: {
+            "email": "",
+            "subject": "",
+            "note": ""
+        }
     }
 
 
@@ -51,6 +56,7 @@ class DataDashboardCompareTenant extends Component {
                 <div>{this.displayImage()}</div>
                 <div>{this.displayExportButton()}</div>
                 <div>{this.displayReportButton()}</div>
+                <div>{this.displayPopup()}</div>
             </div>
         )
     }
@@ -199,7 +205,60 @@ class DataDashboardCompareTenant extends Component {
     }
 
     handleSend = () => {
+        this.setState({sendReport: true})
+        
+
         // send report
+    }
+
+    displayPopup = () => {
+        if (this.state.sendReport === true) {
+            return(
+                <div>
+                    <h4>Send report</h4>
+                    <div>
+                        <label>Email:</label>
+                        <input placeholder="Email address" onInput={this.saveReceiverEmail} type="email" />
+                    </div> 
+                    <div>
+                        <label>Subject:</label>
+                        <input placeholder="Subject" onInput={this.saveReceiverSubject} type="text" />
+                    </div>
+                    <div>
+                        <label>Note to receiver:</label>
+                        <input placeholder="Write something to receiver" onInput={this.saveReceiverNote} type="text" />
+                    </div>
+                    <button type="submit" onClick={this.handleSend}>Send Email</button>
+                </div>
+            )
+        }
+    }
+    
+    saveReceiverEmail = event => {
+        var newEmailContent  = this.state.emailContent;
+        emailContent["email"] = event.target.value;
+        this.setState({emailContent: newEmailContent});
+    }
+
+    saveReceiverSubject = event => {
+        var newEmailContent  = this.state.emailContent;
+        emailContent["subject"] = event.target.value;
+        this.setState({emailContent: newEmailContent});
+    }
+
+    saveReceiverNote = event => {
+        var newEmailContent  = this.state.emailContent;
+        emailContent["note"] = event.target.value;
+        this.setState({emailContent: newEmailContent});
+    }
+
+    handleSend = event => {
+        try {
+            // axios.post here
+        } catch (e) {
+            console.log(e);
+            
+        }
     }
 
 }
