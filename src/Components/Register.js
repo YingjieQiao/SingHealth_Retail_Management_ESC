@@ -20,7 +20,7 @@ class Register extends Component {
             staff:false,
             tenant:false,
             admin:false,
-            tenanttype:""
+            tenanttype:null
 
 
         }
@@ -112,8 +112,8 @@ class Register extends Component {
               </div>
            )
           }
-        // else{
-        //     return()
+        else{
+            this.state.tenanttype="";
         }
 
     handleSubmit = (event) => {
@@ -152,7 +152,8 @@ class Register extends Component {
                     location: this.state.location,
                     tenant: this.state.tenant,
                     staff: this.state.staff,
-                    admin:this.state.admin 
+                    admin:this.state.admin,
+                    tenanttype:this.state.tenanttype 
                 };
                 const headers = {
                     'Content-Type': 'application/json',
@@ -175,6 +176,7 @@ class Register extends Component {
                     REpassword: '',
                     location: "",
                     staff: "false",
+                    tenanttype: null,
                 })
 
                 alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
