@@ -20,7 +20,7 @@ class Upload extends Component {
     };
 
     render() { 
-        return (
+        return ( //TODO: don't hardcode the list of tenants to select, retrieve the list of tenants from backend instead
             <div style={{margin: "10px"}}>
                 <Navbar/>
                 <h2>Staff Upload photo</h2>
@@ -38,11 +38,11 @@ class Upload extends Component {
 
                         <label>tags :</label><select onChange={this.tagsHandler} defaultValue="none">
                             <option defaultValue>Select tags</option>
-                            <option value="tag1">Professionalism and Staff Hygiene</option>
-                            <option value="tag2">HouseKeeping and General Cleanliness</option>
-                            <option value="tag3">Food Hygiene</option>
-                            <option value="tag4">Healthier Choice</option>
-                            <option value="tag5">Workplace Safety and Health</option>
+                            <option value="Professionalism and Staff Hygiene">Professionalism and Staff Hygiene</option>
+                            <option value="HouseKeeping and General Cleanliness">HouseKeeping and General Cleanliness</option>
+                            <option value="Food Hygiene">Food Hygiene</option>
+                            <option value="Healthier Choic">Healthier Choice</option>
+                            <option value="Workplace Safety and Health">Workplace Safety and Health</option>
                         </select><br />
                         
                         <label>notes :</label> <input type="text" 
@@ -50,7 +50,7 @@ class Upload extends Component {
 
                         <label>tenant :</label><select onChange={this.tenantHandler} defaultValue="none">
                             <option defaultValue>Select tenant</option>
-                            <option value="KFC">KFC</option>
+                            <option value="RossGelller">RossGelller</option>
                             <option value="711">711</option>
                             <option value="good tenant">good tenant</option>
                         </select><br />

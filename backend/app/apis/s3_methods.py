@@ -67,7 +67,7 @@ def download_user_objects(bucket, username, timeInput, dateInput, counterPart):
                 aws_secret_access_key=os.environ.get('SECRET_KEY'))
     photoData = []
     photoAttrData = []
-
+    # TODO file name has both staff and tenant
     for key in s3_client.list_objects(Bucket=bucket)['Contents']:
         ls = key['Key'].split('_')
         date_ = ls[1]
@@ -117,13 +117,13 @@ def get_photo_info(date_, time_, counterPart, username):
     else:
         if utils.check_if_staff(username, False):
             try:
-                photoInfo = TenantPhoto.objects(staffName=settings.username, rectified=False)
+                photoInfo = TenantPhoto.objects(staffName=settings.username, date=date_, time=time_)
             except:
                 print("error") #TODO: change to logging
                 return None
         else:
             try:
-                photoInfo = Photo.objects(tenantName=settings.username, rectified=False)
+                photoInfo = Photo.objects(tenantName=settings.username, date=date_, time=time_)
             except:
                 print("error") #TODO: change to logging
                 return None
