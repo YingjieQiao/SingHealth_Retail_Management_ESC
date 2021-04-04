@@ -17,8 +17,8 @@ class viewPhoto extends Component {
                 <Navbar/>
                 <h2>View Photos</h2>
                 <p>{this.state.reviewPhotoMsg}</p>
-                <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoByTenantHandler}>View Photos Uploaded By Staff</button>
-                <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoByStaffHandler}>View Previously Updated Photos</button>
+                <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoByTenantHandler}>View Photos Uploaded By Tenant</button>
+                <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoByStaffHandler}>View Previously Uploaded Photos</button>
                 <div>
                     {this.state.numberOfImage.map(image => {
                         return(
@@ -116,6 +116,13 @@ class viewPhoto extends Component {
         )
 
         console.log("done");
+
+        this.setState({
+            reviewPhotoMsg: "There is no photo in album",
+            numberOfImage: [],
+            imageSource: [],
+            photoAttrData: []
+        })
     }
 
 
@@ -162,6 +169,13 @@ class viewPhoto extends Component {
         )
 
         console.log("showPhotoByStaffHandler");
+
+        this.setState({
+            reviewPhotoMsg: "There is no photo in album",
+            numberOfImage: [],
+            imageSource: [],
+            photoAttrData: []
+        })
     }
 
 
