@@ -20,6 +20,7 @@ class Register extends Component {
             staff:false,
             tenant:false,
             admin:false,
+            tenanttype:""
 
 
         }
@@ -71,6 +72,7 @@ class Register extends Component {
             staff: false,
             admin:false 
         })}
+        
         else if (event.target.value=="Staff"){
             this.setState({
             tenant: false,
@@ -91,6 +93,28 @@ class Register extends Component {
         })}
         
     }
+    tenanttypehandler = (event) => {
+            this.setState({
+            tenanttype: event.target.value,
+        })};
+
+
+    tenanttype(){
+        if(this.state.tenant===true){
+            return (
+              <div>
+                    <label>Tenant type:</label><select onChange={this.tenanttypehandler} defaultValue="">
+                    <option defaultValue>Select Tenant type</option>
+                    <option value="fnb">fnb</option>
+                    <option value="non-fnb">non-fnb</option>
+                
+                </select><br />
+              </div>
+           )
+          }
+        // else{
+        //     return()
+        }
 
     handleSubmit = (event) => {
         event.preventDefault()
@@ -180,13 +204,15 @@ class Register extends Component {
                         <option value="NUS">NUS</option>
                         <option value="None">None</option>
                     </select><br />
+                    
                     <label>Type of user :</label><select onChange={this.userhandler} defaultValue="">
                         <option defaultValue>Select user</option>
                         <option value="Tenant">Tenant</option>
                         <option value="Staff">staff</option>
-
+                    
                     </select><br />
 
+                    {this.tenanttype()}
                     <input type="submit" value="Submit"  />
 
                     <li>
