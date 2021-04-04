@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TenantNavbar from './Tenant_Navbar';
 import axios from 'axios';
-
+import TenantNotificationModal from './tenantNotificationModal';
 
 // function tenantHome() {
 //   localStorage.setItem("usertype","tenant")  ;
@@ -17,7 +17,6 @@ class tenantHome extends Component {
 
   state = {
     data: null,
-    readStatus: "Unread"
   }
 
   componentDidMount() {
@@ -25,7 +24,7 @@ class tenantHome extends Component {
     .then(
         res => {
             console.log(res);
-            this.setState({data: res.data});
+            this.setState({data: res.data["tenantData"]});
         }
     )
   }
@@ -36,68 +35,27 @@ class tenantHome extends Component {
         <TenantNavbar/>
         <h1>Tenant User Homepage</h1>
         <div>
-          <button type="button" class={this.getButtonClasses()} onClick={this.handleRead}>{this.state.readStatus}</button>
+          {this.displayInfo()}
         </div>
       </div>
     )
   }
 
   displayInfo() {
-    if (true) {
-      //display
-    }
-  }
-
-  handleRead = event => {
-    this.setState({readStatus: "Read"});
-
     try {
-      const headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Access-Control-Allow-Origin': '*'
-      };
-  
-      axios.post("http://localhost:5000/tenant_read_photo_notification", this.state.data, headers
-      ).then(res => {
-  
-       }); 
+      if (this.state.data.length !== 0) {
+        return <TenantNotificationModal /> 
+      } else {
+        return (
+          <div>
+            <label>No notification.</label>
+          </div>
+        )
+      }
     } catch (e) {
 
     }
 
-  }
-
-  handleDelete = event => {
-    // false to true
-
-    try {
-      const headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Access-Control-Allow-Origin': '*'
-      };
-  
-      axios.post("http://localhost:5000/tenant_delete_photo_notification", this.state.data, headers
-      ).then(res => {
-  
-       }); 
-    } catch (e) {
-
-    }
-  }
-
-  validateReadStatus = () => {
-    const status = this.state.readStatus;
-    if (status === "Read") {
-      return true;
-    } else  {
-      return false;
-    }
-  }
-
-  getButtonClasses() {
-    let classes = 'btn btn-';
-    classes += this.validateReadStatus() === false ? 'light' : 'primary';
-    return classes;
   }
 
 }
