@@ -1169,296 +1169,826 @@ def compare_tenant():
             "audit_year_csv_2": [list(df_day_1.columns)] + df_year_2.values.tolist(), "audit_csv_1": [list(df_day_1.columns)] + df_1.values.tolist(), 
             "audit_csv_2": [list(df_day_1.columns)] + df_2.values.tolist()}
 
-# @apis.route('/report_solo', methods=['GET', 'POST'])
-# def dashboard_data():
+@apis.route('/report_dashboard', methods=['GET', 'POST'])
+def report_dashboard():
     
-#     body = request.get_json(silent=True)
+    body = request.get_json(silent=True)
 
-#     user = User.objects.get(email=body.get('tenant'))
+    user = User.objects.get(email=body.get('tenant'))
 
-#     if user.fnb:
+    if user.fnb:
         
-#         audit_ls = Audit_FB.objects(auditeeName = body.get('tenant'))
+        audit_ls = Audit_FB.objects(auditeeName = body.get('tenant'))
 
-#         if len(audit_ls) == 0:
-#             return {'status': False, 'info': "Not enough data entries"}
+        if len(audit_ls) == 0:
+            return {'status': False, 'info': "Not enough data entries"}
 
-#         temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.healthierScore, i.foodHygieneScore ,i.totalScore] for i in audit_ls]
-#         df = pd.DataFrame(temp_ls)
-#         df.columns = ['timestamp','profScore', 'housekeepingScore', 'workSafetyScore', 'healthierScore', 'foodHygieneScore','totalScore']
-#         df['timestamp'] = pd.to_datetime(df['timestamp'])
-#         df.index = df['timestamp'] 
-#         df_year = df.resample('Y').mean()
-#         df_month = df.resample('M').mean()
-#         df_week = df.resample('W').mean()
-#         df_day = df.resample('D').mean()
+        temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.healthierScore, i.foodHygieneScore ,i.totalScore] for i in audit_ls]
+        df = pd.DataFrame(temp_ls)
+        df.columns = ['timestamp','profScore', 'housekeepingScore', 'workSafetyScore', 'healthierScore', 'foodHygieneScore','totalScore']
+        df['timestamp'] = pd.to_datetime(df['timestamp'])
+        df.index = df['timestamp'] 
+        df_year = df.resample('Y').mean()
+        df_month = df.resample('M').mean()
+        df_week = df.resample('W').mean()
+        df_day = df.resample('D').mean()
 
-#         plt.switch_backend('agg')
-#         plt.figure(figsize = (10, 6))
-#         plt.ylim((0,100))
-#         plt.plot(df_day.index,list(df_day['profScore']), color='blue')
-#         plt.plot(df_day.index,list(df_day['housekeepingScore']), color='orange')
-#         plt.plot(df_day.index,list(df_day['workSafetyScore']), color='green')
-#         plt.plot(df_day.index,list(df_day['healthierScore']), color='yellow')
-#         plt.plot(df_day.index,list(df_day['foodHygieneScore']), color='brown')
-#         plt.plot(df_day.index,list(df_day['totalScore']), color='red')
-#         plt.plot(df_day.index,list(df_day['profScore']), 'o', color='blue')
-#         plt.plot(df_day.index,list(df_day['housekeepingScore']), 'o', color='orange')
-#         plt.plot(df_day.index,list(df_day['workSafetyScore']), 'o', color='green')
-#         plt.plot(df_day.index,list(df_day['healthierScore']), 'o', color='yellow')
-#         plt.plot(df_day.index,list(df_day['foodHygieneScore']), 'o', color='brown')
-#         plt.plot(df_day.index,list(df_day['totalScore']), 'o', color='red')
-#         plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Healthier Score', 'Food Hygiene Score' 'Total Score'], loc='upper right')
-#         plt.title(body.get('tenant') + "'s Audity Score")
-#         plt.xlabel('Time Period')
-#         plt.ylabel('Score')
-#         values = [str(i)[:-9] for i in list(df_day.index)] 
-#         plt.xticks(df_day.index,values)
-#         plt.savefig('audit_day.png', bbox_inches='tight')
-#         plt.close()
+        plt.switch_backend('agg')
+        plt.figure(figsize = (10, 6))
+        plt.ylim((0,100))
+        plt.plot(df_day.index,list(df_day['profScore']), color='blue')
+        plt.plot(df_day.index,list(df_day['housekeepingScore']), color='orange')
+        plt.plot(df_day.index,list(df_day['workSafetyScore']), color='green')
+        plt.plot(df_day.index,list(df_day['healthierScore']), color='yellow')
+        plt.plot(df_day.index,list(df_day['foodHygieneScore']), color='brown')
+        plt.plot(df_day.index,list(df_day['totalScore']), color='red')
+        plt.plot(df_day.index,list(df_day['profScore']), 'o', color='blue')
+        plt.plot(df_day.index,list(df_day['housekeepingScore']), 'o', color='orange')
+        plt.plot(df_day.index,list(df_day['workSafetyScore']), 'o', color='green')
+        plt.plot(df_day.index,list(df_day['healthierScore']), 'o', color='yellow')
+        plt.plot(df_day.index,list(df_day['foodHygieneScore']), 'o', color='brown')
+        plt.plot(df_day.index,list(df_day['totalScore']), 'o', color='red')
+        plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Healthier Score', 'Food Hygiene Score' 'Total Score'], loc='upper right')
+        plt.title(body.get('tenant') + "'s Audity Score")
+        plt.xlabel('Time Period')
+        plt.ylabel('Score')
+        values = [str(i)[:-9] for i in list(df_day.index)] 
+        plt.xticks(df_day.index,values)
+        plt.savefig('audit_day.png', bbox_inches='tight')
+        plt.close()
 
-#         plt.switch_backend('agg')
-#         plt.figure(figsize = (10, 6))
-#         plt.ylim((0,100))
-#         plt.plot(df_week.index,list(df_week['profScore']), color='blue')
-#         plt.plot(df_week.index,list(df_week['housekeepingScore']), color='orange')
-#         plt.plot(df_week.index,list(df_week['workSafetyScore']), color='green')
-#         plt.plot(df_week.index,list(df_week['healthierScore']), color='yellow')
-#         plt.plot(df_week.index,list(df_week['foodHygieneScore']), color='brown')
-#         plt.plot(df_week.index,list(df_week['totalScore']), color='red')
-#         plt.plot(df_week.index,list(df_week['profScore']), 'o', color='blue')
-#         plt.plot(df_week.index,list(df_week['housekeepingScore']), 'o', color='orange')
-#         plt.plot(df_week.index,list(df_week['workSafetyScore']), 'o', color='green')
-#         plt.plot(df_week.index,list(df_week['healthierScore']), 'o', color='yellow')
-#         plt.plot(df_week.index,list(df_week['foodHygieneScore']), 'o', color='brown')
-#         plt.plot(df_week.index,list(df_week['totalScore']), 'o', color='red')
-#         plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Healthier Score', 'Food Hygiene Score' 'Total Score'], loc='upper right')
-#         plt.title(body.get('tenant') + "'s Audity Score")
-#         plt.xlabel('Time Period')
-#         plt.ylabel('Score')
-#         values = [str(i)[:-9] for i in list(df_week.index)] 
-#         plt.xticks(df_week.index,values)
-#         plt.savefig('audit_week.png', bbox_inches='tight')
-#         plt.close()
+        plt.switch_backend('agg')
+        plt.figure(figsize = (10, 6))
+        plt.ylim((0,100))
+        plt.plot(df_week.index,list(df_week['profScore']), color='blue')
+        plt.plot(df_week.index,list(df_week['housekeepingScore']), color='orange')
+        plt.plot(df_week.index,list(df_week['workSafetyScore']), color='green')
+        plt.plot(df_week.index,list(df_week['healthierScore']), color='yellow')
+        plt.plot(df_week.index,list(df_week['foodHygieneScore']), color='brown')
+        plt.plot(df_week.index,list(df_week['totalScore']), color='red')
+        plt.plot(df_week.index,list(df_week['profScore']), 'o', color='blue')
+        plt.plot(df_week.index,list(df_week['housekeepingScore']), 'o', color='orange')
+        plt.plot(df_week.index,list(df_week['workSafetyScore']), 'o', color='green')
+        plt.plot(df_week.index,list(df_week['healthierScore']), 'o', color='yellow')
+        plt.plot(df_week.index,list(df_week['foodHygieneScore']), 'o', color='brown')
+        plt.plot(df_week.index,list(df_week['totalScore']), 'o', color='red')
+        plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Healthier Score', 'Food Hygiene Score' 'Total Score'], loc='upper right')
+        plt.title(body.get('tenant') + "'s Audity Score")
+        plt.xlabel('Time Period')
+        plt.ylabel('Score')
+        values = [str(i)[:-9] for i in list(df_week.index)] 
+        plt.xticks(df_week.index,values)
+        plt.savefig('audit_week.png', bbox_inches='tight')
+        plt.close()
 
-#         plt.switch_backend('agg')
-#         plt.figure(figsize = (10, 6))
-#         plt.ylim((0,100))
-#         plt.plot(df_month.index,list(df_month['profScore']), color='blue')
-#         plt.plot(df_month.index,list(df_month['housekeepingScore']), color='orange')
-#         plt.plot(df_month.index,list(df_month['workSafetyScore']), color='green')
-#         plt.plot(df_month.index,list(df_month['healthierScore']), color='yellow')
-#         plt.plot(df_month.index,list(df_month['foodHygieneScore']), color='brown')
-#         plt.plot(df_month.index,list(df_month['totalScore']), color='red')
-#         plt.plot(df_month.index,list(df_month['profScore']), 'o', color='blue')
-#         plt.plot(df_month.index,list(df_month['housekeepingScore']), 'o', color='orange')
-#         plt.plot(df_month.index,list(df_month['workSafetyScore']), 'o', color='green')
-#         plt.plot(df_month.index,list(df_month['healthierScore']), 'o', color='yellow')
-#         plt.plot(df_month.index,list(df_month['foodHygieneScore']), 'o', color='brown')
-#         plt.plot(df_month.index,list(df_month['totalScore']), 'o', color='red')
-#         plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Healthier Score', 'Food Hygiene Score' 'Total Score'], loc='upper right')
-#         plt.title(body.get('tenant') + "'s Audity Score")
-#         plt.xlabel('Time Period')
-#         plt.ylabel('Score')
-#         values = [str(i)[:-9] for i in list(df_month.index)] 
-#         plt.xticks(df_month.index,values)
-#         plt.savefig('audit_month.png', bbox_inches='tight')
-#         plt.close()
+        plt.switch_backend('agg')
+        plt.figure(figsize = (10, 6))
+        plt.ylim((0,100))
+        plt.plot(df_month.index,list(df_month['profScore']), color='blue')
+        plt.plot(df_month.index,list(df_month['housekeepingScore']), color='orange')
+        plt.plot(df_month.index,list(df_month['workSafetyScore']), color='green')
+        plt.plot(df_month.index,list(df_month['healthierScore']), color='yellow')
+        plt.plot(df_month.index,list(df_month['foodHygieneScore']), color='brown')
+        plt.plot(df_month.index,list(df_month['totalScore']), color='red')
+        plt.plot(df_month.index,list(df_month['profScore']), 'o', color='blue')
+        plt.plot(df_month.index,list(df_month['housekeepingScore']), 'o', color='orange')
+        plt.plot(df_month.index,list(df_month['workSafetyScore']), 'o', color='green')
+        plt.plot(df_month.index,list(df_month['healthierScore']), 'o', color='yellow')
+        plt.plot(df_month.index,list(df_month['foodHygieneScore']), 'o', color='brown')
+        plt.plot(df_month.index,list(df_month['totalScore']), 'o', color='red')
+        plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Healthier Score', 'Food Hygiene Score' 'Total Score'], loc='upper right')
+        plt.title(body.get('tenant') + "'s Audity Score")
+        plt.xlabel('Time Period')
+        plt.ylabel('Score')
+        values = [str(i)[:-9] for i in list(df_month.index)] 
+        plt.xticks(df_month.index,values)
+        plt.savefig('audit_month.png', bbox_inches='tight')
+        plt.close()
 
-#         plt.switch_backend('agg')
-#         plt.figure(figsize = (10, 6))
-#         plt.ylim((0,100))
-#         plt.plot(df_year.index,list(df_year['profScore']), color='blue')
-#         plt.plot(df_year.index,list(df_year['housekeepingScore']), color='orange')
-#         plt.plot(df_year.index,list(df_year['workSafetyScore']), color='green')
-#         plt.plot(df_year.index,list(df_year['healthierScore']), color='yellow')
-#         plt.plot(df_year.index,list(df_year['foodHygieneScore']), color='brown')
-#         plt.plot(df_year.index,list(df_year['totalScore']), color='red')
-#         plt.plot(df_year.index,list(df_year['profScore']), 'o', color='blue')
-#         plt.plot(df_year.index,list(df_year['housekeepingScore']), 'o', color='orange')
-#         plt.plot(df_year.index,list(df_year['workSafetyScore']), 'o', color='green')
-#         plt.plot(df_year.index,list(df_year['healthierScore']), 'o', color='yellow')
-#         plt.plot(df_year.index,list(df_year['foodHygieneScore']), 'o', color='brown')
-#         plt.plot(df_year.index,list(df_year['totalScore']), 'o', color='red')
-#         plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Healthier Score', 'Food Hygiene Score' 'Total Score'], loc='upper right')
-#         plt.title(body.get('tenant') + "'s Audity Score")
-#         plt.xlabel('Time Period')
-#         plt.ylabel('Score')
-#         values = [str(i)[:-9] for i in list(df_year.index)] 
-#         plt.xticks(df_year.index,values)
-#         plt.savefig('audit_year.png', bbox_inches='tight')
-#         plt.close()
+        plt.switch_backend('agg')
+        plt.figure(figsize = (10, 6))
+        plt.ylim((0,100))
+        plt.plot(df_year.index,list(df_year['profScore']), color='blue')
+        plt.plot(df_year.index,list(df_year['housekeepingScore']), color='orange')
+        plt.plot(df_year.index,list(df_year['workSafetyScore']), color='green')
+        plt.plot(df_year.index,list(df_year['healthierScore']), color='yellow')
+        plt.plot(df_year.index,list(df_year['foodHygieneScore']), color='brown')
+        plt.plot(df_year.index,list(df_year['totalScore']), color='red')
+        plt.plot(df_year.index,list(df_year['profScore']), 'o', color='blue')
+        plt.plot(df_year.index,list(df_year['housekeepingScore']), 'o', color='orange')
+        plt.plot(df_year.index,list(df_year['workSafetyScore']), 'o', color='green')
+        plt.plot(df_year.index,list(df_year['healthierScore']), 'o', color='yellow')
+        plt.plot(df_year.index,list(df_year['foodHygieneScore']), 'o', color='brown')
+        plt.plot(df_year.index,list(df_year['totalScore']), 'o', color='red')
+        plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Healthier Score', 'Food Hygiene Score' 'Total Score'], loc='upper right')
+        plt.title(body.get('tenant') + "'s Audity Score")
+        plt.xlabel('Time Period')
+        plt.ylabel('Score')
+        values = [str(i)[:-9] for i in list(df_year.index)] 
+        plt.xticks(df_year.index,values)
+        plt.savefig('audit_year.png', bbox_inches='tight')
+        plt.close()
 
-#         with open("audit_day.png", "rb") as img_file:
-#             audit_day = str(base64.b64encode(img_file.read()))
-#         with open("audit_week.png", "rb") as img_file:
-#             audit_week = str(base64.b64encode(img_file.read()))
-#         with open("audit_month.png", "rb") as img_file:
-#             audit_month = str(base64.b64encode(img_file.read()))
-#         with open("audit_year.png", "rb") as img_file:
-#             audit_year = str(base64.b64encode(img_file.read()))
+        with open("audit_day.png", "rb") as img_file:
+            audit_day = str(base64.b64encode(img_file.read()))
+        with open("audit_week.png", "rb") as img_file:
+            audit_week = str(base64.b64encode(img_file.read()))
+        with open("audit_month.png", "rb") as img_file:
+            audit_month = str(base64.b64encode(img_file.read()))
+        with open("audit_year.png", "rb") as img_file:
+            audit_year = str(base64.b64encode(img_file.read()))
         
-#         df = df.drop(columns=["timestamp"])
-#         df.insert(4, 'timestamp', df.index.tolist())
-#         df.reset_index(drop=True, inplace=True) 
+        df = df.drop(columns=["timestamp"])
+        df.insert(4, 'timestamp', df.index.tolist())
+        df.reset_index(drop=True, inplace=True) 
         
-#         df_day['timestamp'] = df_day.index
-#         df_week['timestamp'] = df_week.index
-#         df_month['timestamp'] = df_month.index
-#         df_year['timestamp'] = df_year.index
-
-#         df_day.to_csv('audit_day.csv')
-#         df_week.to_csv('audit_week.csv')
-#         df_month.to_csv('audit_month.csv')
-#         df_year.to_csv('audit_year.csv')
-
-#         for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv", "audit.csv"]:
-#             os.remove(i)
-
-#         return {'status': True}, 200
-
-#     else:
-
-#         audit_ls = Audit_non_FB.objects(auditeeName = body.get('tenant'))
-
-#         if len(audit_ls) == 0:
-#             return {'status': False, 'info': "Not enough data entries"}
-
-#         temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.totalScore] for i in audit_ls]
-#         df = pd.DataFrame(temp_ls)
-#         df.columns = ['timestamp','profScore', 'housekeepingScore', 'workSafetyScore','totalScore']
-#         df['timestamp'] = pd.to_datetime(df['timestamp'])
-#         df.index = df['timestamp'] 
-#         df_year = df.resample('Y').mean()
-#         df_month = df.resample('M').mean()
-#         df_week = df.resample('W').mean()
-#         df_day = df.resample('D').mean()
-
-#         plt.switch_backend('agg')
-#         plt.figure(figsize = (10, 6))
-#         plt.ylim((0,100))
-#         plt.plot(df_day.index,list(df_day['profScore']), color='blue')
-#         plt.plot(df_day.index,list(df_day['housekeepingScore']), color='orange')
-#         plt.plot(df_day.index,list(df_day['workSafetyScore']), color='green')
-#         plt.plot(df_day.index,list(df_day['totalScore']), color='red')
-#         plt.plot(df_day.index,list(df_day['profScore']), 'o', color='blue')
-#         plt.plot(df_day.index,list(df_day['housekeepingScore']), 'o', color='orange')
-#         plt.plot(df_day.index,list(df_day['workSafetyScore']), 'o', color='green')
-#         plt.plot(df_day.index,list(df_day['totalScore']), 'o', color='red')
-#         plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
-#         plt.title(body.get('tenant') + "'s Audity Score")
-#         plt.xlabel('Time Period')
-#         plt.ylabel('Score')
-#         values = [str(i)[:-9] for i in list(df_day.index)] 
-#         plt.xticks(df_day.index,values)
-#         plt.savefig('audit_day.png', bbox_inches='tight')
-#         plt.close()
-
-#         plt.switch_backend('agg')
-#         plt.figure(figsize = (10, 6))
-#         plt.ylim((0,100))
-#         plt.plot(df_week.index,list(df_week['profScore']), color='blue')
-#         plt.plot(df_week.index,list(df_week['housekeepingScore']), color='orange')
-#         plt.plot(df_week.index,list(df_week['workSafetyScore']), color='green')
-#         plt.plot(df_week.index,list(df_week['totalScore']), color='red')
-#         plt.plot(df_week.index,list(df_week['profScore']), 'o', color='blue')
-#         plt.plot(df_week.index,list(df_week['housekeepingScore']), 'o', color='orange')
-#         plt.plot(df_week.index,list(df_week['workSafetyScore']), 'o', color='green')
-#         plt.plot(df_week.index,list(df_week['totalScore']), 'o', color='red')
-#         plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
-#         plt.title(body.get('tenant') + "'s Audity Score")
-#         plt.xlabel('Time Period')
-#         plt.ylabel('Score')
-#         values = [str(i)[:-9] for i in list(df_week.index)] 
-#         plt.xticks(df_week.index,values)
-#         plt.savefig('audit_week.png', bbox_inches='tight')
-#         plt.close()
-
-#         plt.switch_backend('agg')
-#         plt.figure(figsize = (10, 6))
-#         plt.ylim((0,100))
-#         plt.plot(df_month.index,list(df_month['profScore']), color='blue')
-#         plt.plot(df_month.index,list(df_month['housekeepingScore']), color='orange')
-#         plt.plot(df_month.index,list(df_month['workSafetyScore']), color='green')
-#         plt.plot(df_month.index,list(df_month['totalScore']), color='red')
-#         plt.plot(df_month.index,list(df_month['profScore']), 'o', color='blue')
-#         plt.plot(df_month.index,list(df_month['housekeepingScore']), 'o', color='orange')
-#         plt.plot(df_month.index,list(df_month['workSafetyScore']), 'o', color='green')
-#         plt.plot(df_month.index,list(df_month['totalScore']), 'o', color='red')
-#         plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
-#         plt.title(body.get('tenant') + "'s Audity Score")
-#         plt.xlabel('Time Period')
-#         plt.ylabel('Score')
-#         values = [str(i)[:-9] for i in list(df_month.index)] 
-#         plt.xticks(df_month.index,values)
-#         plt.savefig('audit_month.png', bbox_inches='tight')
-#         plt.close()
-
-#         plt.switch_backend('agg')
-#         plt.figure(figsize = (10, 6))
-#         plt.ylim((0,100))
-#         plt.plot(df_year.index,list(df_year['profScore']), color='blue')
-#         plt.plot(df_year.index,list(df_year['housekeepingScore']), color='orange')
-#         plt.plot(df_year.index,list(df_year['workSafetyScore']), color='green')
-#         plt.plot(df_year.index,list(df_year['totalScore']), color='red')
-#         plt.plot(df_year.index,list(df_year['profScore']), 'o', color='blue')
-#         plt.plot(df_year.index,list(df_year['housekeepingScore']), 'o', color='orange')
-#         plt.plot(df_year.index,list(df_year['workSafetyScore']), 'o', color='green')
-#         plt.plot(df_year.index,list(df_year['totalScore']), 'o', color='red')
-#         plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
-#         plt.title(body.get('tenant') + "'s Audity Score")
-#         plt.xlabel('Time Period')
-#         plt.ylabel('Score')
-#         values = [str(i)[:-9] for i in list(df_year.index)] 
-#         plt.xticks(df_year.index,values)
-#         plt.savefig('audit_year.png', bbox_inches='tight')
-#         plt.close()
+        df_day['timestamp'] = df_day.index
+        df_week['timestamp'] = df_week.index
+        df_month['timestamp'] = df_month.index
+        df_year['timestamp'] = df_year.index
         
-#         df = df.drop(columns=["timestamp"])
-#         df.insert(4, 'timestamp', df.index.tolist())
-#         df.reset_index(drop=True, inplace=True) 
+        df_day.to_csv('audit_day.csv')
+        df_week.to_csv('audit_week.csv')
+        df_month.to_csv('audit_month.csv')
+        df_year.to_csv('audit_year.csv')
+
+        try:
+            message = MIMEMultipart()
+            message["From"] = sender_email
+            email = body.get('email')
+            message["To"] = email
+            message["Subject"] = body.get("subject")
+        except:
+            print("error occured")
+            return {'result': False, 'info': "user does not exist"}, 500
+
+        message.attach(MIMEText(body.get("body"), "plain"))
+
+        text = message.as_string()
+
+        for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv", "audit.csv"]:
+
+            # Open PDF file in binary mode
+            with open(filename, "rb") as attachment:
+                # Add file as application/octet-stream
+                # Email client can usually download this automatically as attachment
+                part = MIMEBase("application", "octet-stream")
+                part.set_payload(attachment.read())
+
+            # Encode file in ASCII characters to send by email    
+            encoders.encode_base64(part)
+
+            # Add header as key/value pair to attachment part
+            part.add_header(
+                "Content-Disposition",
+                f"attachment; filename= {filename}",
+            )
+
+            # Add attachment to message and convert message to string
+            message.attach(part)
+
+        # Log in to server using secure context and send email
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            server.login(sender_email, password)
+            server.sendmail(sender_email, email, text)
+
+        for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv"]:
+            os.remove(i)
+
+        return {'status': True}, 200
+
+    else:
+
+        audit_ls = Audit_non_FB.objects(auditeeName = body.get('tenant'))
+
+        if len(audit_ls) == 0:
+            return {'status': False, 'info': "Not enough data entries"}
+
+        temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.totalScore] for i in audit_ls]
+        df = pd.DataFrame(temp_ls)
+        df.columns = ['timestamp','profScore', 'housekeepingScore', 'workSafetyScore','totalScore']
+        df['timestamp'] = pd.to_datetime(df['timestamp'])
+        df.index = df['timestamp'] 
+        df_year = df.resample('Y').mean()
+        df_month = df.resample('M').mean()
+        df_week = df.resample('W').mean()
+        df_day = df.resample('D').mean()
+
+        plt.switch_backend('agg')
+        plt.figure(figsize = (10, 6))
+        plt.ylim((0,100))
+        plt.plot(df_day.index,list(df_day['profScore']), color='blue')
+        plt.plot(df_day.index,list(df_day['housekeepingScore']), color='orange')
+        plt.plot(df_day.index,list(df_day['workSafetyScore']), color='green')
+        plt.plot(df_day.index,list(df_day['totalScore']), color='red')
+        plt.plot(df_day.index,list(df_day['profScore']), 'o', color='blue')
+        plt.plot(df_day.index,list(df_day['housekeepingScore']), 'o', color='orange')
+        plt.plot(df_day.index,list(df_day['workSafetyScore']), 'o', color='green')
+        plt.plot(df_day.index,list(df_day['totalScore']), 'o', color='red')
+        plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
+        plt.title(body.get('tenant') + "'s Audity Score")
+        plt.xlabel('Time Period')
+        plt.ylabel('Score')
+        values = [str(i)[:-9] for i in list(df_day.index)] 
+        plt.xticks(df_day.index,values)
+        plt.savefig('audit_day.png', bbox_inches='tight')
+        plt.close()
+
+        plt.switch_backend('agg')
+        plt.figure(figsize = (10, 6))
+        plt.ylim((0,100))
+        plt.plot(df_week.index,list(df_week['profScore']), color='blue')
+        plt.plot(df_week.index,list(df_week['housekeepingScore']), color='orange')
+        plt.plot(df_week.index,list(df_week['workSafetyScore']), color='green')
+        plt.plot(df_week.index,list(df_week['totalScore']), color='red')
+        plt.plot(df_week.index,list(df_week['profScore']), 'o', color='blue')
+        plt.plot(df_week.index,list(df_week['housekeepingScore']), 'o', color='orange')
+        plt.plot(df_week.index,list(df_week['workSafetyScore']), 'o', color='green')
+        plt.plot(df_week.index,list(df_week['totalScore']), 'o', color='red')
+        plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
+        plt.title(body.get('tenant') + "'s Audity Score")
+        plt.xlabel('Time Period')
+        plt.ylabel('Score')
+        values = [str(i)[:-9] for i in list(df_week.index)] 
+        plt.xticks(df_week.index,values)
+        plt.savefig('audit_week.png', bbox_inches='tight')
+        plt.close()
+
+        plt.switch_backend('agg')
+        plt.figure(figsize = (10, 6))
+        plt.ylim((0,100))
+        plt.plot(df_month.index,list(df_month['profScore']), color='blue')
+        plt.plot(df_month.index,list(df_month['housekeepingScore']), color='orange')
+        plt.plot(df_month.index,list(df_month['workSafetyScore']), color='green')
+        plt.plot(df_month.index,list(df_month['totalScore']), color='red')
+        plt.plot(df_month.index,list(df_month['profScore']), 'o', color='blue')
+        plt.plot(df_month.index,list(df_month['housekeepingScore']), 'o', color='orange')
+        plt.plot(df_month.index,list(df_month['workSafetyScore']), 'o', color='green')
+        plt.plot(df_month.index,list(df_month['totalScore']), 'o', color='red')
+        plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
+        plt.title(body.get('tenant') + "'s Audity Score")
+        plt.xlabel('Time Period')
+        plt.ylabel('Score')
+        values = [str(i)[:-9] for i in list(df_month.index)] 
+        plt.xticks(df_month.index,values)
+        plt.savefig('audit_month.png', bbox_inches='tight')
+        plt.close()
+
+        plt.switch_backend('agg')
+        plt.figure(figsize = (10, 6))
+        plt.ylim((0,100))
+        plt.plot(df_year.index,list(df_year['profScore']), color='blue')
+        plt.plot(df_year.index,list(df_year['housekeepingScore']), color='orange')
+        plt.plot(df_year.index,list(df_year['workSafetyScore']), color='green')
+        plt.plot(df_year.index,list(df_year['totalScore']), color='red')
+        plt.plot(df_year.index,list(df_year['profScore']), 'o', color='blue')
+        plt.plot(df_year.index,list(df_year['housekeepingScore']), 'o', color='orange')
+        plt.plot(df_year.index,list(df_year['workSafetyScore']), 'o', color='green')
+        plt.plot(df_year.index,list(df_year['totalScore']), 'o', color='red')
+        plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
+        plt.title(body.get('tenant') + "'s Audity Score")
+        plt.xlabel('Time Period')
+        plt.ylabel('Score')
+        values = [str(i)[:-9] for i in list(df_year.index)] 
+        plt.xticks(df_year.index,values)
+        plt.savefig('audit_year.png', bbox_inches='tight')
+        plt.close()
         
-#         df_day['timestamp'] = df_day.index
-#         df_week['timestamp'] = df_week.index
-#         df_month['timestamp'] = df_month.index
-#         df_year['timestamp'] = df_year.index
+        df = df.drop(columns=["timestamp"])
+        df.insert(4, 'timestamp', df.index.tolist())
+        df.reset_index(drop=True, inplace=True) 
+        
+        df_day['timestamp'] = df_day.index
+        df_week['timestamp'] = df_week.index
+        df_month['timestamp'] = df_month.index
+        df_year['timestamp'] = df_year.index
 
-#         df_day.to_csv('audit_day.csv')
-#         df_week.to_csv('audit_week.csv')
-#         df_month.to_csv('audit_month.csv')
-#         df_year.to_csv('audit_year.csv')
+        df_day.to_csv('audit_day.csv')
+        df_week.to_csv('audit_week.csv')
+        df_month.to_csv('audit_month.csv')
+        df_year.to_csv('audit_year.csv')
 
-#         try:
-#             message = MIMEMultipart()
-#             message["From"] = sender_email
-#             email = body.get('tenant')
-#             message["To"] = email
-#             message["Subject"] = "Link to login to SingHealth"
-#         except:
-#             print("error occured")
-#             return {'result': False, 'info': "user does not exist"}, 500
+        try:
+            message = MIMEMultipart()
+            message["From"] = sender_email
+            email = body.get('email')
+            message["To"] = email
+            message["Subject"] = body.get("subject")
+        except:
+            print("error occured")
+            return {'result': False, 'info': "user does not exist"}, 500
 
-#         token = s.dumps(body.get('email'), salt='login')
+        message.attach(MIMEText(body.get("body"), "plain"))
 
-#         link = url_for('apis.login_verified', token=token, _external=True)
-#         link = link.replace("5000","3000")
+        text = message.as_string()
 
-#         body = "Please copy on the token for 2FA  \n\n {}".format(token)
+        for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv"]:
 
-#         message.attach(MIMEText(body, "plain"))
+            # Open PDF file in binary mode
+            with open(filename, "rb") as attachment:
+                # Add file as application/octet-stream
+                # Email client can usually download this automatically as attachment
+                part = MIMEBase("application", "octet-stream")
+                part.set_payload(attachment.read())
 
-#         text = message.as_string()
+            # Encode file in ASCII characters to send by email    
+            encoders.encode_base64(part)
 
-#         # Log in to server using secure context and send email
-#         context = ssl.create_default_context()
-#         with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-#             server.login(sender_email, password)
-#             server.sendmail(sender_email, email, text)
+            # Add header as key/value pair to attachment part
+            part.add_header(
+                "Content-Disposition",
+                f"attachment; filename= {filename}",
+            )
 
-#         for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv", "audit.csv"]:
-#             os.remove(i)
+            # Add attachment to message and convert message to string
+            message.attach(part)
 
-#         return {'status': True}, 200
+        # Log in to server using secure context and send email
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            server.login(sender_email, password)
+            server.sendmail(sender_email, email, text)
 
-#         # return {'result': True, "audit_day_img": audit_day[2:-1], "audit_week_img": audit_week[2:-1], "audit_month_img": audit_month[2:-1], "audit_year_img": audit_year[2:-1], "audit_day_csv": df_day.values.tolist(), "audit_week_csv": [list(df_day.columns)] + df_week.values.tolist(), "audit_month_csv": [list(df_day.columns)] + df_month.values.tolist(), "audit_year_csv": [list(df_day.columns)] + df_year.values.tolist(), "audit_csv": [list(df_day.columns)] + df.values.tolist()},200
+        for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv"]:
+            os.remove(i)
 
+        return {'status': True}, 200
+
+@apis.route('/report_compare_tenant', methods=['GET', 'POST'])
+def report_compare_tenant():
+    
+    body = request.get_json()
+    
+    user = User.objects.get(email=body.get('institute1'))
+
+    if user.fnb:
+
+        audit_ls_1 = Audit_FB.objects(auditeeName = body.get('institute1'))
+        audit_ls_2 = Audit_FB.objects(auditeeName = body.get('institute2'))
+
+        if len(audit_ls_1) == 0 or len(audit_ls_2) == 0:
+            return {'status': False, 'info': "Not enough data entries"},200
+
+        temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.healthierScore, i.foodHygieneScore, i.totalScore] for i in audit_ls_1]
+        df_1 = pd.DataFrame(temp_ls)
+        df_1.columns =  ['timestamp','profScore', 'housekeepingScore', 'workSafetyScore', 'healthierScore', 'foodHygieneScore','totalScore']
+        df_1['timestamp'] = pd.to_datetime(df_1['timestamp'])
+        df_1.index = df_1['timestamp'] 
+        df_year_1 = df_1.resample('Y').mean()
+        df_month_1 = df_1.resample('M').mean()
+        df_week_1 = df_1.resample('W').mean()
+        df_day_1 = df_1.resample('D').mean()
+
+        temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.healthierScore, i.foodHygieneScore, i.totalScore] for i in audit_ls_2]
+        df_2 = pd.DataFrame(temp_ls)
+        df_2.columns =  ['timestamp','profScore', 'housekeepingScore', 'workSafetyScore', 'healthierScore', 'foodHygieneScore','totalScore']
+        df_2['timestamp'] = pd.to_datetime(df_2['timestamp'])
+        df_2.index = df_2['timestamp'] 
+        df_year_2 = df_2.resample('Y').mean()
+        df_month_2 = df_2.resample('M').mean()
+        df_week_2 = df_2.resample('W').mean()
+        df_day_2 = df_2.resample('D').mean()
+
+        plt.switch_backend('agg')
+        plt.figure(figsize = (14, 8))
+        plt.ylim((0,100))
+        plt.plot(df_day_1.index,list(df_day_1['profScore']), color='limegreen')
+        plt.plot(df_day_1.index,list(df_day_1['housekeepingScore']), color='forestgreen')
+        plt.plot(df_day_1.index,list(df_day_1['workSafetyScore']), color='cornflowerblue')
+        plt.plot(df_day_1.index,list(df_day_1['healthierScore']), color='yellow')
+        plt.plot(df_day_1.index,list(df_day_1['foodHygieneScore']), color='brown')
+        plt.plot(df_day_1.index,list(df_day_1['totalScore']), color='royalblue')
+        plt.plot(df_day_2.index,list(df_day_2['profScore']), color='lightcoral')
+        plt.plot(df_day_2.index,list(df_day_2['housekeepingScore']), color='indianred')
+        plt.plot(df_day_2.index,list(df_day_2['workSafetyScore']), color='tomato')
+        plt.plot(df_day_2.index,list(df_day_2['healthierScore']), color='hotpink')
+        plt.plot(df_day_2.index,list(df_day_2['foodHygieneScore']), color='pink')
+        plt.plot(df_day_2.index,list(df_day_2['totalScore']), color='peru')
+        plt.plot(df_day_1.index,list(df_day_1['profScore']), 'o', color='limegreen')
+        plt.plot(df_day_1.index,list(df_day_1['housekeepingScore']), 'o', color='forestgreen')
+        plt.plot(df_day_1.index,list(df_day_1['workSafetyScore']), 'o', color='royalblue')
+        plt.plot(df_day_1.index,list(df_day_1['healthierScore']), 'o', color='yellow')
+        plt.plot(df_day_1.index,list(df_day_1['foodHygieneScore']), 'o', color='brown')
+        plt.plot(df_day_1.index,list(df_day_1['totalScore']), 'o', color='limegreen')
+        plt.plot(df_day_2.index,list(df_day_2['profScore']), 'o', color='lightcoral')
+        plt.plot(df_day_2.index,list(df_day_2['housekeepingScore']), 'o', color='indianred')
+        plt.plot(df_day_2.index,list(df_day_2['workSafetyScore']), 'o', color='tomato')
+        plt.plot(df_day_2.index,list(df_day_2['healthierScore']), 'o', color='hotpink')
+        plt.plot(df_day_2.index,list(df_day_2['foodHygieneScore']), 'o', color='pink')
+        plt.plot(df_day_2.index,list(df_day_2['totalScore']), 'o', color='peru')
+        plt.legend(['Professional Score of ' + body.get('institute1'), 'House Keeping Score of ' + body.get('institute1'), 'Work Safety Score of ' + body.get('institute1'), 'Healthier Score of ' + body.get('institute1'), 'Hygiene Score of ' + body.get('institute1'), 'Total Score of ' + body.get('institute1'), 'Professional Score of ' + body.get('institute2'), 'House Keeping Score of ' + body.get('institute2'), 'Work Safety Score of ' + body.get('institute2'), 'Healthier Score of ' + body.get('institute2'), 'Hygiene Score of ' + body.get('institute2'), 'Total Score of ' + body.get('institute2')], loc='upper right')
+        plt.title('Comparing ' + body.get('institute1') + ' and ' + body.get('institute2') + " Audit Scores")
+        plt.xlabel('Time Period')
+        plt.ylabel('Score')
+        values = [str(i)[:-9] for i in list(set(list(df_day_1.index) + list(df_day_2.index)))] 
+        plt.xticks(list(set(list(df_day_1.index) + list(df_day_2.index))),values)
+        plt.savefig('audit_day.png', bbox_inches='tight')
+        plt.close()
+
+        plt.switch_backend('agg')
+        plt.figure(figsize = (14, 8))
+        plt.ylim((0,100))
+        plt.plot(df_week_1.index,list(df_week_1['profScore']), color='limegreen')
+        plt.plot(df_week_1.index,list(df_week_1['housekeepingScore']), color='forestgreen')
+        plt.plot(df_week_1.index,list(df_week_1['workSafetyScore']), color='cornflowerblue')
+        plt.plot(df_week_1.index,list(df_week_1['healthierScore']), color='yellow')
+        plt.plot(df_week_1.index,list(df_week_1['foodHygieneScore']), color='brown')
+        plt.plot(df_week_1.index,list(df_week_1['totalScore']), color='royalblue')
+        plt.plot(df_week_2.index,list(df_week_2['profScore']), color='lightcoral')
+        plt.plot(df_week_2.index,list(df_week_2['housekeepingScore']), color='indianred')
+        plt.plot(df_week_2.index,list(df_week_2['workSafetyScore']), color='tomato')
+        plt.plot(df_week_2.index,list(df_week_2['healthierScore']), color='hotpink')
+        plt.plot(df_week_2.index,list(df_week_2['foodHygieneScore']), color='pink')
+        plt.plot(df_week_2.index,list(df_week_2['totalScore']), color='peru')
+        plt.plot(df_week_1.index,list(df_week_1['profScore']), 'o', color='limegreen')
+        plt.plot(df_week_1.index,list(df_week_1['housekeepingScore']), 'o', color='forestgreen')
+        plt.plot(df_week_1.index,list(df_week_1['workSafetyScore']), 'o', color='royalblue')
+        plt.plot(df_week_1.index,list(df_week_1['healthierScore']), 'o', color='yellow')
+        plt.plot(df_week_1.index,list(df_week_1['foodHygieneScore']), 'o', color='brown')
+        plt.plot(df_week_1.index,list(df_week_1['totalScore']), 'o', color='limegreen')
+        plt.plot(df_week_2.index,list(df_week_2['profScore']), 'o', color='lightcoral')
+        plt.plot(df_week_2.index,list(df_week_2['housekeepingScore']), 'o', color='indianred')
+        plt.plot(df_week_2.index,list(df_week_2['workSafetyScore']), 'o', color='tomato')
+        plt.plot(df_week_2.index,list(df_week_2['healthierScore']), 'o', color='hotpink')
+        plt.plot(df_week_2.index,list(df_week_2['foodHygieneScore']), 'o', color='pink')
+        plt.plot(df_week_2.index,list(df_week_2['totalScore']), 'o', color='peru')
+        plt.legend(['Professional Score of ' + body.get('institute1'), 'House Keeping Score of ' + body.get('institute1'), 'Work Safety Score of ' + body.get('institute1'), 'Healthier Score of ' + body.get('institute1'), 'Hygiene Score of ' + body.get('institute1'), 'Total Score of ' + body.get('institute1'), 'Professional Score of ' + body.get('institute2'), 'House Keeping Score of ' + body.get('institute2'), 'Work Safety Score of ' + body.get('institute2'), 'Healthier Score of ' + body.get('institute2'), 'Hygiene Score of ' + body.get('institute2'), 'Total Score of ' + body.get('institute2')], loc='upper right')
+        plt.title('Comparing ' + body.get('institute1') + ' and ' + body.get('institute2') + " Audit Scores")
+        plt.xlabel('Time Period')
+        plt.ylabel('Score')
+        values = [str(i)[:-9] for i in list(set(list(df_week_1.index) + list(df_week_2.index)))] 
+        plt.xticks(list(set(list(df_week_1.index) + list(df_week_2.index))),values)
+        plt.savefig('audit_week.png', bbox_inches='tight')
+        plt.close()
+
+        plt.switch_backend('agg')
+        plt.figure(figsize = (14, 8))
+        plt.ylim((0,100))
+        plt.plot(df_month_1.index,list(df_month_1['profScore']), color='limegreen')
+        plt.plot(df_month_1.index,list(df_month_1['housekeepingScore']), color='forestgreen')
+        plt.plot(df_month_1.index,list(df_month_1['workSafetyScore']), color='cornflowerblue')
+        plt.plot(df_month_1.index,list(df_month_1['healthierScore']), color='yellow')
+        plt.plot(df_month_1.index,list(df_month_1['foodHygieneScore']), color='brown')
+        plt.plot(df_month_1.index,list(df_month_1['totalScore']), color='royalblue')
+        plt.plot(df_month_2.index,list(df_month_2['profScore']), color='lightcoral')
+        plt.plot(df_month_2.index,list(df_month_2['housekeepingScore']), color='indianred')
+        plt.plot(df_month_2.index,list(df_month_2['workSafetyScore']), color='tomato')
+        plt.plot(df_month_2.index,list(df_month_2['healthierScore']), color='hotpink')
+        plt.plot(df_month_2.index,list(df_month_2['foodHygieneScore']), color='pink')
+        plt.plot(df_month_2.index,list(df_month_2['totalScore']), color='peru')
+        plt.plot(df_month_1.index,list(df_month_1['profScore']), 'o', color='limegreen')
+        plt.plot(df_month_1.index,list(df_month_1['housekeepingScore']), 'o', color='forestgreen')
+        plt.plot(df_month_1.index,list(df_month_1['workSafetyScore']), 'o', color='royalblue')
+        plt.plot(df_month_1.index,list(df_month_1['healthierScore']), 'o', color='yellow')
+        plt.plot(df_month_1.index,list(df_month_1['foodHygieneScore']), 'o', color='brown')
+        plt.plot(df_month_1.index,list(df_month_1['totalScore']), 'o', color='limegreen')
+        plt.plot(df_month_2.index,list(df_month_2['profScore']), 'o', color='lightcoral')
+        plt.plot(df_month_2.index,list(df_month_2['housekeepingScore']), 'o', color='indianred')
+        plt.plot(df_month_2.index,list(df_month_2['workSafetyScore']), 'o', color='tomato')
+        plt.plot(df_month_2.index,list(df_month_2['healthierScore']), 'o', color='hotpink')
+        plt.plot(df_month_2.index,list(df_month_2['foodHygieneScore']), 'o', color='pink')
+        plt.plot(df_month_2.index,list(df_month_2['totalScore']), 'o', color='peru')
+        plt.legend(['Professional Score of ' + body.get('institute1'), 'House Keeping Score of ' + body.get('institute1'), 'Work Safety Score of ' + body.get('institute1'), 'Healthier Score of ' + body.get('institute1'), 'Hygiene Score of ' + body.get('institute1'), 'Total Score of ' + body.get('institute1'), 'Professional Score of ' + body.get('institute2'), 'House Keeping Score of ' + body.get('institute2'), 'Work Safety Score of ' + body.get('institute2'), 'Healthier Score of ' + body.get('institute2'), 'Hygiene Score of ' + body.get('institute2'), 'Total Score of ' + body.get('institute2')], loc='upper right')
+        plt.title('Comparing ' + body.get('institute1') + ' and ' + body.get('institute2') + " Audit Scores")
+        plt.xlabel('Time Period')
+        plt.ylabel('Score')
+        values = [str(i)[:-9] for i in list(set(list(df_month_1.index) + list(df_month_2.index)))] 
+        plt.xticks(list(set(list(df_month_1.index) + list(df_month_2.index))),values)
+        plt.savefig('audit_month.png', bbox_inches='tight')
+        plt.close()
+
+        plt.switch_backend('agg')
+        plt.figure(figsize = (14, 8))
+        plt.ylim((0,100))
+        plt.plot(df_year_1.index,list(df_year_1['profScore']), color='limegreen')
+        plt.plot(df_year_1.index,list(df_year_1['housekeepingScore']), color='forestgreen')
+        plt.plot(df_year_1.index,list(df_year_1['workSafetyScore']), color='cornflowerblue')
+        plt.plot(df_year_1.index,list(df_year_1['healthierScore']), color='yellow')
+        plt.plot(df_year_1.index,list(df_year_1['foodHygieneScore']), color='brown')
+        plt.plot(df_year_1.index,list(df_year_1['totalScore']), color='royalblue')
+        plt.plot(df_year_2.index,list(df_year_2['housekeepingScore']), color='indianred')
+        plt.plot(df_year_2.index,list(df_year_2['workSafetyScore']), color='tomato')
+        plt.plot(df_year_2.index,list(df_year_2['healthierScore']), color='hotpink')
+        plt.plot(df_year_2.index,list(df_year_2['foodHygieneScore']), color='pink')
+        plt.plot(df_year_2.index,list(df_year_2['totalScore']), color='peru')
+        plt.plot(df_year_2.index,list(df_year_2['profScore']), 'o', color='lightcoral')
+        plt.plot(df_year_1.index,list(df_year_1['profScore']), 'o', color='limegreen')
+        plt.plot(df_year_1.index,list(df_year_1['housekeepingScore']), 'o', color='forestgreen')
+        plt.plot(df_year_1.index,list(df_year_1['workSafetyScore']), 'o', color='royalblue')
+        plt.plot(df_year_1.index,list(df_year_1['healthierScore']), 'o', color='yellow')
+        plt.plot(df_year_1.index,list(df_year_1['foodHygieneScore']), 'o', color='brown')
+        plt.plot(df_year_1.index,list(df_year_1['totalScore']), 'o', color='limegreen')
+        plt.plot(df_year_2.index,list(df_year_2['profScore']), color='lightcoral')
+        plt.plot(df_year_2.index,list(df_year_2['housekeepingScore']), 'o', color='indianred')
+        plt.plot(df_year_2.index,list(df_year_2['workSafetyScore']), 'o', color='tomato')
+        plt.plot(df_year_2.index,list(df_year_2['healthierScore']), 'o', color='hotpink')
+        plt.plot(df_year_2.index,list(df_year_2['foodHygieneScore']), 'o', color='pink')
+        plt.plot(df_year_2.index,list(df_year_2['totalScore']), 'o', color='peru')
+        plt.legend(['Professional Score of ' + body.get('institute1'), 'House Keeping Score of ' + body.get('institute1'), 'Work Safety Score of ' + body.get('institute1'), 'Healthier Score of ' + body.get('institute1'), 'Hygiene Score of ' + body.get('institute1'), 'Total Score of ' + body.get('institute1'), 'Professional Score of ' + body.get('institute2'), 'House Keeping Score of ' + body.get('institute2'), 'Work Safety Score of ' + body.get('institute2'), 'Healthier Score of ' + body.get('institute2'), 'Hygiene Score of ' + body.get('institute2'), 'Total Score of ' + body.get('institute2')], loc='upper right')
+        plt.title('Comparing ' + body.get('institute1') + ' and ' + body.get('institute2') + " Audit Scores")
+        plt.xlabel('Time Period')
+        plt.ylabel('Score')
+        values = [str(i)[:-9] for i in list(set(list(df_year_1.index) + list(df_year_2.index)))] 
+        plt.xticks(list(set(list(df_year_1.index) + list(df_year_2.index))),values)
+        plt.savefig('audit_year.png', bbox_inches='tight')
+        plt.close()
+        
+        df_1 = df_1.drop(columns=["timestamp"])
+        df_1.insert(4, 'timestamp', df_1.index.tolist())
+        df_1.reset_index(drop=True, inplace=True) 
+
+        df_2 = df_2.drop(columns=["timestamp"])
+        df_2.insert(4, 'timestamp', df_2.index.tolist())
+        df_2.reset_index(drop=True, inplace=True)
+
+        df_day_1['timestamp'] = df_day_1.index
+        df_week_1['timestamp'] = df_week_1.index
+        df_month_1['timestamp'] = df_month_1.index
+        df_year_1['timestamp'] = df_year_1.index
+
+        df_day_2['timestamp'] = df_day_2.index
+        df_week_2['timestamp'] = df_week_2.index
+        df_month_2['timestamp'] = df_month_2.index
+        df_year_2['timestamp'] = df_year_2.index
+
+        df_day_1.to_csv('audit_day_1.csv')
+        df_week_1.to_csv('audit_week_1.csv')
+        df_month_1.to_csv('audit_month_1.csv')
+        df_year_1.to_csv('audit_year_1.csv')
+
+        df_day_2.to_csv('audit_day_2.csv')
+        df_week_2.to_csv('audit_week_2.csv')
+        df_month_2.to_csv('audit_month_2.csv')
+        df_year_2.to_csv('audit_year_2.csv')
+
+        for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
+            os.remove(i)
+        
+        try:
+            message = MIMEMultipart()
+            message["From"] = sender_email
+            email = body.get('email')
+            message["To"] = email
+            message["Subject"] = body.get("subject")
+        except:
+            print("error occured")
+            return {'result': False, 'info': "user does not exist"}, 500
+
+        message.attach(MIMEText(body.get("body"), "plain"))
+
+        text = message.as_string()
+
+        for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
+            
+            # Open PDF file in binary mode
+            with open(filename, "rb") as attachment:
+                # Add file as application/octet-stream
+                # Email client can usually download this automatically as attachment
+                part = MIMEBase("application", "octet-stream")
+                part.set_payload(attachment.read())
+
+            # Encode file in ASCII characters to send by email    
+            encoders.encode_base64(part)
+
+            # Add header as key/value pair to attachment part
+            part.add_header(
+                "Content-Disposition",
+                f"attachment; filename= {filename}",
+            )
+
+            # Add attachment to message and convert message to string
+            message.attach(part)
+
+        # Log in to server using secure context and send email
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            server.login(sender_email, password)
+            server.sendmail(sender_email, email, text)
+
+        for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
+            os.remove(i)
+
+        return {'status': True}, 200
+
+    else:
+        
+        audit_ls_1 = Audit_non_FB.objects(auditeeName = body.get('institute1'))
+        audit_ls_2 = Audit_non_FB.objects(auditeeName = body.get('institute2'))
+
+        if len(audit_ls_1) == 0 or len(audit_ls_2) == 0:
+            return {'status': False, 'info': "Not enough data entries"},200
+
+        temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.totalScore] for i in audit_ls_1]
+        df_1 = pd.DataFrame(temp_ls)
+        df_1.columns = ['timestamp','profScore', 'housekeepingScore', 'workSafetyScore','totalScore']
+        df_1['timestamp'] = pd.to_datetime(df_1['timestamp'])
+        df_1.index = df_1['timestamp'] 
+        df_year_1 = df_1.resample('Y').mean()
+        df_month_1 = df_1.resample('M').mean()
+        df_week_1 = df_1.resample('W').mean()
+        df_day_1 = df_1.resample('D').mean()
+
+        temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.totalScore] for i in audit_ls_2]
+        df_2 = pd.DataFrame(temp_ls)
+        df_2.columns = ['timestamp','profScore', 'housekeepingScore', 'workSafetyScore','totalScore']
+        df_2['timestamp'] = pd.to_datetime(df_2['timestamp'])
+        df_2.index = df_2['timestamp'] 
+        df_year_2 = df_2.resample('Y').mean()
+        df_month_2 = df_2.resample('M').mean()
+        df_week_2 = df_2.resample('W').mean()
+        df_day_2 = df_2.resample('D').mean()
+
+        plt.switch_backend('agg')
+        plt.figure(figsize = (14, 8))
+        plt.ylim((0,100))
+        plt.plot(df_day_1.index,list(df_day_1['profScore']), color='limegreen')
+        plt.plot(df_day_1.index,list(df_day_1['housekeepingScore']), color='forestgreen')
+        plt.plot(df_day_1.index,list(df_day_1['workSafetyScore']), color='cornflowerblue')
+        plt.plot(df_day_1.index,list(df_day_1['totalScore']), color='royalblue')
+        plt.plot(df_day_2.index,list(df_day_2['profScore']), color='lightcoral')
+        plt.plot(df_day_2.index,list(df_day_2['housekeepingScore']), color='indianred')
+        plt.plot(df_day_2.index,list(df_day_2['workSafetyScore']), color='tomato')
+        plt.plot(df_day_2.index,list(df_day_2['totalScore']), color='peru')
+        plt.plot(df_day_1.index,list(df_day_1['profScore']), 'o', color='limegreen')
+        plt.plot(df_day_1.index,list(df_day_1['housekeepingScore']), 'o', color='forestgreen')
+        plt.plot(df_day_1.index,list(df_day_1['workSafetyScore']), 'o', color='royalblue')
+        plt.plot(df_day_1.index,list(df_day_1['totalScore']), 'o', color='limegreen')
+        plt.plot(df_day_2.index,list(df_day_2['profScore']), 'o', color='lightcoral')
+        plt.plot(df_day_2.index,list(df_day_2['housekeepingScore']), 'o', color='indianred')
+        plt.plot(df_day_2.index,list(df_day_2['workSafetyScore']), 'o', color='tomato')
+        plt.plot(df_day_2.index,list(df_day_2['totalScore']), 'o', color='peru')
+        plt.legend(['Professional Score of ' + body.get('institute1'), 'House Keeping Score of ' + body.get('institute1'), 'Work Safety Score of ' + body.get('institute1'), 'Total Score of ' + body.get('institute1'), 'Professional Score of ' + body.get('institute2'), 'House Keeping Score of ' + body.get('institute2'), 'Work Safety Score of ' + body.get('institute2'), 'Total Score of ' + body.get('institute2')], loc='upper right')
+        plt.title('Comparing ' + body.get('institute1') + ' and ' + body.get('institute2') + " Audit Scores")
+        plt.xlabel('Time Period')
+        plt.ylabel('Score')
+        values = [str(i)[:-9] for i in list(set(list(df_day_1.index) + list(df_day_2.index)))] 
+        plt.xticks(list(set(list(df_day_1.index) + list(df_day_2.index))),values)
+        plt.savefig('audit_day.png', bbox_inches='tight')
+        plt.close()
+
+        plt.switch_backend('agg')
+        plt.figure(figsize = (14, 8))
+        plt.ylim((0,100))
+        plt.plot(df_week_1.index,list(df_week_1['profScore']), color='limegreen')
+        plt.plot(df_week_1.index,list(df_week_1['housekeepingScore']), color='forestgreen')
+        plt.plot(df_week_1.index,list(df_week_1['workSafetyScore']), color='cornflowerblue')
+        plt.plot(df_week_1.index,list(df_week_1['totalScore']), color='royalblue')
+        plt.plot(df_week_2.index,list(df_week_2['profScore']), color='lightcoral')
+        plt.plot(df_week_2.index,list(df_week_2['housekeepingScore']), color='indianred')
+        plt.plot(df_week_2.index,list(df_week_2['workSafetyScore']), color='tomato')
+        plt.plot(df_week_2.index,list(df_week_2['totalScore']), color='peru')
+        plt.plot(df_week_1.index,list(df_week_1['profScore']), 'o', color='limegreen')
+        plt.plot(df_week_1.index,list(df_week_1['housekeepingScore']), 'o', color='forestgreen')
+        plt.plot(df_week_1.index,list(df_week_1['workSafetyScore']), 'o', color='royalblue')
+        plt.plot(df_week_1.index,list(df_week_1['totalScore']), 'o', color='limegreen')
+        plt.plot(df_week_2.index,list(df_week_2['profScore']), 'o', color='lightcoral')
+        plt.plot(df_week_2.index,list(df_week_2['housekeepingScore']), 'o', color='indianred')
+        plt.plot(df_week_2.index,list(df_week_2['workSafetyScore']), 'o', color='tomato')
+        plt.plot(df_week_2.index,list(df_week_2['totalScore']), 'o', color='peru')
+        plt.legend(['Professional Score of ' + body.get('institute1'), 'House Keeping Score of ' + body.get('institute1'), 'Work Safety Score of ' + body.get('institute1'), 'Total Score of ' + body.get('institute1'), 'Professional Score of ' + body.get('institute2'), 'House Keeping Score of ' + body.get('institute2'), 'Work Safety Score of ' + body.get('institute2'), 'Total Score of ' + body.get('institute2')], loc='upper right')
+        plt.title('Comparing ' + body.get('institute1') + ' and ' + body.get('institute2') + " Audit Scores")
+        plt.xlabel('Time Period')
+        plt.ylabel('Score')
+        values = [str(i)[:-9] for i in list(set(list(df_week_1.index) + list(df_week_2.index)))] 
+        plt.xticks(list(set(list(df_week_1.index) + list(df_week_2.index))),values)
+        plt.savefig('audit_week.png', bbox_inches='tight')
+        plt.close()
+
+        plt.switch_backend('agg')
+        plt.figure(figsize = (14, 8))
+        plt.ylim((0,100))
+        plt.plot(df_month_1.index,list(df_month_1['profScore']), color='limegreen')
+        plt.plot(df_month_1.index,list(df_month_1['housekeepingScore']), color='forestgreen')
+        plt.plot(df_month_1.index,list(df_month_1['workSafetyScore']), color='cornflowerblue')
+        plt.plot(df_month_1.index,list(df_month_1['totalScore']), color='royalblue')
+        plt.plot(df_month_2.index,list(df_month_2['profScore']), color='lightcoral')
+        plt.plot(df_month_2.index,list(df_month_2['housekeepingScore']), color='indianred')
+        plt.plot(df_month_2.index,list(df_month_2['workSafetyScore']), color='tomato')
+        plt.plot(df_month_2.index,list(df_month_2['totalScore']), color='peru')
+        plt.plot(df_month_1.index,list(df_month_1['profScore']), 'o', color='limegreen')
+        plt.plot(df_month_1.index,list(df_month_1['housekeepingScore']), 'o', color='forestgreen')
+        plt.plot(df_month_1.index,list(df_month_1['workSafetyScore']), 'o', color='royalblue')
+        plt.plot(df_month_1.index,list(df_month_1['totalScore']), 'o', color='limegreen')
+        plt.plot(df_month_2.index,list(df_month_2['profScore']), 'o', color='lightcoral')
+        plt.plot(df_month_2.index,list(df_month_2['housekeepingScore']), 'o', color='indianred')
+        plt.plot(df_month_2.index,list(df_month_2['workSafetyScore']), 'o', color='tomato')
+        plt.plot(df_month_2.index,list(df_month_2['totalScore']), 'o', color='peru')
+        plt.legend(['Professional Score of ' + body.get('institute1'), 'House Keeping Score of ' + body.get('institute1'), 'Work Safety Score of ' + body.get('institute1'), 'Total Score of ' + body.get('institute1'), 'Professional Score of ' + body.get('institute2'), 'House Keeping Score of ' + body.get('institute2'), 'Work Safety Score of ' + body.get('institute2'), 'Total Score of ' + body.get('institute2')], loc='upper right')
+        plt.title('Comparing ' + body.get('institute1') + ' and ' + body.get('institute2') + " Audit Scores")
+        plt.xlabel('Time Period')
+        plt.ylabel('Score')
+        values = [str(i)[:-9] for i in list(set(list(df_month_1.index) + list(df_month_2.index)))] 
+        plt.xticks(list(set(list(df_month_1.index) + list(df_month_2.index))),values)
+        plt.savefig('audit_month.png', bbox_inches='tight')
+        plt.close()
+
+        plt.switch_backend('agg')
+        plt.figure(figsize = (14, 8))
+        plt.ylim((0,100))
+        plt.plot(df_year_1.index,list(df_year_1['profScore']), color='limegreen')
+        plt.plot(df_year_1.index,list(df_year_1['housekeepingScore']), color='forestgreen')
+        plt.plot(df_year_1.index,list(df_year_1['workSafetyScore']), color='cornflowerblue')
+        plt.plot(df_year_1.index,list(df_year_1['totalScore']), color='royalblue')
+        plt.plot(df_year_2.index,list(df_year_2['housekeepingScore']), color='indianred')
+        plt.plot(df_year_2.index,list(df_year_2['workSafetyScore']), color='tomato')
+        plt.plot(df_year_2.index,list(df_year_2['totalScore']), color='peru')
+        plt.plot(df_year_2.index,list(df_year_2['profScore']), 'o', color='lightcoral')
+        plt.plot(df_year_1.index,list(df_year_1['profScore']), 'o', color='limegreen')
+        plt.plot(df_year_1.index,list(df_year_1['housekeepingScore']), 'o', color='forestgreen')
+        plt.plot(df_year_1.index,list(df_year_1['workSafetyScore']), 'o', color='royalblue')
+        plt.plot(df_year_1.index,list(df_year_1['totalScore']), 'o', color='limegreen')
+        plt.plot(df_year_2.index,list(df_year_2['profScore']), color='lightcoral')
+        plt.plot(df_year_2.index,list(df_year_2['housekeepingScore']), 'o', color='indianred')
+        plt.plot(df_year_2.index,list(df_year_2['workSafetyScore']), 'o', color='tomato')
+        plt.plot(df_year_2.index,list(df_year_2['totalScore']), 'o', color='peru')
+        plt.legend(['Professional Score of ' + body.get('institute1'), 'House Keeping Score of ' + body.get('institute1'), 'Work Safety Score of ' + body.get('institute1'), 'Total Score of ' + body.get('institute1'), 'Professional Score of ' + body.get('institute2'), 'House Keeping Score of ' + body.get('institute2'), 'Work Safety Score of ' + body.get('institute2'), 'Total Score of ' + body.get('institute2')], loc='upper right')
+        plt.title('Comparing ' + body.get('institute1') + ' and ' + body.get('institute2') + " Audit Scores")
+        plt.xlabel('Time Period')
+        plt.ylabel('Score')
+        values = [str(i)[:-9] for i in list(set(list(df_year_1.index) + list(df_year_2.index)))] 
+        plt.xticks(list(set(list(df_year_1.index) + list(df_year_2.index))),values)
+        plt.savefig('audit_year.png', bbox_inches='tight')
+        plt.close()
+        
+        df_1 = df_1.drop(columns=["timestamp"])
+        df_1.insert(4, 'timestamp', df_1.index.tolist())
+        df_1.reset_index(drop=True, inplace=True) 
+
+        df_2 = df_2.drop(columns=["timestamp"])
+        df_2.insert(4, 'timestamp', df_2.index.tolist())
+        df_2.reset_index(drop=True, inplace=True)
+
+        df_day_1['timestamp'] = df_day_1.index
+        df_week_1['timestamp'] = df_week_1.index
+        df_month_1['timestamp'] = df_month_1.index
+        df_year_1['timestamp'] = df_year_1.index
+
+        df_day_2['timestamp'] = df_day_2.index
+        df_week_2['timestamp'] = df_week_2.index
+        df_month_2['timestamp'] = df_month_2.index
+        df_year_2['timestamp'] = df_year_2.index
+
+        df_day_1.to_csv('audit_day_1.csv')
+        df_week_1.to_csv('audit_week_1.csv')
+        df_month_1.to_csv('audit_month_1.csv')
+        df_year_1.to_csv('audit_year_1.csv')
+
+        df_day_2.to_csv('audit_day_2.csv')
+        df_week_2.to_csv('audit_week_2.csv')
+        df_month_2.to_csv('audit_month_2.csv')
+        df_year_2.to_csv('audit_year_2.csv')
+
+        for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
+            os.remove(i)
+        
+        try:
+            message = MIMEMultipart()
+            message["From"] = sender_email
+            email = body.get('email')
+            message["To"] = email
+            message["Subject"] = body.get("subject")
+        except:
+            print("error occured")
+            return {'result': False, 'info': "user does not exist"}, 500
+
+        message.attach(MIMEText(body.get("body"), "plain"))
+
+        text = message.as_string()
+
+        for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
+            
+            # Open PDF file in binary mode
+            with open(filename, "rb") as attachment:
+                # Add file as application/octet-stream
+                # Email client can usually download this automatically as attachment
+                part = MIMEBase("application", "octet-stream")
+                part.set_payload(attachment.read())
+
+            # Encode file in ASCII characters to send by email    
+            encoders.encode_base64(part)
+
+            # Add header as key/value pair to attachment part
+            part.add_header(
+                "Content-Disposition",
+                f"attachment; filename= {filename}",
+            )
+
+            # Add attachment to message and convert message to string
+            message.attach(part)
+
+        # Log in to server using secure context and send email
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            server.login(sender_email, password)
+            server.sendmail(sender_email, email, text)
+
+        for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
+            os.remove(i)
+
+        return {'status': True}, 200
+
+# @apis.route('/report_checklist', methods=['GET', 'POST'])
+# def report_checklistt():
+#     #covid list first, for all the sections 
+#     pdfkit.from_string('Hello!', 'out.pdf')
