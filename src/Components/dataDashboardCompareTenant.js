@@ -17,7 +17,7 @@ class DataDashboardCompareTenant extends Component {
             email: "",
             subject: "",
             note: ""
-        }
+        },
     }
 
 
@@ -236,19 +236,19 @@ class DataDashboardCompareTenant extends Component {
     
     saveReceiverEmail = event => {
         var newEmailContent  = this.state.emailContent;
-        emailContent["email"] = event.target.value;
+        newEmailContent["email"] = event.target.value;
         this.setState({emailContent: newEmailContent});
     }
 
     saveReceiverSubject = event => {
         var newEmailContent  = this.state.emailContent;
-        emailContent["subject"] = event.target.value;
+        newEmailContent["subject"] = event.target.value;
         this.setState({emailContent: newEmailContent});
     }
 
     saveReceiverNote = event => {
         var newEmailContent  = this.state.emailContent;
-        emailContent["note"] = event.target.value;
+        newEmailContent["note"] = event.target.value;
         this.setState({emailContent: newEmailContent});
     }
 
