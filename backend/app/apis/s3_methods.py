@@ -68,14 +68,23 @@ def download_user_objects(bucket, username, timeInput, dateInput, counterPart):
                 aws_secret_access_key=os.environ.get('SECRET_KEY'))
     photoData = []
     photoAttrData = []
-
+    print(bucket, username, timeInput, dateInput, counterPart)
     for key in s3_client.list_objects(Bucket=bucket)['Contents']:
         ls = key['Key'].split('_')
-        date_ = ls[1]
-        time_ = ls[2][:-4]
-        if (ls[0] == username):
-            photoInfo = get_photo_info(date_, time_, counterPart, username)
+        date_ = ls[-2]
+        time_ = ls[-1][:-4]
+        check = ""
+        if counterPart:
+            check = ls[1]
+        else:
+            check = ls[0]
+        print(check, username)
+        print(ls)
+        print(check == username)
+        if (check == username):
 
+            photoInfo = get_photo_info(date_, time_, counterPart, username)
+            print(photoInfo)
             if (photoInfo[0]['rectified'] == False):
                 photoAttrData.append(photoInfo)
 
@@ -106,26 +115,26 @@ def get_photo_info(date_, time_, counterPart, username):
     if not counterPart:
         if utils.check_if_staff(username, False):
             try:
-                photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)
+                photoInfo = Photo.objects(date=date_, time=time_, staffName=username)
             except:
                 print("error") #TODO: change to logging
                 return None
         else:
             try:
-                photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=settings.username)
+                photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=username)
             except:
                 print("error") #TODO: change to logging
                 return None
     else:
         if utils.check_if_staff(username, False):
             try:
-                photoInfo = TenantPhoto.objects(staffName=settings.username, rectified=False)
+                photoInfo = TenantPhoto.objects(staffName=username, date=date_, time=time_)
             except:
                 print("error") #TODO: change to logging
                 return None
         else:
             try:
-                photoInfo = Photo.objects(tenantName=settings.username, rectified=False)
+                photoInfo = Photo.objects(tenantName=username, date=date_, time=time_)
             except:
                 print("error") #TODO: change to logging
                 return None
