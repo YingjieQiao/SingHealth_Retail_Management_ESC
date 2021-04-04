@@ -1,8 +1,10 @@
 from app.models import User, Photo
-import csv, json, uuid, os
+import csv, json, uuid, os, logging
 from flask import current_app
 import shutil
 
+
+logger = logging.getLogger("logger")
 
 def get_data():
     users = User.objects()
@@ -107,14 +109,30 @@ def check_if_tenant(username, flag):
     return False
 
 
-def assign_s3_bucket(username, counterPart):
+def assign_s3_bucket(username):
+    if username == "UnitTester":
+        return "escapp-bucket-dev", "escapp-bucket-dev-tenant"
+
     bucketName, counterPart_bucketName = "", ""
-    if (username == "UnitTester" or check_if_staff(username, False)):
+    if (check_if_staff(username, False)):
         bucketName, counterPart_bucketName = "escapp-bucket-dev", "escapp-bucket-dev-tenant"
     elif (check_if_tenant(username, False)):
         bucketName, counterPart_bucketName = "escapp-bucket-dev-tenant", "escapp-bucket-dev"
     else:
         print("something wrong")
 
-
     return bucketName, counterPart_bucketName
+
+
+def assign_audience_name(username, staffName, tenantName):
+    if username == "":
+        return "UnitTester"
+
+    res = ""
+    if check_if_staff(username, False):
+        res = tenantName
+    elif check_if_tenant(username, False):
+        res = staffName
+    else:
+        res = ""
+    return res

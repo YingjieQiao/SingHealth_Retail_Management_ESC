@@ -235,12 +235,20 @@ def upload_file():
     date_ = request.form['date']
 
     username = settings.username
+    audienceName = ""
+    try:
+        audienceName = utils.assign_audience_name(username, request.form["staffName"], request.form["tenantName"])
+    except Exception as e:
+        print("Error occurred: ", e)
+        logger.error("In '/upload_file' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
     if username == "":
         username = 'UnitTester'
         print("testing s3 upload")
         logger.info("testing s3 upload")
-    filename = username + "_" + date_ + "_" + time_ + ".jpg"
-
+    filename = username + "_" + audienceName + "_" + date_ + "_" + time_ + ".jpg"
+    
     if current_app.config['TESTING']:
         rgb_img = body.convert('RGB')
         rgb_img.save(filename)
@@ -254,7 +262,7 @@ def upload_file():
         print("username invalid: ", username)
         logger.error("In '/upload_file' endpoint, username invalid: ", username)
         return {'result': False}, 500
-
+    
     try:
         s3_methods.upload_file(filename, bucketName, None)
     except Exception as e:
@@ -286,7 +294,7 @@ def download_file():
     timeInput = None
     dateInput = None
 
-    bucketName, counterPart_bucketName = utils.assign_s3_bucket(username, counterPart)
+    bucketName, counterPart_bucketName = utils.assign_s3_bucket(username)
     if bucketName == "":
         print("username invalid: ", username)
         logger.error("In '/download_file' endpoint, username invalid: ", username)
@@ -301,8 +309,6 @@ def download_file():
             logger.error("In '/download_file' endpoint, error occurred: ", e)
             return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
     else:
-        # staff: download tenant photo that is meant to send to the staff
-        # tenant: download staff photo that is meant to send to the tenant
         try:
             res = s3_methods.download_user_objects(counterPart_bucketName, username,
                                                         timeInput, dateInput, counterPart)
@@ -310,6 +316,7 @@ def download_file():
             print("Error occurred: ", e)
             logger.error("In '/download_file' endpoint, error occurred: ", e)
             return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
+    
 
     photoData = res[0]
     photoAttrData = res[1]

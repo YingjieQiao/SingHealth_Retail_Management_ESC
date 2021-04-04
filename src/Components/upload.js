@@ -50,7 +50,7 @@ class Upload extends Component {
 
                         <label>tenant :</label><select onChange={this.tenantHandler} defaultValue="none">
                             <option defaultValue>Select tenant</option>
-                            <option value="RossGelller">RossGelller</option>
+                            <option value="RossGeller">RossGeller</option>
                             <option value="711">711</option>
                             <option value="good tenant">good tenant</option>
                         </select><br />
@@ -113,6 +113,8 @@ class Upload extends Component {
             data.append("file", this.state.selectedFile);
             data.append("time", this.state.time)
             data.append("date", this.state.date)
+            data.append("staffName", this.state.staffName)
+            data.append("tenantName", this.state.tenantName)
             axios.post("http://localhost:5000/upload_file", data, headers
             ).then( res => {
                 console.log(data);
