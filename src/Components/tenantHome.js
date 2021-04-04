@@ -3,16 +3,6 @@ import TenantNavbar from './Tenant_Navbar';
 import axios from 'axios';
 import TenantNotificationModal from './tenantNotificationModal';
 
-// function tenantHome() {
-//   localStorage.setItem("usertype","tenant")  ;
-//   return (
-//     <div className='home'>
-//             <TenantNavbar/>
-//         <h1>Tenant User Homepage</h1>
-//     </div>
-//   );
-// }
-
 class tenantHome extends Component { 
 
   state = {
