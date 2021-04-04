@@ -95,7 +95,6 @@ class Upload extends Component {
                 rectified: this.state.rectified
             };
             const headers = {
-                'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
             };
         
@@ -111,6 +110,8 @@ class Upload extends Component {
             data.append("file", this.state.selectedFile);
             data.append("time", this.state.time)
             data.append("date", this.state.date)
+            data.append("staffName", this.state.staffName)
+            data.append("tenantName", this.state.tenantName)
             axios.post("http://localhost:5000/upload_file", data, headers
             ).then( res => {
                 console.log(data);
