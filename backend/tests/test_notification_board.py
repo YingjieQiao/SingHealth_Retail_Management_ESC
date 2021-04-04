@@ -19,8 +19,8 @@ TEST_PHOTO_NOTIF_PASS_1 = {
     "date": "01-01-2222",
     "time": "00:00:00",
     "notes": "UNIT TEST ENTRY",
-    "staffName": "UnitTester",
-    "tenantName": "UnitTester",
+    "staffName": "UnitTesterStaff",
+    "tenantName": "UnitTesterTenant",
     "rectified": False,
     "read": False,
     "deleted": False
@@ -31,8 +31,8 @@ TEST_PHOTO_NOTIF_PASS_2 = {
     "date": "01-02-2222",
     "time": "00:02:00",
     "notes": "UNIT TEST ENTRY",
-    "staffName": "UnitTester",
-    "tenantName": "UnitTester",
+    "staffName": "UnitTesterStaff",
+    "tenantName": "UnitTesterTenant",
     "rectified": False,
     "read": False,
     "deleted": False

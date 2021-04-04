@@ -390,7 +390,7 @@ def tenant_get_photo_notification():
     """
     username = settings.username
     if username == "":
-        username = 'UnitTester'
+        username = 'UnitTesterTenant'
         print("testing") #TODO change to logging
     
     try:
