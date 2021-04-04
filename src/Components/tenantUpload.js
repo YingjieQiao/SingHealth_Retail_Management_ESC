@@ -15,7 +15,7 @@ class Upload extends Component {
         time: "",
         notes: "",
         staffName: "",
-        tenantName: "",
+        tenantName: "Li Wen Ong",
         rectified: false
     };
 
@@ -75,14 +75,15 @@ class Upload extends Component {
         axios.get("http://localhost:5000/get_current_username_and_datetime").then(
             res => {
                 console.log(res);
-                this.setState({tenantName: res.data.username, 
+                this.setState({ 
                     time: res.data.time, date: res.data.date}, this.checkTenantName);
-                console.log("tenant name set: " + res.data.username + " and time set: " + res.data.time);
+                console.log("tenant name set: " + this.state.tenantName + " and time set: " + res.data.time);
             }
         )
     }
 
     checkTenantName = () => {
+
         if (this.state.tenantName.length != 0) {
             // proceeds to upload info
             const photo = {

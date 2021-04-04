@@ -15,7 +15,7 @@ class Upload extends Component {
         time: "",
         notes: "",
         staffName: "",
-        tenantName: "",
+        tenantName: "Li Wen Ong",
         rectified: false
     };
 
@@ -77,9 +77,9 @@ class Upload extends Component {
             res => {
                 console.log(res);
                 // this.setState({staffName: res.data.result});
-                this.setState({staffName: res.data.username, 
+                this.setState({
                     time: res.data.time, date: res.data.date}, this.checkStaffName);
-                console.log("staff name set: " + res.data.username + " and time set: " + res.data.time);
+                console.log("staff name set: " + this.state.tenantName + " and time set: " + res.data.time);
             }
         )
     }
