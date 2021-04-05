@@ -10,29 +10,10 @@ class CompareTenant extends Component {
         institute2: "",
         instituteName1: "",
         instituteName2: "",
-        numOfInstitue: [],
+        numOfInstitute: [],
         typeArray: ["F&B", "Non-F&B"],
         typeSelection: ""
     }
-
-    componentDidMount() {
-        axios.get("http://localhost:5000/tenant_list")
-        .then(
-            res => {
-                console.log(res);
-
-                for (var i = 0; i < res.data.tenant_list.length; i++) {
-                    let newArray1 = this.state.instituteArray;
-                    let newArray2 = this.state.numOfInstitue;
-                    newArray1.push(res.data.tenant_list[i]);
-                    newArray2.push(i);
-                    this.setState({instituteArray: newArray1, numOfInstitue: newArray2});
-                }
-
-            }
-        )
-    }
-
 
     render() {
 
@@ -42,24 +23,24 @@ class CompareTenant extends Component {
                 <h2>Compare between institutions/across clusters</h2>
                 <form>
                     <div>
+                        <label>Type:</label>
+                        <select class="custom-select my-1 mr-sm-2" onChange={this.saveType}>
+                            <option selected>Choose...</option>
+                            { this.state.typeArray.map(index => <option value={index}>{index}</option> ) }
+                        </select>
+                    </div>
+                    <div>
                         <label>Name of institution/cluster 1:</label>
                         <select class="custom-select my-1 mr-sm-2" onChange={this.saveInstitute1}>
                             <option selected>Choose...</option>
-                            { this.state.numOfInstitue.map(index => <option value={index.toString()}>{this.handleInstitue(index)}</option> ) }
+                            { this.state.numOfInstitute.map(index => <option value={index.toString()}>{this.handleInstitue(index)}</option> ) }
                         </select>
                     </div>
                     <div>
                         <label>Name of institution/cluster 2:</label>
                         <select class="custom-select my-1 mr-sm-2" onChange={this.saveInstitute2}>
                             <option selected>Choose...</option>
-                            { this.state.numOfInstitue.map(index => <option value={index.toString()}>{this.handleInstitue(index)}</option> ) }
-                        </select>
-                    </div>
-                    <div>
-                        <label>Type:</label>
-                        <select class="custom-select my-1 mr-sm-2" onChange={this.saveType}>
-                            <option selected>Choose...</option>
-                            { this.state.typeArray.map(index => <option value={index}>{index}</option> ) }
+                            { this.state.numOfInstitute.map(index => <option value={index.toString()}>{this.handleInstitue(index)}</option> ) }
                         </select>
                     </div>
                 </form>
@@ -68,6 +49,66 @@ class CompareTenant extends Component {
                 </div>
             </div>
         )
+    }
+
+    saveType = (event) => {
+        const data = event.target.value;
+        if (data === "Choose...") {
+            this.setState({typeSelection: ""});
+        } else {
+            this.setState({typeSelection: data});
+            if (data === this.state.typeArray[0]) {
+                try {
+                    axios.get("http://localhost:5000/tenant_list_FB")
+                    .then(
+                        res => {
+                            console.log("FB list: ", res.data);
+                            this.resetInstituteArray();
+                            this.resetNumOfInstituteArray();
+                            for (var i = 0; i < res.data.tenant_list.length; i++) {
+                                let newArray1 = this.state.instituteArray;
+                                let newArray2 = this.state.numOfInstitute;
+                                newArray1.push(res.data.tenant_list[i]);
+                                newArray2.push(i);
+                                this.setState({instituteArray: newArray1, numOfInstitute: newArray2});
+                            }
+            
+                        }
+                    )
+                } catch (e) {
+                    console.log(e);
+                }
+            } else if (data === this.state.typeArray[1]) {
+                try {
+                    axios.get("http://localhost:5000/tenant_list_non_FB")
+                    .then(
+                        res => {
+                            console.log("Non-FB list: ", res.data);
+                            this.resetInstituteArray();
+                            this.resetNumOfInstituteArray();
+                            for (var i = 0; i < res.data.tenant_list.length; i++) {
+                                let newArray1 = this.state.instituteArray;
+                                let newArray2 = this.state.numOfInstitute;
+                                newArray1.push(res.data.tenant_list[i]);
+                                newArray2.push(i);
+                                this.setState({instituteArray: newArray1, numOfInstitute: newArray2});
+                            }
+            
+                        }
+                    )
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+        }
+    }
+
+    resetInstituteArray = () => {
+        this.setState({instituteArray: []})
+    }
+
+    resetNumOfInstituteArray = () => {
+        this.setState({numOfInstitute: []})
     }
 
     handleInstitue = (index) => {
@@ -100,15 +141,6 @@ class CompareTenant extends Component {
         }
     }
 
-    saveType = (event) => {
-        const data = event.target.value;
-        if (data === "Choose...") {
-            this.setState({typeSelection: ""});
-        } else {
-            this.setState({typeSelection: data});
-        }
-    }
-
     validateField = () => {
         const institute1 = this.state.institute1;
         const institute2 = this.state.institute2;
@@ -128,7 +160,6 @@ class CompareTenant extends Component {
 
     compare = event => {
         event.preventDefault();
-
         try {
             if (this.validateField()) {
                 let compareTenantList = {
@@ -154,6 +185,7 @@ class CompareTenant extends Component {
         }
 
     }
+
 
     getButtonClasses() {
         let classes = 'btn btn-';
