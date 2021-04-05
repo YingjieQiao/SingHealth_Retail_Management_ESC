@@ -385,6 +385,29 @@ def rectify_photo():
     return {'result': True}, 200
 
 
+@apis.route('/tenant_rectify_photo', methods=['GET', 'POST'])
+def tenant_rectify_photo():
+    body = request.get_json()
+    body['rectified'] = True
+    time_ = body['time']
+    date_ = body['date']
+
+    if settings.username == "":
+        settings.username = "UnitTester"
+        print("testing")
+        logger.info("testing '/rectify_photo' endpoint")
+
+    try:
+        photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=settings.username)
+        photoInfo.update(**body)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/rectify_photo' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
 @apis.route('/tenant_get_photo_notification', methods=['GET', 'POST'])
 def tenant_get_photo_notification():
     """
