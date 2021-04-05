@@ -29,7 +29,6 @@ def upload_file(file_name, bucket, object_name):
                 aws_secret_access_key=os.environ.get('SECRET_KEY'))
     try:
         response = s3_client.upload_file(file_name, bucket, object_name)
-        #TODO log the response in the logger
     except ClientError as e:
         print("error occurred: ", e)
         return False
@@ -68,7 +67,7 @@ def download_user_objects(bucket, username, timeInput, dateInput, counterPart):
                 aws_secret_access_key=os.environ.get('SECRET_KEY'))
     photoData = []
     photoAttrData = []
-    print(bucket, username, timeInput, dateInput, counterPart)
+
     for key in s3_client.list_objects(Bucket=bucket)['Contents']:
         ls = key['Key'].split('_')
         date_ = ls[-2]
@@ -78,13 +77,9 @@ def download_user_objects(bucket, username, timeInput, dateInput, counterPart):
             check = ls[1]
         else:
             check = ls[0]
-        print(check, username)
-        print(ls)
-        print(check == username)
-        if (check == username):
 
+        if (check == username):
             photoInfo = get_photo_info(date_, time_, counterPart, username)
-            print(photoInfo)
             if (photoInfo[0]['rectified'] == False):
                 photoAttrData.append(photoInfo)
 
@@ -106,7 +101,6 @@ def get_photo_info(date_, time_, counterPart, username):
     """
     get the information assciated with a given photo name
     """
-    print(date_, time_, counterPart)
     if settings.username == "":
         settings.username = "UnitTester"
         print("testing")
@@ -116,27 +110,31 @@ def get_photo_info(date_, time_, counterPart, username):
         if utils.check_if_staff(username, False):
             try:
                 photoInfo = Photo.objects(date=date_, time=time_, staffName=username)
-            except:
-                print("error") #TODO: change to logging
+            except Exception as e:
+                print("error: ", e)
+                logger.error("In 'get_photo_info' function, error occurred: ", e)
                 return None
         else:
             try:
                 photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=username)
-            except:
-                print("error") #TODO: change to logging
+            except Exception as e:
+                print("error: ", e)
+                logger.error("In 'get_photo_info' function, error occurred: ", e)
                 return None
     else:
         if utils.check_if_staff(username, False):
             try:
                 photoInfo = TenantPhoto.objects(staffName=username, date=date_, time=time_)
-            except:
-                print("error") #TODO: change to logging
+            except Exception as e:
+                print("error: ", e)
+                logger.error("In 'get_photo_info' function, error occurred: ", e)
                 return None
         else:
             try:
                 photoInfo = Photo.objects(tenantName=username, date=date_, time=time_)
-            except:
-                print("error") #TODO: change to logging
+            except Exception as e:
+                print("error: ", e)
+                logger.error("In 'get_photo_info' function, error occurred: ", e)
                 return None
 
 

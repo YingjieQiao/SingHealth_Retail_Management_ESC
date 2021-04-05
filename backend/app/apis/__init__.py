@@ -335,8 +335,6 @@ def download_file():
 def upload_photo_info():
     body = request.get_json()
 
-    print(body)
-
     try:
         photo = Photo(**body)
         photo.save()
@@ -352,8 +350,6 @@ def upload_photo_info():
 @apis.route('/tenant_upload_photo_info', methods=['GET', 'POST'])
 def tenant_upload_photo_info():
     body = request.get_json()
-
-    print(body)
 
     try:
         tenantPhoto = TenantPhoto(**body)
@@ -372,7 +368,6 @@ def rectify_photo():
     body['rectified'] = True
     time_ = body['time']
     date_ = body['date']
-    print(body)
 
     if settings.username == "":
         settings.username = "UnitTester"
