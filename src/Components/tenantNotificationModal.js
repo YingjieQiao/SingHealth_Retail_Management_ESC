@@ -69,6 +69,7 @@ class tenantNotificationModal extends Component {
   }
 
   handleRead = event => {
+    const index = event.target.id;
     var newReadStatusArray = this.state.readStatusArray;
     newReadStatusArray[event.target.id] = "Read";
     this.setState({readStatusArray: newReadStatusArray});
@@ -79,7 +80,7 @@ class tenantNotificationModal extends Component {
         'Access-Control-Allow-Origin': '*'
       };
   
-      axios.post("http://localhost:5000/tenant_read_photo_notification", this.state.data, headers
+      axios.post("http://localhost:5000/tenant_read_photo_notification", this.state.data[index], headers
       ).then(res => {
   
        }); 
@@ -90,6 +91,7 @@ class tenantNotificationModal extends Component {
   }
 
   handleDelete = event => {
+    const index = event.target.id;
     var newData = this.state.data;
     newData.splice(event.target.id, 1);
     this.setState({data: newData});
@@ -100,7 +102,7 @@ class tenantNotificationModal extends Component {
         'Access-Control-Allow-Origin': '*'
       };
   
-      axios.post("http://localhost:5000/tenant_delete_photo_notification", this.state.data, headers
+      axios.post("http://localhost:5000/tenant_delete_photo_notification", this.state.data[index], headers
       ).then(res => {
   
        }); 

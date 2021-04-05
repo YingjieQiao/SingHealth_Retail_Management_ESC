@@ -28,8 +28,6 @@ def tenant_update_photo_notification(op, username, body):
     elif op == "read":
         body['read'] = True
 
-    print(body)
-
     if username == "":
         username = "UnitTester"
         print("testing")

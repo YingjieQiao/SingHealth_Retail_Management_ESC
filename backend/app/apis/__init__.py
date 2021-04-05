@@ -426,6 +426,12 @@ def tenant_delete_photo_notification():
 @apis.route('/tenant_read_photo_notification', methods=['POST'])
 def tenant_read_photo_notification():
     body = request.get_json()
+    try:
+        body.pop("_id", None)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/tenant_read_photo_notification' endpoint, error occurred: ", e)
+    print(body)
 
     try:
         notif_methods.tenant_update_photo_notification("read", settings.username, body)
