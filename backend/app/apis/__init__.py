@@ -1988,7 +1988,56 @@ def report_compare_tenant():
 
         return {'status': True}, 200
 
+@apis.route('/report_timeframe', methods=['GET', 'POST'])
+def report_timeframe():  
+
+    body = request.get_json()
+
+    report_timeframe_ls = []
+    
+    audit_ls = Audit_FB.objects(auditeeName = body.get('tenant'))
+
+    for i in audit_ls:
+        report_timeframe_ls.append("FnB_Audit_"+str(i.timestamp))
+
+    audit_ls = Audit_non_FB.objects(auditeeName = body.get('tenant'))
+
+    for i in audit_ls:
+        report_timeframe_ls.append("Non_FnB_Audit_"+str(i.timestamp))
+
+    audit_ls = Covid_Compliance.objects(auditeeName = body.get('tenant'))
+
+    for i in audit_ls:
+        report_timeframe_ls.append("Covid_Audit_"+str(i.timestamp))
+
+    return {'status': True, 'timeframe_list': report_timeframe_ls}
+
+
 # @apis.route('/report_checklist', methods=['GET', 'POST'])
 # def report_checklistt():
 #     #covid list first, for all the sections 
 #     pdfkit.from_string('Hello!', 'out.pdf')
+    # from fpdf import FPDF
+  
+  
+# # save FPDF() class into a 
+# # variable pdf
+# pdf = FPDF()
+  
+# # Add a page
+# pdf.add_page()
+  
+# # set style and size of font 
+# # that you want in the pdf
+# pdf.set_font("Arial", size = 15)
+  
+# # create a cell
+# pdf.cell(200, 10, txt = "GeeksforGeeks", 
+#          ln = 1, align = 'C')
+  
+# # add another cell
+# pdf.cell(200, 10, txt = "A Computer Science portal for geeks.",
+#          ln = 2, align = 'C')
+  
+# # save the pdf with name .pdf
+# pdf.output("GFG.pdf")   
