@@ -1222,6 +1222,8 @@ class AuditChecklistFB extends Component {
             // all data has been filled
             // proceeds to send data to backend
             this.tabulateScore();
+            const individualScore = this.individualScore();
+
             const headers = {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Access-Control-Allow-Origin': '*'
@@ -1267,11 +1269,11 @@ class AuditChecklistFB extends Component {
             }
 
             // formula: score = (currentScore  / (numQ * maxScoreForOneQ) ) * weightageForTheSection
-            profStaffHydScore = (profStaffHydScore / 60) * 20;
-            housekeepScore = (housekeepScore / 60) * 20;
-            foodHydScore = (foodHydScore / 60) * 20;
-            healthierScore = (healthierScore / 120) * 40;
-            workSafetyHealthScore = (workSafetyHealthScore / 160) * 40;
+            profStaffHydScore = (profStaffHydScore / 130) * 10;
+            housekeepScore = (housekeepScore / 170) * 20;
+            foodHydScore = (foodHydScore / 370) * 35;
+            healthierScore = (healthierScore / 110) * 15;
+            workSafetyHealthScore = (workSafetyHealthScore / 180) * 20;
 
             newFinalDict["profStaffHydScore"] = profStaffHydScore;
             newFinalDict["housekeepScore"] = housekeepScore;
@@ -1293,6 +1295,37 @@ class AuditChecklistFB extends Component {
             });
 
         }
+    }
+
+    individualScore = () => {
+        var individualScoreDict = {
+            profStaffHydScore: [],
+            housekeepScore: [],
+            foodHydScore: [],
+            healthierScore: [],
+            workSafetyHealthScore: []
+        };
+
+        for (let k in this.state.scoreDict) {
+            let data = this.state.scoreDict[k];
+            if (Number.isInteger(parseInt(data))) {
+                if (k <= 13) {
+                    individualScoreDict["profStaffHydScore"].push(parseInt(data));
+                } else if ( k >= 14 &&  k <= 30) {
+                    individualScoreDict["housekeepScore"].push(parseInt(data));
+                } else if ( k >= 31 &&  k <= 67) {
+                    individualScoreDict["foodHydScore"].push(parseInt(data));
+                } else if ( k >= 68 &&  k <= 78) {
+                    individualScoreDict["healthierScore"].push(parseInt(data));
+                } else if (k >= 79 ) {
+                    individualScoreDict["workSafetyHealthScore"].push(parseInt(data));
+                }
+            } else {
+                continue;
+            }
+        }
+        console.log("score: ", individualScoreDict);
+        return individualScoreDict;
     }
 
     validateData = () => {

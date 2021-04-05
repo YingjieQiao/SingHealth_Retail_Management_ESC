@@ -213,24 +213,34 @@ class AuditChecklistTest extends Component {
     handleSubmit = event  => {
         event.preventDefault();
 
-        if (Object.keys(this.state.scoreDict).length < (this.state.dataLength - 1)) {
-            console.log("empty field");
-            alert("Please fill up all fields");
-        } else { 
-            // all data has been filled
-            // proceeds to send data to backend
-            this.tabulateScore();
-            const headers = {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Access-Control-Allow-Origin': '*'
-            };
-            
-            axios.post("http://localhost:5000/auditChecklist", this.state.finalDict, headers
-            ).then( res => {
-                console.log(res.statusText);
-                alert("The form has been successfully recorded.");
-            });
+        try {
+            if (Object.keys(this.state.scoreDict).length < (this.state.dataLength - 1)) {
+                console.log("empty field");
+                alert("Please fill up all fields");
+            } else { 
+                // all data has been filled
+                // proceeds to send data to backend
+                this.tabulateScore();
+                const individualScore = this.individualScore();
+
+                const headers = {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Access-Control-Allow-Origin': '*'
+                };
+
+                axios.post("http://localhost:5000/auditChecklist", this.state.finalDict, headers
+                ).then( res => {
+                    console.log(res.statusText);
+                    alert("The form has been successfully recorded.");
+                });
+                
+
+            }
+        } catch (e) {
+            console.log(e);
+            alert("Unsuccessful. Please try again.");
         }
+
     }
 
     tabulateScore = () => {
@@ -279,6 +289,31 @@ class AuditChecklistTest extends Component {
             });
 
         }
+    }
+
+    individualScore = () => {
+        var individualScoreDict = {
+            profStaffHydScore: [],
+            houseGeneralScore: [],
+            workSafetyHealthScore: []
+        };
+
+        for (let k in this.state.scoreDict) {
+            let data = this.state.scoreDict[k];
+            if (Number.isInteger(parseInt(data))) {
+                if (k <= 6) {
+                    individualScoreDict["profStaffHydScore"].push(parseInt(data));
+                } else if ( k >= 7 &&  k <= 18) {
+                    individualScoreDict["houseGeneralScore"].push(parseInt(data));
+                } else if ( k >= 19 ) {
+                    individualScoreDict["workSafetyHealthScore"].push(parseInt(data));
+                } 
+            } else {
+                continue;
+            }
+        }
+        console.log("score: ", individualScoreDict);
+        return individualScoreDict;
     }
 
     validateData = () => {

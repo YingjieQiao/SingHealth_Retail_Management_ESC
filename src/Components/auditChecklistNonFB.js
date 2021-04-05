@@ -542,6 +542,8 @@ class AuditChecklistNonFB extends Component {
             // all data has been filled
             // proceeds to send data to backend
             this.tabulateScore();
+            const individualScore = this.individualScore();
+
             const headers = {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Access-Control-Allow-Origin': '*'
@@ -602,6 +604,31 @@ class AuditChecklistNonFB extends Component {
             });
 
         }
+    }
+
+    individualScore = () => {
+        var individualScoreDict = {
+            profStaffHydScore: [],
+            houseGeneralScore: [],
+            workSafetyHealthScore: []
+        };
+
+        for (let k in this.state.scoreDict) {
+            let data = this.state.scoreDict[k];
+            if (Number.isInteger(parseInt(data))) {
+                if (k <= 6) {
+                    individualScoreDict["profStaffHydScore"].push(parseInt(data));
+                } else if ( k >= 7 &&  k <= 18) {
+                    individualScoreDict["houseGeneralScore"].push(parseInt(data));
+                } else if (k >= 19 ) {
+                    individualScoreDict["workSafetyHealthScore"].push(parseInt(data));
+                } 
+            } else {
+                continue;
+            }
+        }
+        console.log("score: ", individualScoreDict);
+        return individualScoreDict;
     }
 
     validateData = () => {
