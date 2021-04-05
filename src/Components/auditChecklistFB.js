@@ -1224,6 +1224,12 @@ class AuditChecklistFB extends Component {
             this.tabulateScore();
             const individualScore = this.individualScore();
 
+            this.state.finalDict['profstaffhydScoreList'] = individualScore["profStaffHydScore"];
+            this.state.finalDict['housekeepScoreList'] = individualScore["housekeepScore"];
+            this.state.finalDict['foodhydScoreList'] = individualScore["foodHydScore"];
+            this.state.finalDict['healthierScoreList'] = individualScore["healthierScore"];
+            this.state.finalDict['worksafetyhealthScoreList'] = individualScore["workSafetyHealthScore"];
+
             const headers = {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Access-Control-Allow-Origin': '*'
