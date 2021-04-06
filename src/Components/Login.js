@@ -59,14 +59,14 @@ class Login extends Component {
                 alert("Login unsuccessful:( \n"+res.data.info);
             }
         })
-        .catch(function (error,res) {
-            console.log(error.response.status) // 401
-            console.log(error.response.data.error) //Please Authenticate or whatever returned from server
-          if(error.response.status==401){
-            alert("Login unsuccess!")
-            alert(res.data.info);
-          }
-        })
+        // .catch(function (error,res) {
+        //     console.log(error.response.status) // 401
+        //     console.log(error.response.data.error) //Please Authenticate or whatever returned from server
+        //   if(error.response.status==401){
+        //     alert("Login unsuccess!")
+        //     alert(res.data.info);
+        //   }
+        // })
         
         
         

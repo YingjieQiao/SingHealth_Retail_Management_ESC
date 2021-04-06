@@ -44,9 +44,8 @@ class login_verified extends Component {
   //}
   handleSubmit = event => {
     event.preventDefault();
-    
-    const user = {
-      token: this.state.Enter_Token,
+
+    this.props.history.push('/tenantHome');
 
     };
     const headers = {
