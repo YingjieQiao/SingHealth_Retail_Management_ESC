@@ -20,10 +20,31 @@ class Register extends Component {
             staff:false,
             tenant:false,
             admin:false,
-
+            tenanttype:"",
 
         }
         this.handleSubmit=this.handleSubmit.bind(this)
+    }
+
+    tenanttypehandler = (event) => {
+        this.setState({
+            tenanttype: event.target.value
+        })
+    }
+
+    rendervalue(){
+        if(this.state.tenant===true){
+        return (
+          <div>
+                    <label>Type of tenant :</label><select onChange={this.tenanttypehandler} defaultValue="">
+                        <option defaultValue>Select tenant type</option>
+                        <option value="fnb">fnb</option>
+                        <option value="non-fnb">non-fnb</option>
+
+                    </select><br />
+          </div>
+       )
+      }
     }
 
     firsthandler = (event) => {
@@ -128,7 +149,8 @@ class Register extends Component {
                     location: this.state.location,
                     tenant: this.state.tenant,
                     staff: this.state.staff,
-                    admin:this.state.admin 
+                    admin:this.state.admin ,
+                    tenanttype:this.state.tenanttype,
                 };
                 const headers = {
                     'Content-Type': 'application/json',
@@ -151,6 +173,7 @@ class Register extends Component {
                     REpassword: '',
                     location: "",
                     staff: "false",
+                    tenanttype:"",
                 })
 
                 alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
@@ -186,7 +209,7 @@ class Register extends Component {
                         <option value="Staff">staff</option>
 
                     </select><br />
-
+                    {this.rendervalue()}
                     <input id="submit" type="submit" value="Submit"  />
 
                     <li>
