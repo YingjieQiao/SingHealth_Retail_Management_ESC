@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Navbar from './Navbar';
 import axios from 'axios';
-
+import styles from './CSS/dataDashboard.module.css';
 
 class DataDashboardTenant extends Component {
 
@@ -9,7 +9,14 @@ class DataDashboardTenant extends Component {
         tenant: this.props.location.state.tenant["email"],
         tenantName: this.props.location.state.tenant["name"],
         timeChoice: "default",
-        dataDict: null
+        dataDict: null,
+        sendReport: true,
+        emailContent: {
+            tenant: this.props.location.state.tenant["email"],
+            email: "",
+            body: "",
+            subject: "",
+        },
     }
 
 
@@ -48,8 +55,9 @@ class DataDashboardTenant extends Component {
                     </select>
                 </div>
                 <div>{this.displayImage()}</div>
-                <div>{this.displayExportButton()}</div>
-                <div>{this.displayReportButton()}</div>
+                <div className={styles.button_container}>{this.displayExportButton()}</div>
+                <div className={styles.button_container}>{this.displayReportButton()}</div>
+                <div className={styles.button_container}>{this.displayPopup()}</div>
             </div>
         )
     }
@@ -179,7 +187,7 @@ class DataDashboardTenant extends Component {
             const validateImage = this.checkIfImageExist(imageName);
             const index = this.state.timeChoice;
             if (validateImage === true) {
-                return <button type="button" className="btn btn-info" id={index} onClick={this.handleSend}>Send report</button>;
+                return <button type="button" className="btn btn-info" id={index} onClick={this.handleSendReport}>Send report</button>;
             }
             else {
                 return <button type="button" className="btn btn-secondary" disabled>Send report</button> ;
@@ -189,8 +197,56 @@ class DataDashboardTenant extends Component {
         }
     }
 
-    handleSend = () => {
-        // send report
+    displayPopup = () => {
+        if (this.state.sendReport === true) {
+            return(
+                <div>
+                    <h4>Send report</h4>
+                    <div>
+                        <label>Email:</label>
+                        <input placeholder="Email address" onInput={this.saveReceiverEmail} type="email" />
+                    </div> 
+                    <div>
+                        <label>Subject:</label>
+                        <input placeholder="Subject" onInput={this.saveReceiverSubject} type="text" />
+                    </div>
+                    <div>
+                        <label>Note to receiver:</label>
+                        <input placeholder="Write something to receiver" onInput={this.saveReceiverNote} type="text" />
+                    </div>
+                    <button type="submit" onClick={this.handleSend}>Send Email</button>
+                </div>
+            )
+        }
+    }
+
+    saveReceiverEmail = event => {
+        var newEmailContent  = this.state.emailContent;
+        newEmailContent["email"] = event.target.value;
+        this.setState({emailContent: newEmailContent});
+    }
+
+    saveReceiverSubject = event => {
+        var newEmailContent  = this.state.emailContent;
+        newEmailContent["subject"] = event.target.value;
+        this.setState({emailContent: newEmailContent});
+    }
+
+    saveReceiverNote = event => {
+        var newEmailContent  = this.state.emailContent;
+        newEmailContent["body"] = event.target.value;
+        this.setState({emailContent: newEmailContent});
+    }
+
+    handleSendReport = event => {
+        try {
+            // axios.post here
+            console.log(this.state.emailContent);
+
+        } catch (e) {
+            console.log(e);
+            
+        }
     }
 
 }

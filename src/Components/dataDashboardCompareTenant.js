@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Navbar from './Navbar';
 import axios from 'axios';
+import styles from './CSS/dataDashboard.module.css';
 
 
 class DataDashboardCompareTenant extends Component {
@@ -14,9 +15,10 @@ class DataDashboardCompareTenant extends Component {
         timeChoice: "default",
         sendReport: false,
         emailContent: {
+            tenant: "",
             email: "",
+            body: "",
             subject: "",
-            note: ""
         },
     }
 
@@ -54,9 +56,9 @@ class DataDashboardCompareTenant extends Component {
                 <h3>{this.state.instituteName1}'s Performance Score</h3>
                 <h3>{this.state.instituteName2}'s Performance Score</h3>
                 <div>{this.displayImage()}</div>
-                <div>{this.displayExportButton()}</div>
-                <div>{this.displayReportButton()}</div>
-                <div>{this.displayPopup()}</div>
+                <div className={styles.button_container}>{this.displayExportButton()}</div>
+                <div className={styles.button_container}>{this.displayReportButton()}</div>
+                <div className={styles.button_container}>{this.displayPopup()}</div>
             </div>
         )
     }
@@ -194,7 +196,7 @@ class DataDashboardCompareTenant extends Component {
             const validateImage = this.checkIfImageExist(imageName);
             const index = this.state.timeChoice;
             if (validateImage === true) {
-                return <button type="button" className="btn btn-info" id={index} onClick={this.handleSend}>Send report</button>;
+                return <button type="button" className="btn btn-info" id={index} onClick={this.handleSendReport}>Send report</button>;
             }
             else {
                 return <button type="button" className="btn btn-secondary" disabled>Send report</button> ;
@@ -204,7 +206,7 @@ class DataDashboardCompareTenant extends Component {
         }
     }
 
-    handleSend = () => {
+    handleSendReport = () => {
         this.setState({sendReport: true})
         
 
@@ -228,7 +230,7 @@ class DataDashboardCompareTenant extends Component {
                         <label>Note to receiver:</label>
                         <input placeholder="Write something to receiver" onInput={this.saveReceiverNote} type="text" />
                     </div>
-                    <button type="submit" onClick={this.handleSend}>Send Email</button>
+                    <button type="submit" onClick={this.handleSendReport}>Send Email</button>
                 </div>
             )
         }
@@ -252,7 +254,7 @@ class DataDashboardCompareTenant extends Component {
         this.setState({emailContent: newEmailContent});
     }
 
-    handleSend = event => {
+    handleSendReport = event => {
         try {
             // axios.post here
         } catch (e) {
