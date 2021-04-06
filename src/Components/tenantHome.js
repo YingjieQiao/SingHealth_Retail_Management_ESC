@@ -6,18 +6,25 @@ import TenantNotificationModal from './tenantNotificationModal';
 class tenantHome extends Component { 
 
   state = {
-    data: null,
+    numOfData: [],
   }
 
   componentDidMount() {
     axios.get("http://localhost:5000/tenant_get_photo_notification")
     .then(
         res => {
-            console.log(res);
-            this.setState({data: res.data["tenantData"]});
-        }
-    )
-  }
+            console.log("start: ", res);
+            const data = res.data.tenantData;
+            for (let i = 0; i < data.length; i++){
+              var newNumOfData = this.state.numOfData;
+              if (data[i]["deleted"] === false) {
+                newNumOfData.push(i);
+                this.setState({numOfData: newNumOfData});
+              }
+            } 
+          }
+        )
+  } 
 
   render() {
     return (
@@ -33,8 +40,8 @@ class tenantHome extends Component {
 
   displayInfo() {
     try {
-      if (this.state.data.length !== 0) {
-        return <TenantNotificationModal /> 
+      if (this.state.numOfData.length !== 0) {
+        return <TenantNotificationModal />;
       } else {
         return (
           <div>
@@ -42,12 +49,10 @@ class tenantHome extends Component {
           </div>
         )
       }
-    } catch (e) {
-
-    }
-
+    } catch (e) {}
   }
 
 }
 
 export default tenantHome;
+
