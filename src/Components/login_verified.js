@@ -47,6 +47,9 @@ class login_verified extends Component {
 
     this.props.history.push('/tenantHome');
 
+    const user = {
+      password: this.state.password,
+      email: this.state.email
     };
     const headers = {
         'Content-Type': 'application/json',

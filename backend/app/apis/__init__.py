@@ -391,6 +391,7 @@ def tenant_list():
     
     body = request.get_json(silent=True)
         
+    try:
         temp_ls = []
         for i in tenant_list:
             if i['tenant'] == True:
