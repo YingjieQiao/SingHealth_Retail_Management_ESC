@@ -28,8 +28,15 @@ export const SidebarData = [
     id:'view'
   },
   {
-    title: 'inbox',
+    title: 'Inbox',
     path: '/email',
+    icon: <FaIcons.FaInbox />,
+    cName: 'nav-text',
+    id:'inbox'
+  },
+  {
+    title: 'Send Report',
+    path: '/emailReport',
     icon: <FaIcons.FaInbox />,
     cName: 'nav-text',
     id:'inbox'

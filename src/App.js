@@ -18,7 +18,8 @@ import {Route, BrowserRouter as Router,Switch,Link} from "react-router-dom";
 import Navbar from './Components/Navbar';
 import Adminhome from './Components/adminhome';
 import Table from './Components/Table';
-import tenantHome from './Components/tenantHome'
+import tenantHome from './Components/tenantHome';
+import emailReport from './Components/emailReport';
 function App() {
 
   return (
@@ -41,6 +42,7 @@ function App() {
       <Route path="/adminhome" exact component={Adminhome}/>
       <Route path="/table" exact component={Table}/>
       <Route path="/tenantHome" exact component={tenantHome}/>
+      <Route path="/emailReport" exact component={emailReport}/>
     </Switch>
     
     </div>
