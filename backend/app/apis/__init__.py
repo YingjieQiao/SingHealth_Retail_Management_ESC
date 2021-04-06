@@ -373,7 +373,7 @@ def tenant_upload_photo_info():
         notif_methods.add_notification_from_tenant(body)
 
         rcvEmail = utils.get_staff_email(body["staffName"])
-        subject = "A tenant from a SingHealth institution has uploaded a non-compliance of your outlet"
+        subject = "A tenant from a SingHealth institution has uploaded a remedy effort"
         emailTextBody = """
         Please login to our retail-management platform using your staff account, 
         and take necessary actions accordingly.
