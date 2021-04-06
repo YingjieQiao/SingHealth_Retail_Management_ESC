@@ -535,12 +535,12 @@ def tenant_list_FB():
             temp_ls.append({'firstName': i['firstName'], 'lastName': i['lastName'], 'email': i["email"], 'location': i['location']}) # need to hash email when sent to front-end, being used as an id to find graphs later
         
         if tenant_list != None:
-            return {'result': True, 'user_type': "temp", 'tenant_list': temp_ls}
+            return {'result': True, 'user_type': "temp", 'tenant_list': temp_ls}, 200
         else:
-            return {'result': False}
+            return {'result': False}, 500
     except:
         print("error")
-        return {'result': False}
+        return {'result': False}, 500
 
 @apis.route('/auditChecklistFB', methods=['GET', 'POST'])
 def auditchecklistFB():
@@ -561,6 +561,20 @@ def auditchecklistFB():
     audit.computeTotalScore()
     audit.save()
     return {'statusText': True}
+#     try:
+#         body['workSafetyScore'] = body['workSafetyHealthScore']
+#         body['profScore'] = body['profStaffHydScore']
+#         body['housekeepingScore'] = body['houseGeneralScore']
+#         body.pop('workSafetyHealthScore')
+#         body.pop('profStaffHydScore')
+#         body.pop('houseGeneralScore')
+#         audit = Audit_non_FB(**body)
+#         audit.timestamp = str(ts)
+#         audit.computeTotalScore()
+#         audit.save()
+#         return {'statusText': True}, 200
+#     except:
+#         return {'statusText': False}, 500
 
 @apis.route('/auditChecklistNonFB', methods=['GET', 'POST'])
 def auditchecklistNonFB():
