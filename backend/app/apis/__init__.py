@@ -1,5 +1,5 @@
 from flask import Blueprint, request, session, jsonify, url_for, current_app, send_from_directory
-from app.models import User, Audit_non_FB, Photo, TenantPhoto, PhotoNotification
+from app.models import User, Audit_non_FB, Photo, TenantPhoto, PhotoNotification, PhotoNotificationFromTenant
 import boto3
 from botocore.exceptions import ClientError
 import logging
@@ -366,9 +366,19 @@ def tenant_upload_photo_info():
     print(body)
 
     try:
-        #TODO tenant notifs
         tenantPhoto = TenantPhoto(**body)
         tenantPhoto.save()
+
+        # notofication operations
+        notif_methods.add_notification_from_tenant(body)
+
+        rcvEmail = utils.get_staff_email(body["staffName"])
+        subject = "A tenant from a SingHealth institution has uploaded a non-compliance of your outlet"
+        emailTextBody = """
+        Please login to our retail-management platform using your staff account, 
+        and take necessary actions accordingly.
+        """
+        email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
     except Exception as e:
         print("Error occurred: ", e)
         logger.error("In '/tenant_upload_photo_info' endpoint, error occurred: ", e)
@@ -459,6 +469,64 @@ def tenant_read_photo_notification():
 
     return {'result': True}, 200
 
+
+@apis.route('/staff_get_photo_notification', methods=['GET', 'POST'])
+def staff_get_photo_notification():
+    """
+    get remedy photos of tenant user
+    """
+    username = settings.username
+    if username == "":
+        username = 'UnitTesterStaff'
+        print("testing") #TODO change to logging
+    
+    try:
+        photoNotificationsFromTenant = PhotoNotificationFromTenant.objects(staffName=username, deleted=False)
+        print(photoNotificationsFromTenant)
+        return {"result": True, "staffData": photoNotificationsFromTenant}, 200
+    except Exception as e:
+        print("error: ", e) # logger
+        return {"result": False, "staffData": None}, 500
+
+
+@apis.route('/staff_delete_photo_notification', methods=['POST'])
+def staff_delete_photo_notification():
+    body = request.get_json()
+    try:
+        body.pop("_id", None)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/staff_delete_photo_notification' endpoint, error occurred: ", e)
+    print(body)
+
+    try:
+        notif_methods.staff_update_photo_notification("delete", settings.username, body)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/staff_delete_photo_notification' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+@apis.route('/staff_read_photo_notification', methods=['POST'])
+def staff_read_photo_notification():
+    body = request.get_json()
+    try:
+        body.pop("_id", None)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/staff_read_photo_notification' endpoint, error occurred: ", e)
+    print(body)
+
+    try:
+        notif_methods.staff_update_photo_notification("read", settings.username, body)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/staff_read_photo_notification' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
 
 @apis.route('/display_data', methods=['POST'])
 def display_data():
@@ -920,7 +988,7 @@ def compare_tenant():
 
 
 @apis.route('/test_add_notif', methods=['POST'])
-def add_notification():
+def TEST_add_notification():
     """
     :param: body: json, same format as Photo
     add a column 'read' for nofitication
@@ -931,6 +999,25 @@ def add_notification():
         body['deleted'] = False
         newPhotoNotification = PhotoNotification(**body)
         newPhotoNotification.save()
+    except Exception as e:
+        print("error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+@apis.route('/test_add_notif2', methods=['POST'])
+def TEST_add_notification_from_staff():
+    """
+    :param: body: json, same format as Photo
+    add a column 'read' for nofitication
+    """
+    body = request.get_json()
+    try:
+        body['read'] = False
+        body['deleted'] = False
+        newPhotoNotificationFromTenant = PhotoNotificationFromTenant(**body)
+        newPhotoNotificationFromTenant.save()
     except Exception as e:
         print("error occurred: ", e)
         return {'result': False}, 500

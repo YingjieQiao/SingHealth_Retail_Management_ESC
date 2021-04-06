@@ -148,3 +148,15 @@ def get_tenant_email(tenantName):
             print("found tenant email: ", tenantEmail)
             break
     return tenantEmail
+
+
+def get_staff_email(staffName):
+    staffEmail = ""
+    users = User.objects(staff=True)
+    for user in users:
+        staffName_check = "".join([user["firstName"], user["lastName"]])
+        if (staffName == staffName_check):
+            staffEmail = user["email"]
+            print("found tenant email: ", staffEmail)
+            break
+    return staffEmail
