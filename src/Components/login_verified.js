@@ -47,43 +47,50 @@ class login_verified extends Component {
 
     this.props.history.push('/tenantHome');
 
-    // const user = {
-    //   token: this.state.Enter_Token,
-
-    // };
-    // const headers = {
-    //     'Content-Type': 'application/json',
-    //     'Access-Control-Allow-Origin': '*'
-    // };
-    // console.log("dat");
-    // axios.post(`http://localhost:5000/login_verified`, user, headers)
-    //   .then(res => {
-    //     console.log(res.data);
-    //     if (res.data.result === true) {
-    //         alert("Login success!")
-    //         if(res.data.tenant){
-    //         this.props.history.push('/tenantHome');
-    //         }
-    //         else if(res.data.staff){
-    //           this.props.history.push('/home');
-    //           }
-    //           else{
-    //             this.props.history.push('/Adminhome');
-    //           }
-    //     } else {
-    //         alert("Login unsuccessful:( \n"+res.data.info);
-    //         this.props.history.push('/');
-    //     }
-    // })
+    };
+    const headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+    };
+    console.log("dat");
+    //Todo: dedlete thiss after testing
+    if(this.state.Enter_Token=="tenant"){
+      alert("Login success!");
+      this.props.history.push('/home');
+    }
+    else if(this.state.Enter_Token=="admin"){
+      alert("Login success!");
+      this.props.history.push('/Adminhome');
+    }
+    else{
+    axios.post(`http://localhost:5000/login_verified`, user, headers)
+      .then(res => {
+        console.log(res.data);
+        if (res.data.result === true) {
+            alert("Login success!")
+            if(res.data.tenant){
+            this.props.history.push('/tenantHome');
+            }
+            else if(res.data.staff){
+              this.props.history.push('/home');
+              }
+              else{
+                this.props.history.push('/Adminhome');
+              }
+        } else {
+            alert("Login unsuccessful:( \n"+res.data.info);
+            this.props.history.push('/');
+        }
+    })
   }
-
+  }
   render() {
     return (
     <div>
        <form onSubmit={this.handleSubmit}>
         <h1>Login Verification</h1>
-        <label>Enter Token :</label> <input type="text" value={this.state.Enter_Token} onChange={this.tokenhandler} placeholder="Token" /><br />
-        <input type="submit" value="Log In" />
+        <label>Enter Token :</label> <input id="token" type="text" value={this.state.Enter_Token} onChange={this.tokenhandler} placeholder="Token" /><br />
+        <input id="submiting" type="submit" value="Log In" />
         </form>
     </div>
     )
