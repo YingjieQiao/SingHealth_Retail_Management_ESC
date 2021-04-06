@@ -82,7 +82,7 @@ class tenantNotificationModal extends Component {
   
       axios.post("http://localhost:5000/tenant_read_photo_notification", this.state.data[index], headers
       ).then(res => {
-  
+			console.log(res);
        }); 
     } catch (e) {
 
@@ -92,9 +92,18 @@ class tenantNotificationModal extends Component {
 
   handleDelete = event => {
     const index = event.target.id;
-    var newData = this.state.data;
-    newData.splice(event.target.id, 1);
-    this.setState({data: newData});
+	console.log(this.state.data)
+	const currPhoto = {
+		tags: this.state.data[index]["tags"],
+		date: this.state.data[index]["date"],
+		time: this.state.data[index]["time"],
+		notes: this.state.data[index]["notes"],
+		staffName: this.state.data[index]["staffName"],
+		tenantName: this.state.data[index]["tenantName"],
+		rectified: this.state.data[index]["rectified"],
+		read: this.state.data[index]["read"],
+		delete: this.state.data[index]["delete"]
+	};
 
     try {
       const headers = {
@@ -102,13 +111,18 @@ class tenantNotificationModal extends Component {
         'Access-Control-Allow-Origin': '*'
       };
   
-      axios.post("http://localhost:5000/tenant_delete_photo_notification", this.state.data[index], headers
+      axios.post("http://localhost:5000/tenant_delete_photo_notification", currPhoto, headers
       ).then(res => {
-  
+			console.log(res);
        }); 
     } catch (e) {
-
+		// catch e, print/console.log
     }
+
+	var newData = this.state.data;
+	newData[index]["deleted"] = true;
+    newData.splice(index, 1);
+    this.setState({data: newData});
   }
 
   validateReadStatus = (index) => {

@@ -366,6 +366,7 @@ def tenant_upload_photo_info():
     print(body)
 
     try:
+        #TODO tenant notifs
         tenantPhoto = TenantPhoto(**body)
         tenantPhoto.save()
     except Exception as e:
@@ -422,6 +423,12 @@ def tenant_get_photo_notification():
 @apis.route('/tenant_delete_photo_notification', methods=['POST'])
 def tenant_delete_photo_notification():
     body = request.get_json()
+    try:
+        body.pop("_id", None)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/tenant_delete_photo_notification' endpoint, error occurred: ", e)
+    print(body)
 
     try:
         notif_methods.tenant_update_photo_notification("delete", settings.username, body)
