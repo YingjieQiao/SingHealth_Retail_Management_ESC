@@ -10,7 +10,18 @@ class viewPhoto extends Component {
         imageSource: [],
         photoAttrData: []
     };
-    
+    componentDidMount() {
+
+        axios.get("http://localhost:5000/if_loggedin")
+        .then(
+            res => {
+                console.log(res.data);
+                if(res.data.username==""){
+                  alert("Please Log in!");
+                  this.props.history.push('/');
+                }
+            }
+        )}
     render() { 
         return (
             <div>

@@ -47,6 +47,11 @@ def get_current_username_and_datetime():
 
     return {"username": settings.username, "time": time_, "date": date_}, 200
 
+@apis.route('/if_loggedin', methods=['GET', 'POST'])
+def if_loggedin():
+    return {"username": settings.username}, 200
+
+
 @apis.route('/check_if_staff', methods=['GET'])
 def check_if_staff():
     if current_app.config['TESTING']:

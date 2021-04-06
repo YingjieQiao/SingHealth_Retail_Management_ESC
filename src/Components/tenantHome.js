@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import TenantNavbar from './Tenant_Navbar';
 import axios from 'axios';
@@ -25,7 +26,18 @@ class tenantHome extends Component {
           }
         )
   } 
-
+  componentDidMount() {
+    axios.get("http://localhost:5000/if_loggedin")
+    .then(
+        res => {
+            console.log(res.data);
+            if(res.data.username==""){
+              alert("Please Log in!");
+              this.props.history.push('/');
+            }
+        }
+    )
+  }
   render() {
     return (
       <div className='home'>
@@ -53,6 +65,7 @@ class tenantHome extends Component {
   }
 
 }
+
 
 export default tenantHome;
 

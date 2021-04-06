@@ -18,7 +18,18 @@ class Upload extends Component {
         tenantName: "",
         rectified: false
     };
+    componentDidMount() {
 
+        axios.get("http://localhost:5000/if_loggedin")
+        .then(
+            res => {
+                console.log(res.data);
+                if(res.data.username==""){
+                  alert("Please Log in!");
+                  this.props.history.push('/');
+                }
+            }
+        )}
     render() { 
         return ( //TODO: don't hardcode the list of tenants to select, retrieve the list of tenants from backend instead
             <div style={{margin: "10px"}}>

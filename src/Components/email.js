@@ -5,7 +5,7 @@ import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-rout
 import axios from 'axios';
 import Navbar from './Navbar';
 
-class Login extends Component {
+class Email extends Component {
     constructor(props) {
         super(props)
 
@@ -64,7 +64,18 @@ class Login extends Component {
         
     }
     
+    componentDidMount() {
 
+        axios.get("http://localhost:5000/if_loggedin")
+        .then(
+            res => {
+                console.log(res.data);
+                if(res.data.username==""){
+                  alert("Please Log in!");
+                  this.props.history.push('/');
+                }
+            }
+        )}
 
     render() {
         return (
@@ -87,4 +98,4 @@ class Login extends Component {
     }
 
 }
-export default withRouter(Login)
+export default withRouter(Email)
