@@ -57,7 +57,7 @@ class DataDashboardTenant extends Component {
                 <div>{this.displayImage()}</div>
                 <div className={styles.button_container}>{this.displayExportButton()}</div>
                 <div className={styles.button_container}>{this.displayReportButton()}</div>
-                <div className={styles.button_container}>{this.displayPopup()}</div>
+                {/* <div className={styles.button_container}>{this.displayPopup()}</div> */}
             </div>
         )
     }
@@ -197,57 +197,59 @@ class DataDashboardTenant extends Component {
         }
     }
 
-    displayPopup = () => {
-        if (this.state.sendReport === true) {
-            return(
-                <div>
-                    <h4>Send report</h4>
-                    <div>
-                        <label>Email:</label>
-                        <input placeholder="Email address" onInput={this.saveReceiverEmail} type="email" />
-                    </div> 
-                    <div>
-                        <label>Subject:</label>
-                        <input placeholder="Subject" onInput={this.saveReceiverSubject} type="text" />
-                    </div>
-                    <div>
-                        <label>Note to receiver:</label>
-                        <input placeholder="Write something to receiver" onInput={this.saveReceiverNote} type="text" />
-                    </div>
-                    <button type="submit" onClick={this.handleSend}>Send Email</button>
-                </div>
-            )
-        }
-    }
-
-    saveReceiverEmail = event => {
-        var newEmailContent  = this.state.emailContent;
-        newEmailContent["email"] = event.target.value;
-        this.setState({emailContent: newEmailContent});
-    }
-
-    saveReceiverSubject = event => {
-        var newEmailContent  = this.state.emailContent;
-        newEmailContent["subject"] = event.target.value;
-        this.setState({emailContent: newEmailContent});
-    }
-
-    saveReceiverNote = event => {
-        var newEmailContent  = this.state.emailContent;
-        newEmailContent["body"] = event.target.value;
-        this.setState({emailContent: newEmailContent});
-    }
-
     handleSendReport = event => {
         try {
+            const emailAddress = this.state.tenant;
             // axios.post here
-            console.log(this.state.emailContent);
 
         } catch (e) {
             console.log(e);
             
         }
     }
+
+    // displayPopup = () => {
+    //     if (this.state.sendReport === true) {
+    //         return(
+    //             <div>
+    //                 <h4>Send report</h4>
+    //                 <div>
+    //                     <label>Email:</label>
+    //                     <input placeholder="Email address" onInput={this.saveReceiverEmail} type="email" />
+    //                 </div> 
+    //                 <div>
+    //                     <label>Subject:</label>
+    //                     <input placeholder="Subject" onInput={this.saveReceiverSubject} type="text" />
+    //                 </div>
+    //                 <div>
+    //                     <label>Note to receiver:</label>
+    //                     <input placeholder="Write something to receiver" onInput={this.saveReceiverNote} type="text" />
+    //                 </div>
+    //                 <button type="submit" onClick={this.handleSend}>Send Email</button>
+    //             </div>
+    //         )
+    //     }
+    // }
+
+    // saveReceiverEmail = event => {
+    //     var newEmailContent  = this.state.emailContent;
+    //     newEmailContent["email"] = event.target.value;
+    //     this.setState({emailContent: newEmailContent});
+    // }
+
+    // saveReceiverSubject = event => {
+    //     var newEmailContent  = this.state.emailContent;
+    //     newEmailContent["subject"] = event.target.value;
+    //     this.setState({emailContent: newEmailContent});
+    // }
+
+    // saveReceiverNote = event => {
+    //     var newEmailContent  = this.state.emailContent;
+    //     newEmailContent["body"] = event.target.value;
+    //     this.setState({emailContent: newEmailContent});
+    // }
+
+
 
 }
 
