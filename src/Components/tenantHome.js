@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import React, { Component } from 'react';
 import TenantNavbar from './Tenant_Navbar';
 import axios from 'axios';
@@ -53,6 +54,44 @@ class tenantHome extends Component {
   }
 
 }
+=======
+import React,  { Component }from 'react';
+import TenantNavbar from './Tenant_Navbar';
+import axios from 'axios';
+import { MdSystemUpdate } from 'react-icons/md';
+class tenantHome extends Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+        username: "",
+
+    }
+
+    localStorage.setItem("usertype","tenant")  ;
+}
+componentDidMount() {
+  axios.get("http://localhost:5000/if_loggedin")
+  .then(
+      res => {
+          console.log(res.data);
+          if(res.data.username==""){
+            alert("Please Log in!");
+            this.props.history.push('/');
+          }
+      }
+  )
+}
+render() {
+  return (
+    <div className='home'>
+            <TenantNavbar/>
+        <h1>Tenant User Homepage</h1>
+    </div>
+  );
+}}
+>>>>>>> Stashed changes
 
 export default tenantHome;
 

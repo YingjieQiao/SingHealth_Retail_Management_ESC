@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Navbar from './Navbar';
 import AuditChecklistNonFB from './auditChecklistNonFB';
 import AuditChecklistTest from './auditChecklistTest';
-
+import axios from 'axios';
 class Audit extends Component {
 
     // TODO: Add more auditors
@@ -12,7 +12,18 @@ class Audit extends Component {
     }
 
     
-
+    componentDidMount() {
+        axios.get("http://localhost:5000/if_loggedin")
+        .then(
+            res => {
+                console.log(res.data);
+                if(res.data.username==""){
+                  alert("Please Log in!");
+                  this.props.history.push('/');
+                }
+            }
+        )
+      }
     render() {
 
         return (
