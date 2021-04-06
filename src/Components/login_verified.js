@@ -45,8 +45,6 @@ class login_verified extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    this.props.history.push('/tenantHome');
-
     const user = {
       password: this.state.password,
       email: this.state.email
