@@ -79,3 +79,7 @@ input[type=text] {
     color: rgb(10, 10, 10);
     font-family: Arial, Helvetica, sans-serif;
   }
+
+.button_container {
+    margin: 30px;
+}

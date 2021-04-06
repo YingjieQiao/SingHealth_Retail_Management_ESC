@@ -24,7 +24,8 @@ class AuditChecklistNonFB extends Component {
         comment: "",
         auditeeArray: [],
         numOfAuditee: [],
-        options: [0,1,2,3,4,5,6,7,8,9,10]
+        options: [0,1,2,3,4,5,6,7,8,9,10],
+        hasSubmitForm: false
     }
 
     componentDidMount() {
@@ -454,8 +455,8 @@ class AuditChecklistNonFB extends Component {
                         <label className={styles.heading}>Comments:</label>
                         <input className={styles.commentInput} onInput={this.saveComment} type="text" />
                     </div>
-                    <button type="submit" class={this.getButtonClasses()} onClick={this.handleSubmit}>Submit</button>
-
+                    <div className={styles.button_container}><button type="submit" class={this.getButtonClasses()} onClick={this.handleSubmitForm}>Submit</button></div>
+                    <div className={styles.button_container}><button type="submit" class={this.getSendReportButtonClasses()} onClick={this.handleSendReport}>Send report</button></div>
                 </form>
 
             </div>
@@ -529,36 +530,6 @@ class AuditChecklistNonFB extends Component {
         var newFinalDict = this.state.finalDict;
         newFinalDict["comment"] = event.target.value;
         this.setState({comment: event.target.value});
-    }
-
-    handleSubmit = event  => {
-        event.preventDefault();
-        console.log("final: ", this.state.finalDict);
-
-        if (Object.keys(this.state.scoreDict).length < (this.state.dataLength - 1)) {
-            console.log("empty field");
-            alert("Please fill up all fields");
-        } else { 
-            // all data has been filled
-            // proceeds to send data to backend
-            this.tabulateScore();
-            const individualScore = this.individualScore();
-
-            this.state.finalDict['profstaffhydScoreList'] = individualScore["profStaffHydScore"];
-            this.state.finalDict['housekeepScoreList'] = individualScore["housekeepScore"];
-            this.state.finalDict['worksafetyhealthScoreList'] = individualScore["workSafetyHealthScore"];
-
-            const headers = {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Access-Control-Allow-Origin': '*'
-            };
-            
-            axios.post("http://localhost:5000/auditChecklistNonFB", this.state.finalDict, headers
-            ).then( res => {
-                console.log(res.statusText);
-                alert("The form has been successfully recorded.");
-            });
-        }
     }
 
     tabulateScore = () => {
@@ -635,6 +606,63 @@ class AuditChecklistNonFB extends Component {
         return individualScoreDict;
     }
 
+    handleSubmitForm = event  => {
+        event.preventDefault();
+        console.log("final: ", this.state.finalDict);
+
+        if (Object.keys(this.state.scoreDict).length < (this.state.dataLength - 1)) {
+            console.log("empty field");
+            alert("Please fill up all fields");
+        } else { 
+            // all data has been filled
+            // proceeds to send data to backend
+            this.tabulateScore();
+            const individualScore = this.individualScore();
+
+            this.state.finalDict['profstaffhydScoreList'] = individualScore["profStaffHydScore"];
+            this.state.finalDict['housekeepScoreList'] = individualScore["housekeepScore"];
+            this.state.finalDict['worksafetyhealthScoreList'] = individualScore["workSafetyHealthScore"];
+
+            const headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Access-Control-Allow-Origin': '*'
+            };
+            
+            axios.post("http://localhost:5000/auditChecklistNonFB", this.state.finalDict, headers
+            ).then( res => {
+                console.log(res.statusText);
+                alert("The form has been successfully recorded.");
+            });
+        }
+    }
+
+    handleSendReport = (event) => {
+        event.preventDefault();
+        try {
+            if (this.state.hasSubmitForm === false) {
+                alert("Please submit the form before sending the report.");
+            } else { 
+
+                // axios.post
+                
+            }
+        } catch (e) {
+            console.log(e);
+            alert("Unsuccessful. Please try again.");
+        }
+    }
+
+    validateReportSubmission() {
+        if (this.state.hasSubmitForm === false) return false;
+        else { return true; }
+    }
+
+    getSendReportButtonClasses() {
+        let classes = 'btn btn-';
+        classes += this.validateReportSubmission() === false ? 'secondary' : 'primary';
+        return classes;
+    }
+    
     validateData = () => {
         if (Object.keys(this.state.finalDict).length === 1 ) {
             return false;
