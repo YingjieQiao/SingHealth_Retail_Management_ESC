@@ -13,21 +13,27 @@ class DataDashboard extends Component {
     }
 
     componentDidMount() {
-        axios.get("http://localhost:5000/tenant_list")
-        .then(
-            res => {
-                console.log(res);
 
-                for (var i = 0; i < res.data.tenant_list.length; i++) {
-                    let newArray1 = this.state.tenantArray;
-                    let newArray2 = this.state.numOfTenant;
-                    newArray1.push(res.data.tenant_list[i]);
-                    newArray2.push(i);
-                    this.setState({tenantArray: newArray1, numOfTenant: newArray2});
+        try {
+            axios.get("http://localhost:5000/tenant_list")
+            .then(
+                res => {
+                    console.log(res);
+
+                    if (res.data.result === true) {
+                        for (var i = 0; i < res.data.tenant_list.length; i++) {
+                            let newArray1 = this.state.tenantArray;
+                            let newArray2 = this.state.numOfTenant;
+                            newArray1.push(res.data.tenant_list[i]);
+                            newArray2.push(i);
+                            this.setState({tenantArray: newArray1, numOfTenant: newArray2});
+                        }
+                    }
+    
                 }
+            )
+        } catch (e) {}
 
-            }
-        )
     }
 
     render() {

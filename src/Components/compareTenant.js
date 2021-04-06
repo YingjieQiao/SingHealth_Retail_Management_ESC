@@ -65,14 +65,15 @@ class CompareTenant extends Component {
                             console.log("FB list: ", res.data);
                             this.resetInstituteArray();
                             this.resetNumOfInstituteArray();
-                            for (var i = 0; i < res.data.tenant_list.length; i++) {
-                                let newArray1 = this.state.instituteArray;
-                                let newArray2 = this.state.numOfInstitute;
-                                newArray1.push(res.data.tenant_list[i]);
-                                newArray2.push(i);
-                                this.setState({instituteArray: newArray1, numOfInstitute: newArray2});
+                            if (res.data.result === true) {
+                                for (var i = 0; i < res.data.tenant_list.length; i++) {
+                                    let newArray1 = this.state.instituteArray;
+                                    let newArray2 = this.state.numOfInstitute;
+                                    newArray1.push(res.data.tenant_list[i]);
+                                    newArray2.push(i);
+                                    this.setState({instituteArray: newArray1, numOfInstitute: newArray2});
+                                }
                             }
-            
                         }
                     )
                 } catch (e) {
@@ -86,12 +87,14 @@ class CompareTenant extends Component {
                             console.log("Non-FB list: ", res.data);
                             this.resetInstituteArray();
                             this.resetNumOfInstituteArray();
-                            for (var i = 0; i < res.data.tenant_list.length; i++) {
-                                let newArray1 = this.state.instituteArray;
-                                let newArray2 = this.state.numOfInstitute;
-                                newArray1.push(res.data.tenant_list[i]);
-                                newArray2.push(i);
-                                this.setState({instituteArray: newArray1, numOfInstitute: newArray2});
+                            if (res.data.result === true) {
+                                for (var i = 0; i < res.data.tenant_list.length; i++) {
+                                    let newArray1 = this.state.instituteArray;
+                                    let newArray2 = this.state.numOfInstitute;
+                                    newArray1.push(res.data.tenant_list[i]);
+                                    newArray2.push(i);
+                                    this.setState({instituteArray: newArray1, numOfInstitute: newArray2});
+                                }
                             }
             
                         }
