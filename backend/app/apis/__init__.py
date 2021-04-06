@@ -7,7 +7,7 @@ from PIL import Image
 import os
 from datetime import datetime
 
-from . import settings, s3_methods, utils, notif_methods
+from . import settings, s3_methods, utils, notif_methods, email_methods
 
 import email, smtplib, ssl
 from email import encoders
@@ -340,7 +340,17 @@ def upload_photo_info():
     try:
         photo = Photo(**body)
         photo.save()
+
+        # notofication operations
         notif_methods.add_notification(body)
+
+        rcvEmail = utils.get_tenant_email(body["tenantName"])
+        subject = "A SingHealth staff has uploaded a non-compliance of your outlet"
+        emailTextBody = """
+        Please login to our retail-management platform using your tenant account, 
+        and take necessary actions accordingly.
+        """
+        email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
     except Exception as e:
         print("Error occurred: ", e)
         logger.error("In '/upload_photo_info' endpoint, error occurred: ", e)
