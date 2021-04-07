@@ -373,16 +373,17 @@ def tenant_upload_photo_info():
         tenantPhoto = TenantPhoto(**body)
         tenantPhoto.save()
 
-        # notofication operations
-        notif_methods.add_notification_from_tenant(body)
+        if not current_app.config['TESTING']:
+            # notofication operations
+            notif_methods.add_notification_from_tenant(body)
 
-        rcvEmail = utils.get_staff_email(body["staffName"])
-        subject = "A tenant from a SingHealth institution has uploaded a remedy effort"
-        emailTextBody = """
-        Please login to our retail-management platform using your staff account, 
-        and take necessary actions accordingly.
-        """
-        email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
+            rcvEmail = utils.get_staff_email(body["staffName"])
+            subject = "A tenant from a SingHealth institution has uploaded a remedy effort"
+            emailTextBody = """
+                Please login to our retail-management platform using your staff account, 
+                and take necessary actions accordingly.
+                """
+            email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
     except Exception as e:
         print("Error occurred: ", e)
         logger.error("In '/tenant_upload_photo_info' endpoint, error occurred: ", e)
