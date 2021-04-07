@@ -343,8 +343,6 @@ def download_file():
 def upload_photo_info():
     body = request.get_json()
 
-    print(body)
-
     try:
         photo = Photo(**body)
         photo.save()
@@ -370,8 +368,6 @@ def upload_photo_info():
 @apis.route('/tenant_upload_photo_info', methods=['GET', 'POST'])
 def tenant_upload_photo_info():
     body = request.get_json()
-
-    print(body)
 
     try:
         tenantPhoto = TenantPhoto(**body)
@@ -401,7 +397,6 @@ def rectify_photo():
     body['rectified'] = True
     time_ = body['time']
     date_ = body['date']
-    print(body)
 
     if settings.username == "":
         settings.username = "UnitTester"
@@ -410,6 +405,29 @@ def rectify_photo():
 
     try:
         photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)
+        photoInfo.update(**body)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/rectify_photo' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+@apis.route('/tenant_rectify_photo', methods=['GET', 'POST'])
+def tenant_rectify_photo():
+    body = request.get_json()
+    body['rectified'] = True
+    time_ = body['time']
+    date_ = body['date']
+
+    if settings.username == "":
+        settings.username = "UnitTester"
+        print("testing")
+        logger.info("testing '/rectify_photo' endpoint")
+
+    try:
+        photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=settings.username)
         photoInfo.update(**body)
     except Exception as e:
         print("error: ", e) 
