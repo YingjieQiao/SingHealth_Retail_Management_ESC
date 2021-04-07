@@ -42,7 +42,7 @@ class stafftNotificationModal extends Component {
         return (
           <div>
             <div>
-              <label>Sender: {this.state.data[index]["staffName"]}</label>
+              <label>Sender: {this.state.data[index]["tenantName"]}</label>
             </div>
             <div>
               <label>Rectified: {this.handleRectifyStatus(index)}</label>
