@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import { SidebarData } from './SidebarData';
 import './Navbar.css';
+import axios from 'axios';
 import { IconContext } from 'react-icons';
-
+import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-router-dom";
 function Navbar() {
   const [sidebar, setSidebar] = useState(false);
-
   const showSidebar = () => setSidebar(!sidebar);
 
   return (
