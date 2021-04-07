@@ -32,6 +32,7 @@ def upload_file(file_name, bucket, object_name):
         #TODO log the response in the logger
     except ClientError as e:
         print("error occurred: ", e)
+        logger.error("In 'upload_file' function, error occurred: ", e)
         return False
     return True
 
@@ -58,6 +59,7 @@ def download(s3, file_name, bucket, object_name):
         s3.download_file(bucket, object_name, file_name)
         filename_full = os.getcwd() + '/' + file_name
     except ClientError as e:
+        print("error occurred: ", e)
         logger.error("In 'download' function, error occurred: ", e)
     return filename_full
 
@@ -68,7 +70,8 @@ def download_user_objects(bucket, username, timeInput, dateInput, counterPart):
                 aws_secret_access_key=os.environ.get('SECRET_KEY'))
     photoData = []
     photoAttrData = []
-    print(bucket, username, timeInput, dateInput, counterPart)
+    # print(bucket, username, timeInput, dateInput, counterPart)
+
     for key in s3_client.list_objects(Bucket=bucket)['Contents']:
         ls = key['Key'].split('_')
         date_ = ls[-2]
@@ -106,7 +109,7 @@ def get_photo_info(date_, time_, counterPart, username):
     """
     get the information assciated with a given photo name
     """
-    print(date_, time_, counterPart)
+    
     if settings.username == "":
         settings.username = "UnitTester"
         print("testing")

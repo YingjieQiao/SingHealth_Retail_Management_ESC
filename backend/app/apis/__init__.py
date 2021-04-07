@@ -33,8 +33,11 @@ s = URLSafeTimedSerializer('Thisisasecret!')
 apis = Blueprint('apis', __name__)
 
 logger = logging.getLogger("logger")
+
 #TODO remove all the print in the end
 #TODO more logging at successful executions
+#TODO remove downloaded csv from project directory 
+# after the file is downloaded on the frontned by the user for admin page
 
 @apis.route('/get_current_username_and_datetime', methods=['GET', 'POST'])
 def get_current_username_and_datetime():
