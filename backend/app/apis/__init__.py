@@ -577,6 +577,29 @@ def staff_read_photo_notification():
 
     return {'result': True}, 200
 
+
+@apis.route('/get_staff_list', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_staff_list():
+    staffUsers = User.objects(staff=True)
+    res = []
+    for staff in staffUsers:
+        username = staff.firstName + staff.lastName
+        res.append(username)
+    return {"result": True, "staffList": res}, 200
+
+
+@apis.route('/get_tenant_list', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_tenant_list():
+    tenantUsers = User.objects(tenant=True)
+    res = []
+    for tenant in tenantUsers:
+        username = tenant.firstName + tenant.lastName
+        res.append(username)
+    return {"result": True, "tenantList": res}, 200
+
+
 @apis.route('/display_data', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def display_data():
