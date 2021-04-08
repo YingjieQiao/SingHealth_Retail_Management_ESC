@@ -33,7 +33,7 @@ class Login extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-    
+
         const user = {
           password: this.state.password,
           email: this.state.email
@@ -88,7 +88,6 @@ class Login extends Component {
                      {/* <li>
                          <label>admin home link   </label>
                         <Link to="/Adminhome">admin</Link>
-
                      </li> */}
                 </form>
 
