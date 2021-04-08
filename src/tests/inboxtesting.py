@@ -86,6 +86,9 @@ def testingsigninsignout():
 
 
 def testinghomekeys():
+    emailadress = "ishaan_nair@mymail.sutd.edu.sg"
+    samplesubject="this is a sample subject"
+    samplecontent="this is a sample content created for testing"
     links = browser.find_elements_by_tag_name('a')
     print("yolo")
     print("***testing all home buttons***")
@@ -97,32 +100,32 @@ def testinghomekeys():
         href = elem.get_attribute('className')
         if href is not None:
             print(href)
-    button = browser.find_element_by_id("Upload").click()
-    time.sleep(1)
-    button = browser.find_element_by_class_name("menu-bars").click()
-    time.sleep(1)
-    button = browser.find_element_by_id("view").click()
-    time.sleep(1)
-    button = browser.find_element_by_class_name("menu-bars").click()
-    time.sleep(1)
     button = browser.find_element_by_id("inbox").click()
     time.sleep(1)
-    button = browser.find_element_by_class_name("menu-bars").click()
+    email = browser.find_element_by_id("emailid")
+    time.sleep(1)	
+    email.send_keys(emailadress)
+    subject = browser.find_element_by_id("subject")
+    time.sleep(1)	
+    subject.send_keys(samplesubject)
+    content = browser.find_element_by_id("content")
+    time.sleep(1)	
+    content.send_keys(samplecontent)
+
+    button = browser.find_element_by_id("submit").click()
+    print("email has sent")
     time.sleep(1)
-    button = browser.find_element_by_id("profile").click()
-    time.sleep(1)
-    button = browser.find_element_by_class_name("menu-bars").click()
-    time.sleep(1)
-    button = browser.find_element_by_id("stats").click()
-    time.sleep(1)
-    button = browser.find_element_by_class_name("menu-bars").click()
-    time.sleep(1)
-    button = browser.find_element_by_id("tenent").click()
-    time.sleep(1)
-    button = browser.find_element_by_class_name("menu-bars").click()
-    time.sleep(1)
-    button = browser.find_element_by_id("audit").click()
-    time.sleep(1)
+    try:
+        WebDriverWait(browser, 10).until(EC.alert_is_present(),
+                                       'Timed out waiting for PA creation ' +
+                                       'confirmation popup to appear.')
+
+        alert = browser.switch_to.alert
+        print(alert.text)
+        alert.accept()
+        print("alert accepted")
+    except TimeoutException:
+        print("no alert")	
     button = browser.find_element_by_class_name("menu-bars").click()
     time.sleep(1)
     button = browser.find_element_by_id("signout").click()

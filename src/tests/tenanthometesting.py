@@ -35,7 +35,6 @@ def testingsigninsignout():
     myPassword = "1234"
     tokenadmin = "admin"
     tokentenant = "tenant"
-    tokenstaff = "staff"
     mobile = "12345678"
     myPassword = "1234"
     repassword="1234"
@@ -64,7 +63,7 @@ def testingsigninsignout():
         print("no alert")	
     username = browser.find_element_by_id("token")
     time.sleep(1)	
-    username.send_keys(tokenstaff)
+    username.send_keys(tokentenant)
     time.sleep(1)
     button = browser.find_element_by_id("submiting").click()
     time.sleep(1)	

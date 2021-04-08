@@ -306,6 +306,7 @@ class AuditChecklistNonFB extends Component {
                             <li key="018.1">Waste bins are not over-filled.</li>
                             <li key="018.2">Waste Management: Proper disposal of general waste.</li>
                         </ul>
+
                         <div><label>Lowest score</label>
                         {this.state.options.map(index => {return (
                         <div class="form-check form-check-inline">
@@ -487,11 +488,12 @@ class AuditChecklistNonFB extends Component {
                     </div>
                     <div className={styles.qn_body}>
                         <label className={styles.heading}>Comments:</label>
-                        <input className={styles.commentInput} onInput={this.saveComment} type="text" />
+                        <input id= "comments" className={styles.commentInput} onInput={this.saveComment} type="text" />
                     </div>
-                    <div className={styles.button_container}><button type="submit" class={this.getButtonClasses()} onClick={this.handleSubmitForm}>Submit</button></div>
+                    <div className={styles.button_container}><button type="submit" id="submit" class={this.getButtonClasses()} onClick={this.handleSubmitForm}>Submit</button></div>
                     <div className={styles.button_container}><button type="submit" class={this.getSendReportButtonClasses()} onClick={this.handleSendReport}>Send report</button></div>
                 </form>
+
 
             </div>
         )

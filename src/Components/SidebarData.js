@@ -20,7 +20,7 @@ export const SidebarData = [
     path: '/upload',
     icon: <FaIcons.FaUpload />,
     cName: 'nav-text',
-    id:"staff"
+    id:"Upload"
   },
 
   {
@@ -28,16 +28,16 @@ export const SidebarData = [
     path: '/viewPhoto',
     icon: <FaIcons.FaImages />,
     cName: 'nav-text',
-    id:"staff"
+    id:"view"
   },
 
-  {
-    title: 'Inbox',
-    path: '/email',
-    icon: <FaIcons.FaInbox />,
-    cName: 'nav-text',
-    id:'inbox'
-  },
+  // {
+  //   title: 'Inbox',
+  //   path: '/email',
+  //   icon: <FaIcons.FaInbox />,
+  //   cName: 'nav-text',
+  //   id:'inbox'
+  // },
   {
     title: 'Send Report',
     path: '/emailReport',
@@ -45,13 +45,13 @@ export const SidebarData = [
     cName: 'nav-text',
     id:'inbox'
   },
-  {
-    title: 'Profile',
-    path: '/home',
-    icon: <BsIcons.BsPerson />,
-    cName: 'nav-text',
-    id:'profile'
-  },
+  // {
+  //   title: 'Profile',
+  //   path: '/home',
+  //   icon: <BsIcons.BsPerson />,
+  //   cName: 'nav-text',
+  //   id:'profile'
+  // },
   {
     title: 'Get Statistics',
     path: '/dataDashboard',

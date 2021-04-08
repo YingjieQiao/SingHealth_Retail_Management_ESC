@@ -32,19 +32,20 @@ class Upload extends Component {
         )}
     render() { 
         return ( //TODO: don't hardcode the list of tenants to select, retrieve the list of tenants from backend instead
+        <div><Navbar/>
             <div style={{margin: "10px"}}>
-                <Navbar/>
+                
                 <h2>Staff Upload photo</h2>
                 <div className="border border-dark" style={{display: "inline-block",margin: "10px"}}>
                     <ImUpload3 size="50" style={{display: "block", marginLeft: "auto", marginRight: "auto", marginTop: "10px"}}/>
-                    <input type="file" name="file" onChange={this.onChooseFileHandler} style={{display: "block", margin: '10px'}}/>
+                    <input type="file" id= "choose" name="file" onChange={this.onChooseFileHandler} style={{display: "block", margin: '10px'}}/>
                 </div>
 
                 <div>
                     <form>
                         <h1>Photo Information</h1>
 
-                        <label>tags :</label><select onChange={this.tagsHandler} defaultValue="none">
+                        <label>tags :</label><select id="select" onChange={this.tagsHandler} defaultValue="none">
                             <option defaultValue>Select tags</option>
                             <option value="Professionalism and Staff Hygiene">Professionalism and Staff Hygiene</option>
                             <option value="HouseKeeping and General Cleanliness">HouseKeeping and General Cleanliness</option>
@@ -53,10 +54,10 @@ class Upload extends Component {
                             <option value="Workplace Safety and Health">Workplace Safety and Health</option>
                         </select><br />
                         
-                        <label>notes :</label> <input type="text" 
+                        <label>notes :</label> <input type="text" id="notes"
                             value={this.state.notes} onChange={this.notesHandler} placeholder="notes..." /><br />
 
-                        <label>tenant :</label><select onChange={this.tenantHandler} defaultValue="none">
+                        <label>tenant :</label><select id= "tenant" onChange={this.tenantHandler} defaultValue="none">
                             <option defaultValue>Select tenant</option>
                             <option value="RossGeller">RossGeller</option>
                             <option value="711">711</option>
@@ -66,12 +67,12 @@ class Upload extends Component {
                     </form >
 
                     <div>
-                        <button type="button" className="btn btn-primary m-2" 
+                        <button type="button" id="button" className="btn btn-primary m-2" 
                             onClick={this.photoInfoButtonHandler} >Upload Photo Information</button>
                     </div>
                 </div>
             </div>
-
+            </div>
             
         );
     }

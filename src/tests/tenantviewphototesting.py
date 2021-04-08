@@ -97,32 +97,26 @@ def testinghomekeys():
         href = elem.get_attribute('className')
         if href is not None:
             print(href)
-    button = browser.find_element_by_id("Upload").click()
-    time.sleep(1)
-    button = browser.find_element_by_class_name("menu-bars").click()
-    time.sleep(1)
     button = browser.find_element_by_id("view").click()
     time.sleep(1)
-    button = browser.find_element_by_class_name("menu-bars").click()
+
+    button = browser.find_element_by_id("button1").click()
+    print("clicked uploaded by tenant")
     time.sleep(1)
-    button = browser.find_element_by_id("inbox").click()
+    button = browser.find_element_by_id("button2").click()
+    print("View Previously Updated Photos")
     time.sleep(1)
-    button = browser.find_element_by_class_name("menu-bars").click()
-    time.sleep(1)
-    button = browser.find_element_by_id("profile").click()
-    time.sleep(1)
-    button = browser.find_element_by_class_name("menu-bars").click()
-    time.sleep(1)
-    button = browser.find_element_by_id("stats").click()
-    time.sleep(1)
-    button = browser.find_element_by_class_name("menu-bars").click()
-    time.sleep(1)
-    button = browser.find_element_by_id("tenent").click()
-    time.sleep(1)
-    button = browser.find_element_by_class_name("menu-bars").click()
-    time.sleep(1)
-    button = browser.find_element_by_id("audit").click()
-    time.sleep(1)
+    # try:
+    #     WebDriverWait(browser, 10).until(EC.alert_is_present(),
+    #                                    'Timed out waiting for PA creation ' +
+    #                                    'confirmation popup to appear.')
+
+    #     alert = browser.switch_to.alert
+    #     print(alert.text)
+    #     alert.accept()
+    #     print("alert accepted")
+    # except TimeoutException:
+    #     print("no alert")	
     button = browser.find_element_by_class_name("menu-bars").click()
     time.sleep(1)
     button = browser.find_element_by_id("signout").click()

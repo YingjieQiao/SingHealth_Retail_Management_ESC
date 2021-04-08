@@ -12,7 +12,7 @@ export const tenant_SidebarData = [
     path: '/tenantHome',
     icon: <AiIcons.AiFillHome />,
     cName: 'nav-text',
-    id:"tenant"
+    id:"home"
   },
 
   {
@@ -20,7 +20,7 @@ export const tenant_SidebarData = [
     path: '/tenantUpload',
     icon: <FaIcons.FaUpload />,
     cName: 'nav-text',
-    id:"tenant"
+    id:"Upload"
   },
 
   {
@@ -28,42 +28,48 @@ export const tenant_SidebarData = [
     path: '/tenantViewPhoto',
     icon: <FaIcons.FaImages />,
     cName: 'nav-text',
-    id:"tenant"
+    id:"view"
   },
-  {
-    title: 'inbox',
-    path: '/email',
-    icon: <FaIcons.FaInbox />,
-    cName: 'nav-text'
-  },
-  {
-    title: 'Profile',
-    path: '/home',
-    icon: <BsIcons.BsPerson />,
-    cName: 'nav-text'
-  },
+  // {
+  //   title: 'inbox',
+  //   path: '/email',
+  //   icon: <FaIcons.FaInbox />,
+  //   cName: 'nav-text',
+  //   id:"inbox"
+  // },
+  // {
+  //   title: 'Profile',
+  //   path: '/home',
+  //   icon: <BsIcons.BsPerson />,
+  //   cName: 'nav-text',
+  //   id:"inbox"
+  // },
   {
     title: 'Get Statistics',
     path: '/dataDashboard',
     icon: <BsIcons.BsGraphUp />,
-    cName: 'nav-text'
+    cName: 'nav-text',
+    id:"profile"
   },
   {
     title: 'Compare Tenant',
     path: '/compareTenant',
     icon: <MdIcons.MdCompareArrows />,
-    cName: 'nav-text'
+    cName: 'nav-text',
+    id:"inbox"
   },
   {
     title: 'New Audit',
     path: '/audit',
     icon: <AiIcons.AiOutlineAudit />,
-    cName: 'nav-text'
+    cName: 'nav-text',
+    id:"stats"
   },
   {
     title: 'Sign Out',
     path: '/',
     icon: <FaIcons.FaSignOutAlt />,
-    cName: 'nav-text'
+    cName: 'nav-text',
+    id:"signout"
   }
 ];
