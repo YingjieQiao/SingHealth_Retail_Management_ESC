@@ -650,12 +650,15 @@ def email():
 def staff_list():
     
     tenant_list = User.objects(staff = True)
+    print(tenant_list)
+
+    # tenant_list = User.objects(tenant = True)
+    # print(tenant_list)
 
     try:
         temp_ls = []
         for i in tenant_list:
-            if i['tenant'] == True:
-                temp_ls.append({'firstName': i['firstName'], 'lastName': i['lastName'], 'email': i["email"], 'location': i['location']}) # need to hash email when sent to front-end, being used as an id to find graphs later
+            temp_ls.append({'firstName': i['firstName'], 'lastName': i['lastName'], 'email': i["email"], 'location': i['location']}) # need to hash email when sent to front-end, being used as an id to find graphs later
         
         if tenant_list != None:
             return {'result': True, 'user_type': "temp", 'tenant_list': temp_ls}
@@ -673,8 +676,7 @@ def tenant_list():
     try:
         temp_ls = []
         for i in tenant_list:
-            if i['tenant'] == True:
-                temp_ls.append({'firstName': i['firstName'], 'lastName': i['lastName'], 'email': i["email"], 'location': i['location']}) # need to hash email when sent to front-end, being used as an id to find graphs later
+            temp_ls.append({'firstName': i['firstName'], 'lastName': i['lastName'], 'email': i["email"], 'location': i['location']}) # need to hash email when sent to front-end, being used as an id to find graphs later
         
         if tenant_list != None:
             return {'result': True, 'user_type': "temp", 'tenant_list': temp_ls}
