@@ -17709,3 +17709,5 @@
 2021-04-09 03:18:43,659 INFO werkzeug Thread-25 : 127.0.0.1 - - [09/Apr/2021 03:18:43] "[37mPOST /report_compare_tenant HTTP/1.1[0m" 200 -
 2021-04-09 03:22:28,286 INFO werkzeug MainThread :  * Detected change in 'C:\\Users\\mihir\\OneDrive\\Documents\\GitHub\\escapp\\backend\\app\\__init__.py', reloading
 2021-04-09 03:22:28,722 INFO werkzeug MainThread :  * Restarting with stat
+2021-04-09 03:25:47,997 INFO werkzeug MainThread :  * Restarting with stat
+2021-04-09 03:25:49,581 INFO logger Thread-1 : backend started

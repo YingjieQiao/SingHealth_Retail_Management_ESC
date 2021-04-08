@@ -25,25 +25,52 @@ class AuditChecklistNonFB extends Component {
         auditeeArray: [],
         numOfAuditee: [],
         options: [0,1,2,3,4,5,6,7,8,9,10],
-        hasSubmitForm: false
+        hasSubmitForm: false,
+        auditorArray: [],
     }
 
     componentDidMount() {
-        axios.get("http://localhost:5000/tenant_list_non_FB")
-        .then(
-            res => {
-                console.log(res);
-
-                for (var i = 0; i < res.data.tenant_list.length; i++) {
-                    let newArray1 = this.state.auditeeArray;
-                    let newArray2 = this.state.numOfAuditee;
-                    newArray1.push(res.data.tenant_list[i]);
-                    newArray2.push(i);
-                    this.setState({auditeeArray: newArray1, numOfAuditee: newArray2});
+        try {
+            axios.get("http://localhost:5000/if_loggedin")
+            .then(
+                res => {
+                    console.log(res.data);
+                    if(res.data.username==""){
+                      alert("Please Log in!");
+                      this.props.history.push('/');
+                    }
                 }
-
-            }
-        )
+            );
+            axios.get("http://localhost:5000/tenant_list_non_FB")
+            .then(
+                res => {
+                    console.log(res);
+    
+                    for (var i = 0; i < res.data.tenant_list.length; i++) {
+                        let newArray1 = this.state.auditeeArray;
+                        let newArray2 = this.state.numOfAuditee;
+                        newArray1.push(res.data.tenant_list[i]);
+                        newArray2.push(i);
+                        this.setState({auditeeArray: newArray1, numOfAuditee: newArray2});
+                    }
+    
+                }
+            );
+            axios.get("http://localhost:5000/staff_list")
+            .then(
+                res => {
+                    if (res.data.result) {
+                        console.log(res);
+                        for (var i = 0; i < res.data.tenant_list.length; i++) {
+                            let newArray1 = this.state.auditorArray;
+                            let name = res.data.tenant_list[i]["firstName"] + res.data.tenant_list[i]["lastName"];
+                            newArray1.push(name);
+                            this.setState({auditorArray: newArray1});
+                        }
+                    }
+                }
+            );
+        } catch (e) { console.log(e); }
     }
 
     render() {
@@ -64,8 +91,15 @@ class AuditChecklistNonFB extends Component {
                         </select>
                     </div>
 
-                    
                     <div className={styles.qn_body} >
+                        <label className={styles.form_qn}>Auditor:</label>
+                        <select class="custom-select my-1 mr-sm-2" id="auditorName" onChange={this.handleAuditor}>
+                            <option selected value="-1">Choose...</option>
+                            { this.state.auditorArray.map(auditor => <option value={auditor}>{auditor}</option> ) }
+                        </select>
+                    </div>
+                    
+                    {/* <div className={styles.qn_body} >
                         <label className={styles.form_qn}>Auditor:</label>
                         <select class="custom-select my-1 mr-sm-2" id="auditorName" onChange={this.handleAuditor}>
                             <option selected value="-1">Choose...</option>
@@ -73,7 +107,7 @@ class AuditChecklistNonFB extends Component {
                             <option value="Jerry">Jerry</option>
                             <option value="Charlie">Charlie</option>
                         </select>
-                    </div>
+                    </div> */}
                     <div className={styles.qn_body}>
                         <label className={styles.form_qn}>Auditor's Department:</label>
                         <select class="custom-select my-1 mr-sm-2" id="auditorDepartment" onChange={this.handleDepartment}>

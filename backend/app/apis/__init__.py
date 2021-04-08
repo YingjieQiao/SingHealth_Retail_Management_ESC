@@ -1,5 +1,5 @@
 from flask import Blueprint, request, session, jsonify, url_for, current_app, send_from_directory
-from app.models import User, Audit_non_FB, Photo, Audit_FB, Covid_Compliance
+from app.models import User, Audit_non_FB, Photo, TenantPhoto, PhotoNotification, PhotoNotificationFromTenant, Audit_FB, Covid_Compliance
 import boto3
 from botocore.exceptions import ClientError
 import logging
@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 import json
 
-from . import settings, s3_methods, utils
+from . import settings, s3_methods, utils, notif_methods, email_methods
 
 import email, smtplib, ssl
 from email import encoders
@@ -43,6 +43,12 @@ s = URLSafeTimedSerializer('Thisisasecret!')
 
 apis = Blueprint('apis', __name__)
 
+logger = logging.getLogger("logger")
+
+#TODO remove all the print in the end
+#TODO more logging at successful executions
+#TODO remove downloaded csv from project directory 
+# after the file is downloaded on the frontned by the user for admin page
 
 @apis.route('/get_current_username_and_datetime', methods=['GET', 'POST'])
 def get_current_username_and_datetime():
@@ -54,6 +60,40 @@ def get_current_username_and_datetime():
     time_ = dateTimeArr[1]
 
     return {"username": settings.username, "time": time_, "date": date_}, 200
+
+@apis.route('/if_loggedin', methods=['GET', 'POST'])
+def if_loggedin():
+    return {"username": settings.username}, 200
+
+
+@apis.route('/check_if_staff', methods=['GET'])
+def check_if_staff():
+    if current_app.config['TESTING']:
+        flag = True
+    else:
+        flag = False
+
+    try:
+        res = utils.check_if_staff(settings.username, flag)
+    except Exception as e:
+        logger.error("error in '/check_if_staff' endpoint: %s", e)
+        return {"result": False}, 500
+    return {"result": res}, 200
+
+
+@apis.route('/check_if_tenant', methods=['GET'])
+def check_if_tenant():
+    if current_app.config['TESTING']:
+        flag = True
+    else:
+        flag = False
+        
+    try:
+        res = utils.check_if_tenant(settings.username, flag)
+    except Exception as e:
+        logger.error("error in '/check_if_tenant' endpoint: %s", e)
+        return {"result": False}, 500
+    return {"result": res}, 200
 
 
 @apis.route('/signup', methods=['GET', 'POST'])
@@ -67,6 +107,7 @@ def user_signup():
         userid = user.id
     except Exception as e:
         print("error: ", e)
+        logger.error("error in '/signup' endpoint: %s", e)
         return {'result': False, 'info': "Registeration Failed"}, 500
 
     response = {
@@ -107,6 +148,7 @@ def user_signup():
     # with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
     #     server.login(sender_email, password)
     #     server.sendmail(sender_email, email, text)
+    logger.info("username %s sign up success", body['firstName']+body['lastName'])
     return {'result': True, 'info': "Registeration Success"}, 200
 
 # Code to verify the link for user registration, not being used for now
@@ -133,8 +175,10 @@ def user_login():
         lastName = user.lastName
         authorized = user.check_password(body.get('password'))
         if not authorized:
+            logger.error("error in '/login' endpoint: %s", "password error")
             return {'result': False, 'info': "password error"}, 500
     except:
+        logger.error("error in '/login' endpoint: %s", "user does not exist or payload error")
         return {'result': False, 'info': "user does not exist or payload error"}, 500
 
     settings.username = firstName + lastName
@@ -147,6 +191,7 @@ def user_login():
         message["Subject"] = "Link to login to SingHealth"
     except:
         print("error occured")
+        logger.error("error in '/login' endpoint: %s", "user does not exist")
         return {'result': False, 'info': "user does not exist"}, 500
 
     token = s.dumps(body.get('email'), salt='login')
@@ -165,10 +210,11 @@ def user_login():
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
         server.login(sender_email, password)
         server.sendmail(sender_email, email, text)
-    #TODO add info to global log file
 
     settings.username = firstName + lastName
     print(settings.username)
+    logger.info("%s is attemping to log in", firstName+lastName)
+
     return {'result': True, 'info': "2FA sent", "token":token,
              'firstName': firstName, 'lastName': lastName,
              'staff': user.staff, 'tenant': user.tenant, 'admin': user.admin}
@@ -189,15 +235,15 @@ def login_verified():
         admin=user.admin
         tenant=user.tenant
         settings.username = firstName + lastName
-        print("ni")
+        logger.info("%s has logged in", firstName+lastName)
         return {'result': True, 'firstName': firstName, 'lastName': lastName, 'staff':staff, 'admin':admin, 'tenant':tenant}, 200 #this returns the details of the user 
     except:
-        print('no')
+        logger.info("%s 2FA error", firstName+lastName)
         return {'result': False, 'info': "2FA error"}, 500
     # except SignatureExpired:
     #     return {'result': False, 'info': "Link has expired"}, 200
 
-
+    
 @apis.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
     if current_app.config['TESTING']:
@@ -210,11 +256,20 @@ def upload_file():
     date_ = request.form['date']
 
     username = settings.username
+    audienceName = ""
+    try:
+        audienceName = utils.assign_audience_name(username, request.form["staffName"], request.form["tenantName"])
+    except Exception as e:
+        print("Error occurred: ", e)
+        logger.error("In '/upload_file' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
     if username == "":
         username = 'UnitTester'
-        print("testing s3 download") #TODO change to logging
-    filename = username + "_" + date_ + "_" + time_ + ".jpg"
-
+        print("testing s3 upload")
+        logger.info("testing s3 upload")
+    filename = username + "_" + audienceName + "_" + date_ + "_" + time_ + ".jpg"
+    
     if current_app.config['TESTING']:
         rgb_img = body.convert('RGB')
         rgb_img.save(filename)
@@ -223,10 +278,17 @@ def upload_file():
         rgb_img = img.convert('RGB')
         rgb_img.save(filename)
 
+    bucketName, counterPart_bucketName = utils.assign_s3_bucket(username) # always False for upload
+    if bucketName == "":
+        print("username invalid: ", username)
+        logger.error("In '/upload_file' endpoint, username invalid: ", username)
+        return {'result': False}, 500
+    
     try:
-        s3_methods.upload_file(filename, 'escapp-bucket-dev', None)
+        s3_methods.upload_file(filename, bucketName, None)
     except Exception as e:
-        print("Error occurred: ", e) #TODO change to logging
+        print("Error occurred: ", e)
+        logger.error("In '/upload_file' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
     os.remove(os.getcwd() + "/" + filename)
@@ -235,20 +297,48 @@ def upload_file():
     return {'result': True}, 200
 
 
-@apis.route('/download_file', methods=['GET'])
+@apis.route('/download_file', methods=['POST'])
 def download_file():
+    try:
+        body = request.get_json()
+        counterPart = body["counterPart"]
+    except Exception as e:
+        print("Error occurred: ", e)
+        logger.error("In '/download_file' endpoint, error occurred: ", e)
+        return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
+
     username = settings.username
     if username == "":
         username = 'UnitTester'
-        print("testing s3 download") #TODO change to logging
+        print("testing s3 download")
+        logger.info("testing s3 download")
     timeInput = None
     dateInput = None
 
-    try:
-        res = s3_methods.download_user_objects('escapp-bucket-dev', username, timeInput, dateInput)
-    except Exception as e:
-        print("Error occurred: ", e) #TODO change to logging
-        return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
+    bucketName, counterPart_bucketName = utils.assign_s3_bucket(username)
+    if bucketName == "":
+        print("username invalid: ", username)
+        logger.error("In '/download_file' endpoint, username invalid: ", username)
+        return {'result': False}, 500
+
+    if not counterPart:
+        try:
+            res = s3_methods.download_user_objects(bucketName, username,
+                                                        timeInput, dateInput, counterPart)
+        except Exception as e:
+            print("Error occurred: ", e)
+            logger.error("In '/download_file' endpoint, error occurred: ", e)
+            return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
+    else:
+        try:
+            res = s3_methods.download_user_objects(counterPart_bucketName, username,
+                                                        timeInput, dateInput, counterPart)
+        except Exception as e:
+            print("Error occurred: ", e)
+            logger.error("In '/download_file' endpoint, error occurred: ", e)
+            return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
+    
+
     photoData = res[0]
     photoAttrData = res[1]
 
@@ -271,8 +361,48 @@ def upload_photo_info():
     try:
         photo = Photo(**body)
         photo.save()
+
+        # notofication operations
+        notif_methods.add_notification(body)
+
+        rcvEmail = utils.get_tenant_email(body["tenantName"])
+        subject = "A SingHealth staff has uploaded a non-compliance of your outlet"
+        emailTextBody = """
+        Please login to our retail-management platform using your tenant account, 
+        and take necessary actions accordingly.
+        """
+        email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
     except Exception as e:
-        print("Error occurred: ", e) #TODO change to logging
+        print("Error occurred: ", e)
+        logger.error("In '/upload_photo_info' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+@apis.route('/tenant_upload_photo_info', methods=['GET', 'POST'])
+def tenant_upload_photo_info():
+    body = request.get_json()
+
+    print(body)
+
+    try:
+        tenantPhoto = TenantPhoto(**body)
+        tenantPhoto.save()
+
+        # notofication operations
+        notif_methods.add_notification_from_tenant(body)
+
+        rcvEmail = utils.get_staff_email(body["staffName"])
+        subject = "A tenant from a SingHealth institution has uploaded a remedy effort"
+        emailTextBody = """
+        Please login to our retail-management platform using your staff account, 
+        and take necessary actions accordingly.
+        """
+        email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
+    except Exception as e:
+        print("Error occurred: ", e)
+        logger.error("In '/tenant_upload_photo_info' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
     return {'result': True}, 200
@@ -288,17 +418,136 @@ def rectify_photo():
 
     if settings.username == "":
         settings.username = "UnitTester"
-        print("testing") #TODO change to logging
+        print("testing")
+        logger.info("testing '/rectify_photo' endpoint")
 
     try:
         photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)
         photoInfo.update(**body)
     except Exception as e:
-        print("error: ", e) #TODO: change to logging
+        print("error: ", e) 
+        logger.error("In '/rectify_photo' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
     return {'result': True}, 200
 
+
+@apis.route('/tenant_get_photo_notification', methods=['GET', 'POST'])
+def tenant_get_photo_notification():
+    """
+    get non-compliance photos of tenant user
+    """
+    username = settings.username
+    if username == "":
+        username = 'RossGeller'
+        print("testing") #TODO change to logging
+    
+    try:
+        photoNotifications = PhotoNotification.objects(tenantName=username, deleted=False)
+        print(photoNotifications)
+        return {"result": True, "tenantData": photoNotifications}, 200
+    except Exception as e:
+        print("error: ", e) # logger
+        return {"result": False, "tenantData": None}, 500
+
+
+@apis.route('/tenant_delete_photo_notification', methods=['POST'])
+def tenant_delete_photo_notification():
+    body = request.get_json()
+    try:
+        body.pop("_id", None)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/tenant_delete_photo_notification' endpoint, error occurred: ", e)
+    print(body)
+
+    try:
+        notif_methods.tenant_update_photo_notification("delete", settings.username, body)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/tenant_delete_photo_notification' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+@apis.route('/tenant_read_photo_notification', methods=['POST'])
+def tenant_read_photo_notification():
+    body = request.get_json()
+    try:
+        body.pop("_id", None)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/tenant_read_photo_notification' endpoint, error occurred: ", e)
+    print(body)
+
+    try:
+        notif_methods.tenant_update_photo_notification("read", settings.username, body)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/tenant_read_photo_notification' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+@apis.route('/staff_get_photo_notification', methods=['GET', 'POST'])
+def staff_get_photo_notification():
+    """
+    get remedy photos of tenant user
+    """
+    username = settings.username
+    if username == "":
+        username = 'UnitTesterStaff'
+        print("testing") #TODO change to logging
+    
+    try:
+        photoNotificationsFromTenant = PhotoNotificationFromTenant.objects(staffName=username, deleted=False)
+        print(photoNotificationsFromTenant)
+        return {"result": True, "staffData": photoNotificationsFromTenant}, 200
+    except Exception as e:
+        print("error: ", e) # logger
+        return {"result": False, "staffData": None}, 500
+
+
+@apis.route('/staff_delete_photo_notification', methods=['POST'])
+def staff_delete_photo_notification():
+    body = request.get_json()
+    try:
+        body.pop("_id", None)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/staff_delete_photo_notification' endpoint, error occurred: ", e)
+    print(body)
+
+    try:
+        notif_methods.staff_update_photo_notification("delete", settings.username, body)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/staff_delete_photo_notification' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+@apis.route('/staff_read_photo_notification', methods=['POST'])
+def staff_read_photo_notification():
+    body = request.get_json()
+    try:
+        body.pop("_id", None)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/staff_read_photo_notification' endpoint, error occurred: ", e)
+    print(body)
+
+    try:
+        notif_methods.staff_update_photo_notification("read", settings.username, body)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/staff_read_photo_notification' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
 
 @apis.route('/display_data', methods=['POST'])
 def display_data():
@@ -313,6 +562,7 @@ def display_data():
         res = utils.get_data()
     except Exception as e:
         print("error: ", e)
+        logger.error("In '/display_data' endpoint, error occurred: ", e)
         return {'result': False, 'data': None, 'info': 'failed'}, 500
     data = res[mapping[tableName]]
 
@@ -336,6 +586,7 @@ def download_data_csv():
         filePath, fileName = utils.write_to_csv(dataDict, tableName)
     except Exception as e:
         print("error, ", e)
+        logger.error("In '/download_data_csv' endpoint, error occurred: ", e)
         return {'result': False, 'data': None, 'info': 'failed'}, 500
 
     return send_from_directory(filePath, fileName, as_attachment=True), 200
@@ -347,6 +598,7 @@ def remove_temp_files():
         utils.clear_assets()
     except Exception as e:
         print("error: ", e)
+        logger.error("In '/remove_temp_files' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
     return {'result': True}, 200
@@ -401,6 +653,28 @@ def email():
         server.sendmail(sender_email, receiver_email, text)
     return {'result': True, 'info': "Email was shared"}, 200
 
+@apis.route('/staff_list', methods=['GET', 'POST'])
+def staff_list():
+    
+    tenant_list = User.objects(staff = True)
+    print(tenant_list)
+
+    # tenant_list = User.objects(tenant = True)
+    # print(tenant_list)
+
+    try:
+        temp_ls = []
+        for i in tenant_list:
+            temp_ls.append({'firstName': i['firstName'], 'lastName': i['lastName'], 'email': i["email"], 'location': i['location']}) # need to hash email when sent to front-end, being used as an id to find graphs later
+        
+        if tenant_list != None:
+            return {'result': True, 'user_type': "temp", 'tenant_list': temp_ls}
+        else:
+            return {'result': False}
+    except:
+        print("error")
+        return {'result': False}
+
 @apis.route('/tenant_list', methods=['GET', 'POST'])
 def tenant_list():
     
@@ -409,8 +683,7 @@ def tenant_list():
     try:
         temp_ls = []
         for i in tenant_list:
-            if i['tenant'] == True:
-                temp_ls.append({'firstName': i['firstName'], 'lastName': i['lastName'], 'email': i["email"], 'location': i['location']}) # need to hash email when sent to front-end, being used as an id to find graphs later
+            temp_ls.append({'firstName': i['firstName'], 'lastName': i['lastName'], 'email': i["email"], 'location': i['location']}) # need to hash email when sent to front-end, being used as an id to find graphs later
         
         if tenant_list != None:
             return {'result': True, 'user_type': "temp", 'tenant_list': temp_ls}
@@ -1330,46 +1603,51 @@ def report_dashboard():
         df_month.to_csv('audit_month.csv')
         df_year.to_csv('audit_year.csv')
 
-        try:
-            message = MIMEMultipart()
-            message["From"] = sender_email
-            email = body.get('email')
-            message["To"] = email
-            message["Subject"] = body.get("subject")
-        except:
-            print("error occured")
-            return {'result': False, 'info': "user does not exist"}, 500
+        emails = body.get('emailContent').get('email')
+        content = body.get('emailContent').get('body')
+        subject = body.get('emailContent').get('subject')
 
-        message.attach(MIMEText(body.get("body"), "plain"))
+        for i in emails:
+            try:
+                message = MIMEMultipart()
+                message["From"] = sender_email
+                email = i
+                message["To"] = email
+                message["Subject"] = subject
+            except:
+                print("error occured")
+                return {'result': False, 'info': "user does not exist"}, 500
 
-        text = message.as_string()
+            message.attach(MIMEText(content, "plain"))
 
-        for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv", "audit.csv"]:
+            for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv"]:
 
-            # Open PDF file in binary mode
-            with open(filename, "rb") as attachment:
-                # Add file as application/octet-stream
-                # Email client can usually download this automatically as attachment
-                part = MIMEBase("application", "octet-stream")
-                part.set_payload(attachment.read())
+                # Open PDF file in binary mode
+                with open(filename, "rb") as attachment:
+                    # Add file as application/octet-stream
+                    # Email client can usually download this automatically as attachment
+                    part = MIMEBase("application", "octet-stream")
+                    part.set_payload(attachment.read())
 
-            # Encode file in ASCII characters to send by email    
-            encoders.encode_base64(part)
+                # Encode file in ASCII characters to send by email    
+                encoders.encode_base64(part)
 
-            # Add header as key/value pair to attachment part
-            part.add_header(
-                "Content-Disposition",
-                f"attachment; filename= {filename}",
-            )
+                # Add header as key/value pair to attachment part
+                part.add_header(
+                    "Content-Disposition",
+                    f"attachment; filename= {filename}",
+                )
 
-            # Add attachment to message and convert message to string
-            message.attach(part)
+                # Add attachment to message and convert message to string
+                message.attach(part)
 
-        # Log in to server using secure context and send email
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-            server.login(sender_email, password)
-            server.sendmail(sender_email, email, text)
+            text = message.as_string()
+
+            # Log in to server using secure context and send email
+            context = ssl.create_default_context()
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+                server.login(sender_email, password)
+                server.sendmail(sender_email, email, text)
 
         for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv"]:
             os.remove(i)
@@ -1487,46 +1765,51 @@ def report_dashboard():
         df_month.to_csv('audit_month.csv')
         df_year.to_csv('audit_year.csv')
 
-        try:
-            message = MIMEMultipart()
-            message["From"] = sender_email
-            email = body.get('email')
-            message["To"] = email
-            message["Subject"] = body.get("subject")
-        except:
-            print("error occured")
-            return {'result': False, 'info': "user does not exist"}, 500
+        emails = body.get('emailContent').get('email')
+        content = body.get('emailContent').get('body')
+        subject = body.get('emailContent').get('subject')
 
-        message.attach(MIMEText(body.get("body"), "plain"))
+        for i in emails:
+            try:
+                message = MIMEMultipart()
+                message["From"] = sender_email
+                email = i
+                message["To"] = email
+                message["Subject"] = subject
+            except:
+                print("error occured")
+                return {'result': False, 'info': "user does not exist"}, 500
 
-        text = message.as_string()
+            message.attach(MIMEText(content, "plain"))
 
-        for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv"]:
+            for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv"]:
 
-            # Open PDF file in binary mode
-            with open(filename, "rb") as attachment:
-                # Add file as application/octet-stream
-                # Email client can usually download this automatically as attachment
-                part = MIMEBase("application", "octet-stream")
-                part.set_payload(attachment.read())
+                # Open PDF file in binary mode
+                with open(filename, "rb") as attachment:
+                    # Add file as application/octet-stream
+                    # Email client can usually download this automatically as attachment
+                    part = MIMEBase("application", "octet-stream")
+                    part.set_payload(attachment.read())
 
-            # Encode file in ASCII characters to send by email    
-            encoders.encode_base64(part)
+                # Encode file in ASCII characters to send by email    
+                encoders.encode_base64(part)
 
-            # Add header as key/value pair to attachment part
-            part.add_header(
-                "Content-Disposition",
-                f"attachment; filename= {filename}",
-            )
+                # Add header as key/value pair to attachment part
+                part.add_header(
+                    "Content-Disposition",
+                    f"attachment; filename= {filename}",
+                )
 
-            # Add attachment to message and convert message to string
-            message.attach(part)
+                # Add attachment to message and convert message to string
+                message.attach(part)
 
-        # Log in to server using secure context and send email
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-            server.login(sender_email, password)
-            server.sendmail(sender_email, email, text)
+            text = message.as_string()
+
+            # Log in to server using secure context and send email
+            context = ssl.create_default_context()
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+                server.login(sender_email, password)
+                server.sendmail(sender_email, email, text)
 
         for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv"]:
             os.remove(i)
@@ -1740,49 +2023,51 @@ def report_compare_tenant():
         df_month_2.to_csv('audit_month_2.csv')
         df_year_2.to_csv('audit_year_2.csv')
 
-        for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
-            os.remove(i)
-        
-        try:
-            message = MIMEMultipart()
-            message["From"] = sender_email
-            email = body.get('email')
-            message["To"] = email
-            message["Subject"] = body.get("subject")
-        except:
-            print("error occured")
-            return {'result': False, 'info': "user does not exist"}, 500
+        emails = body.get('emailContent').get('email')
+        content = body.get('emailContent').get('body')
+        subject = body.get('emailContent').get('subject')
 
-        message.attach(MIMEText(body.get("body"), "plain"))
+        for i in emails:
+            try:
+                message = MIMEMultipart()
+                message["From"] = sender_email
+                email = i
+                message["To"] = email
+                message["Subject"] = subject
+            except:
+                print("error occured")
+                return {'result': False, 'info': "user does not exist"}, 500
 
-        text = message.as_string()
+            message.attach(MIMEText(content, "plain"))
 
-        for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
+            for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
             
-            # Open PDF file in binary mode
-            with open(filename, "rb") as attachment:
-                # Add file as application/octet-stream
-                # Email client can usually download this automatically as attachment
-                part = MIMEBase("application", "octet-stream")
-                part.set_payload(attachment.read())
+                # Open PDF file in binary mode
+                with open(filename, "rb") as attachment:
+                    # Add file as application/octet-stream
+                    # Email client can usually download this automatically as attachment
+                    part = MIMEBase("application", "octet-stream")
+                    part.set_payload(attachment.read())
 
-            # Encode file in ASCII characters to send by email    
-            encoders.encode_base64(part)
+                # Encode file in ASCII characters to send by email    
+                encoders.encode_base64(part)
 
-            # Add header as key/value pair to attachment part
-            part.add_header(
-                "Content-Disposition",
-                f"attachment; filename= {filename}",
-            )
+                # Add header as key/value pair to attachment part
+                part.add_header(
+                    "Content-Disposition",
+                    f"attachment; filename= {filename}",
+                )
 
-            # Add attachment to message and convert message to string
-            message.attach(part)
+                # Add attachment to message and convert message to string
+                message.attach(part)
 
-        # Log in to server using secure context and send email
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-            server.login(sender_email, password)
-            server.sendmail(sender_email, email, text)
+            text = message.as_string()
+
+            # Log in to server using secure context and send email
+            context = ssl.create_default_context()
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+                server.login(sender_email, password)
+                server.sendmail(sender_email, email, text)
 
         for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
             os.remove(i)
@@ -1957,49 +2242,51 @@ def report_compare_tenant():
         df_month_2.to_csv('audit_month_2.csv')
         df_year_2.to_csv('audit_year_2.csv')
 
-        for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
-            os.remove(i)
-        
-        try:
-            message = MIMEMultipart()
-            message["From"] = sender_email
-            email = body.get('email')
-            message["To"] = email
-            message["Subject"] = body.get("subject")
-        except:
-            print("error occured")
-            return {'result': False, 'info': "user does not exist"}, 500
+        emails = body.get('emailContent').get('email')
+        content = body.get('emailContent').get('body')
+        subject = body.get('emailContent').get('subject')
 
-        message.attach(MIMEText(body.get("body"), "plain"))
+        for i in emails:
+            try:
+                message = MIMEMultipart()
+                message["From"] = sender_email
+                email = i
+                message["To"] = email
+                message["Subject"] = subject
+            except:
+                print("error occured")
+                return {'result': False, 'info': "user does not exist"}, 500
 
-        text = message.as_string()
+            message.attach(MIMEText(content, "plain"))
 
-        for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
+            for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
             
-            # Open PDF file in binary mode
-            with open(filename, "rb") as attachment:
-                # Add file as application/octet-stream
-                # Email client can usually download this automatically as attachment
-                part = MIMEBase("application", "octet-stream")
-                part.set_payload(attachment.read())
+                # Open PDF file in binary mode
+                with open(filename, "rb") as attachment:
+                    # Add file as application/octet-stream
+                    # Email client can usually download this automatically as attachment
+                    part = MIMEBase("application", "octet-stream")
+                    part.set_payload(attachment.read())
 
-            # Encode file in ASCII characters to send by email    
-            encoders.encode_base64(part)
+                # Encode file in ASCII characters to send by email    
+                encoders.encode_base64(part)
 
-            # Add header as key/value pair to attachment part
-            part.add_header(
-                "Content-Disposition",
-                f"attachment; filename= {filename}",
-            )
+                # Add header as key/value pair to attachment part
+                part.add_header(
+                    "Content-Disposition",
+                    f"attachment; filename= {filename}",
+                )
 
-            # Add attachment to message and convert message to string
-            message.attach(part)
+                # Add attachment to message and convert message to string
+                message.attach(part)
 
-        # Log in to server using secure context and send email
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-            server.login(sender_email, password)
-            server.sendmail(sender_email, email, text)
+            text = message.as_string()
+
+            # Log in to server using secure context and send email
+            context = ssl.create_default_context()
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+                server.login(sender_email, password)
+                server.sendmail(sender_email, email, text)
 
         for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
             os.remove(i)
@@ -2257,3 +2544,77 @@ def report_checklistt():
 
 
     return {'status': True}
+
+
+
+
+
+    # pdfkit.from_string('Hello!', 'out.pdf')
+    # from fpdf import FPDF
+  
+  
+# # save FPDF() class into a 
+# # variable pdf
+# pdf = FPDF()
+  
+# # Add a page
+# pdf.add_page()
+  
+# # set style and size of font 
+# # that you want in the pdf
+# pdf.set_font("Arial", size = 15)
+  
+# # create a cell
+# pdf.cell(200, 10, txt = "GeeksforGeeks", 
+#          ln = 1, align = 'C')
+  
+# # add another cell
+# pdf.cell(200, 10, txt = "A Computer Science portal for geeks.",
+#          ln = 2, align = 'C')
+  
+# # save the pdf with name .pdf
+# pdf.output("GFG.pdf")   
+
+
+
+### TEMPRORAT TESTING ENDPOINTS BELOW
+### THEY ARE FOR TESTING ONLY
+### THEY SHOULD NOT BE CALLED BY FRONTEND
+
+
+@apis.route('/test_add_notif', methods=['POST'])
+def TEST_add_notification():
+    """
+    :param: body: json, same format as Photo
+    add a column 'read' for nofitication
+    """
+    body = request.get_json()
+    try:
+        body['read'] = False
+        body['deleted'] = False
+        newPhotoNotification = PhotoNotification(**body)
+        newPhotoNotification.save()
+    except Exception as e:
+        print("error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+@apis.route('/test_add_notif2', methods=['POST'])
+def TEST_add_notification_from_staff():
+    """
+    :param: body: json, same format as Photo
+    add a column 'read' for nofitication
+    """
+    body = request.get_json()
+    try:
+        body['read'] = False
+        body['deleted'] = False
+        newPhotoNotificationFromTenant = PhotoNotificationFromTenant(**body)
+        newPhotoNotificationFromTenant.save()
+    except Exception as e:
+        print("error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200

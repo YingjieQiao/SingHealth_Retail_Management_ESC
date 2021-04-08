@@ -5,6 +5,7 @@ import AuditChecklistFB from './auditChecklistFB';
 import AuditChecklistCovid from './auditChecklistCovid';
 import AuditChecklistTest from './auditChecklistTest';
 import styles from "./CSS/audit.module.css";
+import axios from 'axios';
 
 
 class Audit extends Component {
@@ -16,6 +17,20 @@ class Audit extends Component {
     }
 
     
+    componentDidMount() {
+        try {
+            axios.get("http://localhost:5000/if_loggedin")
+            .then(
+                res => {
+                    console.log(res.data);
+                    if(res.data.username==""){
+                      alert("Please Log in!");
+                      this.props.history.push('/');
+                    }
+                }
+            )
+        } catch (e) { console.log(e); }
+    } 
 
     render() {
 

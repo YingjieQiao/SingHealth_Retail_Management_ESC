@@ -190,6 +190,18 @@ rendervalue(){
     </div>
  )
 }
+componentDidMount() {
+  axios.get("http://localhost:5000/if_loggedin")
+  .then(
+      res => {
+          console.log(res.data);
+          if(res.data.username==""){
+            alert("Please Log in!");
+            this.props.history.push('/');
+          }
+      }
+  )
+}
 	render() {
     // const headers = {
 		// 	'Content-Type': 'multipart/form-data',

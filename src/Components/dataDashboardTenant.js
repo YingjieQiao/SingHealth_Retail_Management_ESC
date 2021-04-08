@@ -9,32 +9,70 @@ class DataDashboardTenant extends Component {
         tenant: this.props.location.state.tenant["email"],
         tenantName: this.props.location.state.tenant["name"],
         timeChoice: "default",
-        dataDict: null,
-        sendReport: true,
+        dataDict: {},
+        isReportAvail: false,
         emailContent: {
-            tenant: this.props.location.state.tenant["email"],
-            email: "",
-            body: "",
+            email: [],
             subject: "",
+            body: "",
         },
+        emailList: [],
+        numOfReceiver: [],
     }
 
 
     componentDidMount() {
-        const data = {
-            tenant: this.state.tenant
-        };
+        try {
+            axios.get("http://localhost:5000/if_loggedin")
+            .then(
+                res => {
+                    console.log(res.data);
+                    if(res.data.username==""){
+                        alert("Please Log in!");
+                        this.props.history.push('/');
+                    }
+                }
+            );
 
-        axios.post("http://localhost:5000/dashboard_data", data)
-        .then(
-            res => {
-                console.log(res);
-                this.setState({dataDict: res.data});
-                // console.log(typeof this.state.dataDict.audit_day_img);
-                // console.log(this.state.dataDict["audit_day_img"]);
-            }
-        );
-        
+            const data = {tenant: this.state.tenant};
+            axios.post("http://localhost:5000/dashboard_data", data)
+            .then(
+                res => {
+                    if (res.data.result) {
+                        console.log(res);
+                        this.setState({dataDict: res.data});
+                    }
+                }
+            );
+
+            axios.get("http://localhost:5000/staff_list")
+            .then(
+                res => {
+                    if (res.data.result) {
+                        console.log(res);
+                        for (var i = 0; i < res.data.tenant_list.length; i++) {
+                            let newArray1 = this.state.emailList;
+                            newArray1.push(res.data.tenant_list[i]["email"]);
+                            this.setState({emailList: newArray1});
+                        }
+                    }
+                }
+            );
+
+            axios.get("http://localhost:5000/tenant_list")
+            .then(
+                res => {
+                    if (res.data.result) {
+                        console.log(res);
+                        for (var i = 0; i < res.data.tenant_list.length; i++) {
+                            let newArray2 = this.state.emailList;
+                            newArray2.push(res.data.tenant_list[i]["email"]);
+                            this.setState({emailList: newArray2});
+                        }
+                    }
+                }
+            );
+        } catch (e) { console.log(e); }
     }
 
     render() {
@@ -48,16 +86,16 @@ class DataDashboardTenant extends Component {
                     <label>Select a statistic to be displayed:</label>
                     <select class="custom-select my-1 mr-sm-2" id="range" onChange={this.saveSelection}>
                         <option selected value="default">Choose...</option>
-                        <option value="year">Yearly</option>
-                        <option value="month">Monthly</option>
-                        <option value="week">Weekly</option>
-                        <option value="day">7 days</option>
+                        <option value="year" key="year">Yearly</option>
+                        <option value="month" key="month">Monthly</option>
+                        <option value="week" key="week">Weekly</option>
+                        <option value="day" key="day">7 days</option>
                     </select>
                 </div>
                 <div>{this.displayImage()}</div>
                 <div className={styles.button_container}>{this.displayExportButton()}</div>
                 <div className={styles.button_container}>{this.displayReportButton()}</div>
-                {/* <div className={styles.button_container}>{this.displayPopup()}</div> */}
+                <div className={styles.button_container}>{this.displayPopup()}</div>
             </div>
         )
     }
@@ -187,7 +225,7 @@ class DataDashboardTenant extends Component {
             const validateImage = this.checkIfImageExist(imageName);
             const index = this.state.timeChoice;
             if (validateImage === true) {
-                return <button type="button" className="btn btn-info" id={index} onClick={this.handleSendReport}>Send report</button>;
+                return <button type="button" className="btn btn-info" id={index} onClick={this.handleReport}>Send report</button>;
             }
             else {
                 return <button type="button" className="btn btn-secondary" disabled>Send report</button> ;
@@ -197,57 +235,96 @@ class DataDashboardTenant extends Component {
         }
     }
 
-    handleSendReport = event => {
+    handleReport = event => {
         try {
-            const emailAddress = this.state.tenant;
-            // axios.post here
+            this.setState({isReportAvail: true});
+        } catch (e) { console.log(e); }
+    }
 
-        } catch (e) {
-            console.log(e);
-            
+    displayPopup = () => {
+        if (this.state.isReportAvail) {
+            return(
+                <div>
+                    <h4>Send report</h4>
+                    <div>
+                        <label>Email:</label>
+                        <select class="custom-select my-1 mr-sm-2" onChange={this.saveReceiverEmail}>
+                            <option selected>Choose...</option>
+                            { this.state.emailList.map(email => <option value={email}>{email}</option> ) }
+                        </select>
+                        <button type="button" value={"1"} onClick={this.handleAddReceiver}>Add more email address</button>
+                    </div> 
+                    <div>{this.state.numOfReceiver.map(index => 
+                        <div>
+                            <label>Email:</label>
+                            <select class="custom-select my-1 mr-sm-2" onChange={this.saveReceiverEmail}>
+                                <option selected>Choose...</option>
+                                { this.state.emailList.map(email => <option value={email}>{email}</option> ) }
+                            </select>
+                        </div> )}
+                    </div>
+                    <div>
+                        <label>Subject:</label>
+                        <input placeholder="Subject" onInput={this.saveReceiverSubject} type="text" />
+                    </div>
+                    <div>
+                        <label>Note to receiver:</label>
+                        <input placeholder="Write something to receiver" onInput={this.saveReceiverNote} type="text" />
+                    </div>
+                    <button type="submit" onClick={this.handleSendReport}>Send Email</button>
+                </div>
+            )
         }
     }
 
-    // displayPopup = () => {
-    //     if (this.state.sendReport === true) {
-    //         return(
-    //             <div>
-    //                 <h4>Send report</h4>
-    //                 <div>
-    //                     <label>Email:</label>
-    //                     <input placeholder="Email address" onInput={this.saveReceiverEmail} type="email" />
-    //                 </div> 
-    //                 <div>
-    //                     <label>Subject:</label>
-    //                     <input placeholder="Subject" onInput={this.saveReceiverSubject} type="text" />
-    //                 </div>
-    //                 <div>
-    //                     <label>Note to receiver:</label>
-    //                     <input placeholder="Write something to receiver" onInput={this.saveReceiverNote} type="text" />
-    //                 </div>
-    //                 <button type="submit" onClick={this.handleSend}>Send Email</button>
-    //             </div>
-    //         )
-    //     }
-    // }
+    saveReceiverEmail = event => {
+        var newEmailContent  = this.state.emailContent;
+        newEmailContent["email"].push(event.target.value);
+        this.setState({emailContent: newEmailContent});
+    }
 
-    // saveReceiverEmail = event => {
-    //     var newEmailContent  = this.state.emailContent;
-    //     newEmailContent["email"] = event.target.value;
-    //     this.setState({emailContent: newEmailContent});
-    // }
+    saveReceiverSubject = event => {
+        var newEmailContent  = this.state.emailContent;
+        newEmailContent["subject"] = event.target.value;
+        this.setState({emailContent: newEmailContent});
+    }
 
-    // saveReceiverSubject = event => {
-    //     var newEmailContent  = this.state.emailContent;
-    //     newEmailContent["subject"] = event.target.value;
-    //     this.setState({emailContent: newEmailContent});
-    // }
+    handleAddReceiver = event => {
+        var newNumOfReceiver = this.state.numOfReceiver;
+        newNumOfReceiver.push(event.target.value);
+        this.setState({numOfReceiver: newNumOfReceiver});
+    }
 
-    // saveReceiverNote = event => {
-    //     var newEmailContent  = this.state.emailContent;
-    //     newEmailContent["body"] = event.target.value;
-    //     this.setState({emailContent: newEmailContent});
-    // }
+
+    saveReceiverSubject = event => {
+        var newEmailContent  = this.state.emailContent;
+        newEmailContent["subject"] = event.target.value;
+        this.setState({emailContent: newEmailContent});
+    }
+
+    saveReceiverNote = event => {
+        var newEmailContent  = this.state.emailContent;
+        newEmailContent["body"] = event.target.value;
+        this.setState({emailContent: newEmailContent});
+    }
+
+    handleSendReport = event => {
+        try {
+            console.log(this.state);
+            axios.post("http://localhost:5000/report_dashboard", this.state)
+            .then(
+                res => {
+                    console.log(res.data);
+                    if(res.data.status==true){
+                        alert("Email sent!");
+                    }
+                }
+            );
+        } catch (e) {
+            console.log(e);
+        }
+
+    }
 
 
 

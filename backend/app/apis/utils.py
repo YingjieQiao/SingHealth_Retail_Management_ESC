@@ -1,8 +1,10 @@
 from app.models import User, Photo
-import csv, json, uuid, os
+import csv, json, uuid, os, logging
 from flask import current_app
 import shutil
 
+
+logger = logging.getLogger("logger")
 
 def get_data():
     users = User.objects()
@@ -81,3 +83,80 @@ def clear_assets():
     assetsPath = os.path.join(os.getcwd(), assetsFolderName)
 
     shutil.rmtree(assetsPath) 
+
+
+def check_if_staff(username, flag):
+    if flag:
+        username = "UNITTEST"
+    users = User.objects(staff=True)
+    for user in users:
+        username_check = "".join([user["firstName"], user["lastName"]])
+        if (username == username_check):
+            print("found staff: ", username)
+            return True
+    return False
+
+
+def check_if_tenant(username, flag):
+    if flag:
+        username = "UNITTEST"
+    users = User.objects(tenant=True)
+    for user in users:
+        username_check = "".join([user["firstName"], user["lastName"]])
+        if (username == username_check):
+            print("found tenant: ", username)
+            return True
+    return False
+
+
+def assign_s3_bucket(username):
+    if username == "UnitTester":
+        return "escapp-bucket-dev", "escapp-bucket-dev-tenant"
+
+    bucketName, counterPart_bucketName = "", ""
+    if (check_if_staff(username, False)):
+        bucketName, counterPart_bucketName = "escapp-bucket-dev", "escapp-bucket-dev-tenant"
+    elif (check_if_tenant(username, False)):
+        bucketName, counterPart_bucketName = "escapp-bucket-dev-tenant", "escapp-bucket-dev"
+    else:
+        print("something wrong")
+
+    return bucketName, counterPart_bucketName
+
+
+def assign_audience_name(username, staffName, tenantName):
+    if username == "":
+        return "UnitTester"
+
+    res = ""
+    if check_if_staff(username, False):
+        res = tenantName
+    elif check_if_tenant(username, False):
+        res = staffName
+    else:
+        res = ""
+    return res
+
+
+def get_tenant_email(tenantName):
+    tenantEmail = ""
+    users = User.objects(tenant=True)
+    for user in users:
+        tenantName_check = "".join([user["firstName"], user["lastName"]])
+        if (tenantName == tenantName_check):
+            tenantEmail = user["email"]
+            print("found tenant email: ", tenantEmail)
+            break
+    return tenantEmail
+
+
+def get_staff_email(staffName):
+    staffEmail = ""
+    users = User.objects(staff=True)
+    for user in users:
+        staffName_check = "".join([user["firstName"], user["lastName"]])
+        if (staffName == staffName_check):
+            staffEmail = user["email"]
+            print("found tenant email: ", staffEmail)
+            break
+    return staffEmail
