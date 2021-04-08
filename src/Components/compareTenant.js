@@ -31,7 +31,7 @@ class CompareTenant extends Component {
     }
 
     componentDidMount() {
-        axios.get("http://localhost:5000/if_loggedin")
+        axios.get("http://localhost:5000/get_current_username_and_datetime")
         .then(
             res => {
                 console.log(res.data);

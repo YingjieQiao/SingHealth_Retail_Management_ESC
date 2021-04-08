@@ -110,8 +110,8 @@ def get_photo_info(date_, time_, counterPart, username):
     get the information assciated with a given photo name
     """
     
-    if settings.username == "":
-        settings.username = "UnitTester"
+    if session['username'] == "":
+        session['username'] = "UnitTester"
         print("testing")
         logger.error("In 'get_photo_info' function, error occurred")
 

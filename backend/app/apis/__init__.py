@@ -1,4 +1,5 @@
 from flask import Blueprint, request, session, jsonify, url_for, current_app, send_from_directory
+from flask_cors import cross_origin
 from app.models import User, Audit_non_FB, Photo, TenantPhoto, PhotoNotification, PhotoNotificationFromTenant
 import boto3
 from botocore.exceptions import ClientError
@@ -48,11 +49,9 @@ def get_current_username_and_datetime():
     date_ = date_.replace("/", "-")
     time_ = dateTimeArr[1]
 
-    return {"username": settings.username, "time": time_, "date": date_}, 200
+    username = utils.get_current_username()
 
-@apis.route('/if_loggedin', methods=['GET', 'POST'])
-def if_loggedin():
-    return {"username": settings.username}, 200
+    return {"username": username, "time": time_, "date": date_}, 200
 
 
 @apis.route('/check_if_staff', methods=['GET'])
@@ -63,7 +62,7 @@ def check_if_staff():
         flag = False
 
     try:
-        res = utils.check_if_staff(settings.username, flag)
+        res = utils.check_if_staff(utils.get_current_username(), flag)
     except Exception as e:
         logger.error("error in '/check_if_staff' endpoint: %s", e)
         return {"result": False}, 500
@@ -78,7 +77,7 @@ def check_if_tenant():
         flag = False
         
     try:
-        res = utils.check_if_tenant(settings.username, flag)
+        res = utils.check_if_tenant(utils.get_current_username(), flag)
     except Exception as e:
         logger.error("error in '/check_if_tenant' endpoint: %s", e)
         return {"result": False}, 500
@@ -95,7 +94,6 @@ def user_signup():
         user.save()
         userid = user.id
     except Exception as e:
-        print("error: ", e)
         logger.error("error in '/signup' endpoint: %s", e)
         return {'result': False, 'info': "Registeration Failed"}, 500
 
@@ -166,11 +164,12 @@ def user_login():
         if not authorized:
             logger.error("error in '/login' endpoint: %s", "password error")
             return {'result': False, 'info': "password error"}, 500
+        session['username'] = firstName + lastName
+        session.modified = True
+        print("username set: ", session['username'])
     except:
         logger.error("error in '/login' endpoint: %s", "user does not exist or payload error")
         return {'result': False, 'info': "user does not exist or payload error"}, 500
-
-    settings.username = firstName + lastName
 
     try:
         message = MIMEMultipart()
@@ -200,8 +199,6 @@ def user_login():
         server.login(sender_email, password)
         server.sendmail(sender_email, email, text)
 
-    settings.username = firstName + lastName
-    print(settings.username)
     logger.info("%s is attemping to log in", firstName+lastName)
 
     return {'result': True, 'info': "2FA sent", "token":token,
@@ -221,11 +218,13 @@ def login_verified():
         staff=user.staff
         admin=user.admin
         tenant=user.tenant
-        settings.username = firstName + lastName
+        session['username'] = firstName + lastName
+        session.modified = True
+        print(session['username'])
         logger.info("%s has logged in", firstName+lastName)
         return {'result': True, 'firstName': firstName, 'lastName': lastName, 'staff':staff, 'admin':admin, 'tenant':tenant}, 200 #this returns the details of the user 
-    except:
-        logger.info("%s 2FA error", firstName+lastName)
+    except Exception as e:
+        logger.error("%s 2FA error", e)
         return {'result': False, 'info': "2FA error"}, 500
     # except SignatureExpired:
     #     return {'result': False, 'info': "Link has expired"}, 200
@@ -242,7 +241,7 @@ def upload_file():
     time_ = request.form['time']
     date_ = request.form['date']
 
-    username = settings.username
+    username = utils.get_current_username()
     audienceName = ""
     try:
         audienceName = utils.assign_audience_name(username, request.form["staffName"], request.form["tenantName"])
@@ -294,7 +293,7 @@ def download_file():
         logger.error("In '/download_file' endpoint, error occurred: ", e)
         return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
 
-    username = settings.username
+    username = utils.get_current_username()
     if username == "":
         username = 'UnitTester'
         print("testing s3 download")
@@ -403,13 +402,14 @@ def rectify_photo():
     date_ = body['date']
     print(body)
 
-    if settings.username == "":
-        settings.username = "UnitTester"
+    username = utils.get_current_username()
+    if username == "":
+        username = "UnitTester"
         print("testing")
         logger.info("testing '/rectify_photo' endpoint")
 
     try:
-        photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)
+        photoInfo = Photo.objects(date=date_, time=time_, staffName=username)
         photoInfo.update(**body)
     except Exception as e:
         print("error: ", e) 
@@ -424,7 +424,7 @@ def tenant_get_photo_notification():
     """
     get non-compliance photos of tenant user
     """
-    username = settings.username
+    username = utils.get_current_username()
     if username == "":
         username = 'RossGeller'
         print("testing") #TODO change to logging
@@ -449,7 +449,7 @@ def tenant_delete_photo_notification():
     print(body)
 
     try:
-        notif_methods.tenant_update_photo_notification("delete", settings.username, body)
+        notif_methods.tenant_update_photo_notification("delete", utils.get_current_username(), body)
     except Exception as e:
         print("error: ", e) 
         logger.error("In '/tenant_delete_photo_notification' endpoint, error occurred: ", e)
@@ -469,7 +469,7 @@ def tenant_read_photo_notification():
     print(body)
 
     try:
-        notif_methods.tenant_update_photo_notification("read", settings.username, body)
+        notif_methods.tenant_update_photo_notification("read", utils.get_current_username(), body)
     except Exception as e:
         print("error: ", e) 
         logger.error("In '/tenant_read_photo_notification' endpoint, error occurred: ", e)
@@ -479,11 +479,12 @@ def tenant_read_photo_notification():
 
 
 @apis.route('/staff_get_photo_notification', methods=['GET', 'POST'])
+# @cross_origin(supports_credentials=True)
 def staff_get_photo_notification():
     """
     get remedy photos of tenant user
     """
-    username = settings.username
+    username = utils.get_current_username()
     if username == "":
         username = 'UnitTesterStaff'
         print("testing") #TODO change to logging
@@ -508,7 +509,7 @@ def staff_delete_photo_notification():
     print(body)
 
     try:
-        notif_methods.staff_update_photo_notification("delete", settings.username, body)
+        notif_methods.staff_update_photo_notification("delete", utils.get_current_username(), body)
     except Exception as e:
         print("error: ", e) 
         logger.error("In '/staff_delete_photo_notification' endpoint, error occurred: ", e)
@@ -528,7 +529,7 @@ def staff_read_photo_notification():
     print(body)
 
     try:
-        notif_methods.staff_update_photo_notification("read", settings.username, body)
+        notif_methods.staff_update_photo_notification("read", utils.get_current_username(), body)
     except Exception as e:
         print("error: ", e) 
         logger.error("In '/staff_read_photo_notification' endpoint, error occurred: ", e)

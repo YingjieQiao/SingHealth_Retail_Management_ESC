@@ -5,6 +5,7 @@ from app.models import db
 from app.config import Config
 import logging
 
+
 def create_app(config_class=Config):
     app = Flask(__name__)
     

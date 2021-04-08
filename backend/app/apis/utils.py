@@ -1,10 +1,17 @@
 from app.models import User, Photo
 import csv, json, uuid, os, logging
-from flask import current_app
+from flask import current_app, session
 import shutil
 
 
 logger = logging.getLogger("logger")
+
+def get_current_username():
+    username = ""
+    if "username" in session:
+        username = session['username']
+    print("in utils get username: ", username)
+    return username
 
 def get_data():
     users = User.objects()
