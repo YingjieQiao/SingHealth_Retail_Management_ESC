@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_session import Session
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from app.models import db
@@ -15,6 +16,7 @@ def create_app(config_class=Config):
 
     db.init_app(app)
     bcrypt = Bcrypt(app)
+    Session(app)
 
     
     logging.basicConfig(filename='backend_logs.log', 

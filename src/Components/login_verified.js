@@ -51,7 +51,9 @@ class login_verified extends Component {
     };
     const headers = {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        withCredentials: true
+        
     };
     console.log("dat");
     //Todo: dedlete thiss after testing
