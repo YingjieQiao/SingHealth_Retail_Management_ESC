@@ -20,7 +20,7 @@ export const SidebarData = [
     path: '/upload',
     icon: <FaIcons.FaUpload />,
     cName: 'nav-text',
-    id:"staff"
+    id:"Upload"
   },
 
   {
@@ -28,7 +28,7 @@ export const SidebarData = [
     path: '/viewPhoto',
     icon: <FaIcons.FaImages />,
     cName: 'nav-text',
-    id:"staff"
+    id:"view"
   },
 
   {
