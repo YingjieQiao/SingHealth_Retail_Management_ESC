@@ -149,7 +149,9 @@ class Register extends Component {
                     tenant: this.state.tenant,
                     staff: this.state.staff,
                     admin:this.state.admin ,
-                    tenanttype:this.state.tenanttype,
+                    fnb:this.state.tenanttype,
+                    locked:false,
+                    attempts: 0
                 };
                 const headers = {
                     'Content-Type': 'application/json',

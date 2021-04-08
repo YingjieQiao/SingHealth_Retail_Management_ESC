@@ -40,6 +40,13 @@ logger = logging.getLogger("logger")
 #TODO remove downloaded csv from project directory 
 # after the file is downloaded on the frontned by the user for admin page
 
+
+@apis.after_request
+def creds(response):
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    return response
+
+
 @apis.route('/get_current_username_and_datetime', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
 def get_current_username_and_datetime():
@@ -168,14 +175,18 @@ def user_login():
         authorized = user.check_password(body.get('password'))
         #print(authorized)
         if not authorized:
+            if utils.counter_brute_force(firstName, lastName):
+                logger.error("brute force attack detected!")
+                utils.lock_acc(firstName, lastName)
+                return {'result': False, 'info': "brute force attack detected! your account is locked"}, 200
             logger.error("error in '/login' endpoint: %s", "password error")
-            return {'result': False, 'info': "password error"}, 500
+            raise Exception("password error")
         session['username'] = firstName + lastName
         session.modified = True
         #print("username set: ", session['username'])
     except:
-        logger.error("error in '/login' endpoint: %s", "user does not exist or payload error")
-        return {'result': False, 'info': "user does not exist or payload error"}, 500
+        logger.error("error in '/login' endpoint: %s", "user does not exist or payload error or password incorrect")
+        return {'result': False, 'info': "user does not exist or password error"}, 200
 
     try:
         message = MIMEMultipart()
@@ -229,6 +240,7 @@ def login_verified():
         session.modified = True
         #print(session['username'])
         logger.info("%s has logged in", firstName+lastName)
+        utils.reset_counter_brute_force(firstName, lastName)
         return {'result': True, 'firstName': firstName, 'lastName': lastName, 
             'staff':staff, 'admin':admin, 'tenant':tenant, "session": session.sid}, 200 #this returns the details of the user 
     except Exception as e:
