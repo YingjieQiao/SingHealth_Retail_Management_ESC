@@ -11,7 +11,7 @@ class tenantHome extends Component {
   }
 
   componentDidMount() {
-    axios.get("http://localhost:5000/if_loggedin")
+    axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
     .then(
         res => {
             console.log(res.data);
@@ -22,7 +22,7 @@ class tenantHome extends Component {
         }
     )
 
-    axios.get("http://localhost:5000/tenant_get_photo_notification")
+    axios.get("http://localhost:5000/tenant_get_photo_notification", {withCredentials: true})
     .then(
         res => {
             console.log("start: ", res);

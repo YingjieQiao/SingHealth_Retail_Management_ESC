@@ -12,7 +12,7 @@ class viewPhoto extends Component {
     };
     componentDidMount() {
 
-        axios.get("http://localhost:5000/if_loggedin")
+        axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
         .then(
             res => {
                 console.log(res.data);
@@ -27,7 +27,6 @@ class viewPhoto extends Component {
             <div>
                 <TenantNavbar/>
                 <h2>Tenant View Photos</h2>
-                <h2>The button on the left is not working yet</h2>
                 <p>{this.state.reviewPhotoMsg}</p>
                 <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoByStaffHandler}>View Photos Uploaded By Staff</button>
                 <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoByTenantHandler}>View Previously Uploaded Photos</button>
@@ -84,7 +83,8 @@ class viewPhoto extends Component {
     showPhotoByTenantHandler = event => {
         const headers = {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            withCredentials: true
         };
 
         const payload = {
@@ -124,12 +124,20 @@ class viewPhoto extends Component {
         )
 
         console.log("done");
+
+        this.setState({
+            reviewPhotoMsg: "There is no photo in album",
+            numberOfImage: [],
+            imageSource: [],
+            photoAttrData: []
+        })
     }
 
     showPhotoByStaffHandler = event => {
         const headers = {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            withCredentials: true
         };
 
         const payload = {
@@ -169,6 +177,13 @@ class viewPhoto extends Component {
         )
 
         console.log("showPhotoByStaffHandler");
+
+        this.setState({
+            reviewPhotoMsg: "There is no photo in album",
+            numberOfImage: [],
+            imageSource: [],
+            photoAttrData: []
+        })
     }
 
 

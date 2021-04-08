@@ -13,7 +13,7 @@ class DataDashboard extends Component {
     }
 
     componentDidMount() {
-        axios.get("http://localhost:5000/if_loggedin")
+        axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
             .then(
                 res => {
                     console.log(res.data);
@@ -24,7 +24,7 @@ class DataDashboard extends Component {
                 }
             )
         
-        axios.get("http://localhost:5000/tenant_list")
+        axios.get("http://localhost:5000/tenant_list", {withCredentials: true})
         .then(
             res => {
                 console.log(res);

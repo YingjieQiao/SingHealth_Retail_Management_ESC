@@ -1,4 +1,5 @@
 from flask import Blueprint, request, session, jsonify, url_for, current_app, send_from_directory
+from flask_cors import cross_origin
 from app.models import User, Audit_non_FB, Photo, TenantPhoto, PhotoNotification, PhotoNotificationFromTenant
 import boto3
 from botocore.exceptions import ClientError
@@ -7,7 +8,7 @@ from PIL import Image
 import os
 from datetime import datetime
 
-from . import settings, s3_methods, utils, notif_methods, email_methods
+from . import s3_methods, utils, notif_methods, email_methods
 
 import email, smtplib, ssl
 from email import encoders
@@ -40,6 +41,7 @@ logger = logging.getLogger("logger")
 # after the file is downloaded on the frontned by the user for admin page
 
 @apis.route('/get_current_username_and_datetime', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def get_current_username_and_datetime():
     now = datetime.now() # current date and time
     dateTime = now.strftime("%m/%d/%Y %H:%M:%S")
@@ -48,14 +50,13 @@ def get_current_username_and_datetime():
     date_ = date_.replace("/", "-")
     time_ = dateTimeArr[1]
 
-    return {"username": settings.username, "time": time_, "date": date_}, 200
+    username = utils.get_current_username()
 
-@apis.route('/if_loggedin', methods=['GET', 'POST'])
-def if_loggedin():
-    return {"username": settings.username}, 200
+    return {"username": username, "time": time_, "date": date_, "session": session.sid}, 200
 
 
 @apis.route('/check_if_staff', methods=['GET'])
+@cross_origin(supports_credentials=True)
 def check_if_staff():
     if current_app.config['TESTING']:
         flag = True
@@ -63,14 +64,15 @@ def check_if_staff():
         flag = False
 
     try:
-        res = utils.check_if_staff(settings.username, flag)
+        res = utils.check_if_staff(utils.get_current_username(), flag)
     except Exception as e:
         logger.error("error in '/check_if_staff' endpoint: %s", e)
-        return {"result": False}, 500
-    return {"result": res}, 200
+        return {"result": False, "session": session.sid}, 500
+    return {"result": res, "session": session.sid}, 200
 
 
 @apis.route('/check_if_tenant', methods=['GET'])
+@cross_origin(supports_credentials=True)
 def check_if_tenant():
     if current_app.config['TESTING']:
         flag = True
@@ -78,14 +80,15 @@ def check_if_tenant():
         flag = False
         
     try:
-        res = utils.check_if_tenant(settings.username, flag)
+        res = utils.check_if_tenant(utils.get_current_username(), flag)
     except Exception as e:
         logger.error("error in '/check_if_tenant' endpoint: %s", e)
-        return {"result": False}, 500
-    return {"result": res}, 200
+        return {"result": False, "session": session.sid}, 500
+    return {"result": res, "session": session.sid}, 200
 
 
 @apis.route('/signup', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def user_signup():
     body = request.get_json()
     try:
@@ -95,7 +98,6 @@ def user_signup():
         user.save()
         userid = user.id
     except Exception as e:
-        print("error: ", e)
         logger.error("error in '/signup' endpoint: %s", e)
         return {'result': False, 'info': "Registeration Failed"}, 500
 
@@ -106,6 +108,7 @@ def user_signup():
         'email': body['email'],
         'mobile': body['mobile'],
         'location': body['location'],
+        "session": session.sid
     }
 
     # code to verify user
@@ -138,7 +141,7 @@ def user_signup():
     #     server.login(sender_email, password)
     #     server.sendmail(sender_email, email, text)
     logger.info("username %s sign up success", body['firstName']+body['lastName'])
-    return {'result': True, 'info': "Registeration Success"}, 200
+    return {'result': True, 'info': "Registeration Success", "session": session.sid}, 200
 
 # Code to verify the link for user registration, not being used for now
 
@@ -155,6 +158,7 @@ def user_signup():
 #         return {'result': False, 'info': "Link has expired"}, 200
 
 @apis.route('/login', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def user_login():
     body = request.get_json()
     try:
@@ -166,11 +170,12 @@ def user_login():
         if not authorized:
             logger.error("error in '/login' endpoint: %s", "password error")
             return {'result': False, 'info': "password error"}, 500
+        session['username'] = firstName + lastName
+        session.modified = True
+        print("username set: ", session['username'])
     except:
         logger.error("error in '/login' endpoint: %s", "user does not exist or payload error")
         return {'result': False, 'info': "user does not exist or payload error"}, 500
-
-    settings.username = firstName + lastName
 
     try:
         message = MIMEMultipart()
@@ -200,16 +205,15 @@ def user_login():
         server.login(sender_email, password)
         server.sendmail(sender_email, email, text)
 
-    settings.username = firstName + lastName
-    print(settings.username)
     logger.info("%s is attemping to log in", firstName+lastName)
 
     return {'result': True, 'info': "2FA sent", "token":token,
              'firstName': firstName, 'lastName': lastName,
-             'staff': user.staff, 'tenant': user.tenant, 'admin': user.admin}
+             'staff': user.staff, 'tenant': user.tenant, 'admin': user.admin, "session": session.sid}
 
 
 @apis.route('/login_verified', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def login_verified():
 
     body = request.get_json()
@@ -221,17 +225,21 @@ def login_verified():
         staff=user.staff
         admin=user.admin
         tenant=user.tenant
-        settings.username = firstName + lastName
+        session['username'] = firstName + lastName
+        session.modified = True
+        print(session['username'])
         logger.info("%s has logged in", firstName+lastName)
-        return {'result': True, 'firstName': firstName, 'lastName': lastName, 'staff':staff, 'admin':admin, 'tenant':tenant}, 200 #this returns the details of the user 
-    except:
-        logger.info("%s 2FA error", firstName+lastName)
-        return {'result': False, 'info': "2FA error"}, 500
+        return {'result': True, 'firstName': firstName, 'lastName': lastName, 
+            'staff':staff, 'admin':admin, 'tenant':tenant, "session": session.sid}, 200 #this returns the details of the user 
+    except Exception as e:
+        logger.error("%s 2FA error", e)
+        return {'result': False, 'info': "2FA error", "session": session.sid}, 500
     # except SignatureExpired:
     #     return {'result': False, 'info': "Link has expired"}, 200
 
     
 @apis.route('/upload_file', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def upload_file():
     if current_app.config['TESTING']:
         testFilePath = os.getcwd() + "/assets/image.jpg"
@@ -242,7 +250,7 @@ def upload_file():
     time_ = request.form['time']
     date_ = request.form['date']
 
-    username = settings.username
+    username = utils.get_current_username()
     audienceName = ""
     try:
         audienceName = utils.assign_audience_name(username, request.form["staffName"], request.form["tenantName"])
@@ -285,6 +293,7 @@ def upload_file():
 
 
 @apis.route('/download_file', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def download_file():
     try:
         body = request.get_json()
@@ -294,7 +303,7 @@ def download_file():
         logger.error("In '/download_file' endpoint, error occurred: ", e)
         return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
 
-    username = settings.username
+    username = utils.get_current_username()
     if username == "":
         username = 'UnitTester'
         print("testing s3 download")
@@ -340,10 +349,9 @@ def download_file():
 
 
 @apis.route('/upload_photo_info', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def upload_photo_info():
     body = request.get_json()
-
-    print(body)
 
     try:
         photo = Photo(**body)
@@ -368,25 +376,25 @@ def upload_photo_info():
 
 
 @apis.route('/tenant_upload_photo_info', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def tenant_upload_photo_info():
     body = request.get_json()
-
-    print(body)
 
     try:
         tenantPhoto = TenantPhoto(**body)
         tenantPhoto.save()
 
-        # notofication operations
-        notif_methods.add_notification_from_tenant(body)
+        if not current_app.config['TESTING']:
+            # notofication operations
+            notif_methods.add_notification_from_tenant(body)
 
-        rcvEmail = utils.get_staff_email(body["staffName"])
-        subject = "A tenant from a SingHealth institution has uploaded a remedy effort"
-        emailTextBody = """
-        Please login to our retail-management platform using your staff account, 
-        and take necessary actions accordingly.
-        """
-        email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
+            rcvEmail = utils.get_staff_email(body["staffName"])
+            subject = "A tenant from a SingHealth institution has uploaded a remedy effort"
+            emailTextBody = """
+                Please login to our retail-management platform using your staff account, 
+                and take necessary actions accordingly.
+                """
+            email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
     except Exception as e:
         print("Error occurred: ", e)
         logger.error("In '/tenant_upload_photo_info' endpoint, error occurred: ", e)
@@ -396,20 +404,46 @@ def tenant_upload_photo_info():
 
 
 @apis.route('/rectify_photo', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def rectify_photo():
     body = request.get_json()
     body['rectified'] = True
     time_ = body['time']
     date_ = body['date']
-    print(body)
 
-    if settings.username == "":
-        settings.username = "UnitTester"
+    username = utils.get_current_username()
+    if username == "":
+        username = "UnitTester"
         print("testing")
         logger.info("testing '/rectify_photo' endpoint")
 
     try:
-        photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)
+        photoInfo = Photo.objects(date=date_, time=time_, staffName=username)
+        photoInfo.update(**body)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/rectify_photo' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+@apis.route('/tenant_rectify_photo', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
+def tenant_rectify_photo():
+    body = request.get_json()
+    body['rectified'] = True
+    time_ = body['time']
+    date_ = body['date']
+
+    username = utils.get_current_username()
+    if username == "":
+        username = "UnitTester"
+        print("testing")
+        logger.info("testing '/rectify_photo' endpoint")
+
+    try:
+        photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=username)
         photoInfo.update(**body)
     except Exception as e:
         print("error: ", e) 
@@ -420,11 +454,12 @@ def rectify_photo():
 
 
 @apis.route('/tenant_get_photo_notification', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def tenant_get_photo_notification():
     """
     get non-compliance photos of tenant user
     """
-    username = settings.username
+    username = utils.get_current_username()
     if username == "":
         username = 'RossGeller'
         print("testing") #TODO change to logging
@@ -439,6 +474,7 @@ def tenant_get_photo_notification():
 
 
 @apis.route('/tenant_delete_photo_notification', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def tenant_delete_photo_notification():
     body = request.get_json()
     try:
@@ -449,7 +485,7 @@ def tenant_delete_photo_notification():
     print(body)
 
     try:
-        notif_methods.tenant_update_photo_notification("delete", settings.username, body)
+        notif_methods.tenant_update_photo_notification("delete", utils.get_current_username(), body)
     except Exception as e:
         print("error: ", e) 
         logger.error("In '/tenant_delete_photo_notification' endpoint, error occurred: ", e)
@@ -459,6 +495,7 @@ def tenant_delete_photo_notification():
 
 
 @apis.route('/tenant_read_photo_notification', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def tenant_read_photo_notification():
     body = request.get_json()
     try:
@@ -469,7 +506,7 @@ def tenant_read_photo_notification():
     print(body)
 
     try:
-        notif_methods.tenant_update_photo_notification("read", settings.username, body)
+        notif_methods.tenant_update_photo_notification("read", utils.get_current_username(), body)
     except Exception as e:
         print("error: ", e) 
         logger.error("In '/tenant_read_photo_notification' endpoint, error occurred: ", e)
@@ -479,11 +516,13 @@ def tenant_read_photo_notification():
 
 
 @apis.route('/staff_get_photo_notification', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
+# @cross_origin(supports_credentials=True)
 def staff_get_photo_notification():
     """
     get remedy photos of tenant user
     """
-    username = settings.username
+    username = utils.get_current_username()
     if username == "":
         username = 'UnitTesterStaff'
         print("testing") #TODO change to logging
@@ -491,13 +530,14 @@ def staff_get_photo_notification():
     try:
         photoNotificationsFromTenant = PhotoNotificationFromTenant.objects(staffName=username, deleted=False)
         print(photoNotificationsFromTenant)
-        return {"result": True, "staffData": photoNotificationsFromTenant}, 200
+        return {"result": True, "staffData": photoNotificationsFromTenant, "session": session.sid}, 200
     except Exception as e:
         print("error: ", e) # logger
-        return {"result": False, "staffData": None}, 500
+        return {"result": False, "staffData": None, "session": session.sid}, 500
 
 
 @apis.route('/staff_delete_photo_notification', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def staff_delete_photo_notification():
     body = request.get_json()
     try:
@@ -508,7 +548,7 @@ def staff_delete_photo_notification():
     print(body)
 
     try:
-        notif_methods.staff_update_photo_notification("delete", settings.username, body)
+        notif_methods.staff_update_photo_notification("delete", utils.get_current_username(), body)
     except Exception as e:
         print("error: ", e) 
         logger.error("In '/staff_delete_photo_notification' endpoint, error occurred: ", e)
@@ -518,6 +558,7 @@ def staff_delete_photo_notification():
 
 
 @apis.route('/staff_read_photo_notification', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def staff_read_photo_notification():
     body = request.get_json()
     try:
@@ -528,7 +569,7 @@ def staff_read_photo_notification():
     print(body)
 
     try:
-        notif_methods.staff_update_photo_notification("read", settings.username, body)
+        notif_methods.staff_update_photo_notification("read", utils.get_current_username(), body)
     except Exception as e:
         print("error: ", e) 
         logger.error("In '/staff_read_photo_notification' endpoint, error occurred: ", e)
@@ -537,6 +578,7 @@ def staff_read_photo_notification():
     return {'result': True}, 200
 
 @apis.route('/display_data', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def display_data():
     try:
         body = request.get_json()
@@ -556,6 +598,7 @@ def display_data():
 
 
 @apis.route('/download_data_csv', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def download_data_csv():
     try:
         body = request.get_json()
@@ -579,6 +622,7 @@ def download_data_csv():
 
 
 @apis.route('/remove_temp_files', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def remove_temp_files():
     try:
         utils.clear_assets()
@@ -591,6 +635,7 @@ def remove_temp_files():
 
 
 @apis.route('/email', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def email():
 
     data = request.get_json(silent=True)
@@ -641,6 +686,7 @@ def email():
 
 
 @apis.route('/tenant_exists', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def tenant_exists():
     
     body = request.get_json(silent=True)
@@ -766,6 +812,7 @@ def tenant_exists():
     return {'result': True, "audit_day_img": audit_day[2:-1], "audit_week_img": audit_week[2:-1], "audit_month_img": audit_month[2:-1], "audit_year_img": audit_year[2:-1], "columns": list(df_day.columns), "audit_day_csv": df_day.values.T.tolist(), "audit_week_csv": df_week.values.T.tolist(), "audit_month_csv": df_month.values.T.tolist(), "audit_year_csv": df_year.values.T.tolist(), "audit_csv": df.values.T.tolist()}, 200
 
 @apis.route('/tenant_list', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def tenant_list():
     
     # The statement below can be used to filter entried from the table
@@ -788,6 +835,7 @@ def tenant_list():
         return {'result': False}
 
 @apis.route('/auditChecklist', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def audit_checklist():
     ts = datetime.now().today()
     body = request.get_json()
@@ -807,6 +855,7 @@ def audit_checklist():
         return {'statusText': False}, 500
 
 @apis.route('/compare_tenant', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def compare_tenant():
     
     body = request.get_json()
@@ -996,6 +1045,7 @@ def compare_tenant():
 
 
 @apis.route('/test_add_notif', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def TEST_add_notification():
     """
     :param: body: json, same format as Photo
@@ -1015,6 +1065,7 @@ def TEST_add_notification():
 
 
 @apis.route('/test_add_notif2', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def TEST_add_notification_from_staff():
     """
     :param: body: json, same format as Photo

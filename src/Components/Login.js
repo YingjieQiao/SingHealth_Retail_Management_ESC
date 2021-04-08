@@ -40,7 +40,8 @@ class Login extends Component {
         };
         const headers = {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            withCredentials: true
         };
     
         axios.post(`http://localhost:5000/login`, user, headers)
@@ -77,9 +78,7 @@ class Login extends Component {
     render() {
         return (
             <div>
-                 <nav>
-                        <p>yolo</p>
-                   </nav>
+
                 <Route path="/Register" exact component={Register}/>        
                 <form onSubmit={this.handleSubmit}>
                     <h1>LOGIN</h1>
