@@ -24,6 +24,9 @@ import matplotlib.pyplot as plt
 import base64
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 
+import csv #new library
+from fpdf import FPDF #new library included
+
 s = URLSafeTimedSerializer('Thisisasecret!')
 
 sender_email = "starboypp69@gmail.com"
@@ -2021,15 +2024,94 @@ def report_timeframe():
     return {'status': True, 'timeframe_list': report_timeframe_ls}
 
 
-@apis.route('/report_checklist', methods=['GET', 'POST'])
+@apis.route('/report_checklist') #, methods=['GET', 'POST'])
 def report_checklistt():
 
 
-    body = request.get_json()
+    # body = request.get_json()
 
-    print(body)
+    # print(body)
 
     df = pd.read_csv("covid_audit.csv")
+
+    audit_ls = Covid_Compliance.objects(timestamp = "2021-03-31 02:54:48.316355")[0]#body.get('email'))
+
+    print(audit_ls)
+
+    checklist = audit_ls['checklist']
+    print(checklist)
+
+    checklist = [''] + checklist[:8] + [''] + checklist[8:]
+    print(checklist)
+
+    for i in range(len(checklist)):
+        if checklist[i] == -1:
+            checklist[i] = 'NA'
+        elif checklist[i] == 1:
+            checklist[i] = 'yes'
+        elif checklist[i] == 0:
+            checklist[i] = 'no'
+
+    print(df)
+
+    df['data'] = checklist
+
+    text = ""
+
+    print(len(df))
+
+    for i in range(len(df)-1):
+        text += df["Audit Questions"][i] + " : " + df["data"][i] + '\n'
+
+    print(text)
+
+    pdf = FPDF()
+    pdf.add_page()
+
+    page_width = pdf.w - 2 * pdf.l_margin
+    pdf.set_font('Times', 'B', 14.0)
+    pdf.cell(page_width, 0.0, 'Covid Checklist', align='C')
+
+    pdf.ln(10)
+    pdf.set_font('Courier', '', 10)
+
+    pdf.cell(page_width, 0.0, "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", ln = True ,align='L')
+    pdf.ln(10)
+
+    pdf.set_font('Times','',10.0)
+    pdf.cell(page_width, 0.0, '- end of report -', align='C')
+
+    pdf.output('student.pdf', 'F')
+
+
+
+    #     pdf.set_font('Courier', '', 10)
+
+    #     col_width = page_width/4
+
+    #     th = pdf.font_size
+
+    #     i = 0
+        
+    #     for row in reader:
+    #         print(row)
+    #         pdf.cell(col_width, th, str(row[0]), border=1)
+    #         pdf.cell(col_width, th, row[1], border=1)
+    #         pdf.cell(col_width, th, row[2], border=1)
+    #         pdf.ln(th)
+    #         i+=1
+    #         if i == 2:
+    #             break
+            
+
+    #     pdf.ln(10)
+        
+    #     pdf.set_font('Times','',10.0)
+    #     pdf.cell(page_width, 0.0, '- end of report -', align='C')
+
+    #     pdf.output('student.pdf', 'F')
+
+    return {'status': True}
 
 
 
