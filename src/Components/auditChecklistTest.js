@@ -22,7 +22,7 @@ class AuditChecklistTest extends Component {
 
     
     componentDidMount() {
-        axios.get("http://localhost:5000/get_current_username_and_datetime")
+        axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
         .then(
             res => {
                 console.log(res.data);
@@ -210,7 +210,8 @@ class AuditChecklistTest extends Component {
             console.log(data);
             const headers = {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                withCredentials: true
             };
             console.log(this.state.finalDict);
             data.append("auditChecklist", this.state.finalDict);

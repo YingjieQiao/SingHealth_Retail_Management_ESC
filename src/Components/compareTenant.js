@@ -13,7 +13,7 @@ class CompareTenant extends Component {
     }
 
     componentDidMount() {
-        axios.get("http://localhost:5000/tenant_list")
+        axios.get("http://localhost:5000/tenant_list", {withCredentials: true})
         .then(
             res => {
                 console.log(res);
@@ -31,7 +31,7 @@ class CompareTenant extends Component {
     }
 
     componentDidMount() {
-        axios.get("http://localhost:5000/get_current_username_and_datetime")
+        axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
         .then(
             res => {
                 console.log(res.data);
@@ -167,7 +167,8 @@ class CompareTenant extends Component {
         const data = new FormData();
         const headers = {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            withCredentials: true
         };
 
         data.append("compareTenantList", compareTenantList);

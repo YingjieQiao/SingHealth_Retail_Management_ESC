@@ -132,7 +132,8 @@ class Register extends Component {
                 };
                 const headers = {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
+                    'Access-Control-Allow-Origin': '*',
+                    withCredentials: true
                 };
             
                 axios.post(`http://localhost:5000/signup`, user, headers)

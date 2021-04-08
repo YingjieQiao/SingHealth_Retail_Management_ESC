@@ -12,7 +12,7 @@ class viewPhoto extends Component {
     };
     componentDidMount() {
 
-        axios.get("http://localhost:5000/get_current_username_and_datetime")
+        axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
         .then(
             res => {
                 console.log(res.data);
@@ -85,7 +85,8 @@ class viewPhoto extends Component {
     showPhotoByStaffHandler = event => {
         const headers = {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            withCredentials: true
         };
 
         const payload = {
@@ -133,7 +134,8 @@ class viewPhoto extends Component {
     showPhotoByTenantHandler = event => {
         const headers = {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            withCredentials: true
         };
 
         const payload = {
@@ -183,7 +185,8 @@ class viewPhoto extends Component {
 
         const headers = {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            withCredentials: true
         };
         
         const currPhoto = {
