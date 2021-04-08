@@ -69,10 +69,7 @@ def download_user_objects(bucket, username, timeInput, dateInput, counterPart):
                 aws_secret_access_key=os.environ.get('SECRET_KEY'))
     photoData = []
     photoAttrData = []
-<<<<<<< HEAD
-=======
     # print(bucket, username, timeInput, dateInput, counterPart)
->>>>>>> 0e97f405cbe98c867d4fb54fc0d137de9e99e0e6
 
     for key in s3_client.list_objects(Bucket=bucket)['Contents']:
         ls = key['Key'].split('_')
@@ -107,10 +104,7 @@ def get_photo_info(date_, time_, counterPart, username):
     """
     get the information assciated with a given photo name
     """
-<<<<<<< HEAD
-=======
     
->>>>>>> 0e97f405cbe98c867d4fb54fc0d137de9e99e0e6
     if settings.username == "":
         settings.username = "UnitTester"
         print("testing")
