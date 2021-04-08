@@ -168,3 +168,31 @@ def get_staff_email(staffName):
             #print("found tenant email: ", staffEmail)
             break
     return staffEmail
+
+
+def counter_brute_force(firstName, lastName):
+    user = User.objects().get_or_404(firstName=firstName, lastName=lastName)
+    body = mongo_object_to_dict(user)
+    body["attempts"] += 1
+    print(body["attempts"])
+    body.pop("_id", None)
+    user.update(**body)
+    if body["attempts"] >= 10:
+        return True
+    return False
+
+
+def reset_counter_brute_force(firstName, lastName):
+    user = User.objects().get_or_404(firstName=firstName, lastName=lastName)
+    body = mongo_object_to_dict(user)
+    body["attempts"] = 0
+    body.pop("_id", None)
+    user.update(**body)
+
+
+def lock_acc(firstName, lastName):
+    user = User.objects().get_or_404(firstName=firstName, lastName=lastName)
+    body = mongo_object_to_dict(user)
+    body["locked"] = True
+    body.pop("_id", None)
+    user.update(**body)
