@@ -1,0 +1,14 @@
+tags,date,time,notes,staffName,tenantName,rectified
+tag1,03-23-2021,13:30:44,test1,CarlJohnson,KFC,False
+tag2,03-23-2021,13:31:19,test2,CarlJohnson,711,True
+tag1,03-23-2021,13:55:42,test1,YingjieQiao,KFC,False
+tag2,03-23-2021,13:55:51,test2,YingjieQiao,711,False
+tag2,03-23-2021,22:13:23,test,CarlJohnson,711,False
+tag1,03-24-2021,11:40:43,ascf,YingjieQiao,KFC,True
+tag2,03-24-2021,15:13:34,asdawa,YingjieQiao,KFC,True
+tag2,03-24-2021,21:24:16,hi,YingjieQiao,KFC,True
+tag2,03-24-2021,22:56:28,test,YingjieQiao,711,True
+tag2,03-25-2021,23:39:04,test,YingjieQiao,711,True
+tag1,03-26-2021,15:23:56,fix by next week,YingjieQiao,KFC,True
+tag2,03-26-2021,18:40:28,to test demo,YingjieQiao,711,False
+tag2,03-26-2021,19:23:22,this should be fixed by Mar 30,YingjieQiao,711,True

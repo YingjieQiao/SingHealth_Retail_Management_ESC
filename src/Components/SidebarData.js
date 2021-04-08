@@ -11,22 +11,26 @@ export const SidebarData = [
     path: '/home',
     icon: <AiIcons.AiFillHome />,
     cName: 'nav-text',
-    id:'home'
+    id:"staff"
   },
+
+  
   {
     title: 'Upload Photos',
     path: '/upload',
     icon: <FaIcons.FaUpload />,
     cName: 'nav-text',
-    id: 'Upload'
+    id:"staff"
   },
+
   {
-    title: 'View Photos',
+    title: 'View Photo',
     path: '/viewPhoto',
     icon: <FaIcons.FaImages />,
     cName: 'nav-text',
-    id:'view'
+    id:"staff"
   },
+
   {
     title: 'Inbox',
     path: '/email',

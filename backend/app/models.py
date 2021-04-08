@@ -39,6 +39,40 @@ class Photo(db.Document):
     rectified = db.BooleanField(required=True, unique=False)
 
 
+class TenantPhoto(db.Document):
+    tags = db.StringField(required=True, unique=False)
+    date = db.StringField(required=True, unique=False)
+    time = db.StringField(required=True, unique=False)
+    notes = db.StringField(required=True, unique=False)
+    staffName = db.StringField(required=True, unique=False)
+    tenantName = db.StringField(required=True, unique=False)
+    rectified = db.BooleanField(required=True, unique=False)
+
+
+class PhotoNotification(db.Document):
+    tags = db.StringField(required=True, unique=False)
+    date = db.StringField(required=True, unique=False)
+    time = db.StringField(required=True, unique=False)
+    notes = db.StringField(required=True, unique=False)
+    staffName = db.StringField(required=True, unique=False)
+    tenantName = db.StringField(required=True, unique=False)
+    rectified = db.BooleanField(required=True, unique=False)
+    read = db.BooleanField(required=True, unique=False)
+    deleted = db.BooleanField(required=True, unique=False) # tenant delete a notification from the panel
+
+
+class PhotoNotificationFromTenant(db.Document):
+    tags = db.StringField(required=True, unique=False)
+    date = db.StringField(required=True, unique=False)
+    time = db.StringField(required=True, unique=False)
+    notes = db.StringField(required=True, unique=False)
+    staffName = db.StringField(required=True, unique=False)
+    tenantName = db.StringField(required=True, unique=False)
+    rectified = db.BooleanField(required=True, unique=False)
+    read = db.BooleanField(required=True, unique=False)
+    deleted = db.BooleanField(required=True, unique=False) # staff delete a notification from the panel
+
+
 class Audit_FB(db.Document):
     timestamp = db.StringField(required=True, unique=False)
     auditorName = db.StringField(required=True, unique=False)

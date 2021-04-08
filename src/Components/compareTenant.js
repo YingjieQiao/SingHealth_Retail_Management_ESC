@@ -15,6 +15,36 @@ class CompareTenant extends Component {
         typeSelection: ""
     }
 
+    componentDidMount() {
+        axios.get("http://localhost:5000/tenant_list")
+        .then(
+            res => {
+                console.log(res);
+
+                for (var i = 0; i < res.data.tenant_list.length; i++) {
+                    let newArray1 = this.state.instituteArray;
+                    let newArray2 = this.state.numOfInstitue;
+                    newArray1.push(res.data.tenant_list[i]);
+                    newArray2.push(i);
+                    this.setState({instituteArray: newArray1, numOfInstitue: newArray2});
+                }
+
+            }
+        )
+    }
+
+    componentDidMount() {
+        axios.get("http://localhost:5000/if_loggedin")
+        .then(
+            res => {
+                console.log(res.data);
+                if(res.data.username==""){
+                  alert("Please Log in!");
+                  this.props.history.push('/');
+                }
+            }
+        )
+      }
     render() {
 
         return (
