@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
 import Navbar from './Navbar';
 import AuditChecklistNonFB from './auditChecklistNonFB';
+import AuditChecklistFB from './auditChecklistFB';
+import AuditChecklistCovid from './auditChecklistCovid';
 import AuditChecklistTest from './auditChecklistTest';
+import styles from "./CSS/audit.module.css";
 import axios from 'axios';
+
+
 class Audit extends Component {
 
     // TODO: Add more auditors
@@ -29,7 +34,7 @@ class Audit extends Component {
         return (
             <div>
                 <Navbar/>
-                <form>
+                <form className={styles.form_layout}>
                     <label>Audit checklist for:</label>
                     <select class="custom-select my-1 mr-sm-2" id="auditType" onChange={this.handleAuditForm}>
                         <option selected value="-1">Choose...</option>
@@ -38,9 +43,8 @@ class Audit extends Component {
                         <option value="3">Non-F&#38;B Test</option>
                         <option value="4">Covid Safe Management Measures</option>
                     </select>
+                    <div>{this.displayAuditList()}</div>                
                 </form>
-                <div>{this.displayAuditList()}</div>                
-                {/* <AuditChecklistTest /> */}
             </div>
         )
     }
@@ -49,21 +53,20 @@ class Audit extends Component {
         this.setState({
             auditType: event.target.value
         });
-        console.log("type: ", event.target.value);
     }
 
     displayAuditList = () => {
         switch (this.state.auditType) {
             case "1":
-                break;
+                return <AuditChecklistFB />;
             case "2":
                 return <AuditChecklistNonFB />;
             case "3":
                 return <AuditChecklistTest />;
             case "4":
-                break;
+                return <AuditChecklistCovid />;
             default:
-                return <p style={{fontStyle: 'italic'}} className="text-info">Please choose a form.</p>
+                return <p style={{fontStyle: 'italic'}} className="text-info">Please choose a form.</p>;
         }
     }
 
