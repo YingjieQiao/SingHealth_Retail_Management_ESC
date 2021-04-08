@@ -28,7 +28,7 @@ class AuditChecklistTest extends Component {
 
     componentDidMount() {
         try {
-            axios.get("http://localhost:5000/if_loggedin")
+            axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
             .then(
                 res => {
                     console.log(res.data);
@@ -39,7 +39,7 @@ class AuditChecklistTest extends Component {
                 }
             );
           
-            axios.get("http://localhost:5000/tenant_list")
+            axios.get("http://localhost:5000/tenant_list", {withCredentials: true})
             .then(
                 res => {
                     console.log(res);
@@ -54,7 +54,7 @@ class AuditChecklistTest extends Component {
     
                 }
             );
-            axios.get("http://localhost:5000/staff_list")
+            axios.get("http://localhost:5000/staff_list", {withCredentials: true})
             .then(
                 res => {
                     if (res.data.result) {
@@ -333,7 +333,8 @@ class AuditChecklistTest extends Component {
 
                 const headers = {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    'Access-Control-Allow-Origin': '*'
+                    'Access-Control-Allow-Origin': '*',
+                    withCredentials: true
                 };
 
                 axios.post("http://localhost:5000/auditChecklist", this.state.finalDict, headers

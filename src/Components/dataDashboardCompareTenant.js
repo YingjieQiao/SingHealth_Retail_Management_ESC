@@ -26,7 +26,7 @@ class DataDashboardCompareTenant extends Component {
 
     componentDidMount() {
         try {
-            axios.get("http://localhost:5000/if_loggedin")
+            axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
             .then(
                 res => {
                     console.log(res.data);
@@ -41,7 +41,14 @@ class DataDashboardCompareTenant extends Component {
                 institute1: this.state.institute1,
                 institute2: this.state.institute2,
             };
-            axios.post("http://localhost:5000/compare_tenant", data)
+
+            const headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Access-Control-Allow-Origin': '*',
+                withCredentials: true
+            };
+
+            axios.post("http://localhost:5000/compare_tenant", data, headers)
             .then(
                 res => {
                     console.log(res);
@@ -49,7 +56,7 @@ class DataDashboardCompareTenant extends Component {
                 }
             )
 
-            axios.get("http://localhost:5000/staff_list")
+            axios.get("http://localhost:5000/staff_list", {withCredentials: true})
             .then(
                 res => {
                     if (res.data.result) {
@@ -63,7 +70,7 @@ class DataDashboardCompareTenant extends Component {
                 }
             );
 
-            axios.get("http://localhost:5000/tenant_list")
+            axios.get("http://localhost:5000/tenant_list", {withCredentials: true})
             .then(
                 res => {
                     if (res.data.result) {
@@ -322,10 +329,15 @@ class DataDashboardCompareTenant extends Component {
     }
 
     handleSendReport = event => {
+        const headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Access-Control-Allow-Origin': '*',
+            withCredentials: true
+        };
         
         try {
             console.log(this.state);
-            axios.post("http://localhost:5000/report_compare_tenant", this.state)
+            axios.post("http://localhost:5000/report_compare_tenant", this.state, headers)
             .then(
                 res => {
                     console.log(res.data);

@@ -19,7 +19,7 @@ class Audit extends Component {
     
     componentDidMount() {
         try {
-            axios.get("http://localhost:5000/if_loggedin")
+            axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
             .then(
                 res => {
                     console.log(res.data);

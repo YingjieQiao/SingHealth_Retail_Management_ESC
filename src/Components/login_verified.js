@@ -51,7 +51,9 @@ class login_verified extends Component {
     };
     const headers = {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        withCredentials: true
+        
     };
     console.log("dat");
     //Todo: dedlete thiss after testing
@@ -87,18 +89,18 @@ class login_verified extends Component {
     })
   }
   }
-  componentDidMount() {
+  // componentDidMount() {
 
-    axios.get("http://localhost:5000/if_loggedin")
-    .then(
-        res => {
-            console.log(res.data);
-            if(res.data.username==""){
-              alert("Please Log in!");
-              this.props.history.push('/');
-            }
-        }
-    )}
+  //   axios.get("http://localhost:5000/get_current_username_and_datetime")
+  //   .then(
+  //       res => {
+  //           console.log(res.data);
+  //           if(res.data.username==""){
+  //             alert("Please Log in!");
+  //             this.props.history.push('/');
+  //           }
+  //       }
+  //   )}
   render() {
     return (
     <div>

@@ -12,7 +12,7 @@ class viewPhoto extends Component {
     };
     componentDidMount() {
 
-        axios.get("http://localhost:5000/if_loggedin")
+        axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
         .then(
             res => {
                 console.log(res.data);
@@ -85,7 +85,8 @@ class viewPhoto extends Component {
     showPhotoByStaffHandler = event => {
         const headers = {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            withCredentials: true
         };
 
         const payload = {
@@ -127,13 +128,21 @@ class viewPhoto extends Component {
         )
 
         console.log("done");
+
+        this.setState({
+            reviewPhotoMsg: "There is no photo in album",
+            numberOfImage: [],
+            imageSource: [],
+            photoAttrData: []
+        })
     }
 
 
     showPhotoByTenantHandler = event => {
         const headers = {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            withCredentials: true
         };
 
         const payload = {
@@ -173,6 +182,13 @@ class viewPhoto extends Component {
         )
 
         console.log("showPhotoByStaffHandler");
+
+        this.setState({
+            reviewPhotoMsg: "There is no photo in album",
+            numberOfImage: [],
+            imageSource: [],
+            photoAttrData: []
+        })
     }
 
 
@@ -183,7 +199,8 @@ class viewPhoto extends Component {
 
         const headers = {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            withCredentials: true
         };
         
         const currPhoto = {

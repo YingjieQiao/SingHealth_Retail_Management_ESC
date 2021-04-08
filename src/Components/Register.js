@@ -117,6 +117,26 @@ class Register extends Component {
         })}
         
     }
+    tenanttypehandler = (event) => {
+        this.setState({
+            tenanttype: event.target.value
+        })
+    }
+
+    rendervalue(){
+        if(this.state.tenant===true){
+        return (
+          <div>
+                    <label>Type of tenant :</label><select onChange={this.tenanttypehandler} defaultValue="">
+                        <option defaultValue>Select tenant type</option>
+                        <option value="fnb">fnb</option>
+                        <option value="non-fnb">non-fnb</option>
+
+                    </select><br />
+          </div>
+       )
+      }
+    }
 
     handleSubmit = (event) => {
         event.preventDefault()
@@ -155,11 +175,14 @@ class Register extends Component {
                     tenant: this.state.tenant,
                     staff: this.state.staff,
                     admin:this.state.admin ,
-                    fnb:this.state.fnb,
+                    fnb:this.state.tenanttype,
+                    locked:false,
+                    attempts: 0
                 };
                 const headers = {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
+                    'Access-Control-Allow-Origin': '*',
+                    withCredentials: true
                 };
             
                 axios.post(`http://localhost:5000/signup`, user, headers)

@@ -40,7 +40,8 @@ class Login extends Component {
         };
         const headers = {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            withCredentials: true
         };
     
         axios.post(`http://localhost:5000/login`, user, headers)
@@ -60,12 +61,7 @@ class Login extends Component {
             }
         })
         .catch(function (error,res) {
-            console.log(error.response.status) // 401
-            console.log(error.response.data.error) //Please Authenticate or whatever returned from server
-          if(error.response.status==401){
-            alert("Login unsuccess!")
-            alert(res.data.info);
-          }
+            alert("Login unsuccessful:( \n");
         })
         
         
@@ -77,9 +73,7 @@ class Login extends Component {
     render() {
         return (
             <div>
-                 <nav>
-                        <p>yolo</p>
-                   </nav>
+
                 <Route path="/Register" exact component={Register}/>        
                 <form onSubmit={this.handleSubmit}>
                     <h1>LOGIN</h1>

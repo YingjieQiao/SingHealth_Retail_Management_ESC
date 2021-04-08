@@ -37,7 +37,8 @@ class Adminhome extends Component {
 	
 		const headers = {
 			'Content-Type': 'application/csv',
-			'Access-Control-Allow-Origin': '*'
+			'Access-Control-Allow-Origin': '*',
+      withCredentials: true
 		};
 	
 		const data = {
@@ -91,7 +92,8 @@ class Adminhome extends Component {
     this.state.DataTypefinal=this.state.DataType;
 		const headers = {
 			'Content-Type': 'multipart/form-data',
-			'Access-Control-Allow-Origin': '*'
+			'Access-Control-Allow-Origin': '*',
+      withCredentials: true
 		};
 	
 		const data = {
@@ -191,7 +193,7 @@ rendervalue(){
  )
 }
 componentDidMount() {
-  axios.get("http://localhost:5000/if_loggedin")
+  axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
   .then(
       res => {
           console.log(res.data);

@@ -17,7 +17,7 @@ class CompareTenant extends Component {
 
     componentDidMount() {
         try {
-            axios.get("http://localhost:5000/if_loggedin")
+            axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
             .then(
                 res => {
                     console.log(res.data);
@@ -27,7 +27,7 @@ class CompareTenant extends Component {
                     }
                 }
             );
-            axios.get("http://localhost:5000/tenant_list")
+            axios.get("http://localhost:5000/tenant_list", {withCredentials: true})
             .then(
                 res => {
                     console.log(res);
@@ -89,7 +89,7 @@ class CompareTenant extends Component {
             this.setState({typeSelection: data});
             if (data === this.state.typeArray[0]) {
                 try {
-                    axios.get("http://localhost:5000/tenant_list_FB")
+                    axios.get("http://localhost:5000/tenant_list_FB", {withCredentials: true})
                     .then(
                         res => {
                             console.log("FB list: ", res.data);
@@ -111,7 +111,7 @@ class CompareTenant extends Component {
                 }
             } else if (data === this.state.typeArray[1]) {
                 try {
-                    axios.get("http://localhost:5000/tenant_list_non_FB")
+                    axios.get("http://localhost:5000/tenant_list_non_FB", {withCredentials: true})
                     .then(
                         res => {
                             console.log("Non-FB list: ", res.data);

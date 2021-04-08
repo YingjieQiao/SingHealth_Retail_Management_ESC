@@ -6,8 +6,8 @@ from botocore.exceptions import ClientError
 import os, json
 from PIL import Image
 from app.models import Photo, TenantPhoto
-from . import settings, utils
-from flask import request
+from . import utils
+from flask import request, session
 
 logger = logging.getLogger("logger")
 
@@ -29,9 +29,8 @@ def upload_file(file_name, bucket, object_name):
                 aws_secret_access_key=os.environ.get('SECRET_KEY'))
     try:
         response = s3_client.upload_file(file_name, bucket, object_name)
-        #TODO log the response in the logger
     except ClientError as e:
-        print("error occurred: ", e)
+        #print("error occurred: ", e)
         logger.error("In 'upload_file' function, error occurred: ", e)
         return False
     return True
@@ -59,7 +58,7 @@ def download(s3, file_name, bucket, object_name):
         s3.download_file(bucket, object_name, file_name)
         filename_full = os.getcwd() + '/' + file_name
     except ClientError as e:
-        print("error occurred: ", e)
+        #print("error occurred: ", e)
         logger.error("In 'download' function, error occurred: ", e)
     return filename_full
 
@@ -70,7 +69,7 @@ def download_user_objects(bucket, username, timeInput, dateInput, counterPart):
                 aws_secret_access_key=os.environ.get('SECRET_KEY'))
     photoData = []
     photoAttrData = []
-    # print(bucket, username, timeInput, dateInput, counterPart)
+    # #print(bucket, username, timeInput, dateInput, counterPart)
 
     for key in s3_client.list_objects(Bucket=bucket)['Contents']:
         ls = key['Key'].split('_')
@@ -81,13 +80,9 @@ def download_user_objects(bucket, username, timeInput, dateInput, counterPart):
             check = ls[1]
         else:
             check = ls[0]
-        print(check, username)
-        print(ls)
-        print(check == username)
-        if (check == username):
 
+        if (check == username):
             photoInfo = get_photo_info(date_, time_, counterPart, username)
-            print(photoInfo)
             if (photoInfo[0]['rectified'] == False):
                 photoAttrData.append(photoInfo)
 
@@ -110,36 +105,40 @@ def get_photo_info(date_, time_, counterPart, username):
     get the information assciated with a given photo name
     """
     
-    if settings.username == "":
-        settings.username = "UnitTester"
-        print("testing")
+    if username == "":
+        session['username'] = "UnitTester"
+        #print("testing")
         logger.error("In 'get_photo_info' function, error occurred")
 
     if not counterPart:
         if utils.check_if_staff(username, False):
             try:
                 photoInfo = Photo.objects(date=date_, time=time_, staffName=username)
-            except:
-                print("error") #TODO: change to logging
+            except Exception as e:
+                #print("error: ", e)
+                logger.error("In 'get_photo_info' function, error occurred: ", e)
                 return None
         else:
             try:
                 photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=username)
-            except:
-                print("error") #TODO: change to logging
+            except Exception as e:
+                #print("error: ", e)
+                logger.error("In 'get_photo_info' function, error occurred: ", e)
                 return None
     else:
         if utils.check_if_staff(username, False):
             try:
                 photoInfo = TenantPhoto.objects(staffName=username, date=date_, time=time_)
-            except:
-                print("error") #TODO: change to logging
+            except Exception as e:
+                #print("error: ", e)
+                logger.error("In 'get_photo_info' function, error occurred: ", e)
                 return None
         else:
             try:
                 photoInfo = Photo.objects(tenantName=username, date=date_, time=time_)
-            except:
-                print("error") #TODO: change to logging
+            except Exception as e:
+                #print("error: ", e)
+                logger.error("In 'get_photo_info' function, error occurred: ", e)
                 return None
 
 

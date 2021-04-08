@@ -10,7 +10,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    axios.get("http://localhost:5000/staff_get_photo_notification")
+    axios.get("http://localhost:5000/staff_get_photo_notification", {withCredentials: true})
     .then(
         res => {
             console.log("start: ", res);

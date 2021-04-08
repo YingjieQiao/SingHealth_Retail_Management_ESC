@@ -4,7 +4,7 @@ import ssl
 import smtplib
 
 def send_text_email(receiver_email, sender_email, subject, body, password):
-    print(receiver_email, sender_email, subject, body)
+    # print(receiver_email, sender_email, subject, body)
 
     try:
         message = MIMEMultipart()
@@ -13,7 +13,7 @@ def send_text_email(receiver_email, sender_email, subject, body, password):
         message["Subject"] = subject
         message.attach(MIMEText(body, "plain"))
     except:
-        print("error occured")
+        # print("error occured")
         return {'result': False, 'info': "user does not exist"}
 
     text = message.as_string()
