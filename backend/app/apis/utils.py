@@ -46,7 +46,7 @@ def get_data(tableName):
         res = Covid_Compliance.objects()
     
     if case != -1:
-        logger.info("admin selected table: ", tableName)
+        logger.info("admin selected table: %s", tableName)
     else:
         logger.error("admin selected a non-existent table")
 
