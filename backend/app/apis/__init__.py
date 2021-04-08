@@ -26,6 +26,11 @@ from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 
 import csv #new library
 from fpdf import FPDF #new library included
+from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER, TA_LEFT
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
 
 s = URLSafeTimedSerializer('Thisisasecret!')
 
@@ -2023,122 +2028,120 @@ def report_timeframe():
 
     return {'status': True, 'timeframe_list': report_timeframe_ls}
 
+def addTitle(doc, title):
+    doc.append(Spacer(1, 20))
+    doc.append(Paragraph(title , ParagraphStyle(name='Name', fontFamily='Arial', fontSize=20, spaceAfter=1.5, alignment=TA_CENTER, bold=1)))
+    return doc
 
-@apis.route('/report_checklist') #, methods=['GET', 'POST'])
+def addParagraphs(doc, text):
+    for line in text.split('\n'):
+        doc.append(Paragraph(line))
+        doc.append(Spacer(1,1))
+    return doc
+
+@apis.route('/report_checklist', methods=['GET', 'POST'])
 def report_checklistt():
 
+    body = request.get_json()
 
-    # body = request.get_json()
+    timeframe = body.get('report')
 
-    # print(body)
+    document = []
 
-    df = pd.read_csv("covid_audit.csv")
+    if timeframe[:3] == "Cov":
 
-    audit_ls = Covid_Compliance.objects(timestamp = "2021-03-31 02:54:48.316355")[0]#body.get('email'))
+        df = pd.read_csv("covid_audit.csv")
+        audit_ls = Covid_Compliance.objects(timestamp = timeframe[12:])[0]
 
-    print(audit_ls)
-
-    checklist = audit_ls['checklist']
-    print(checklist)
-
-    checklist = [''] + checklist[:8] + [''] + checklist[8:]
-    print(checklist)
-
-    for i in range(len(checklist)):
-        if checklist[i] == -1:
-            checklist[i] = 'NA'
-        elif checklist[i] == 1:
-            checklist[i] = 'yes'
-        elif checklist[i] == 0:
-            checklist[i] = 'no'
-
-    print(df)
-
-    df['data'] = checklist
-
-    text = ""
-
-    print(len(df))
-
-    for i in range(len(df)-1):
-        text += df["Audit Questions"][i] + " : " + df["data"][i] + '\n'
-
-    print(text)
-
-    pdf = FPDF()
-    pdf.add_page()
-
-    page_width = pdf.w - 2 * pdf.l_margin
-    pdf.set_font('Times', 'B', 14.0)
-    pdf.cell(page_width, 0.0, 'Covid Checklist', align='C')
-
-    pdf.ln(10)
-    pdf.set_font('Courier', '', 10)
-
-    pdf.cell(page_width, 0.0, "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", ln = True ,align='L')
-    pdf.ln(10)
-
-    pdf.set_font('Times','',10.0)
-    pdf.cell(page_width, 0.0, '- end of report -', align='C')
-
-    pdf.output('student.pdf', 'F')
-
-
-
-    #     pdf.set_font('Courier', '', 10)
-
-    #     col_width = page_width/4
-
-    #     th = pdf.font_size
-
-    #     i = 0
+        document.append(Paragraph(str(audit_ls["id"]),ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Image('singhealth_logo.png', 2.2*inch, 2.2*inch))
+        document = addTitle(document, "COVID SAFE MANAGEMENT MEASURES ")
+        document = addTitle(document, "COMPLIANCE CHECKLIST GUIDE")
+        document.append(Spacer(1,20))
+        document.append(Paragraph("Name of Auditee : " + audit_ls['auditeeName'],ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,1))
+        document.append(Paragraph("Name of Auditor : " + audit_ls['auditorName'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,1))
+        document.append(Paragraph("Name of Auditor's department : " + audit_ls['auditorDepartment'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,1))
+        document.append(Paragraph("Timestamp : " + audit_ls['timestamp'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,1))
         
-    #     for row in reader:
-    #         print(row)
-    #         pdf.cell(col_width, th, str(row[0]), border=1)
-    #         pdf.cell(col_width, th, row[1], border=1)
-    #         pdf.cell(col_width, th, row[2], border=1)
-    #         pdf.ln(th)
-    #         i+=1
-    #         if i == 2:
-    #             break
-            
+        checklist = audit_ls['checklist']
+        checklist = [''] + checklist[:8] + [''] + checklist[8:]
 
-    #     pdf.ln(10)
+        for i in range(len(checklist)):
+            if checklist[i] == -1:
+                checklist[i] = 'NA'
+            elif checklist[i] == 1:
+                checklist[i] = 'yes'
+            elif checklist[i] == 0:
+                checklist[i] = 'no'
+
+        df['data'] = checklist
+
+        text = ""
+
+        for i in range(len(df)-1):
+            text += df["Audit Questions"][i] + " : " + df["data"][i] + '\n'
+
+        document.append(Spacer(1,20))
+
+        document = addParagraphs(document, text)
+        document.append(Spacer(1,5))
+        document.append(Paragraph("Comments : " + audit_ls['comment']))
+
+        SimpleDocTemplate('audit_checklist.pdf', pagesize=letter, rightMargin=12, leftMargin=12, topMargin=12, bottomMargin=6).build(document)
         
-    #     pdf.set_font('Times','',10.0)
-    #     pdf.cell(page_width, 0.0, '- end of report -', align='C')
+    elif timeframe[:3] == "Non":
 
-    #     pdf.output('student.pdf', 'F')
+        df = pd.read_csv("covid_audit.csv")
+        audit_ls = Covid_Compliance.objects(timestamp = timeframe[14:])[0]
+    elif timeframe[:3] == 'FnB':
+
+        df = pd.read_csv("covid_audit.csv")
+        audit_ls = Covid_Compliance.objects(timestamp = timeframe[10:])[0]
+
+    receiver_email = body.get('email')
+    subject = body.get('subject')
+    body = body.get('content')
+    try:
+
+        message = MIMEMultipart()
+        message["From"] = sender_email
+        message["To"] = receiver_email
+        message["Subject"] = subject
+        message.attach(MIMEText(body.get("body"), "plain"))
+    except:
+        print("error occured")
+        return {'result': False, 'info': "user does not exist"}
+
+    filename = "audit_checklist.pdf"  # In same directory as script
+
+    with apis.open_resource(filename) as attachment:
+    # Add file as application/octet-stream
+    # Email client can usually download this automatically as attachment
+        part = MIMEBase("application", "octet-stream")
+        part.set_payload(attachment.read())
+
+    # Encode file in ASCII characters to send by email    
+    encoders.encode_base64(part)
+
+    # Add header as key/value pair to attachment part
+    part.add_header(
+        "Content-Disposition",
+        f"attachment; filename= {filename}",
+    )
+
+    # Add attachment to message and convert message to string
+    message.attach(part)
+    text = message.as_string()
+
+    # Log in to server using secure context and send email
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+        server.login(sender_email, password)
+        server.sendmail(sender_email, receiver_email, text)
+
 
     return {'status': True}
-
-
-
-
-
-    # pdfkit.from_string('Hello!', 'out.pdf')
-    # from fpdf import FPDF
-  
-  
-# # save FPDF() class into a 
-# # variable pdf
-# pdf = FPDF()
-  
-# # Add a page
-# pdf.add_page()
-  
-# # set style and size of font 
-# # that you want in the pdf
-# pdf.set_font("Arial", size = 15)
-  
-# # create a cell
-# pdf.cell(200, 10, txt = "GeeksforGeeks", 
-#          ln = 1, align = 'C')
-  
-# # add another cell
-# pdf.cell(200, 10, txt = "A Computer Science portal for geeks.",
-#          ln = 2, align = 'C')
-  
-# # save the pdf with name .pdf
-# pdf.output("GFG.pdf")   
