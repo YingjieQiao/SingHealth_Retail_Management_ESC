@@ -18,7 +18,7 @@ def add_notification(body):
         newPhotoNotification.save()
     except Exception as e:
         #print("error occurred: ", e)
-
+        pass
 
 def add_notification_from_tenant(body):
     """
@@ -32,7 +32,7 @@ def add_notification_from_tenant(body):
         newPhotoNotification.save()
     except Exception as e:
         # print("error occurred: ", e)
-
+        pass
 
 def tenant_update_photo_notification(op, username, body):    
     time_ = body['time']
