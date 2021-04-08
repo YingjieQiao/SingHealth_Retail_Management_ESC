@@ -429,19 +429,21 @@ def rectify_photo():
 
 
 @apis.route('/tenant_rectify_photo', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def tenant_rectify_photo():
     body = request.get_json()
     body['rectified'] = True
     time_ = body['time']
     date_ = body['date']
 
-    if settings.username == "":
-        settings.username = "UnitTester"
+    username = utils.get_current_username()
+    if username == "":
+        username = "UnitTester"
         print("testing")
         logger.info("testing '/rectify_photo' endpoint")
 
     try:
-        photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=settings.username)
+        photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=username)
         photoInfo.update(**body)
     except Exception as e:
         print("error: ", e) 
