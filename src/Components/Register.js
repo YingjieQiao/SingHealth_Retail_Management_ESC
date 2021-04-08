@@ -162,7 +162,10 @@ class Register extends Component {
 
     render() {
         return (
-            <div>
+            <div class="container22">
+           
+        <div class="container" margin-top="1000" >
+            <div ></div>
                 <Route path="/" exact component={Login}/>        
 
                 <form onSubmit={this.handleSubmit}>
@@ -195,7 +198,7 @@ class Register extends Component {
 
                      </li>
                 </form >
-
+                </div>
             </div>
             
         )

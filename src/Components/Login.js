@@ -3,6 +3,7 @@ import './CSS/todo.css'
 import Register from './Register'
 import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-router-dom";
 import axios from 'axios';
+import logo from './logo/singhealth.jpg';
 import login_verified from './login_verified'
 // import { ExportToCsv } from 'export-to-csv';
 class Login extends Component {
@@ -76,12 +77,15 @@ class Login extends Component {
 
     render() {
         return (
-            <div class="container">
-
+            <div class="container22">
+                <img src={logo}  width="250" height="250" margin="3000px" margin-bottom="-30" alt="Logo" />
+            <div class="container"  >
+                
+                
                 <Route path="/Register" exact component={Register}/>        
                 <form onSubmit={this.handleSubmit}>
                     <h1>LOGIN</h1>
-                    <label>Email :</label> <input id="email" type="text" value={this.state.email} onChange={this.emailhandler} placeholder="Email..." /><br />
+                    <label >Email :</label> <input id="email" type="text" value={this.state.email} onChange={this.emailhandler} placeholder="Email..." /><br />
                     <label>Password :</label> <input id="password" type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password..." /><br />
                     <input id="submit" type="submit" value="Log In" />
                     <li>
@@ -95,7 +99,7 @@ class Login extends Component {
 
                      </li> */}
                 </form>
-
+                </div>
             </div>
             
         )

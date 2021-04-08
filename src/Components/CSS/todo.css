@@ -4,6 +4,7 @@ body{
 }
 h1{
   font-size: 38px;
+  margin: 20px;
 }
 .navbar {
   background-color: #060b26;
@@ -76,14 +77,36 @@ select {
 
 
 .container{
-  background-color: antiquewhite;
-  border-style: hidden;
+  background-color: #ffffff;
+  border-style: solid;
   border-radius: 15px;
   padding:18px;
   text-align: center;
   box-shadow: 0 8px 6px -6px black;
-  
+
+  width: wrap;
+  height: wrap;
+  margin-top: 50px;;
  
+  
+}
+.logo22{
+   src:url(../logo/singhealth.jpg);
+   width:"250";
+    height:"250";
+     margin-top:"300" ;
+     margin-bottom:"-300" ;
+     alt:"Logo"; 
+}
+.container22{
+  background-color: #ffffff;
+
+  border-radius: 15px;
+  padding:18px;
+  text-align: center;
+  box-shadow: 0 8px 6px -6px rgb(255, 254, 254);
+  display: inline-block;
+ width: 1000px;
   
 }
 @media screen and (max-width:900px){
