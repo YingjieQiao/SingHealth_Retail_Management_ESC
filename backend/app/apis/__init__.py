@@ -49,10 +49,10 @@ def get_current_username_and_datetime():
 @apis.route('/signup', methods=['GET', 'POST'])
 def user_signup():
     body = request.get_json()
+    print(body)
     try:
         user = User(**body)
         user.hash_password()
-        user.setfnb(True)
         user.save()
         userid = user.id
     except Exception as e:
@@ -117,11 +117,11 @@ def user_signup():
 def user_login():
     body = request.get_json()
     try:
+        print(body)
         user = User.objects.get(email=body.get('email'))
         firstName = user.firstName
         lastName = user.lastName
         authorized = user.check_password(body.get('password'))
-        print(authorized)
         if not authorized:
             return {'result': False, 'info': "password error"}, 500
     except:
@@ -169,7 +169,9 @@ def login_verified():
 
     body = request.get_json()
     try:
+        print(body.get('email'))
         email = s.loads(body.get("token"), salt='login', max_age=120) #age needs to be increased to allow longer duration for the link to exist
+        print(email)
         user = User.objects.get(email=email)
         firstName = user.firstName
         lastName = user.lastName
@@ -177,8 +179,10 @@ def login_verified():
         admin=user.admin
         tenant=user.tenant
         settings.username = firstName + lastName
+        print("ni")
         return {'result': True, 'firstName': firstName, 'lastName': lastName, 'staff':staff, 'admin':admin, 'tenant':tenant}, 200 #this returns the details of the user 
     except:
+        print('no')
         return {'result': False, 'info': "2FA error"}, 500
     # except SignatureExpired:
     #     return {'result': False, 'info': "Link has expired"}, 200
@@ -288,9 +292,10 @@ def rectify_photo():
 
 @apis.route('/display_data', methods=['POST'])
 def display_data():
+    
+    body = request.get_json()
+    tableName = body['tableName']
     try:
-        body = request.get_json()
-        tableName = body['tableName']
         mapping = {
             'User': 0,
             'Photo': 1
@@ -389,8 +394,8 @@ def email():
 @apis.route('/tenant_list', methods=['GET', 'POST'])
 def tenant_list():
     
-    body = request.get_json(silent=True)
-        
+    tenant_list = User.objects(tenant = True)
+
     try:
         temp_ls = []
         for i in tenant_list:
@@ -405,129 +410,31 @@ def tenant_list():
         print("error")
         return {'result': False}
 
-    if len(audit_ls) == 0:
-        return {'status': False, 'info': "Not enough data entries"}, 500
-
-    print(audit_ls)
-
-    temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.totalScore] for i in audit_ls]
-    df = pd.DataFrame(temp_ls)
-    df.columns = ['timestamp','profScore', 'housekeepingScore', 'workSafetyScore','totalScore']
-    df['timestamp'] = pd.to_datetime(df['timestamp'])
-    df.index = df['timestamp'] 
-    df_year = df.resample('Y').mean()
-    df_month = df.resample('M').mean()
-    df_week = df.resample('W').mean()
-    df_day = df.resample('D').mean()
-
-    plt.switch_backend('agg')
-    plt.figure(figsize = (10, 6))
-    plt.ylim((0,100))
-    plt.plot(df_day.index,list(df_day['profScore']), color='blue')
-    plt.plot(df_day.index,list(df_day['housekeepingScore']), color='orange')
-    plt.plot(df_day.index,list(df_day['workSafetyScore']), color='green')
-    plt.plot(df_day.index,list(df_day['totalScore']), color='red')
-    plt.plot(df_day.index,list(df_day['profScore']), 'o', color='blue')
-    plt.plot(df_day.index,list(df_day['housekeepingScore']), 'o', color='orange')
-    plt.plot(df_day.index,list(df_day['workSafetyScore']), 'o', color='green')
-    plt.plot(df_day.index,list(df_day['totalScore']), 'o', color='red')
-    plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
-    plt.title(body.get('tenant') + "'s Audity Score")
-    plt.xlabel('Time Period')
-    plt.ylabel('Score')
-    values = [str(i)[:-9] for i in list(df_day.index)] 
-    plt.xticks(df_day.index,values)
-    plt.savefig('audit_day.png', bbox_inches='tight')
-    plt.close()
-
-    plt.switch_backend('agg')
-    plt.figure(figsize = (10, 6))
-    plt.ylim((0,100))
-    plt.plot(df_week.index,list(df_week['profScore']), color='blue')
-    plt.plot(df_week.index,list(df_week['housekeepingScore']), color='orange')
-    plt.plot(df_week.index,list(df_week['workSafetyScore']), color='green')
-    plt.plot(df_week.index,list(df_week['totalScore']), color='red')
-    plt.plot(df_week.index,list(df_week['profScore']), 'o', color='blue')
-    plt.plot(df_week.index,list(df_week['housekeepingScore']), 'o', color='orange')
-    plt.plot(df_week.index,list(df_week['workSafetyScore']), 'o', color='green')
-    plt.plot(df_week.index,list(df_week['totalScore']), 'o', color='red')
-    plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
-    plt.title(body.get('tenant') + "'s Audity Score")
-    plt.xlabel('Time Period')
-    plt.ylabel('Score')
-    values = [str(i)[:-9] for i in list(df_week.index)] 
-    plt.xticks(df_week.index,values)
-    plt.savefig('audit_week.png', bbox_inches='tight')
-    plt.close()
-
-    plt.switch_backend('agg')
-    plt.figure(figsize = (10, 6))
-    plt.ylim((0,100))
-    plt.plot(df_month.index,list(df_month['profScore']), color='blue')
-    plt.plot(df_month.index,list(df_month['housekeepingScore']), color='orange')
-    plt.plot(df_month.index,list(df_month['workSafetyScore']), color='green')
-    plt.plot(df_month.index,list(df_month['totalScore']), color='red')
-    plt.plot(df_month.index,list(df_month['profScore']), 'o', color='blue')
-    plt.plot(df_month.index,list(df_month['housekeepingScore']), 'o', color='orange')
-    plt.plot(df_month.index,list(df_month['workSafetyScore']), 'o', color='green')
-    plt.plot(df_month.index,list(df_month['totalScore']), 'o', color='red')
-    plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
-    plt.title(body.get('tenant') + "'s Audity Score")
-    plt.xlabel('Time Period')
-    plt.ylabel('Score')
-    values = [str(i)[:-9] for i in list(df_month.index)] 
-    plt.xticks(df_month.index,values)
-    plt.savefig('audit_month.png', bbox_inches='tight')
-    plt.close()
-
-    plt.switch_backend('agg')
-    plt.figure(figsize = (10, 6))
-    plt.ylim((0,100))
-    plt.plot(df_year.index,list(df_year['profScore']), color='blue')
-    plt.plot(df_year.index,list(df_year['housekeepingScore']), color='orange')
-    plt.plot(df_year.index,list(df_year['workSafetyScore']), color='green')
-    plt.plot(df_year.index,list(df_year['totalScore']), color='red')
-    plt.plot(df_year.index,list(df_year['profScore']), 'o', color='blue')
-    plt.plot(df_year.index,list(df_year['housekeepingScore']), 'o', color='orange')
-    plt.plot(df_year.index,list(df_year['workSafetyScore']), 'o', color='green')
-    plt.plot(df_year.index,list(df_year['totalScore']), 'o', color='red')
-    plt.legend(['Professional Score', 'House Keeping Score', 'Work Safety Score', 'Total Score'], loc='upper right')
-    plt.title(body.get('tenant') + "'s Audity Score")
-    plt.xlabel('Time Period')
-    plt.ylabel('Score')
-    values = [str(i)[:-9] for i in list(df_year.index)] 
-    plt.xticks(df_year.index,values)
-    plt.savefig('audit_year.png', bbox_inches='tight')
-    plt.close()
-
-    with open("audit_day.png", "rb") as img_file:
-        audit_day = str(base64.b64encode(img_file.read()))
-    with open("audit_week.png", "rb") as img_file:
-        audit_week = str(base64.b64encode(img_file.read()))
-    with open("audit_month.png", "rb") as img_file:
-        audit_month = str(base64.b64encode(img_file.read()))
-    with open("audit_year.png", "rb") as img_file:
-        audit_year = str(base64.b64encode(img_file.read()))
-    
-    df = df.drop(columns=["timestamp"])
-    df.insert(4, 'timestamp', df.index.tolist())
-    df.reset_index(drop=True, inplace=True) 
-    
-    df_day['timestamp'] = df_day.index
-    df_week['timestamp'] = df_week.index
-    df_month['timestamp'] = df_month.index
-    df_year['timestamp'] = df_year.index
-
-    for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png"]:#, "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv", "audit.csv"]:
-        os.remove(i)
-
-    return {'result': True, "audit_day_img": audit_day[2:-1], "audit_week_img": audit_week[2:-1], "audit_month_img": audit_month[2:-1], "audit_year_img": audit_year[2:-1], "columns": list(df_day.columns), "audit_day_csv": df_day.values.T.tolist(), "audit_week_csv": df_week.values.T.tolist(), "audit_month_csv": df_month.values.T.tolist(), "audit_year_csv": df_year.values.T.tolist(), "audit_csv": df.values.T.tolist()}, 200
-
 @apis.route('/tenant_list_FB', methods=['GET', 'POST'])
 def tenant_list_FB():
     
     # The statement below can be used to filter entried from the table
     tenant_list = User.objects(fnb = True, tenant = True)
+
+    try:
+        
+        temp_ls = []
+        for i in tenant_list:
+            temp_ls.append({'firstName': i['firstName'], 'lastName': i['lastName'], 'email': i["email"], 'location': i['location']}) # need to hash email when sent to front-end, being used as an id to find graphs later
+        
+        if tenant_list != None:
+            return {'result': True, 'user_type': "temp", 'tenant_list': temp_ls}, 200
+        else:
+            return {'result': False}, 500
+    except:
+        print("error")
+        return {'result': False}, 500
+
+@apis.route('/tenant_list_non_FB', methods=['GET', 'POST'])
+def tenant_list_non_FB():
+    
+    # The statement below can be used to filter entried from the table
+    tenant_list = User.objects(fnb = False, tenant = True)
 
     try:
         
@@ -562,20 +469,6 @@ def auditchecklistFB():
     audit.computeTotalScore()
     audit.save()
     return {'statusText': True}
-#     try:
-#         body['workSafetyScore'] = body['workSafetyHealthScore']
-#         body['profScore'] = body['profStaffHydScore']
-#         body['housekeepingScore'] = body['houseGeneralScore']
-#         body.pop('workSafetyHealthScore')
-#         body.pop('profStaffHydScore')
-#         body.pop('houseGeneralScore')
-#         audit = Audit_non_FB(**body)
-#         audit.timestamp = str(ts)
-#         audit.computeTotalScore()
-#         audit.save()
-#         return {'statusText': True}, 200
-#     except:
-#         return {'statusText': False}, 500
 
 @apis.route('/auditChecklistNonFB', methods=['GET', 'POST'])
 def auditchecklistNonFB():
@@ -597,7 +490,7 @@ def auditchecklistNonFB():
         return {'statusText': False}, 500
 
 @apis.route('/covidChecklist', methods=['GET', 'POST'])
-def covidchecklistNonFB():
+def covidchecklist():
     ts = datetime.now().today()
     body = request.get_json()
     print(body)

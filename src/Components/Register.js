@@ -20,23 +20,28 @@ class Register extends Component {
             staff:false,
             tenant:false,
             admin:false,
-            tenanttype:"",
+            fnb:false,
 
         }
         this.handleSubmit=this.handleSubmit.bind(this)
     }
 
-    tenanttypehandler = (event) => {
-        this.setState({
-            tenanttype: event.target.value
-        })
+    fnbhandler = (event) => {
+            if (event.target.value=="fnb"){
+                this.setState({
+                fnb: true
+            })}
+            else {
+                this.setState({
+                fnb: false
+            })}
     }
 
     rendervalue(){
         if(this.state.tenant===true){
         return (
           <div>
-                    <label>Type of tenant :</label><select onChange={this.tenanttypehandler} defaultValue="">
+                    <label>Type of tenant :</label><select onChange={this.fnbhandler} defaultValue="">
                         <option defaultValue>Select tenant type</option>
                         <option value="fnb">fnb</option>
                         <option value="non-fnb">non-fnb</option>
@@ -135,7 +140,7 @@ class Register extends Component {
             }
 
         else if(this.state.password!==this.state.REpassword){
-            alert(` pasword did not match!! !!!!`)
+            alert(` password did not match!! !!!!`)
             this.props.history.push('/Register');
         }    
         else{
@@ -150,7 +155,7 @@ class Register extends Component {
                     tenant: this.state.tenant,
                     staff: this.state.staff,
                     admin:this.state.admin ,
-                    tenanttype:this.state.tenanttype,
+                    fnb:this.state.fnb,
                 };
                 const headers = {
                     'Content-Type': 'application/json',
@@ -173,7 +178,7 @@ class Register extends Component {
                     REpassword: '',
                     location: "",
                     staff: "false",
-                    tenanttype:"",
+                    fnb:"false",
                 })
 
                 alert(`${this.state.firstName} ${this.state.lastName}  Registered Successfully !!!!`)
