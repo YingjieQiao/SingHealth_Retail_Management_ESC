@@ -32,6 +32,8 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 
+import shutil
+
 s = URLSafeTimedSerializer('Thisisasecret!')
 
 sender_email = "starboypp69@gmail.com"
@@ -2096,15 +2098,99 @@ def report_checklistt():
     elif timeframe[:3] == "Non":
 
         df = pd.read_csv("covid_audit.csv")
-        audit_ls = Covid_Compliance.objects(timestamp = timeframe[14:])[0]
+        audit_ls = Audit_non_FB.objects(timestamp = timeframe[12:])[0]
+
+        document.append(Paragraph(str(audit_ls["id"]),ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Image('singhealth_logo.png', 2.2*inch, 2.2*inch))
+        document = addTitle(document, "COVID SAFE MANAGEMENT MEASURES ")
+        document = addTitle(document, "COMPLIANCE CHECKLIST GUIDE")
+        document.append(Spacer(1,20))
+        document.append(Paragraph("Name of Auditee : " + audit_ls['auditeeName'],ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,1))
+        document.append(Paragraph("Name of Auditor : " + audit_ls['auditorName'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,1))
+        document.append(Paragraph("Name of Auditor's department : " + audit_ls['auditorDepartment'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,1))
+        document.append(Paragraph("Timestamp : " + audit_ls['timestamp'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,1))
+        
+        checklist = audit_ls['checklist']
+        checklist = [''] + checklist[:8] + [''] + checklist[8:]
+
+        for i in range(len(checklist)):
+            if checklist[i] == -1:
+                checklist[i] = 'NA'
+            elif checklist[i] == 1:
+                checklist[i] = 'yes'
+            elif checklist[i] == 0:
+                checklist[i] = 'no'
+
+        df['data'] = checklist
+
+        text = ""
+
+        for i in range(len(df)-1):
+            text += df["Audit Questions"][i] + " : " + df["data"][i] + '\n'
+
+        document.append(Spacer(1,20))
+
+        document = addParagraphs(document, text)
+        document.append(Spacer(1,5))
+        document.append(Paragraph("Comments : " + audit_ls['comment']))
+
+        SimpleDocTemplate('audit_checklist.pdf', pagesize=letter, rightMargin=12, leftMargin=12, topMargin=12, bottomMargin=6).build(document)
     elif timeframe[:3] == 'FnB':
 
         df = pd.read_csv("covid_audit.csv")
-        audit_ls = Covid_Compliance.objects(timestamp = timeframe[10:])[0]
+        audit_ls = Covid_Compliance.objects(timestamp = timeframe[12:])[0]
+
+        document.append(Paragraph(str(audit_ls["id"]),ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Image('singhealth_logo.png', 2.2*inch, 2.2*inch))
+        document = addTitle(document, "COVID SAFE MANAGEMENT MEASURES ")
+        document = addTitle(document, "COMPLIANCE CHECKLIST GUIDE")
+        document.append(Spacer(1,20))
+        document.append(Paragraph("Name of Auditee : " + audit_ls['auditeeName'],ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,1))
+        document.append(Paragraph("Name of Auditor : " + audit_ls['auditorName'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,1))
+        document.append(Paragraph("Name of Auditor's department : " + audit_ls['auditorDepartment'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,1))
+        document.append(Paragraph("Timestamp : " + audit_ls['timestamp'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,1))
+        
+        checklist = audit_ls['checklist']
+        checklist = [''] + checklist[:8] + [''] + checklist[8:]
+
+        for i in range(len(checklist)):
+            if checklist[i] == -1:
+                checklist[i] = 'NA'
+            elif checklist[i] == 1:
+                checklist[i] = 'yes'
+            elif checklist[i] == 0:
+                checklist[i] = 'no'
+
+        df['data'] = checklist
+
+        text = ""
+
+        for i in range(len(df)-1):
+            text += df["Audit Questions"][i] + " : " + df["data"][i] + '\n'
+
+        document.append(Spacer(1,20))
+
+        document = addParagraphs(document, text)
+        document.append(Spacer(1,5))
+        document.append(Paragraph("Comments : " + audit_ls['comment']))
+
+        SimpleDocTemplate('audit_checklist.pdf', pagesize=letter, rightMargin=12, leftMargin=12, topMargin=12, bottomMargin=6).build(document)
+
+    original = "audit_checklist.pdf"
+    target = "app/apis/audit_checklist.pdf"
+
+    shutil.move(original,target)
 
     receiver_email = body.get('email')
     subject = body.get('subject')
-    body = body.get('content')
     try:
 
         message = MIMEMultipart()
