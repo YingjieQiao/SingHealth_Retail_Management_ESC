@@ -175,7 +175,7 @@ class Register extends Component {
                     tenant: this.state.tenant,
                     staff: this.state.staff,
                     admin:this.state.admin ,
-                    fnb:this.state.tenanttype,
+                    fnb:this.state.fnb,
                     locked:false,
                     attempts: 0
                 };
