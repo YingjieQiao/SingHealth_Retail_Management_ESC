@@ -7,10 +7,11 @@ class EmailReport extends Component {
 
     state = { 
         tenantArrary: [],
-        reportArray: [],
+        timeframeArray: [],
+        reportAvailable: false,
         emailContent: {
-            tenant: "",
             email: "",
+            report: "",
             body: "",
             subject: "",
         },
@@ -51,9 +52,9 @@ class EmailReport extends Component {
                 </div> 
                 <div>
                     <label>Select a report to send:</label>
-                    <select class="custom-select my-1 mr-sm-2" onChange={this.saveReceiverEmail}>
+                    <select class="custom-select my-1 mr-sm-2" onChange={this.saveReportChoice}>
                             <option selected>Choose...</option>
-                            {/* { this.state.reportArray.map(report => <option value={report}>{report}</option> ) } */}
+                            { this.state.timeframeArray.map(report => <option value={report}>{report}</option> ) }
                     </select>
                 </div> 
                 <div>
@@ -71,8 +72,6 @@ class EmailReport extends Component {
 
     saveReceiverEmail = event => {
         const data = event.target.value;
-        console.log(data)
-        console.log(this.state)
         var newEmailContent = this.state.emailContent;
         if (data === "Choose...") {
             newEmailContent["email"] = "";
@@ -89,6 +88,9 @@ class EmailReport extends Component {
                 .then(
                     res => {
                         console.log(res);
+                        if (res.data.status) {
+                            this.setState({timeframeArray: res.data.timeframe_list});
+                        }
                     }
                 );
             } catch (e) {
@@ -97,8 +99,16 @@ class EmailReport extends Component {
         }
     }
 
-    displayReportOptions = () => {
-
+    saveReportChoice = event => {
+        const data = event.target.value;
+        var newEmailContent = this.state.emailContent;
+        if (data === "Choose...") {
+            newEmailContent["report"] = "";
+            this.setState({emailContent: newEmailContent});
+        } else {
+            newEmailContent["report"] = data;
+            this.setState({emailContent: newEmailContent});
+        }
     }
 
     saveReceiverSubject = event => {
@@ -109,11 +119,12 @@ class EmailReport extends Component {
 
     saveReceiverNote = event => {
         var newEmailContent  = this.state.emailContent;
-        newEmailContent["note"] = event.target.value;
+        newEmailContent["body"] = event.target.value;
         this.setState({emailContent: newEmailContent});
     }
 
     handleSendReport = event => {
+        console.log(this.state.emailContent);
         // try {
         //     axios.post("http://localhost:5000/report_checklist", timestamp, headers)
         //         .then(
