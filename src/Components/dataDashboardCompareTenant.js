@@ -322,9 +322,18 @@ class DataDashboardCompareTenant extends Component {
     }
 
     handleSendReport = event => {
+        
         try {
-            // axios.post here
-            // data to send to backend is: this.state.emailContent
+            console.log(this.state);
+            axios.post("http://localhost:5000/report_compare_tenant", this.state)
+            .then(
+                res => {
+                    console.log(res.data);
+                    if(res.data.status==true){
+                        alert("Email sent!");
+                    }
+                }
+            );
         } catch (e) {
             console.log(e);
         }
@@ -334,5 +343,4 @@ class DataDashboardCompareTenant extends Component {
 
 
 }
-
 export default DataDashboardCompareTenant;

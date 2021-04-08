@@ -27,6 +27,8 @@ from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 import csv #new library
 from fpdf import FPDF #new library included
 
+import shutil
+
 s = URLSafeTimedSerializer('Thisisasecret!')
 
 sender_email = "starboypp69@gmail.com"
@@ -1592,46 +1594,51 @@ def report_dashboard():
         df_month.to_csv('audit_month.csv')
         df_year.to_csv('audit_year.csv')
 
-        try:
-            message = MIMEMultipart()
-            message["From"] = sender_email
-            email = body.get('email')
-            message["To"] = email
-            message["Subject"] = body.get("subject")
-        except:
-            print("error occured")
-            return {'result': False, 'info': "user does not exist"}, 500
+        emails = body.get('emailContent').get('email')
+        content = body.get('emailContent').get('body')
+        subject = body.get('emailContent').get('subject')
 
-        message.attach(MIMEText(body.get("body"), "plain"))
+        for i in emails:
+            try:
+                message = MIMEMultipart()
+                message["From"] = sender_email
+                email = i
+                message["To"] = email
+                message["Subject"] = subject
+            except:
+                print("error occured")
+                return {'result': False, 'info': "user does not exist"}, 500
 
-        text = message.as_string()
+            message.attach(MIMEText(content, "plain"))
 
-        for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv", "audit.csv"]:
+            for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv"]:
 
-            # Open PDF file in binary mode
-            with open(filename, "rb") as attachment:
-                # Add file as application/octet-stream
-                # Email client can usually download this automatically as attachment
-                part = MIMEBase("application", "octet-stream")
-                part.set_payload(attachment.read())
+                # Open PDF file in binary mode
+                with open(filename, "rb") as attachment:
+                    # Add file as application/octet-stream
+                    # Email client can usually download this automatically as attachment
+                    part = MIMEBase("application", "octet-stream")
+                    part.set_payload(attachment.read())
 
-            # Encode file in ASCII characters to send by email    
-            encoders.encode_base64(part)
+                # Encode file in ASCII characters to send by email    
+                encoders.encode_base64(part)
 
-            # Add header as key/value pair to attachment part
-            part.add_header(
-                "Content-Disposition",
-                f"attachment; filename= {filename}",
-            )
+                # Add header as key/value pair to attachment part
+                part.add_header(
+                    "Content-Disposition",
+                    f"attachment; filename= {filename}",
+                )
 
-            # Add attachment to message and convert message to string
-            message.attach(part)
+                # Add attachment to message and convert message to string
+                message.attach(part)
 
-        # Log in to server using secure context and send email
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-            server.login(sender_email, password)
-            server.sendmail(sender_email, email, text)
+            text = message.as_string()
+
+            # Log in to server using secure context and send email
+            context = ssl.create_default_context()
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+                server.login(sender_email, password)
+                server.sendmail(sender_email, email, text)
 
         for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv"]:
             os.remove(i)
@@ -1749,46 +1756,51 @@ def report_dashboard():
         df_month.to_csv('audit_month.csv')
         df_year.to_csv('audit_year.csv')
 
-        try:
-            message = MIMEMultipart()
-            message["From"] = sender_email
-            email = body.get('email')
-            message["To"] = email
-            message["Subject"] = body.get("subject")
-        except:
-            print("error occured")
-            return {'result': False, 'info': "user does not exist"}, 500
+        emails = body.get('emailContent').get('email')
+        content = body.get('emailContent').get('body')
+        subject = body.get('emailContent').get('subject')
 
-        message.attach(MIMEText(body.get("body"), "plain"))
+        for i in emails:
+            try:
+                message = MIMEMultipart()
+                message["From"] = sender_email
+                email = i
+                message["To"] = email
+                message["Subject"] = subject
+            except:
+                print("error occured")
+                return {'result': False, 'info': "user does not exist"}, 500
 
-        text = message.as_string()
+            message.attach(MIMEText(content, "plain"))
 
-        for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv"]:
+            for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv"]:
 
-            # Open PDF file in binary mode
-            with open(filename, "rb") as attachment:
-                # Add file as application/octet-stream
-                # Email client can usually download this automatically as attachment
-                part = MIMEBase("application", "octet-stream")
-                part.set_payload(attachment.read())
+                # Open PDF file in binary mode
+                with open(filename, "rb") as attachment:
+                    # Add file as application/octet-stream
+                    # Email client can usually download this automatically as attachment
+                    part = MIMEBase("application", "octet-stream")
+                    part.set_payload(attachment.read())
 
-            # Encode file in ASCII characters to send by email    
-            encoders.encode_base64(part)
+                # Encode file in ASCII characters to send by email    
+                encoders.encode_base64(part)
 
-            # Add header as key/value pair to attachment part
-            part.add_header(
-                "Content-Disposition",
-                f"attachment; filename= {filename}",
-            )
+                # Add header as key/value pair to attachment part
+                part.add_header(
+                    "Content-Disposition",
+                    f"attachment; filename= {filename}",
+                )
 
-            # Add attachment to message and convert message to string
-            message.attach(part)
+                # Add attachment to message and convert message to string
+                message.attach(part)
 
-        # Log in to server using secure context and send email
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-            server.login(sender_email, password)
-            server.sendmail(sender_email, email, text)
+            text = message.as_string()
+
+            # Log in to server using secure context and send email
+            context = ssl.create_default_context()
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+                server.login(sender_email, password)
+                server.sendmail(sender_email, email, text)
 
         for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv"]:
             os.remove(i)
@@ -2002,49 +2014,51 @@ def report_compare_tenant():
         df_month_2.to_csv('audit_month_2.csv')
         df_year_2.to_csv('audit_year_2.csv')
 
-        for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
-            os.remove(i)
-        
-        try:
-            message = MIMEMultipart()
-            message["From"] = sender_email
-            email = body.get('email')
-            message["To"] = email
-            message["Subject"] = body.get("subject")
-        except:
-            print("error occured")
-            return {'result': False, 'info': "user does not exist"}, 500
+        emails = body.get('emailContent').get('email')
+        content = body.get('emailContent').get('body')
+        subject = body.get('emailContent').get('subject')
 
-        message.attach(MIMEText(body.get("body"), "plain"))
+        for i in emails:
+            try:
+                message = MIMEMultipart()
+                message["From"] = sender_email
+                email = i
+                message["To"] = email
+                message["Subject"] = subject
+            except:
+                print("error occured")
+                return {'result': False, 'info': "user does not exist"}, 500
 
-        text = message.as_string()
+            message.attach(MIMEText(content, "plain"))
 
-        for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
+            for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
             
-            # Open PDF file in binary mode
-            with open(filename, "rb") as attachment:
-                # Add file as application/octet-stream
-                # Email client can usually download this automatically as attachment
-                part = MIMEBase("application", "octet-stream")
-                part.set_payload(attachment.read())
+                # Open PDF file in binary mode
+                with open(filename, "rb") as attachment:
+                    # Add file as application/octet-stream
+                    # Email client can usually download this automatically as attachment
+                    part = MIMEBase("application", "octet-stream")
+                    part.set_payload(attachment.read())
 
-            # Encode file in ASCII characters to send by email    
-            encoders.encode_base64(part)
+                # Encode file in ASCII characters to send by email    
+                encoders.encode_base64(part)
 
-            # Add header as key/value pair to attachment part
-            part.add_header(
-                "Content-Disposition",
-                f"attachment; filename= {filename}",
-            )
+                # Add header as key/value pair to attachment part
+                part.add_header(
+                    "Content-Disposition",
+                    f"attachment; filename= {filename}",
+                )
 
-            # Add attachment to message and convert message to string
-            message.attach(part)
+                # Add attachment to message and convert message to string
+                message.attach(part)
 
-        # Log in to server using secure context and send email
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-            server.login(sender_email, password)
-            server.sendmail(sender_email, email, text)
+            text = message.as_string()
+
+            # Log in to server using secure context and send email
+            context = ssl.create_default_context()
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+                server.login(sender_email, password)
+                server.sendmail(sender_email, email, text)
 
         for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
             os.remove(i)
@@ -2219,49 +2233,51 @@ def report_compare_tenant():
         df_month_2.to_csv('audit_month_2.csv')
         df_year_2.to_csv('audit_year_2.csv')
 
-        for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
-            os.remove(i)
-        
-        try:
-            message = MIMEMultipart()
-            message["From"] = sender_email
-            email = body.get('email')
-            message["To"] = email
-            message["Subject"] = body.get("subject")
-        except:
-            print("error occured")
-            return {'result': False, 'info': "user does not exist"}, 500
+        emails = body.get('emailContent').get('email')
+        content = body.get('emailContent').get('body')
+        subject = body.get('emailContent').get('subject')
 
-        message.attach(MIMEText(body.get("body"), "plain"))
+        for i in emails:
+            try:
+                message = MIMEMultipart()
+                message["From"] = sender_email
+                email = i
+                message["To"] = email
+                message["Subject"] = subject
+            except:
+                print("error occured")
+                return {'result': False, 'info': "user does not exist"}, 500
 
-        text = message.as_string()
+            message.attach(MIMEText(content, "plain"))
 
-        for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
+            for filename in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
             
-            # Open PDF file in binary mode
-            with open(filename, "rb") as attachment:
-                # Add file as application/octet-stream
-                # Email client can usually download this automatically as attachment
-                part = MIMEBase("application", "octet-stream")
-                part.set_payload(attachment.read())
+                # Open PDF file in binary mode
+                with open(filename, "rb") as attachment:
+                    # Add file as application/octet-stream
+                    # Email client can usually download this automatically as attachment
+                    part = MIMEBase("application", "octet-stream")
+                    part.set_payload(attachment.read())
 
-            # Encode file in ASCII characters to send by email    
-            encoders.encode_base64(part)
+                # Encode file in ASCII characters to send by email    
+                encoders.encode_base64(part)
 
-            # Add header as key/value pair to attachment part
-            part.add_header(
-                "Content-Disposition",
-                f"attachment; filename= {filename}",
-            )
+                # Add header as key/value pair to attachment part
+                part.add_header(
+                    "Content-Disposition",
+                    f"attachment; filename= {filename}",
+                )
 
-            # Add attachment to message and convert message to string
-            message.attach(part)
+                # Add attachment to message and convert message to string
+                message.attach(part)
 
-        # Log in to server using secure context and send email
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-            server.login(sender_email, password)
-            server.sendmail(sender_email, email, text)
+            text = message.as_string()
+
+            # Log in to server using secure context and send email
+            context = ssl.create_default_context()
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+                server.login(sender_email, password)
+                server.sendmail(sender_email, email, text)
 
         for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png", "audit_day_1.csv", "audit_week_1.csv", "audit_month_1.csv", "audit_year_1.csv", "audit_day_2.csv", "audit_week_2.csv", "audit_month_2.csv", "audit_year_2.csv"]:
             os.remove(i)
