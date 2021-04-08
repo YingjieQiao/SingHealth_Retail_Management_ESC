@@ -17,24 +17,24 @@ def list_files():
         if (os.path.isfile(filename_full) 
             and not filename.endswith(".py") and filename != '.DS_Store'):
             files.append(filename)
-    print(files)
+    #print(files)
 
 
 def datetime_to_str():
     now = datetime.now() # current date and time
     dateTime = now.strftime("%m/%d/%Y %H:%M:%S")
-    print("date and time:",dateTime)
+    #print("date and time:",dateTime)
     
     username = "UnitTester"
     dateTimeArr = dateTime.split(" ")
     date_ = dateTimeArr[0]
     time_ = dateTimeArr[1]
     date_ = date_.replace("/", "-")
-    print(date_)
-    print(time_)
+    #print(date_)
+    #print(time_)
 
     filename = username + "_" + date_ + "_" + time_ + ".jpg"
-    print(filename)
+    #print(filename)
 
 
 def test_split_filename():
@@ -42,8 +42,8 @@ def test_split_filename():
     filename_parts = filename.split('_')
     date_ = filename_parts[1]
     time_ = filename_parts[2][:-4]
-    print(date_)
-    print(time_)
+    #print(date_)
+    #print(time_)
 
 
 def upload(file_name, bucket, object_name=None):
@@ -78,9 +78,9 @@ def list_all_objects(bucket, username, timeInput, dateInput):
         ls = key['Key'].split('_')
 
         if (ls[0] == username):
-            print(key['Key'])
-            print(ls[1])
-            print(ls[2][:-4])
+            #print(key['Key'])
+            #print(ls[1])
+            #print(ls[2][:-4])
             # download(s3_client, key['Key'], bucket, None)
             pass
 

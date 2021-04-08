@@ -166,13 +166,13 @@ def user_login():
         firstName = user.firstName
         lastName = user.lastName
         authorized = user.check_password(body.get('password'))
-        print(authorized)
+        #print(authorized)
         if not authorized:
             logger.error("error in '/login' endpoint: %s", "password error")
             return {'result': False, 'info': "password error"}, 500
         session['username'] = firstName + lastName
         session.modified = True
-        print("username set: ", session['username'])
+        #print("username set: ", session['username'])
     except:
         logger.error("error in '/login' endpoint: %s", "user does not exist or payload error")
         return {'result': False, 'info': "user does not exist or payload error"}, 500
@@ -184,7 +184,7 @@ def user_login():
         message["To"] = email
         message["Subject"] = "Link to login to SingHealth"
     except:
-        print("error occured")
+        #print("error occured")
         logger.error("error in '/login' endpoint: %s", "user does not exist")
         return {'result': False, 'info': "user does not exist"}, 500
 
@@ -227,7 +227,7 @@ def login_verified():
         tenant=user.tenant
         session['username'] = firstName + lastName
         session.modified = True
-        print(session['username'])
+        #print(session['username'])
         logger.info("%s has logged in", firstName+lastName)
         return {'result': True, 'firstName': firstName, 'lastName': lastName, 
             'staff':staff, 'admin':admin, 'tenant':tenant, "session": session.sid}, 200 #this returns the details of the user 
@@ -255,13 +255,13 @@ def upload_file():
     try:
         audienceName = utils.assign_audience_name(username, request.form["staffName"], request.form["tenantName"])
     except Exception as e:
-        print("Error occurred: ", e)
+        #print("Error occurred: ", e)
         logger.error("In '/upload_file' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
     if username == "":
         username = 'UnitTester'
-        print("testing s3 upload")
+        #print("testing s3 upload")
         logger.info("testing s3 upload")
     filename = username + "_" + audienceName + "_" + date_ + "_" + time_ + ".jpg"
     
@@ -275,14 +275,14 @@ def upload_file():
 
     bucketName, counterPart_bucketName = utils.assign_s3_bucket(username) # always False for upload
     if bucketName == "":
-        print("username invalid: ", username)
+        #print("username invalid: ", username)
         logger.error("In '/upload_file' endpoint, username invalid: ", username)
         return {'result': False}, 500
     
     try:
         s3_methods.upload_file(filename, bucketName, None)
     except Exception as e:
-        print("Error occurred: ", e)
+        # print("Error occurred: ", e)
         logger.error("In '/upload_file' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -299,21 +299,21 @@ def download_file():
         body = request.get_json()
         counterPart = body["counterPart"]
     except Exception as e:
-        print("Error occurred: ", e)
+        # print("Error occurred: ", e)
         logger.error("In '/download_file' endpoint, error occurred: ", e)
         return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
 
     username = utils.get_current_username()
     if username == "":
         username = 'UnitTester'
-        print("testing s3 download")
+        # print("testing s3 download")
         logger.info("testing s3 download")
     timeInput = None
     dateInput = None
 
     bucketName, counterPart_bucketName = utils.assign_s3_bucket(username)
     if bucketName == "":
-        print("username invalid: ", username)
+        # print("username invalid: ", username)
         logger.error("In '/download_file' endpoint, username invalid: ", username)
         return {'result': False}, 500
 
@@ -322,7 +322,7 @@ def download_file():
             res = s3_methods.download_user_objects(bucketName, username,
                                                         timeInput, dateInput, counterPart)
         except Exception as e:
-            print("Error occurred: ", e)
+            # print("Error occurred: ", e)
             logger.error("In '/download_file' endpoint, error occurred: ", e)
             return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
     else:
@@ -330,7 +330,7 @@ def download_file():
             res = s3_methods.download_user_objects(counterPart_bucketName, username,
                                                         timeInput, dateInput, counterPart)
         except Exception as e:
-            print("Error occurred: ", e)
+            # print("Error occurred: ", e)
             logger.error("In '/download_file' endpoint, error occurred: ", e)
             return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
     
@@ -368,7 +368,7 @@ def upload_photo_info():
         """
         email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
     except Exception as e:
-        print("Error occurred: ", e)
+        # print("Error occurred: ", e)
         logger.error("In '/upload_photo_info' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -396,7 +396,7 @@ def tenant_upload_photo_info():
                 """
             email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
     except Exception as e:
-        print("Error occurred: ", e)
+        # print("Error occurred: ", e)
         logger.error("In '/tenant_upload_photo_info' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -414,14 +414,14 @@ def rectify_photo():
     username = utils.get_current_username()
     if username == "":
         username = "UnitTester"
-        print("testing")
+        # print("testing")
         logger.info("testing '/rectify_photo' endpoint")
 
     try:
         photoInfo = Photo.objects(date=date_, time=time_, staffName=username)
         photoInfo.update(**body)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/rectify_photo' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -439,14 +439,14 @@ def tenant_rectify_photo():
     username = utils.get_current_username()
     if username == "":
         username = "UnitTester"
-        print("testing")
+        # print("testing")
         logger.info("testing '/rectify_photo' endpoint")
 
     try:
         photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=username)
         photoInfo.update(**body)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/rectify_photo' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -462,14 +462,14 @@ def tenant_get_photo_notification():
     username = utils.get_current_username()
     if username == "":
         username = 'RossGeller'
-        print("testing") #TODO change to logging
+        # print("testing") #TODO change to logging
     
     try:
         photoNotifications = PhotoNotification.objects(tenantName=username, deleted=False)
-        print(photoNotifications)
+        # print(photoNotifications)
         return {"result": True, "tenantData": photoNotifications}, 200
     except Exception as e:
-        print("error: ", e) # logger
+        # print("error: ", e) # logger
         return {"result": False, "tenantData": None}, 500
 
 
@@ -480,14 +480,14 @@ def tenant_delete_photo_notification():
     try:
         body.pop("_id", None)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/tenant_delete_photo_notification' endpoint, error occurred: ", e)
-    print(body)
+    # print(body)
 
     try:
         notif_methods.tenant_update_photo_notification("delete", utils.get_current_username(), body)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/tenant_delete_photo_notification' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -501,14 +501,14 @@ def tenant_read_photo_notification():
     try:
         body.pop("_id", None)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/tenant_read_photo_notification' endpoint, error occurred: ", e)
-    print(body)
+    # print(body)
 
     try:
         notif_methods.tenant_update_photo_notification("read", utils.get_current_username(), body)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/tenant_read_photo_notification' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -525,14 +525,14 @@ def staff_get_photo_notification():
     username = utils.get_current_username()
     if username == "":
         username = 'UnitTesterStaff'
-        print("testing") #TODO change to logging
+        # print("testing") #TODO change to logging
     
     try:
         photoNotificationsFromTenant = PhotoNotificationFromTenant.objects(staffName=username, deleted=False)
-        print(photoNotificationsFromTenant)
+        # print(photoNotificationsFromTenant)
         return {"result": True, "staffData": photoNotificationsFromTenant, "session": session.sid}, 200
     except Exception as e:
-        print("error: ", e) # logger
+        # print("error: ", e) # logger
         return {"result": False, "staffData": None, "session": session.sid}, 500
 
 
@@ -543,14 +543,14 @@ def staff_delete_photo_notification():
     try:
         body.pop("_id", None)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/staff_delete_photo_notification' endpoint, error occurred: ", e)
-    print(body)
+    # print(body)
 
     try:
         notif_methods.staff_update_photo_notification("delete", utils.get_current_username(), body)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/staff_delete_photo_notification' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -564,14 +564,14 @@ def staff_read_photo_notification():
     try:
         body.pop("_id", None)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/staff_read_photo_notification' endpoint, error occurred: ", e)
-    print(body)
+    # print(body)
 
     try:
         notif_methods.staff_update_photo_notification("read", utils.get_current_username(), body)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/staff_read_photo_notification' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -589,7 +589,7 @@ def display_data():
         }
         res = utils.get_data()
     except Exception as e:
-        print("error: ", e)
+        # print("error: ", e)
         logger.error("In '/display_data' endpoint, error occurred: ", e)
         return {'result': False, 'data': None, 'info': 'failed'}, 500
     data = res[mapping[tableName]]
@@ -614,7 +614,7 @@ def download_data_csv():
         dataDict = utils.mongo_object_to_dict(data)
         filePath, fileName = utils.write_to_csv(dataDict, tableName)
     except Exception as e:
-        print("error, ", e)
+        # print("error, ", e)
         logger.error("In '/download_data_csv' endpoint, error occurred: ", e)
         return {'result': False, 'data': None, 'info': 'failed'}, 500
 
@@ -627,7 +627,7 @@ def remove_temp_files():
     try:
         utils.clear_assets()
     except Exception as e:
-        print("error: ", e)
+        # print("error: ", e)
         logger.error("In '/remove_temp_files' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -642,7 +642,7 @@ def email():
     receiver_email = data.get('email')
     subject = data.get('subject')
     body = data.get('content')
-    print(receiver_email,subject,body)
+    # print(receiver_email,subject,body)
     try:
 
         message = MIMEMultipart()
@@ -696,7 +696,7 @@ def tenant_exists():
     if len(audit_ls) == 0:
         return {'status': False, 'info': "Not enough data entries"}, 500
 
-    print(audit_ls)
+    # print(audit_ls)
 
     temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.totalScore] for i in audit_ls]
     df = pd.DataFrame(temp_ls)
@@ -831,7 +831,7 @@ def tenant_list():
         else:
             return {'result': False}
     except:
-        print("error")
+        # print("error")
         return {'result': False}
 
 @apis.route('/auditChecklist', methods=['GET', 'POST'])
@@ -860,7 +860,7 @@ def compare_tenant():
     
     body = request.get_json()
 
-    print(body)
+    # print(body)
         
     audit_ls_1 = Audit_non_FB.objects(auditeeName = body.get('institute1'))
     audit_ls_2 = Audit_non_FB.objects(auditeeName = body.get('institute2'))
@@ -1058,7 +1058,7 @@ def TEST_add_notification():
         newPhotoNotification = PhotoNotification(**body)
         newPhotoNotification.save()
     except Exception as e:
-        print("error occurred: ", e)
+        #print("error occurred: ", e)
         return {'result': False}, 500
 
     return {'result': True}, 200
@@ -1078,7 +1078,7 @@ def TEST_add_notification_from_staff():
         newPhotoNotificationFromTenant = PhotoNotificationFromTenant(**body)
         newPhotoNotificationFromTenant.save()
     except Exception as e:
-        print("error occurred: ", e)
+        #print("error occurred: ", e)
         return {'result': False}, 500
 
     return {'result': True}, 200

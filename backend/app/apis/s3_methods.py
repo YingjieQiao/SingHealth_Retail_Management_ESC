@@ -30,7 +30,7 @@ def upload_file(file_name, bucket, object_name):
     try:
         response = s3_client.upload_file(file_name, bucket, object_name)
     except ClientError as e:
-        print("error occurred: ", e)
+        #print("error occurred: ", e)
         logger.error("In 'upload_file' function, error occurred: ", e)
         return False
     return True
@@ -58,7 +58,7 @@ def download(s3, file_name, bucket, object_name):
         s3.download_file(bucket, object_name, file_name)
         filename_full = os.getcwd() + '/' + file_name
     except ClientError as e:
-        print("error occurred: ", e)
+        #print("error occurred: ", e)
         logger.error("In 'download' function, error occurred: ", e)
     return filename_full
 
@@ -69,7 +69,7 @@ def download_user_objects(bucket, username, timeInput, dateInput, counterPart):
                 aws_secret_access_key=os.environ.get('SECRET_KEY'))
     photoData = []
     photoAttrData = []
-    # print(bucket, username, timeInput, dateInput, counterPart)
+    # #print(bucket, username, timeInput, dateInput, counterPart)
 
     for key in s3_client.list_objects(Bucket=bucket)['Contents']:
         ls = key['Key'].split('_')
@@ -107,7 +107,7 @@ def get_photo_info(date_, time_, counterPart, username):
     
     if username == "":
         session['username'] = "UnitTester"
-        print("testing")
+        #print("testing")
         logger.error("In 'get_photo_info' function, error occurred")
 
     if not counterPart:
@@ -115,14 +115,14 @@ def get_photo_info(date_, time_, counterPart, username):
             try:
                 photoInfo = Photo.objects(date=date_, time=time_, staffName=username)
             except Exception as e:
-                print("error: ", e)
+                #print("error: ", e)
                 logger.error("In 'get_photo_info' function, error occurred: ", e)
                 return None
         else:
             try:
                 photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=username)
             except Exception as e:
-                print("error: ", e)
+                #print("error: ", e)
                 logger.error("In 'get_photo_info' function, error occurred: ", e)
                 return None
     else:
@@ -130,14 +130,14 @@ def get_photo_info(date_, time_, counterPart, username):
             try:
                 photoInfo = TenantPhoto.objects(staffName=username, date=date_, time=time_)
             except Exception as e:
-                print("error: ", e)
+                #print("error: ", e)
                 logger.error("In 'get_photo_info' function, error occurred: ", e)
                 return None
         else:
             try:
                 photoInfo = Photo.objects(tenantName=username, date=date_, time=time_)
             except Exception as e:
-                print("error: ", e)
+                #print("error: ", e)
                 logger.error("In 'get_photo_info' function, error occurred: ", e)
                 return None
 
