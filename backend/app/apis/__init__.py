@@ -607,9 +607,9 @@ def staff_read_photo_notification():
 @cross_origin(supports_credentials=True)
 def display_data():
     
-    body = request.get_json()
-    tableName = body['tableName']
     try:
+        body = request.get_json()
+        tableName = body['tableName']
         mapping = {
             'User': 0,
             'Photo': 1
