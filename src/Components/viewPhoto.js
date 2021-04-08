@@ -28,13 +28,8 @@ class viewPhoto extends Component {
                 <Navbar/>
                 <h2>View Photos</h2>
                 <p>{this.state.reviewPhotoMsg}</p>
-<<<<<<< HEAD
-                <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoByTenantHandler}>View Photos Uploaded By Tenant</button>
-                <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoByStaffHandler}>View Previously Uploaded Photos</button>
-=======
                 <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoByTenantHandler}>View Photos Uploaded By Tenants</button>
                 <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoByStaffHandler}>View Previously Updated Photos</button>
->>>>>>> 0e97f405cbe98c867d4fb54fc0d137de9e99e0e6
                 <div>
                     {this.state.numberOfImage.map(image => {
                         return(

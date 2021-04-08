@@ -208,13 +208,8 @@ class Register extends Component {
                         <option value="Staff">staff</option>
 
                     </select><br />
-<<<<<<< HEAD
                     {this.rendervalue()}
                     <input type="submit" value="Submit"  />
-=======
-
-                    <input id="submit" type="submit" value="Submit"  />
->>>>>>> 0e97f405cbe98c867d4fb54fc0d137de9e99e0e6
 
                     <li>
                          <label>Sign in? </label>
