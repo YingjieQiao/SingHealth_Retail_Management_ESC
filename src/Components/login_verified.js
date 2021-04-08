@@ -46,8 +46,8 @@ class login_verified extends Component {
     event.preventDefault();
 
     const user = {
-      password: this.state.password,
-      email: this.state.email
+      token: this.state.Enter_Token,
+
     };
     const headers = {
         'Content-Type': 'application/json',
