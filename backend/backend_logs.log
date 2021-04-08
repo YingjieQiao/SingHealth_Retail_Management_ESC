@@ -17823,3 +17823,968 @@ Traceback (most recent call last):
     raise FieldDoesNotExist(msg)
 mongoengine.errors.FieldDoesNotExist: The fields "{'workSafetyListScore', 'houskeepingListScore', 'profListScore'}" do not exist on the document "Audit_non_FB"
 2021-04-09 05:29:20,815 INFO werkzeug Thread-39 : 127.0.0.1 - - [09/Apr/2021 05:29:20] "[35m[1mPOST /report_timeframe HTTP/1.1[0m" 500 -
+2021-04-09 05:50:30,777 INFO logger MainThread : backend started
+2021-04-09 05:50:31,256 DEBUG matplotlib MainThread : matplotlib data path: C:\Python39\lib\site-packages\matplotlib\mpl-data
+2021-04-09 05:50:31,262 DEBUG matplotlib MainThread : CONFIGDIR=C:\Users\ishaa\.matplotlib
+2021-04-09 05:50:31,264 DEBUG matplotlib MainThread : matplotlib version 3.4.0
+2021-04-09 05:50:31,264 DEBUG matplotlib MainThread : interactive is False
+2021-04-09 05:50:31,264 DEBUG matplotlib MainThread : platform is win32
+2021-04-09 05:50:31,264 DEBUG matplotlib MainThread : loaded modules: ['sys', 'builtins', '_frozen_importlib', '_imp', '_thread', '_warnings', '_weakref', '_frozen_importlib_external', 'nt', '_io', 'marshal', 'winreg', 'time', 'zipimport', '_codecs', 'codecs', 'encodings.aliases', 'encodings', 'encodings.utf_8', 'encodings.cp1252', '_signal', 'encodings.latin_1', '_abc', 'abc', 'io', '__main__', '_stat', 'stat', '_collections_abc', 'genericpath', 'ntpath', 'os.path', 'os', '_sitebuiltins', '_locale', '_bootlocale', 'pywin32_bootstrap', 'types', 'importlib._bootstrap', 'importlib._bootstrap_external', 'warnings', 'importlib', 'importlib.machinery', '_heapq', 'heapq', 'itertools', 'keyword', '_operator', 'operator', 'reprlib', '_collections', 'collections', 'collections.abc', '_functools', 'functools', 'contextlib', 'enum', '_sre', 'sre_constants', 'sre_parse', 'sre_compile', 'copyreg', 're', 'typing.io', 'typing.re', 'typing', 'importlib.abc', 'importlib.util', 'google', 'google.logging', 'mpl_toolkits', 'site', '_weakrefset', 'weakref', 'pkgutil', 'runpy', '_string', 'string', 'markupsafe._compat', 'markupsafe._speedups', 'markupsafe', 'errno', 'posixpath', 'fnmatch', 'zlib', '_compression', 'threading', '_bz2', 'bz2', '_lzma', 'lzma', 'shutil', 'math', '_bisect', 'bisect', '_random', '_sha512', 'random', 'tempfile', '_hashlib', '_blake2', 'hashlib', '_struct', 'struct', '_compat_pickle', '_pickle', 'pickle', 'urllib', 'urllib.parse', 'jinja2._compat', '_json', 'json.scanner', 'json.decoder', 'json.encoder', 'json', 'jinja2.utils', 'jinja2.bccache', 'jinja2.nodes', 'jinja2.exceptions', 'jinja2.visitor', 'jinja2.idtracking', 'jinja2.optimizer', '__future__', 'jinja2.compiler', 'jinja2.runtime', 'jinja2.filters', 'numbers', '_decimal', 'decimal', 'jinja2.tests', 'jinja2.defaults', '_ast', 'ast', 'unicodedata', 'jinja2._identifier', 'jinja2.lexer', 'jinja2.parser', 'jinja2.environment', 'jinja2.loaders', 'jinja2', 'signal', '_socket', 'select', 'selectors', 'socket', '_datetime', 'datetime', 'werkzeug._compat', '_opcode', 'opcode', 'dis', 'token', 'tokenize', 'linecache', 'inspect', 'traceback', 'atexit', 'logging', 'werkzeug._internal', 'html.entities', 'html', 'werkzeug.utils', 'werkzeug.exceptions', 'werkzeug.urls', 'socketserver', 'http', 'copy', 'email', 'locale', 'calendar', 'email._parseaddr', 'binascii', 'base64', 'email.base64mime', 'email.quoprimime', 'email.errors', 'quopri', 'email.encoders', 'email.charset', 'email.utils', 'email.header', 'email._policybase', 'email.feedparser', 'email.parser', 'uu', 'email._encoded_words', 'email.iterators', 'email.message', '_ssl', 'ssl', 'http.client', 'mimetypes', 'http.server', '_ctypes', 'ctypes._endian', 'ctypes', 'ctypes.wintypes', 'msvcrt', 'click._winconsole', 'colorama.ansi', 'colorama.win32', 'colorama.winterm', 'colorama.ansitowin32', 'colorama.initialise', 'colorama', 'click._compat', 'click._unicodefun', 'click.globals', 'click.utils', 'click.exceptions', 'click.parser', 'click.types', 'click.termui', 'click.formatting', 'click.core', 'click.decorators', 'click', 'werkzeug.serving', 'werkzeug.filesystem', 'urllib.response', 'urllib.error', 'nturl2path', 'urllib.request', 'werkzeug.http', 'werkzeug.datastructures', 'werkzeug.wrappers.accept', 'werkzeug.wrappers.auth', 'werkzeug.wsgi', 'werkzeug.formparser', 'werkzeug.wrappers.base_request', 'werkzeug.wrappers.base_response', 'werkzeug.wrappers.common_descriptors', 'werkzeug.wrappers.etag', 'werkzeug.wrappers.cors', 'werkzeug.useragents', 'werkzeug.wrappers.user_agent', 'werkzeug.wrappers.request', 'werkzeug.wrappers.response', 'werkzeug.wrappers', 'http.cookiejar', 'werkzeug.test', 'werkzeug', '_uuid', 'uuid', 'itsdangerous._json', 'hmac', 'itsdangerous._compat', 'itsdangerous.exc', 'itsdangerous.encoding', 'itsdangerous.signer', 'itsdangerous.serializer', 'itsdangerous.jws', 'itsdangerous.timed', 'itsdangerous.url_safe', 'itsdangerous', 'flask._compat', 'werkzeug.local', 'flask.globals', 'dataclasses', 'flask.json', 'difflib', 'pprint', 'werkzeug.routing', '_winapi', 'subprocess', 'platform', 'blinker._saferef', 'blinker._utilities', 'blinker.base', 'blinker', 'flask.signals', 'flask.helpers', 'flask.cli', 'flask.config', 'flask.ctx', 'flask.logging', 'flask.json.tag', 'flask.sessions', 'flask.templating', 'werkzeug.wrappers.json', 'flask.wrappers', 'flask.app', 'flask.blueprints', 'flask', 'zipfile', 'xml', 'xml.parsers', 'pyexpat.errors', 'pyexpat.model', 'pyexpat', 'xml.parsers.expat.model', 'xml.parsers.expat.errors', 'xml.parsers.expat', 'plistlib', 'textwrap', 'pkg_resources.extern', 'pkg_resources._vendor', 'win32api', '_win32sysloader', 'pywintypes', 'pythoncom', 'win32com.gen_py', 'win32com', 'win32com.shell', 'pkg_resources._vendor.appdirs', 'pkg_resources.extern.appdirs', 'pkg_resources._vendor.packaging.__about__', 'pkg_resources._vendor.packaging', 'pkg_resources.extern.packaging', 'pkg_resources.extern.packaging._structures', 'pkg_resources.extern.packaging._typing', 'pkg_resources.extern.packaging.version', 'pkg_resources.extern.packaging._compat', 'pkg_resources.extern.packaging.utils', 'pkg_resources.extern.packaging.specifiers', 'pkg_resources._vendor.pyparsing', 'pkg_resources.extern.pyparsing', 'pkg_resources.extern.packaging.markers', 'pkg_resources.extern.packaging.requirements', 'sysconfig', 'pkg_resources', 'encodings.utf_16_le', 'wsgi', 'flask_session.sessions', 'flask_session', 'six', 'flask_cors.core', 'flask_cors.decorator', 'flask_cors.extension', 'flask_cors.version', 'flask_cors', 'werkzeug.security', '_cffi_backend', '_bcrypt.lib', '_bcrypt', 'bcrypt._bcrypt', 'bcrypt.__about__', 'bcrypt', 'flask_bcrypt', 'bson.py3compat', 'bson.binary', 'bson.code', 'bson.codec_options', 'bson.son', 'bson.dbref', 'bson.decimal128', 'bson.errors', 'bson.int64', 'bson.max_key', 'bson.min_key', 'bson.tz_util', 'bson.objectid', 'bson.regex', 'bson.timestamp', 'bson._cbson', 'bson', 'bson.raw_bson', 'pymongo.errors', 'pymongo.auth_aws', 'stringprep', 'pymongo.saslprep', 'pymongo.auth', 'pymongo.helpers', 'pymongo.monitoring', 'pymongo.compression_support', 'pymongo.driver_info', 'pymongo.encryption_options', 'pymongo.read_concern', 'pymongo.server_type', 'pymongo.max_staleness_selectors', 'pymongo.server_selectors', 'pymongo.read_preferences', 'ipaddress', 'pymongo.ssl_context', 'pathlib', 'importlib._common', 'importlib.resources', 'certifi.core', 'certifi', 'pymongo.ssl_support', 'pymongo.write_concern', 'pymongo.common', 'pymongo._cmessage', 'pymongo.message', 'pymongo.collation', 'pymongo.aggregation', 'pymongo.monotonic', 'pymongo.client_session', 'pymongo.bulk', 'pymongo.command_cursor', 'pymongo.change_stream', 'pymongo.cursor', 'pymongo.operations', 'pymongo.results', 'pymongo.collection', 'pymongo.son_manipulator', 'pymongo.database', 'pymongo.periodic_executor', 'dns.version', 'dns', 'dns.exception', 'dns.flags', 'dns.ipv4', 'dns.ipv6', 'dns.inet', 'encodings.idna', 'idna.package_data', 'idna.idnadata', 'idna.intranges', 'idna.core', 'idna', '_contextvars', 'contextvars', 'dns._immutable_ctx', 'dns.immutable', 'dns.name', 'dns.wire', 'dns.enum', 'dns.rdataclass', 'dns.rdatatype', 'dns.ttl', 'dns.tokenizer', 'dns.rdata', 'dns.edns', 'dns.opcode', 'dns.entropy', 'dns.rcode', 'dns.set', 'dns.rdataset', 'dns.tsig', 'dns.renderer', 'dns.rrset', 'dns.rdtypes', 'dns.rdtypes.ANY', 'dns.rdtypes.ANY.OPT', 'dns.rdtypes.ANY.TSIG', 'dns.message', 'dns.serial', 'dns.node', 'dns.rdtypes.ANY.SOA', 'dns.transaction', 'dns.grange', 'dns.zonefile', 'dns.zone', 'dns.xfr', 'urllib3.packages.ssl_match_hostname', 'urllib3.packages', 'urllib3.packages.six', 'urllib3.packages.six.moves', 'urllib3.packages.six.moves.http_client', 'urllib3.exceptions', '_queue', 'queue', 'urllib3.util.wait', 'urllib3.contrib', 'urllib3.contrib._appengine_environ', 'urllib3.util.connection', 'urllib3.util.request', 'urllib3.util.response', 'urllib3.util.url', 'urllib3.util.ssl_', 'urllib3.util.timeout', 'urllib3.util.retry', 'urllib3.util', 'urllib3._collections', 'urllib3.connection', 'urllib3.fields', 'urllib3.filepost', 'urllib3.packages.six.moves.urllib', 'urllib3.packages.six.moves.urllib.parse', 'urllib3.request', 'urllib3.response', 'urllib3.util.queue', 'urllib3.connectionpool', 'urllib3.poolmanager', 'urllib3._version', 'urllib3', 'chardet.compat', 'chardet.enums', 'chardet.charsetprober', 'chardet.charsetgroupprober', 'chardet.codingstatemachine', 'chardet.escsm', 'chardet.escprober', 'chardet.latin1prober', 'chardet.mbcssm', 'chardet.utf8prober', 'chardet.mbcharsetprober', 'chardet.euctwfreq', 'chardet.euckrfreq', 'chardet.gb2312freq', 'chardet.big5freq', 'chardet.jisfreq', 'chardet.chardistribution', 'chardet.jpcntx', 'chardet.sjisprober', 'chardet.eucjpprober', 'chardet.gb2312prober', 'chardet.euckrprober', 'chardet.cp949prober', 'chardet.big5prober', 'chardet.euctwprober', 'chardet.mbcsgroupprober', 'chardet.sbcharsetprober', 'chardet.langcyrillicmodel', 'chardet.langgreekmodel', 'chardet.langbulgarianmodel', 'chardet.langthaimodel', 'chardet.langhebrewmodel', 'chardet.hebrewprober', 'chardet.langturkishmodel', 'chardet.sbcsgroupprober', 'chardet.universaldetector', 'chardet.version', 'chardet', 'requests.exceptions', 'requests.__version__', 'requests.certs', 'http.cookies', 'requests.compat', 'requests._internal_utils', 'requests.cookies', 'requests.structures', 'requests.utils', 'requests.packages.urllib3.packages.ssl_match_hostname', 'requests.packages.urllib3.packages', 'requests.packages.urllib3.packages.six', 'requests.packages.urllib3.packages.six.moves', 'requests.packages.urllib3.packages.six.moves.http_client', 'requests.packages.urllib3.exceptions', 'requests.packages.urllib3.util.wait', 'requests.packages.urllib3.contrib', 'requests.packages.urllib3.contrib._appengine_environ', 'requests.packages.urllib3.util.connection', 'requests.packages.urllib3.util.request', 'requests.packages.urllib3.util.response', 'requests.packages.urllib3.util.url', 'requests.packages.urllib3.util.ssl_', 'requests.packages.urllib3.util.timeout', 'requests.packages.urllib3.util.retry', 'requests.packages.urllib3.util', 'requests.packages.urllib3._collections', 'requests.packages.urllib3.connection', 'requests.packages.urllib3.fields', 'requests.packages.urllib3.filepost', 'requests.packages.urllib3.packages.six.moves.urllib', 'requests.packages.urllib3.packages.six.moves.urllib.parse', 'requests.packages.urllib3.request', 'requests.packages.urllib3.response', 'requests.packages.urllib3.util.queue', 'requests.packages.urllib3.connectionpool', 'requests.packages.urllib3.poolmanager', 'requests.packages.urllib3._version', 'requests.packages.urllib3', 'requests.packages.idna.package_data', 'requests.packages.idna.idnadata', 'requests.packages.idna.intranges', 'requests.packages.idna.core', 'requests.packages.idna', 'requests.packages.chardet.compat', 'requests.packages.chardet.enums', 'requests.packages.chardet.charsetprober', 'requests.packages.chardet.charsetgroupprober', 'requests.packages.chardet.codingstatemachine', 'requests.packages.chardet.escsm', 'requests.packages.chardet.escprober', 'requests.packages.chardet.latin1prober', 'requests.packages.chardet.mbcssm', 'requests.packages.chardet.utf8prober', 'requests.packages.chardet.mbcharsetprober', 'requests.packages.chardet.euctwfreq', 'requests.packages.chardet.euckrfreq', 'requests.packages.chardet.gb2312freq', 'requests.packages.chardet.big5freq', 'requests.packages.chardet.jisfreq', 'requests.packages.chardet.chardistribution', 'requests.packages.chardet.jpcntx', 'requests.packages.chardet.sjisprober', 'requests.packages.chardet.eucjpprober', 'requests.packages.chardet.gb2312prober', 'requests.packages.chardet.euckrprober', 'requests.packages.chardet.cp949prober', 'requests.packages.chardet.big5prober', 'requests.packages.chardet.euctwprober', 'requests.packages.chardet.mbcsgroupprober', 'requests.packages.chardet.sbcharsetprober', 'requests.packages.chardet.langcyrillicmodel', 'requests.packages.chardet.langgreekmodel', 'requests.packages.chardet.langbulgarianmodel', 'requests.packages.chardet.langthaimodel', 'requests.packages.chardet.langhebrewmodel', 'requests.packages.chardet.hebrewprober', 'requests.packages.chardet.langturkishmodel', 'requests.packages.chardet.sbcsgroupprober', 'requests.packages.chardet.universaldetector', 'requests.packages.chardet.version', 'requests.packages.chardet', 'requests.packages', 'requests.hooks', 'requests.auth', 'requests.status_codes', 'requests.models', 'requests.adapters', 'requests.sessions', 'requests.api', 'requests', 'urllib3.contrib.appengine', 'requests_toolbelt._compat', 'requests_toolbelt.adapters.ssl', 'requests_toolbelt.adapters.source', 'requests_toolbelt.adapters', 'requests_toolbelt.auth', 'requests_toolbelt.auth._digest_auth_compat', 'requests_toolbelt.auth.http_proxy_digest', 'requests_toolbelt.auth.guess', 'requests_toolbelt.multipart.encoder', 'requests_toolbelt.multipart.decoder', 'requests_toolbelt.multipart', 'requests_toolbelt.streaming_iterator', 'requests_toolbelt.utils', 'requests_toolbelt.utils.user_agent', 'requests_toolbelt', 'requests_toolbelt.adapters.host_header_ssl', 'dns.query', 'dns.reversename', 'dns.resolver', 'pymongo.srv_resolver', 'pymongo.uri_parser', 'pymongo.thread_util', 'pymongo.ismaster', 'pymongo.socket_checker', 'pymongo.network', 'pymongo.ssl_match_hostname', 'pymongo.pool', 'pymongo.client_options', 'pymongo.cursor_manager', 'pymongo.server_description', 'pymongo.topology_description', 'pymongo.monitor', 'pymongo.response', 'pymongo.server', 'pymongo.topology', 'pymongo.settings', 'pymongo.mongo_client', 'pymongo.mongo_replica_set_client', 'pymongo', 'mongoengine.connection', 'mongoengine.signals', 'mongoengine.errors', 'mongoengine.base.common', 'mongoengine.common', 'mongoengine.base.datastructures', 'bson.json_util', 'mongoengine.base.fields', 'mongoengine.base.document', 'mongoengine.queryset.field_list', 'mongoengine.pymongo_support', 'mongoengine.context_managers', 'mongoengine.queryset.transform', 'mongoengine.queryset.visitor', 'mongoengine.queryset.base', 'mongoengine.queryset.queryset', 'mongoengine.queryset.manager', 'mongoengine.queryset', 'mongoengine.base.metaclasses', 'mongoengine.base', 'mongoengine.document', 'gridfs.errors', 'gridfs.grid_file', 'gridfs', 'dateutil._version', 'dateutil', 'dateutil._common', 'dateutil.relativedelta', 'six.moves', 'dateutil.tz._common', 'dateutil.tz._factories', 'dateutil.tz.win', 'dateutil.tz.tz', 'dateutil.tz', 'dateutil.parser._parser', 'dateutil.parser.isoparser', 'dateutil.parser', 'mongoengine.base.utils', 'PIL._version', 'PIL', 'xml.etree', 'xml.etree.ElementPath', '_elementtree', 'xml.etree.ElementTree', 'PIL.ImageMode', 'PIL.TiffTags', 'PIL._binary', 'PIL._util', 'PIL._imaging', 'cffi.lock', 'cffi.error', 'cffi.model', 'cffi.api', 'cffi', 'PIL.Image', 'PIL.ImageOps', 'mongoengine.fields', 'mongoengine', 'flask_mongoengine.connection', 'flask_mongoengine.json', 'flask_mongoengine.pagination', 'flask_mongoengine.sessions', 'flask_mongoengine.wtf.base', 'email_validator', 'wtforms.compat', 'wtforms.validators', 'wtforms.widgets.core', 'wtforms.widgets', 'wtforms.i18n', 'wtforms.utils', 'wtforms.fields.core', 'wtforms.fields.simple', 'wtforms.fields', 'wtforms.meta', 'wtforms.form', 'wtforms', 'gettext', 'flask_mongoengine.wtf.fields', 'wtforms.csrf', 'wtforms.csrf.core', 'flask_wtf._compat', 'flask_wtf.csrf', 'flask_wtf.form', 'flask_wtf.recaptcha.widgets', 'flask_wtf.recaptcha.validators', 'flask_wtf.recaptcha.fields', 'flask_wtf.recaptcha', 'flask_wtf', 'flask_mongoengine.wtf.models', 'flask_mongoengine.wtf.orm', 'flask_mongoengine.wtf', 'flask_mongoengine', 'app.models', 'app.config', 'app', 'cachelib._compat', 'cachelib.base', 'cachelib.simple', 'cachelib.file', 'cachelib.memcached', 'cachelib.redis', 'cachelib.uwsgi', 'cachelib', 'app.apis', 'botocore', 'shlex', 'botocore.vendored', 'botocore.vendored.six', 'botocore.vendored.requests.packages.urllib3.exceptions', 'botocore.vendored.requests.packages.urllib3', 'botocore.vendored.requests.packages', 'botocore.vendored.requests.exceptions', 'botocore.vendored.requests', 'botocore.exceptions', 'botocore.vendored.six.moves', 'xml.etree.cElementTree', 'botocore.compat', 'botocore.configloader', 'getpass', 'cgi', 'botocore.vendored.six.moves.urllib_parse', 'botocore.httpsession', 'botocore.vendored.six.moves.urllib', 'botocore.vendored.six.moves.urllib.request', 'botocore.utils', 'botocore.awsrequest', 'botocore.hooks', 'botocore.history', 'botocore.eventstream', 'botocore.parsers', 'botocore.response', 'botocore.endpoint', 'botocore.config', 'botocore.credentials', 'jmespath.compat', 'jmespath.exceptions', 'jmespath.lexer', 'jmespath.ast', 'jmespath.functions', 'jmespath.visitor', 'jmespath.parser', 'jmespath', 'botocore.docs.utils', 'botocore.docs.shape', 'botocore.docs.params', 'botocore.docs.example', 'botocore.docs.method', 'botocore.docs.sharedexample', 'botocore.docs.client', 'botocore.docs.waiter', 'botocore.docs.paginator', 'botocore.docs.bcdoc', '_markupbase', 'html.parser', 'botocore.docs.bcdoc.docstringparser', 'botocore.docs.bcdoc.style', 'botocore.docs.bcdoc.restdoc', 'botocore.docs.service', 'botocore.docs', 'botocore.docs.docstring', 'botocore.waiter', 'botocore.validate', 'botocore.serialize', 'botocore.auth', 'botocore.signers', 'botocore.args', 'botocore.model', 'botocore.paginate', 'botocore.discovery', 'botocore.retries', 'botocore.retries.quota', 'botocore.retries.base', 'botocore.retries.special', 'botocore.retries.standard', 'botocore.retries.bucket', 'botocore.retries.throttling', 'botocore.retries.adaptive', 'botocore.client', 'botocore.configprovider', 'botocore.errorfactory', 'botocore.retryhandler', 'botocore.translate', 'botocore.handlers', 'botocore.loaders', 'botocore.regions', 'botocore.monitoring', 'botocore.session', 'boto3.utils', 'boto3.exceptions', 'boto3.resources', 'boto3.resources.params', 'boto3.resources.response', 'boto3.resources.model', 'boto3.docs.client', 'boto3.docs.base', 'boto3.docs.method', 'boto3.docs.utils', 'boto3.docs.action', 'boto3.docs.waiter', 'boto3.docs.collection', 'boto3.docs.subresource', 'boto3.docs.attr', 'boto3.docs.resource', 'boto3.docs.service', 'boto3.docs', 'boto3.docs.docstring', 'boto3.resources.action', 'boto3.resources.base', 'boto3.resources.collection', 'boto3.resources.factory', 'boto3.session', 'boto3.compat', 'boto3', '_csv', 'csv', 'app.apis.utils', 'app.apis.s3_methods', 'app.apis.notif_methods', 'email.mime', 'email._header_value_parser', 'email.headerregistry', 'email.contentmanager', 'email.policy', 'email.mime.base', 'email.mime.multipart', 'email.mime.nonmultipart', 'email.mime.text', 'email.generator', 'smtplib', 'app.apis.email_methods', 'numpy._globals', 'numpy.__config__', 'numpy.version', 'glob', 'numpy._distributor_init', 'numpy.core._multiarray_umath', 'numpy.compat._inspect', 'numpy.compat.py3k', 'numpy.compat', 'numpy.core.overrides', 'numpy.core.multiarray', 'numpy.core.umath', 'numpy.core._string_helpers', 'numpy.core._dtype', 'numpy.core._type_aliases', 'numpy.core.numerictypes', 'numpy.core._asarray', 'numpy.core._exceptions', 'numpy.core._methods', 'numpy.core.fromnumeric', 'numpy.core.shape_base', 'numpy.core._ufunc_config', 'numpy.core.arrayprint', 'numpy.core.numeric', 'numpy.core.defchararray', 'numpy.core.records', 'numpy.core.memmap', 'numpy.core.function_base', 'numpy.core.machar', 'numpy.core.getlimits', 'numpy.core.einsumfunc', 'numpy.core._multiarray_tests', 'numpy.core._add_newdocs', 'numpy.core._add_newdocs_scalars', 'numpy.core._dtype_ctypes', 'numpy.core._internal', 'numpy._pytesttester', 'numpy.core', 'numpy.lib.mixins', 'numpy.lib.ufunclike', 'numpy.lib.type_check', 'numpy.lib.scimath', 'numpy.lib.twodim_base', 'numpy.linalg.lapack_lite', 'numpy.linalg._umath_linalg', 'numpy.linalg.linalg', 'numpy.linalg', 'numpy.matrixlib.defmatrix', 'numpy.matrixlib', 'numpy.lib.histograms', 'numpy.lib.function_base', 'numpy.lib.stride_tricks', 'numpy.lib.index_tricks', 'numpy.lib.nanfunctions', 'numpy.lib.shape_base', 'numpy.lib.polynomial', 'numpy.lib.utils', 'numpy.lib.arraysetops', 'numpy.lib.format', 'numpy.lib._datasource', 'numpy.lib._iotools', 'numpy.lib.npyio', 'numpy.lib.arrayterator', 'numpy.lib.arraypad', 'numpy.lib._version', 'numpy.lib', 'numpy.fft._pocketfft_internal', 'numpy.fft._pocketfft', 'numpy.fft.helper', 'numpy.fft', 'numpy.polynomial.polyutils', 'numpy.polynomial._polybase', 'numpy.polynomial.polynomial', 'numpy.polynomial.chebyshev', 'numpy.polynomial.legendre', 'numpy.polynomial.hermite', 'numpy.polynomial.hermite_e', 'numpy.polynomial.laguerre', 'numpy.polynomial', 'cython_runtime', '_cython_0_29_21', 'numpy.random._common', 'secrets', 'numpy.random.bit_generator', 'numpy.random._bounded_integers', 'numpy.random._mt19937', 'numpy.random.mtrand', 'numpy.random._philox', 'numpy.random._pcg64', 'numpy.random._sfc64', 'numpy.random._generator', 'numpy.random._pickle', 'numpy.random', 'numpy.ctypeslib', 'numpy.ma.core', 'numpy.ma.extras', 'numpy.ma', 'numpy', 'pytz.exceptions', 'pytz.lazy', 'pytz.tzinfo', 'pytz.tzfile', 'pytz', 'mmap', 'pandas._typing', 'pandas.compat', 'distutils', 'distutils.version', 'pandas.compat.numpy', 'pandas._libs.tslibs.dtypes', 'pandas._libs.tslibs.base', 'pandas._libs.tslibs.np_datetime', 'pandas._libs.tslibs.nattype', 'pandas._libs.tslibs.timezones', 'pandas._libs.tslibs.ccalendar', 'pandas._libs.tslibs.tzconversion', 'pandas._libs.tslibs.timedeltas', 'pandas._config.config', 'pandas._config.dates', 'pandas._config.display', 'pandas._config', 'pandas._config.localization', 'pandas._libs.tslibs.strptime', 'pandas._libs.tslibs.fields', 'pandas._libs.tslibs.timestamps', 'dateutil.easter', 'pandas._libs.properties', 'pandas._libs.tslibs.offsets', 'pandas._libs.tslibs.parsing', 'pandas._libs.tslibs.conversion', 'pandas._libs.tslibs.period', 'pandas._libs.tslibs.vectorized', 'pandas._libs.tslibs', 'pandas._libs.ops_dispatch', 'pandas._libs.missing', 'pandas._libs.hashtable', 'pandas._libs.algos', 'pandas._libs.interval', 'pandas._libs', 'pandas._libs.tslib', 'pandas._libs.lib', 'pandas.core', 'pandas.core.config_init', 'pandas.core.dtypes', 'pandas.errors', 'pandas.core.dtypes.generic', 'pandas.core.dtypes.base', 'pandas.core.dtypes.inference', 'pandas.core.dtypes.dtypes', 'pandas.core.dtypes.common', 'pandas.core.dtypes.missing', 'pandas.util._decorators', 'pandas.core.util', 'pandas._libs.hashing', 'pandas.core.util.hashing', 'pandas.util', 'pandas.util._validators', 'pandas.core.dtypes.cast', 'pandas.core.common', 'pandas.core.construction', 'pandas.core.indexers', 'pandas.core.algorithms', 'pandas.compat.numpy.function', 'pandas._libs.ops', 'pandas.core.ops.roperator', 'pandas.core.ops.missing', 'pandas.core.ops.dispatch', 'pandas.core.ops.invalid', 'pandas.core.ops.array_ops', 'pandas.core.ops.common', 'pandas.core.ops.docstrings', 'pandas.core.ops.mask_ops', 'pandas.core.ops.methods', 'pandas.core.ops', 'pandas.compat._optional', 'pandas.core.missing', 'pandas.core.sorting', 'pandas.core.arrays.base', 'pandas.core.nanops', 'pandas.core.array_algos', 'pandas.core.array_algos.masked_reductions', 'pandas.core.arraylike', 'pandas.core.arrays.masked', 'pandas.core.arrays.boolean', 'pandas.core.accessor', 'pandas.core.array_algos.transforms', 'pandas.core.arrays._mixins', 'pandas.core.base', 'pandas.core.strings.accessor', 'pandas.core.strings.base', 'pandas.core.strings', 'pandas.core.strings.object_array', 'pandas.io', 'pandas.io.formats', 'pandas.io.formats.console', 'pandas.core.arrays.categorical', 'pandas.tseries', 'pandas.tseries.frequencies', 'pandas.core.arrays.datetimelike', 'pandas.core.arrays._ranges', 'pandas.tseries.offsets', 'pandas.core.arrays.datetimes', 'pandas.core.tools', 'pandas.core.tools.numeric', 'pandas.core.arrays.numeric', 'pandas.core.arrays.floating', 'pandas.core.arrays.integer', 'pandas.core.indexes', 'pandas._libs.index', 'pandas._libs.join', 'pandas._libs.sparse', 'pandas.core.arrays.sparse.dtype', 'pandas.io.formats.printing', 'pandas.core.arrays.sparse.array', 'pandas.core.arrays.sparse.accessor', 'pandas.core.arrays.sparse', 'pandas.core.dtypes.concat', 'pandas.core.indexes.frozen', 'pandas.core.indexes.base', 'pandas.core.arrays.interval', 'pandas.core.arrays.numpy_', 'pandas.core.arrays.period', 'pandas.core.arrays.string_', 'pandas.core.arrays.timedeltas', 'pandas.core.arrays', 'pandas.core.flags', 'pandas._libs.reduction', 'pandas.core.indexes.extension', 'pandas.core.indexes.category', 'pandas.core.indexes.numeric', 'pandas.core.tools.timedeltas', 'pandas.core.indexes.datetimelike', 'pandas.core.tools.times', 'pandas.core.indexes.datetimes', 'pandas.util._exceptions', 'pandas.core.indexes.multi', 'pandas.core.indexes.timedeltas', 'pandas.core.indexes.interval', 'pandas.core.indexes.period', 'pandas.core.indexes.range', 'pandas.core.indexes.api', 'pandas.core.aggregation', 'gc', 'pandas._libs.indexing', 'pandas.core.indexing', 'pandas._libs.internals', 'pandas._libs.writers', 'pandas.core.array_algos.replace', 'pandas.core.internals.blocks', 'pandas.core.internals.ops', 'pandas.core.internals.managers', 'pandas.core.internals.concat', 'pandas.core.internals', 'pandas.core.shared_docs', 'pandas._libs.window', 'pandas._libs.window.aggregations', 'pandas.core.util.numba_', 'pandas.core.window.common', 'pandas._libs.window.indexers', 'pandas.core.window.indexers', 'pandas.core.window.numba_', 'pandas.core.groupby.base', 'pandas.core.window.rolling', 'pandas.core.window.ewm', 'pandas.core.window.expanding', 'pandas.core.window', 'pandas.core.reshape', 'pandas.core.reshape.concat', 'gzip', 'pandas.io.common', 'pandas.io.formats.format', 'pandas.core.generic', 'pandas.core.internals.construction', 'pandas.core.reshape.util', 'pandas.core.reshape.melt', 'pandas._libs.reshape', 'pandas.core.indexes.accessors', 'pandas.arrays', 'pandas.core.tools.datetimes', 'pandas.plotting._core', 'pandas.plotting._misc', 'pandas.plotting', 'pandas.core.series', 'pandas.io.formats.info', 'pandas.core.frame', 'pandas._libs.groupby', 'pandas.core.groupby.numba_', 'pandas.core.groupby.categorical', 'pandas.core.groupby.grouper', 'pandas.core.groupby.ops', 'pandas.core.groupby.groupby', 'pandas.core.groupby.generic', 'pandas.core.groupby', 'pandas.core.api', 'pandas.tseries.api', 'pandas.core.computation', 'pandas.core.computation.common', 'pandas.core.computation.align', 'pandas.compat.chainmap', 'pandas.core.computation.scope', 'pandas.core.computation.ops', 'pandas.core.computation.engines', 'pandas.core.computation.parsing', 'pandas.core.computation.expr', 'pandas.core.computation.eval', 'pandas.core.computation.api', 'pandas.core.reshape.merge', 'pandas.core.reshape.pivot', 'pandas.core.reshape.reshape', 'pandas.core.reshape.tile', 'pandas.core.reshape.api', 'pandas.api.extensions', 'pandas.api.indexers', 'pandas.core.dtypes.api', 'pandas.api.types', 'pandas.api', 'pandas.util._print_versions', 'pandas.io.clipboards', 'pandas._libs.parsers', 'pandas.io.excel._util', 'pandas.io.date_converters', 'pandas.io.parsers', 'pandas.io.excel._odfreader', 'pandas.io.excel._openpyxl', 'pandas.io.excel._pyxlsb', 'pandas.io.excel._xlrd', 'pandas.io.excel._base', 'pandas._libs.json', 'pandas.io.formats._color_data', 'pandas.io.formats.css', 'pandas.io.formats.excel', 'pandas.io.excel._odswriter', 'pandas.io.excel._xlsxwriter', 'pandas.io.excel._xlwt', 'pandas.io.excel', 'pandas.io.feather_format', 'pandas.io.gbq', 'pandas.io.html', 'pandas.io.json._normalize', 'pandas.io.json._table_schema', 'pandas.io.json._json', 'pandas.io.json', 'pandas.io.orc', 'pandas.io.parquet', 'pandas.compat.pickle_compat', 'pandas.io.pickle', 'pandas.core.computation.pytables', 'pandas.io.pytables', 'pandas.io.sas.sasreader', 'pandas.io.sas', 'pandas.io.spss', 'pandas.io.sql', 'pandas.io.stata', 'pandas.io.api', 'pandas.util._tester', 'cmath', 'pandas._libs.testing', 'pandas._testing', 'pandas.testing', 'pandas._version', 'pandas', 'matplotlib', 'matplotlib._api.deprecation', 'matplotlib._api', 'matplotlib._c_internal_utils', 'matplotlib.cbook', 'matplotlib.docstring', 'matplotlib._animation_data', 'matplotlib.animation', 'PIL.ImageChops', 'PIL.ImageFile', 'array', 'PIL.GimpGradientFile', 'PIL.GimpPaletteFile', 'PIL.ImageColor', 'PIL.PaletteFile', 'PIL.ImagePalette', 'PIL.ImageSequence', 'PIL.PngImagePlugin', 'matplotlib._path', 'matplotlib.bezier', 'matplotlib.path', 'matplotlib.transforms', 'matplotlib.ticker', 'matplotlib.scale', 'matplotlib._color_data', 'matplotlib.colors', 'pyparsing', 'matplotlib.fontconfig_pattern', 'matplotlib._enums', 'cycler', 'matplotlib.rcsetup', 'matplotlib._version', 'matplotlib.ft2font', 'kiwisolver', 'dateutil.rrule', 'matplotlib.units', 'matplotlib.dates']
+2021-04-09 05:50:31,292 DEBUG matplotlib MainThread : CACHEDIR=C:\Users\ishaa\.matplotlib
+2021-04-09 05:50:31,294 DEBUG matplotlib.font_manager MainThread : Using fontManager instance from C:\Users\ishaa\.matplotlib\fontlist-v330.json
+2021-04-09 05:50:31,409 DEBUG matplotlib.pyplot MainThread : Loaded backend tkagg version unknown.
+2021-04-09 05:50:31,410 DEBUG matplotlib.pyplot MainThread : Loaded backend TkAgg version unknown.
+2021-04-09 05:50:46,063 INFO logger MainThread : backend started
+2021-04-09 05:50:46,512 DEBUG matplotlib MainThread : matplotlib data path: C:\Python39\lib\site-packages\matplotlib\mpl-data
+2021-04-09 05:50:46,518 DEBUG matplotlib MainThread : CONFIGDIR=C:\Users\ishaa\.matplotlib
+2021-04-09 05:50:46,519 DEBUG matplotlib MainThread : matplotlib version 3.4.0
+2021-04-09 05:50:46,519 DEBUG matplotlib MainThread : interactive is False
+2021-04-09 05:50:46,519 DEBUG matplotlib MainThread : platform is win32
+2021-04-09 05:50:46,519 DEBUG matplotlib MainThread : loaded modules: ['sys', 'builtins', '_frozen_importlib', '_imp', '_thread', '_warnings', '_weakref', '_frozen_importlib_external', 'nt', '_io', 'marshal', 'winreg', 'time', 'zipimport', '_codecs', 'codecs', 'encodings.aliases', 'encodings', 'encodings.utf_8', 'encodings.cp1252', '_signal', 'encodings.latin_1', '_abc', 'abc', 'io', '__main__', '_stat', 'stat', '_collections_abc', 'genericpath', 'ntpath', 'os.path', 'os', '_sitebuiltins', '_locale', '_bootlocale', 'pywin32_bootstrap', 'types', 'importlib._bootstrap', 'importlib._bootstrap_external', 'warnings', 'importlib', 'importlib.machinery', '_heapq', 'heapq', 'itertools', 'keyword', '_operator', 'operator', 'reprlib', '_collections', 'collections', 'collections.abc', '_functools', 'functools', 'contextlib', 'enum', '_sre', 'sre_constants', 'sre_parse', 'sre_compile', 'copyreg', 're', 'typing.io', 'typing.re', 'typing', 'importlib.abc', 'importlib.util', 'google', 'google.logging', 'mpl_toolkits', 'site', '_weakrefset', 'weakref', 'pkgutil', 'runpy', '_string', 'string', 'markupsafe._compat', 'markupsafe._speedups', 'markupsafe', 'errno', 'posixpath', 'fnmatch', 'zlib', '_compression', 'threading', '_bz2', 'bz2', '_lzma', 'lzma', 'shutil', 'math', '_bisect', 'bisect', '_random', '_sha512', 'random', 'tempfile', '_hashlib', '_blake2', 'hashlib', '_struct', 'struct', '_compat_pickle', '_pickle', 'pickle', 'urllib', 'urllib.parse', 'jinja2._compat', '_json', 'json.scanner', 'json.decoder', 'json.encoder', 'json', 'jinja2.utils', 'jinja2.bccache', 'jinja2.nodes', 'jinja2.exceptions', 'jinja2.visitor', 'jinja2.idtracking', 'jinja2.optimizer', '__future__', 'jinja2.compiler', 'jinja2.runtime', 'jinja2.filters', 'numbers', '_decimal', 'decimal', 'jinja2.tests', 'jinja2.defaults', '_ast', 'ast', 'unicodedata', 'jinja2._identifier', 'jinja2.lexer', 'jinja2.parser', 'jinja2.environment', 'jinja2.loaders', 'jinja2', 'signal', '_socket', 'select', 'selectors', 'socket', '_datetime', 'datetime', 'werkzeug._compat', '_opcode', 'opcode', 'dis', 'token', 'tokenize', 'linecache', 'inspect', 'traceback', 'atexit', 'logging', 'werkzeug._internal', 'html.entities', 'html', 'werkzeug.utils', 'werkzeug.exceptions', 'werkzeug.urls', 'socketserver', 'http', 'copy', 'email', 'locale', 'calendar', 'email._parseaddr', 'binascii', 'base64', 'email.base64mime', 'email.quoprimime', 'email.errors', 'quopri', 'email.encoders', 'email.charset', 'email.utils', 'email.header', 'email._policybase', 'email.feedparser', 'email.parser', 'uu', 'email._encoded_words', 'email.iterators', 'email.message', '_ssl', 'ssl', 'http.client', 'mimetypes', 'http.server', '_ctypes', 'ctypes._endian', 'ctypes', 'ctypes.wintypes', 'msvcrt', 'click._winconsole', 'colorama.ansi', 'colorama.win32', 'colorama.winterm', 'colorama.ansitowin32', 'colorama.initialise', 'colorama', 'click._compat', 'click._unicodefun', 'click.globals', 'click.utils', 'click.exceptions', 'click.parser', 'click.types', 'click.termui', 'click.formatting', 'click.core', 'click.decorators', 'click', 'werkzeug.serving', 'werkzeug.filesystem', 'urllib.response', 'urllib.error', 'nturl2path', 'urllib.request', 'werkzeug.http', 'werkzeug.datastructures', 'werkzeug.wrappers.accept', 'werkzeug.wrappers.auth', 'werkzeug.wsgi', 'werkzeug.formparser', 'werkzeug.wrappers.base_request', 'werkzeug.wrappers.base_response', 'werkzeug.wrappers.common_descriptors', 'werkzeug.wrappers.etag', 'werkzeug.wrappers.cors', 'werkzeug.useragents', 'werkzeug.wrappers.user_agent', 'werkzeug.wrappers.request', 'werkzeug.wrappers.response', 'werkzeug.wrappers', 'http.cookiejar', 'werkzeug.test', 'werkzeug', '_uuid', 'uuid', 'itsdangerous._json', 'hmac', 'itsdangerous._compat', 'itsdangerous.exc', 'itsdangerous.encoding', 'itsdangerous.signer', 'itsdangerous.serializer', 'itsdangerous.jws', 'itsdangerous.timed', 'itsdangerous.url_safe', 'itsdangerous', 'flask._compat', 'werkzeug.local', 'flask.globals', 'dataclasses', 'flask.json', 'difflib', 'pprint', 'werkzeug.routing', '_winapi', 'subprocess', 'platform', 'blinker._saferef', 'blinker._utilities', 'blinker.base', 'blinker', 'flask.signals', 'flask.helpers', 'flask.cli', 'flask.config', 'flask.ctx', 'flask.logging', 'flask.json.tag', 'flask.sessions', 'flask.templating', 'werkzeug.wrappers.json', 'flask.wrappers', 'flask.app', 'flask.blueprints', 'flask', 'zipfile', 'xml', 'xml.parsers', 'pyexpat.errors', 'pyexpat.model', 'pyexpat', 'xml.parsers.expat.model', 'xml.parsers.expat.errors', 'xml.parsers.expat', 'plistlib', 'textwrap', 'pkg_resources.extern', 'pkg_resources._vendor', 'win32api', '_win32sysloader', 'pywintypes', 'pythoncom', 'win32com.gen_py', 'win32com', 'win32com.shell', 'pkg_resources._vendor.appdirs', 'pkg_resources.extern.appdirs', 'pkg_resources._vendor.packaging.__about__', 'pkg_resources._vendor.packaging', 'pkg_resources.extern.packaging', 'pkg_resources.extern.packaging._structures', 'pkg_resources.extern.packaging._typing', 'pkg_resources.extern.packaging.version', 'pkg_resources.extern.packaging._compat', 'pkg_resources.extern.packaging.utils', 'pkg_resources.extern.packaging.specifiers', 'pkg_resources._vendor.pyparsing', 'pkg_resources.extern.pyparsing', 'pkg_resources.extern.packaging.markers', 'pkg_resources.extern.packaging.requirements', 'sysconfig', 'pkg_resources', 'encodings.utf_16_le', 'wsgi', 'flask_session.sessions', 'flask_session', 'six', 'flask_cors.core', 'flask_cors.decorator', 'flask_cors.extension', 'flask_cors.version', 'flask_cors', 'werkzeug.security', '_cffi_backend', '_bcrypt.lib', '_bcrypt', 'bcrypt._bcrypt', 'bcrypt.__about__', 'bcrypt', 'flask_bcrypt', 'bson.py3compat', 'bson.binary', 'bson.code', 'bson.codec_options', 'bson.son', 'bson.dbref', 'bson.decimal128', 'bson.errors', 'bson.int64', 'bson.max_key', 'bson.min_key', 'bson.tz_util', 'bson.objectid', 'bson.regex', 'bson.timestamp', 'bson._cbson', 'bson', 'bson.raw_bson', 'pymongo.errors', 'pymongo.auth_aws', 'stringprep', 'pymongo.saslprep', 'pymongo.auth', 'pymongo.helpers', 'pymongo.monitoring', 'pymongo.compression_support', 'pymongo.driver_info', 'pymongo.encryption_options', 'pymongo.read_concern', 'pymongo.server_type', 'pymongo.max_staleness_selectors', 'pymongo.server_selectors', 'pymongo.read_preferences', 'ipaddress', 'pymongo.ssl_context', 'pathlib', 'importlib._common', 'importlib.resources', 'certifi.core', 'certifi', 'pymongo.ssl_support', 'pymongo.write_concern', 'pymongo.common', 'pymongo._cmessage', 'pymongo.message', 'pymongo.collation', 'pymongo.aggregation', 'pymongo.monotonic', 'pymongo.client_session', 'pymongo.bulk', 'pymongo.command_cursor', 'pymongo.change_stream', 'pymongo.cursor', 'pymongo.operations', 'pymongo.results', 'pymongo.collection', 'pymongo.son_manipulator', 'pymongo.database', 'pymongo.periodic_executor', 'dns.version', 'dns', 'dns.exception', 'dns.flags', 'dns.ipv4', 'dns.ipv6', 'dns.inet', 'encodings.idna', 'idna.package_data', 'idna.idnadata', 'idna.intranges', 'idna.core', 'idna', '_contextvars', 'contextvars', 'dns._immutable_ctx', 'dns.immutable', 'dns.name', 'dns.wire', 'dns.enum', 'dns.rdataclass', 'dns.rdatatype', 'dns.ttl', 'dns.tokenizer', 'dns.rdata', 'dns.edns', 'dns.opcode', 'dns.entropy', 'dns.rcode', 'dns.set', 'dns.rdataset', 'dns.tsig', 'dns.renderer', 'dns.rrset', 'dns.rdtypes', 'dns.rdtypes.ANY', 'dns.rdtypes.ANY.OPT', 'dns.rdtypes.ANY.TSIG', 'dns.message', 'dns.serial', 'dns.node', 'dns.rdtypes.ANY.SOA', 'dns.transaction', 'dns.grange', 'dns.zonefile', 'dns.zone', 'dns.xfr', 'urllib3.packages.ssl_match_hostname', 'urllib3.packages', 'urllib3.packages.six', 'urllib3.packages.six.moves', 'urllib3.packages.six.moves.http_client', 'urllib3.exceptions', '_queue', 'queue', 'urllib3.util.wait', 'urllib3.contrib', 'urllib3.contrib._appengine_environ', 'urllib3.util.connection', 'urllib3.util.request', 'urllib3.util.response', 'urllib3.util.url', 'urllib3.util.ssl_', 'urllib3.util.timeout', 'urllib3.util.retry', 'urllib3.util', 'urllib3._collections', 'urllib3.connection', 'urllib3.fields', 'urllib3.filepost', 'urllib3.packages.six.moves.urllib', 'urllib3.packages.six.moves.urllib.parse', 'urllib3.request', 'urllib3.response', 'urllib3.util.queue', 'urllib3.connectionpool', 'urllib3.poolmanager', 'urllib3._version', 'urllib3', 'chardet.compat', 'chardet.enums', 'chardet.charsetprober', 'chardet.charsetgroupprober', 'chardet.codingstatemachine', 'chardet.escsm', 'chardet.escprober', 'chardet.latin1prober', 'chardet.mbcssm', 'chardet.utf8prober', 'chardet.mbcharsetprober', 'chardet.euctwfreq', 'chardet.euckrfreq', 'chardet.gb2312freq', 'chardet.big5freq', 'chardet.jisfreq', 'chardet.chardistribution', 'chardet.jpcntx', 'chardet.sjisprober', 'chardet.eucjpprober', 'chardet.gb2312prober', 'chardet.euckrprober', 'chardet.cp949prober', 'chardet.big5prober', 'chardet.euctwprober', 'chardet.mbcsgroupprober', 'chardet.sbcharsetprober', 'chardet.langcyrillicmodel', 'chardet.langgreekmodel', 'chardet.langbulgarianmodel', 'chardet.langthaimodel', 'chardet.langhebrewmodel', 'chardet.hebrewprober', 'chardet.langturkishmodel', 'chardet.sbcsgroupprober', 'chardet.universaldetector', 'chardet.version', 'chardet', 'requests.exceptions', 'requests.__version__', 'requests.certs', 'http.cookies', 'requests.compat', 'requests._internal_utils', 'requests.cookies', 'requests.structures', 'requests.utils', 'requests.packages.urllib3.packages.ssl_match_hostname', 'requests.packages.urllib3.packages', 'requests.packages.urllib3.packages.six', 'requests.packages.urllib3.packages.six.moves', 'requests.packages.urllib3.packages.six.moves.http_client', 'requests.packages.urllib3.exceptions', 'requests.packages.urllib3.util.wait', 'requests.packages.urllib3.contrib', 'requests.packages.urllib3.contrib._appengine_environ', 'requests.packages.urllib3.util.connection', 'requests.packages.urllib3.util.request', 'requests.packages.urllib3.util.response', 'requests.packages.urllib3.util.url', 'requests.packages.urllib3.util.ssl_', 'requests.packages.urllib3.util.timeout', 'requests.packages.urllib3.util.retry', 'requests.packages.urllib3.util', 'requests.packages.urllib3._collections', 'requests.packages.urllib3.connection', 'requests.packages.urllib3.fields', 'requests.packages.urllib3.filepost', 'requests.packages.urllib3.packages.six.moves.urllib', 'requests.packages.urllib3.packages.six.moves.urllib.parse', 'requests.packages.urllib3.request', 'requests.packages.urllib3.response', 'requests.packages.urllib3.util.queue', 'requests.packages.urllib3.connectionpool', 'requests.packages.urllib3.poolmanager', 'requests.packages.urllib3._version', 'requests.packages.urllib3', 'requests.packages.idna.package_data', 'requests.packages.idna.idnadata', 'requests.packages.idna.intranges', 'requests.packages.idna.core', 'requests.packages.idna', 'requests.packages.chardet.compat', 'requests.packages.chardet.enums', 'requests.packages.chardet.charsetprober', 'requests.packages.chardet.charsetgroupprober', 'requests.packages.chardet.codingstatemachine', 'requests.packages.chardet.escsm', 'requests.packages.chardet.escprober', 'requests.packages.chardet.latin1prober', 'requests.packages.chardet.mbcssm', 'requests.packages.chardet.utf8prober', 'requests.packages.chardet.mbcharsetprober', 'requests.packages.chardet.euctwfreq', 'requests.packages.chardet.euckrfreq', 'requests.packages.chardet.gb2312freq', 'requests.packages.chardet.big5freq', 'requests.packages.chardet.jisfreq', 'requests.packages.chardet.chardistribution', 'requests.packages.chardet.jpcntx', 'requests.packages.chardet.sjisprober', 'requests.packages.chardet.eucjpprober', 'requests.packages.chardet.gb2312prober', 'requests.packages.chardet.euckrprober', 'requests.packages.chardet.cp949prober', 'requests.packages.chardet.big5prober', 'requests.packages.chardet.euctwprober', 'requests.packages.chardet.mbcsgroupprober', 'requests.packages.chardet.sbcharsetprober', 'requests.packages.chardet.langcyrillicmodel', 'requests.packages.chardet.langgreekmodel', 'requests.packages.chardet.langbulgarianmodel', 'requests.packages.chardet.langthaimodel', 'requests.packages.chardet.langhebrewmodel', 'requests.packages.chardet.hebrewprober', 'requests.packages.chardet.langturkishmodel', 'requests.packages.chardet.sbcsgroupprober', 'requests.packages.chardet.universaldetector', 'requests.packages.chardet.version', 'requests.packages.chardet', 'requests.packages', 'requests.hooks', 'requests.auth', 'requests.status_codes', 'requests.models', 'requests.adapters', 'requests.sessions', 'requests.api', 'requests', 'urllib3.contrib.appengine', 'requests_toolbelt._compat', 'requests_toolbelt.adapters.ssl', 'requests_toolbelt.adapters.source', 'requests_toolbelt.adapters', 'requests_toolbelt.auth', 'requests_toolbelt.auth._digest_auth_compat', 'requests_toolbelt.auth.http_proxy_digest', 'requests_toolbelt.auth.guess', 'requests_toolbelt.multipart.encoder', 'requests_toolbelt.multipart.decoder', 'requests_toolbelt.multipart', 'requests_toolbelt.streaming_iterator', 'requests_toolbelt.utils', 'requests_toolbelt.utils.user_agent', 'requests_toolbelt', 'requests_toolbelt.adapters.host_header_ssl', 'dns.query', 'dns.reversename', 'dns.resolver', 'pymongo.srv_resolver', 'pymongo.uri_parser', 'pymongo.thread_util', 'pymongo.ismaster', 'pymongo.socket_checker', 'pymongo.network', 'pymongo.ssl_match_hostname', 'pymongo.pool', 'pymongo.client_options', 'pymongo.cursor_manager', 'pymongo.server_description', 'pymongo.topology_description', 'pymongo.monitor', 'pymongo.response', 'pymongo.server', 'pymongo.topology', 'pymongo.settings', 'pymongo.mongo_client', 'pymongo.mongo_replica_set_client', 'pymongo', 'mongoengine.connection', 'mongoengine.signals', 'mongoengine.errors', 'mongoengine.base.common', 'mongoengine.common', 'mongoengine.base.datastructures', 'bson.json_util', 'mongoengine.base.fields', 'mongoengine.base.document', 'mongoengine.queryset.field_list', 'mongoengine.pymongo_support', 'mongoengine.context_managers', 'mongoengine.queryset.transform', 'mongoengine.queryset.visitor', 'mongoengine.queryset.base', 'mongoengine.queryset.queryset', 'mongoengine.queryset.manager', 'mongoengine.queryset', 'mongoengine.base.metaclasses', 'mongoengine.base', 'mongoengine.document', 'gridfs.errors', 'gridfs.grid_file', 'gridfs', 'dateutil._version', 'dateutil', 'dateutil._common', 'dateutil.relativedelta', 'six.moves', 'dateutil.tz._common', 'dateutil.tz._factories', 'dateutil.tz.win', 'dateutil.tz.tz', 'dateutil.tz', 'dateutil.parser._parser', 'dateutil.parser.isoparser', 'dateutil.parser', 'mongoengine.base.utils', 'PIL._version', 'PIL', 'xml.etree', 'xml.etree.ElementPath', '_elementtree', 'xml.etree.ElementTree', 'PIL.ImageMode', 'PIL.TiffTags', 'PIL._binary', 'PIL._util', 'PIL._imaging', 'cffi.lock', 'cffi.error', 'cffi.model', 'cffi.api', 'cffi', 'PIL.Image', 'PIL.ImageOps', 'mongoengine.fields', 'mongoengine', 'flask_mongoengine.connection', 'flask_mongoengine.json', 'flask_mongoengine.pagination', 'flask_mongoengine.sessions', 'flask_mongoengine.wtf.base', 'email_validator', 'wtforms.compat', 'wtforms.validators', 'wtforms.widgets.core', 'wtforms.widgets', 'wtforms.i18n', 'wtforms.utils', 'wtforms.fields.core', 'wtforms.fields.simple', 'wtforms.fields', 'wtforms.meta', 'wtforms.form', 'wtforms', 'gettext', 'flask_mongoengine.wtf.fields', 'wtforms.csrf', 'wtforms.csrf.core', 'flask_wtf._compat', 'flask_wtf.csrf', 'flask_wtf.form', 'flask_wtf.recaptcha.widgets', 'flask_wtf.recaptcha.validators', 'flask_wtf.recaptcha.fields', 'flask_wtf.recaptcha', 'flask_wtf', 'flask_mongoengine.wtf.models', 'flask_mongoengine.wtf.orm', 'flask_mongoengine.wtf', 'flask_mongoengine', 'app.models', 'app.config', 'app', 'cachelib._compat', 'cachelib.base', 'cachelib.simple', 'cachelib.file', 'cachelib.memcached', 'cachelib.redis', 'cachelib.uwsgi', 'cachelib', 'app.apis', 'botocore', 'shlex', 'botocore.vendored', 'botocore.vendored.six', 'botocore.vendored.requests.packages.urllib3.exceptions', 'botocore.vendored.requests.packages.urllib3', 'botocore.vendored.requests.packages', 'botocore.vendored.requests.exceptions', 'botocore.vendored.requests', 'botocore.exceptions', 'botocore.vendored.six.moves', 'xml.etree.cElementTree', 'botocore.compat', 'botocore.configloader', 'getpass', 'cgi', 'botocore.vendored.six.moves.urllib_parse', 'botocore.httpsession', 'botocore.vendored.six.moves.urllib', 'botocore.vendored.six.moves.urllib.request', 'botocore.utils', 'botocore.awsrequest', 'botocore.hooks', 'botocore.history', 'botocore.eventstream', 'botocore.parsers', 'botocore.response', 'botocore.endpoint', 'botocore.config', 'botocore.credentials', 'jmespath.compat', 'jmespath.exceptions', 'jmespath.lexer', 'jmespath.ast', 'jmespath.functions', 'jmespath.visitor', 'jmespath.parser', 'jmespath', 'botocore.docs.utils', 'botocore.docs.shape', 'botocore.docs.params', 'botocore.docs.example', 'botocore.docs.method', 'botocore.docs.sharedexample', 'botocore.docs.client', 'botocore.docs.waiter', 'botocore.docs.paginator', 'botocore.docs.bcdoc', '_markupbase', 'html.parser', 'botocore.docs.bcdoc.docstringparser', 'botocore.docs.bcdoc.style', 'botocore.docs.bcdoc.restdoc', 'botocore.docs.service', 'botocore.docs', 'botocore.docs.docstring', 'botocore.waiter', 'botocore.validate', 'botocore.serialize', 'botocore.auth', 'botocore.signers', 'botocore.args', 'botocore.model', 'botocore.paginate', 'botocore.discovery', 'botocore.retries', 'botocore.retries.quota', 'botocore.retries.base', 'botocore.retries.special', 'botocore.retries.standard', 'botocore.retries.bucket', 'botocore.retries.throttling', 'botocore.retries.adaptive', 'botocore.client', 'botocore.configprovider', 'botocore.errorfactory', 'botocore.retryhandler', 'botocore.translate', 'botocore.handlers', 'botocore.loaders', 'botocore.regions', 'botocore.monitoring', 'botocore.session', 'boto3.utils', 'boto3.exceptions', 'boto3.resources', 'boto3.resources.params', 'boto3.resources.response', 'boto3.resources.model', 'boto3.docs.client', 'boto3.docs.base', 'boto3.docs.method', 'boto3.docs.utils', 'boto3.docs.action', 'boto3.docs.waiter', 'boto3.docs.collection', 'boto3.docs.subresource', 'boto3.docs.attr', 'boto3.docs.resource', 'boto3.docs.service', 'boto3.docs', 'boto3.docs.docstring', 'boto3.resources.action', 'boto3.resources.base', 'boto3.resources.collection', 'boto3.resources.factory', 'boto3.session', 'boto3.compat', 'boto3', '_csv', 'csv', 'app.apis.utils', 'app.apis.s3_methods', 'app.apis.notif_methods', 'email.mime', 'email._header_value_parser', 'email.headerregistry', 'email.contentmanager', 'email.policy', 'email.mime.base', 'email.mime.multipart', 'email.mime.nonmultipart', 'email.mime.text', 'email.generator', 'smtplib', 'app.apis.email_methods', 'numpy._globals', 'numpy.__config__', 'numpy.version', 'glob', 'numpy._distributor_init', 'numpy.core._multiarray_umath', 'numpy.compat._inspect', 'numpy.compat.py3k', 'numpy.compat', 'numpy.core.overrides', 'numpy.core.multiarray', 'numpy.core.umath', 'numpy.core._string_helpers', 'numpy.core._dtype', 'numpy.core._type_aliases', 'numpy.core.numerictypes', 'numpy.core._asarray', 'numpy.core._exceptions', 'numpy.core._methods', 'numpy.core.fromnumeric', 'numpy.core.shape_base', 'numpy.core._ufunc_config', 'numpy.core.arrayprint', 'numpy.core.numeric', 'numpy.core.defchararray', 'numpy.core.records', 'numpy.core.memmap', 'numpy.core.function_base', 'numpy.core.machar', 'numpy.core.getlimits', 'numpy.core.einsumfunc', 'numpy.core._multiarray_tests', 'numpy.core._add_newdocs', 'numpy.core._add_newdocs_scalars', 'numpy.core._dtype_ctypes', 'numpy.core._internal', 'numpy._pytesttester', 'numpy.core', 'numpy.lib.mixins', 'numpy.lib.ufunclike', 'numpy.lib.type_check', 'numpy.lib.scimath', 'numpy.lib.twodim_base', 'numpy.linalg.lapack_lite', 'numpy.linalg._umath_linalg', 'numpy.linalg.linalg', 'numpy.linalg', 'numpy.matrixlib.defmatrix', 'numpy.matrixlib', 'numpy.lib.histograms', 'numpy.lib.function_base', 'numpy.lib.stride_tricks', 'numpy.lib.index_tricks', 'numpy.lib.nanfunctions', 'numpy.lib.shape_base', 'numpy.lib.polynomial', 'numpy.lib.utils', 'numpy.lib.arraysetops', 'numpy.lib.format', 'numpy.lib._datasource', 'numpy.lib._iotools', 'numpy.lib.npyio', 'numpy.lib.arrayterator', 'numpy.lib.arraypad', 'numpy.lib._version', 'numpy.lib', 'numpy.fft._pocketfft_internal', 'numpy.fft._pocketfft', 'numpy.fft.helper', 'numpy.fft', 'numpy.polynomial.polyutils', 'numpy.polynomial._polybase', 'numpy.polynomial.polynomial', 'numpy.polynomial.chebyshev', 'numpy.polynomial.legendre', 'numpy.polynomial.hermite', 'numpy.polynomial.hermite_e', 'numpy.polynomial.laguerre', 'numpy.polynomial', 'cython_runtime', '_cython_0_29_21', 'numpy.random._common', 'secrets', 'numpy.random.bit_generator', 'numpy.random._bounded_integers', 'numpy.random._mt19937', 'numpy.random.mtrand', 'numpy.random._philox', 'numpy.random._pcg64', 'numpy.random._sfc64', 'numpy.random._generator', 'numpy.random._pickle', 'numpy.random', 'numpy.ctypeslib', 'numpy.ma.core', 'numpy.ma.extras', 'numpy.ma', 'numpy', 'pytz.exceptions', 'pytz.lazy', 'pytz.tzinfo', 'pytz.tzfile', 'pytz', 'mmap', 'pandas._typing', 'pandas.compat', 'distutils', 'distutils.version', 'pandas.compat.numpy', 'pandas._libs.tslibs.dtypes', 'pandas._libs.tslibs.base', 'pandas._libs.tslibs.np_datetime', 'pandas._libs.tslibs.nattype', 'pandas._libs.tslibs.timezones', 'pandas._libs.tslibs.ccalendar', 'pandas._libs.tslibs.tzconversion', 'pandas._libs.tslibs.timedeltas', 'pandas._config.config', 'pandas._config.dates', 'pandas._config.display', 'pandas._config', 'pandas._config.localization', 'pandas._libs.tslibs.strptime', 'pandas._libs.tslibs.fields', 'pandas._libs.tslibs.timestamps', 'dateutil.easter', 'pandas._libs.properties', 'pandas._libs.tslibs.offsets', 'pandas._libs.tslibs.parsing', 'pandas._libs.tslibs.conversion', 'pandas._libs.tslibs.period', 'pandas._libs.tslibs.vectorized', 'pandas._libs.tslibs', 'pandas._libs.ops_dispatch', 'pandas._libs.missing', 'pandas._libs.hashtable', 'pandas._libs.algos', 'pandas._libs.interval', 'pandas._libs', 'pandas._libs.tslib', 'pandas._libs.lib', 'pandas.core', 'pandas.core.config_init', 'pandas.core.dtypes', 'pandas.errors', 'pandas.core.dtypes.generic', 'pandas.core.dtypes.base', 'pandas.core.dtypes.inference', 'pandas.core.dtypes.dtypes', 'pandas.core.dtypes.common', 'pandas.core.dtypes.missing', 'pandas.util._decorators', 'pandas.core.util', 'pandas._libs.hashing', 'pandas.core.util.hashing', 'pandas.util', 'pandas.util._validators', 'pandas.core.dtypes.cast', 'pandas.core.common', 'pandas.core.construction', 'pandas.core.indexers', 'pandas.core.algorithms', 'pandas.compat.numpy.function', 'pandas._libs.ops', 'pandas.core.ops.roperator', 'pandas.core.ops.missing', 'pandas.core.ops.dispatch', 'pandas.core.ops.invalid', 'pandas.core.ops.array_ops', 'pandas.core.ops.common', 'pandas.core.ops.docstrings', 'pandas.core.ops.mask_ops', 'pandas.core.ops.methods', 'pandas.core.ops', 'pandas.compat._optional', 'pandas.core.missing', 'pandas.core.sorting', 'pandas.core.arrays.base', 'pandas.core.nanops', 'pandas.core.array_algos', 'pandas.core.array_algos.masked_reductions', 'pandas.core.arraylike', 'pandas.core.arrays.masked', 'pandas.core.arrays.boolean', 'pandas.core.accessor', 'pandas.core.array_algos.transforms', 'pandas.core.arrays._mixins', 'pandas.core.base', 'pandas.core.strings.accessor', 'pandas.core.strings.base', 'pandas.core.strings', 'pandas.core.strings.object_array', 'pandas.io', 'pandas.io.formats', 'pandas.io.formats.console', 'pandas.core.arrays.categorical', 'pandas.tseries', 'pandas.tseries.frequencies', 'pandas.core.arrays.datetimelike', 'pandas.core.arrays._ranges', 'pandas.tseries.offsets', 'pandas.core.arrays.datetimes', 'pandas.core.tools', 'pandas.core.tools.numeric', 'pandas.core.arrays.numeric', 'pandas.core.arrays.floating', 'pandas.core.arrays.integer', 'pandas.core.indexes', 'pandas._libs.index', 'pandas._libs.join', 'pandas._libs.sparse', 'pandas.core.arrays.sparse.dtype', 'pandas.io.formats.printing', 'pandas.core.arrays.sparse.array', 'pandas.core.arrays.sparse.accessor', 'pandas.core.arrays.sparse', 'pandas.core.dtypes.concat', 'pandas.core.indexes.frozen', 'pandas.core.indexes.base', 'pandas.core.arrays.interval', 'pandas.core.arrays.numpy_', 'pandas.core.arrays.period', 'pandas.core.arrays.string_', 'pandas.core.arrays.timedeltas', 'pandas.core.arrays', 'pandas.core.flags', 'pandas._libs.reduction', 'pandas.core.indexes.extension', 'pandas.core.indexes.category', 'pandas.core.indexes.numeric', 'pandas.core.tools.timedeltas', 'pandas.core.indexes.datetimelike', 'pandas.core.tools.times', 'pandas.core.indexes.datetimes', 'pandas.util._exceptions', 'pandas.core.indexes.multi', 'pandas.core.indexes.timedeltas', 'pandas.core.indexes.interval', 'pandas.core.indexes.period', 'pandas.core.indexes.range', 'pandas.core.indexes.api', 'pandas.core.aggregation', 'gc', 'pandas._libs.indexing', 'pandas.core.indexing', 'pandas._libs.internals', 'pandas._libs.writers', 'pandas.core.array_algos.replace', 'pandas.core.internals.blocks', 'pandas.core.internals.ops', 'pandas.core.internals.managers', 'pandas.core.internals.concat', 'pandas.core.internals', 'pandas.core.shared_docs', 'pandas._libs.window', 'pandas._libs.window.aggregations', 'pandas.core.util.numba_', 'pandas.core.window.common', 'pandas._libs.window.indexers', 'pandas.core.window.indexers', 'pandas.core.window.numba_', 'pandas.core.groupby.base', 'pandas.core.window.rolling', 'pandas.core.window.ewm', 'pandas.core.window.expanding', 'pandas.core.window', 'pandas.core.reshape', 'pandas.core.reshape.concat', 'gzip', 'pandas.io.common', 'pandas.io.formats.format', 'pandas.core.generic', 'pandas.core.internals.construction', 'pandas.core.reshape.util', 'pandas.core.reshape.melt', 'pandas._libs.reshape', 'pandas.core.indexes.accessors', 'pandas.arrays', 'pandas.core.tools.datetimes', 'pandas.plotting._core', 'pandas.plotting._misc', 'pandas.plotting', 'pandas.core.series', 'pandas.io.formats.info', 'pandas.core.frame', 'pandas._libs.groupby', 'pandas.core.groupby.numba_', 'pandas.core.groupby.categorical', 'pandas.core.groupby.grouper', 'pandas.core.groupby.ops', 'pandas.core.groupby.groupby', 'pandas.core.groupby.generic', 'pandas.core.groupby', 'pandas.core.api', 'pandas.tseries.api', 'pandas.core.computation', 'pandas.core.computation.common', 'pandas.core.computation.align', 'pandas.compat.chainmap', 'pandas.core.computation.scope', 'pandas.core.computation.ops', 'pandas.core.computation.engines', 'pandas.core.computation.parsing', 'pandas.core.computation.expr', 'pandas.core.computation.eval', 'pandas.core.computation.api', 'pandas.core.reshape.merge', 'pandas.core.reshape.pivot', 'pandas.core.reshape.reshape', 'pandas.core.reshape.tile', 'pandas.core.reshape.api', 'pandas.api.extensions', 'pandas.api.indexers', 'pandas.core.dtypes.api', 'pandas.api.types', 'pandas.api', 'pandas.util._print_versions', 'pandas.io.clipboards', 'pandas._libs.parsers', 'pandas.io.excel._util', 'pandas.io.date_converters', 'pandas.io.parsers', 'pandas.io.excel._odfreader', 'pandas.io.excel._openpyxl', 'pandas.io.excel._pyxlsb', 'pandas.io.excel._xlrd', 'pandas.io.excel._base', 'pandas._libs.json', 'pandas.io.formats._color_data', 'pandas.io.formats.css', 'pandas.io.formats.excel', 'pandas.io.excel._odswriter', 'pandas.io.excel._xlsxwriter', 'pandas.io.excel._xlwt', 'pandas.io.excel', 'pandas.io.feather_format', 'pandas.io.gbq', 'pandas.io.html', 'pandas.io.json._normalize', 'pandas.io.json._table_schema', 'pandas.io.json._json', 'pandas.io.json', 'pandas.io.orc', 'pandas.io.parquet', 'pandas.compat.pickle_compat', 'pandas.io.pickle', 'pandas.core.computation.pytables', 'pandas.io.pytables', 'pandas.io.sas.sasreader', 'pandas.io.sas', 'pandas.io.spss', 'pandas.io.sql', 'pandas.io.stata', 'pandas.io.api', 'pandas.util._tester', 'cmath', 'pandas._libs.testing', 'pandas._testing', 'pandas.testing', 'pandas._version', 'pandas', 'matplotlib', 'matplotlib._api.deprecation', 'matplotlib._api', 'matplotlib._c_internal_utils', 'matplotlib.cbook', 'matplotlib.docstring', 'matplotlib._animation_data', 'matplotlib.animation', 'PIL.ImageChops', 'PIL.ImageFile', 'array', 'PIL.GimpGradientFile', 'PIL.GimpPaletteFile', 'PIL.ImageColor', 'PIL.PaletteFile', 'PIL.ImagePalette', 'PIL.ImageSequence', 'PIL.PngImagePlugin', 'matplotlib._path', 'matplotlib.bezier', 'matplotlib.path', 'matplotlib.transforms', 'matplotlib.ticker', 'matplotlib.scale', 'matplotlib._color_data', 'matplotlib.colors', 'pyparsing', 'matplotlib.fontconfig_pattern', 'matplotlib._enums', 'cycler', 'matplotlib.rcsetup', 'matplotlib._version', 'matplotlib.ft2font', 'kiwisolver', 'dateutil.rrule', 'matplotlib.units', 'matplotlib.dates']
+2021-04-09 05:50:46,547 DEBUG matplotlib MainThread : CACHEDIR=C:\Users\ishaa\.matplotlib
+2021-04-09 05:50:46,550 DEBUG matplotlib.font_manager MainThread : Using fontManager instance from C:\Users\ishaa\.matplotlib\fontlist-v330.json
+2021-04-09 05:50:46,660 DEBUG matplotlib.pyplot MainThread : Loaded backend tkagg version unknown.
+2021-04-09 05:50:46,661 DEBUG matplotlib.pyplot MainThread : Loaded backend TkAgg version unknown.
+2021-04-09 05:50:46,805 INFO werkzeug MainThread :  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2021-04-09 05:51:17,371 INFO werkzeug Thread-1 : 127.0.0.1 - - [09/Apr/2021 05:51:17] "[37mOPTIONS /login HTTP/1.1[0m" 200 -
+2021-04-09 05:51:20,821 INFO logger Thread-3 : ishaannair is attemping to log in
+2021-04-09 05:51:20,825 INFO werkzeug Thread-3 : 127.0.0.1 - - [09/Apr/2021 05:51:20] "[37mPOST /login HTTP/1.1[0m" 200 -
+2021-04-09 05:51:24,294 INFO werkzeug Thread-4 : 127.0.0.1 - - [09/Apr/2021 05:51:24] "[37mGET /staff_get_photo_notification HTTP/1.1[0m" 200 -
+2021-04-09 05:51:28,786 INFO werkzeug Thread-5 : 127.0.0.1 - - [09/Apr/2021 05:51:28] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 05:51:29,627 INFO werkzeug Thread-6 : 127.0.0.1 - - [09/Apr/2021 05:51:29] "[37mGET /tenant_list_non_FB HTTP/1.1[0m" 200 -
+2021-04-09 05:51:29,942 INFO werkzeug Thread-8 : 127.0.0.1 - - [09/Apr/2021 05:51:29] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 05:51:29,943 INFO werkzeug Thread-7 : 127.0.0.1 - - [09/Apr/2021 05:51:29] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 05:55:48,328 INFO werkzeug Thread-9 : 127.0.0.1 - - [09/Apr/2021 05:55:48] "[37mGET /staff_get_photo_notification HTTP/1.1[0m" 200 -
+2021-04-09 05:55:51,301 INFO werkzeug Thread-10 : 127.0.0.1 - - [09/Apr/2021 05:55:51] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 05:55:53,415 INFO werkzeug Thread-11 : 127.0.0.1 - - [09/Apr/2021 05:55:53] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 05:55:53,417 INFO werkzeug Thread-13 : 127.0.0.1 - - [09/Apr/2021 05:55:53] "[37mGET /tenant_list HTTP/1.1[0m" 200 -
+2021-04-09 05:55:53,418 INFO werkzeug Thread-12 : 127.0.0.1 - - [09/Apr/2021 05:55:53] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 05:55:56,110 INFO werkzeug Thread-14 : 127.0.0.1 - - [09/Apr/2021 05:55:56] "[37mGET /tenant_list_FB HTTP/1.1[0m" 200 -
+2021-04-09 05:55:56,418 INFO werkzeug Thread-16 : 127.0.0.1 - - [09/Apr/2021 05:55:56] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 05:55:56,421 INFO werkzeug Thread-15 : 127.0.0.1 - - [09/Apr/2021 05:55:56] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 05:55:57,699 INFO werkzeug Thread-19 : 127.0.0.1 - - [09/Apr/2021 05:55:57] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 05:55:57,701 INFO werkzeug Thread-18 : 127.0.0.1 - - [09/Apr/2021 05:55:57] "[37mGET /tenant_list_non_FB HTTP/1.1[0m" 200 -
+2021-04-09 05:55:57,702 INFO werkzeug Thread-17 : 127.0.0.1 - - [09/Apr/2021 05:55:57] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 05:56:56,200 INFO werkzeug Thread-21 : 127.0.0.1 - - [09/Apr/2021 05:56:56] "[37mOPTIONS /login HTTP/1.1[0m" 200 -
+2021-04-09 05:56:59,776 INFO logger Thread-23 : ishaannair is attemping to log in
+2021-04-09 05:56:59,784 INFO werkzeug Thread-23 : 127.0.0.1 - - [09/Apr/2021 05:56:59] "[37mPOST /login HTTP/1.1[0m" 200 -
+2021-04-09 05:57:03,112 INFO werkzeug Thread-24 : 127.0.0.1 - - [09/Apr/2021 05:57:03] "[37mGET /staff_get_photo_notification HTTP/1.1[0m" 200 -
+2021-04-09 05:57:07,611 INFO werkzeug Thread-25 : 127.0.0.1 - - [09/Apr/2021 05:57:07] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 05:57:08,426 INFO werkzeug Thread-26 : 127.0.0.1 - - [09/Apr/2021 05:57:08] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 05:57:08,742 INFO werkzeug Thread-28 : 127.0.0.1 - - [09/Apr/2021 05:57:08] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 05:57:08,742 INFO werkzeug Thread-27 : 127.0.0.1 - - [09/Apr/2021 05:57:08] "[37mGET /tenant_list_non_FB HTTP/1.1[0m" 200 -
+2021-04-09 05:58:21,383 INFO werkzeug Thread-30 : 127.0.0.1 - - [09/Apr/2021 05:58:21] "[37mGET /tenant_list HTTP/1.1[0m" 200 -
+2021-04-09 05:58:21,383 INFO werkzeug Thread-29 : 127.0.0.1 - - [09/Apr/2021 05:58:21] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 05:58:23,746 INFO werkzeug Thread-31 : 127.0.0.1 - - [09/Apr/2021 05:58:23] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 05:58:24,056 INFO werkzeug Thread-32 : 127.0.0.1 - - [09/Apr/2021 05:58:24] "[37mOPTIONS /dashboard_data HTTP/1.1[0m" 200 -
+2021-04-09 05:58:24,057 INFO werkzeug Thread-33 : 127.0.0.1 - - [09/Apr/2021 05:58:24] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 05:58:24,057 INFO werkzeug Thread-34 : 127.0.0.1 - - [09/Apr/2021 05:58:24] "[37mGET /tenant_list HTTP/1.1[0m" 200 -
+2021-04-09 05:58:24,384 INFO werkzeug Thread-36 : 127.0.0.1 - - [09/Apr/2021 05:58:24] "[37mPOST /dashboard_data HTTP/1.1[0m" 200 -
+2021-04-09 05:58:42,645 INFO werkzeug Thread-37 : 127.0.0.1 - - [09/Apr/2021 05:58:42] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 05:58:43,191 INFO werkzeug Thread-35 : 127.0.0.1 - - [09/Apr/2021 05:58:43] "[37mOPTIONS /download_file HTTP/1.1[0m" 200 -
+2021-04-09 05:58:43,198 DEBUG botocore.hooks Thread-38 : Changing event name from creating-client-class.iot-data to creating-client-class.iot-data-plane
+2021-04-09 05:58:43,199 DEBUG botocore.hooks Thread-38 : Changing event name from before-call.apigateway to before-call.api-gateway
+2021-04-09 05:58:43,200 DEBUG botocore.hooks Thread-38 : Changing event name from request-created.machinelearning.Predict to request-created.machine-learning.Predict
+2021-04-09 05:58:43,201 DEBUG botocore.hooks Thread-38 : Changing event name from before-parameter-build.autoscaling.CreateLaunchConfiguration to before-parameter-build.auto-scaling.CreateLaunchConfiguration
+2021-04-09 05:58:43,201 DEBUG botocore.hooks Thread-38 : Changing event name from before-parameter-build.route53 to before-parameter-build.route-53
+2021-04-09 05:58:43,201 DEBUG botocore.hooks Thread-38 : Changing event name from request-created.cloudsearchdomain.Search to request-created.cloudsearch-domain.Search
+2021-04-09 05:58:43,202 DEBUG botocore.hooks Thread-38 : Changing event name from docs.*.autoscaling.CreateLaunchConfiguration.complete-section to docs.*.auto-scaling.CreateLaunchConfiguration.complete-section
+2021-04-09 05:58:43,204 DEBUG botocore.hooks Thread-38 : Changing event name from before-parameter-build.logs.CreateExportTask to before-parameter-build.cloudwatch-logs.CreateExportTask
+2021-04-09 05:58:43,204 DEBUG botocore.hooks Thread-38 : Changing event name from docs.*.logs.CreateExportTask.complete-section to docs.*.cloudwatch-logs.CreateExportTask.complete-section
+2021-04-09 05:58:43,204 DEBUG botocore.hooks Thread-38 : Changing event name from before-parameter-build.cloudsearchdomain.Search to before-parameter-build.cloudsearch-domain.Search
+2021-04-09 05:58:43,204 DEBUG botocore.hooks Thread-38 : Changing event name from docs.*.cloudsearchdomain.Search.complete-section to docs.*.cloudsearch-domain.Search.complete-section
+2021-04-09 05:58:43,205 DEBUG botocore.utils Thread-38 : IMDS ENDPOINT: http://169.254.169.254/
+2021-04-09 05:58:43,207 DEBUG botocore.credentials Thread-38 : Looking for credentials via: env
+2021-04-09 05:58:43,207 DEBUG botocore.credentials Thread-38 : Looking for credentials via: assume-role
+2021-04-09 05:58:43,207 DEBUG botocore.credentials Thread-38 : Looking for credentials via: assume-role-with-web-identity
+2021-04-09 05:58:43,207 DEBUG botocore.credentials Thread-38 : Looking for credentials via: sso
+2021-04-09 05:58:43,207 DEBUG botocore.credentials Thread-38 : Looking for credentials via: shared-credentials-file
+2021-04-09 05:58:43,207 DEBUG botocore.credentials Thread-38 : Looking for credentials via: custom-process
+2021-04-09 05:58:43,207 DEBUG botocore.credentials Thread-38 : Looking for credentials via: config-file
+2021-04-09 05:58:43,207 DEBUG botocore.credentials Thread-38 : Looking for credentials via: ec2-credentials-file
+2021-04-09 05:58:43,207 DEBUG botocore.credentials Thread-38 : Looking for credentials via: boto-config
+2021-04-09 05:58:43,207 DEBUG botocore.credentials Thread-38 : Looking for credentials via: container-role
+2021-04-09 05:58:43,207 DEBUG botocore.credentials Thread-38 : Looking for credentials via: iam-role
+2021-04-09 05:58:43,208 DEBUG urllib3.connectionpool Thread-38 : Starting new HTTP connection (1): 169.254.169.254:80
+2021-04-09 05:58:43,231 DEBUG botocore.utils Thread-38 : Caught retryable HTTP exception while making metadata service request to http://169.254.169.254/latest/api/token: Could not connect to the endpoint URL: "http://169.254.169.254/latest/api/token"
+Traceback (most recent call last):
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 159, in _new_conn
+    conn = connection.create_connection(
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 84, in create_connection
+    raise err
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 74, in create_connection
+    sock.connect(sa)
+OSError: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 311, in send
+    urllib_response = conn.urlopen(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 726, in urlopen
+    retries = retries.increment(
+  File "C:\Python39\lib\site-packages\urllib3\util\retry.py", line 386, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "C:\Python39\lib\site-packages\urllib3\packages\six.py", line 735, in reraise
+    raise value
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 670, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 392, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+  File "C:\Python39\lib\http\client.py", line 1255, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 92, in _send_request
+    rval = super(AWSConnection, self)._send_request(
+  File "C:\Python39\lib\http\client.py", line 1301, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "C:\Python39\lib\http\client.py", line 1250, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 120, in _send_output
+    self.send(msg)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 204, in send
+    return super(AWSConnection, self).send(str)
+  File "C:\Python39\lib\http\client.py", line 950, in send
+    self.connect()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 187, in connect
+    conn = self._new_conn()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 171, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <botocore.awsrequest.AWSHTTPConnection object at 0x000002CBD219AF40>: Failed to establish a new connection: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\utils.py", line 377, in _fetch_metadata_token
+    response = self._session.send(request.prepare())
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 340, in send
+    raise EndpointConnectionError(endpoint_url=request.url, error=e)
+botocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: "http://169.254.169.254/latest/api/token"
+2021-04-09 05:58:43,234 DEBUG urllib3.connectionpool Thread-38 : Starting new HTTP connection (2): 169.254.169.254:80
+2021-04-09 05:58:43,247 DEBUG botocore.utils Thread-38 : Caught retryable HTTP exception while making metadata service request to http://169.254.169.254/latest/meta-data/iam/security-credentials/: Could not connect to the endpoint URL: "http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+Traceback (most recent call last):
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 159, in _new_conn
+    conn = connection.create_connection(
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 84, in create_connection
+    raise err
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 74, in create_connection
+    sock.connect(sa)
+OSError: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 311, in send
+    urllib_response = conn.urlopen(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 726, in urlopen
+    retries = retries.increment(
+  File "C:\Python39\lib\site-packages\urllib3\util\retry.py", line 386, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "C:\Python39\lib\site-packages\urllib3\packages\six.py", line 735, in reraise
+    raise value
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 670, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 392, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+  File "C:\Python39\lib\http\client.py", line 1255, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 92, in _send_request
+    rval = super(AWSConnection, self)._send_request(
+  File "C:\Python39\lib\http\client.py", line 1301, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "C:\Python39\lib\http\client.py", line 1250, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 120, in _send_output
+    self.send(msg)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 204, in send
+    return super(AWSConnection, self).send(str)
+  File "C:\Python39\lib\http\client.py", line 950, in send
+    self.connect()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 187, in connect
+    conn = self._new_conn()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 171, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <botocore.awsrequest.AWSHTTPConnection object at 0x000002CBD21AA490>: Failed to establish a new connection: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\utils.py", line 425, in _get_request
+    response = self._session.send(request.prepare())
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 340, in send
+    raise EndpointConnectionError(endpoint_url=request.url, error=e)
+botocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: "http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+2021-04-09 05:58:43,247 DEBUG botocore.utils Thread-38 : Max number of attempts exceeded (1) when attempting to retrieve data from metadata service.
+2021-04-09 05:58:43,249 DEBUG botocore.loaders Thread-38 : Loading JSON file: C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\data\endpoints.json
+2021-04-09 05:58:43,254 DEBUG botocore.hooks Thread-38 : Event choose-service-name: calling handler <function handle_service_name_alias at 0x000002CBC0F0F9D0>
+2021-04-09 05:58:43,294 DEBUG botocore.loaders Thread-38 : Loading JSON file: C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\data\s3\2006-03-01\service-2.json
+2021-04-09 05:58:43,301 DEBUG botocore.hooks Thread-38 : Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x000002CBC0EC04C0>
+2021-04-09 05:58:43,301 DEBUG botocore.hooks Thread-38 : Event creating-client-class.s3: calling handler <function lazy_call.<locals>._handler at 0x000002CBD210CB80>
+2021-04-09 05:58:43,341 DEBUG botocore.hooks Thread-38 : Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x000002CBC0EC0280>
+2021-04-09 05:58:43,343 DEBUG botocore.endpoint Thread-38 : Setting s3 timeout as (60, 60)
+2021-04-09 05:58:43,344 DEBUG botocore.loaders Thread-38 : Loading JSON file: C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\data\_retry.json
+2021-04-09 05:58:43,344 DEBUG botocore.client Thread-38 : Registering retry handlers for service: s3
+2021-04-09 05:58:43,345 DEBUG botocore.hooks Thread-38 : Event before-parameter-build.s3.ListObjects: calling handler <function set_list_objects_encoding_type_url at 0x000002CBC0F2F5E0>
+2021-04-09 05:58:43,345 DEBUG botocore.hooks Thread-38 : Event before-parameter-build.s3.ListObjects: calling handler <function validate_bucket_name at 0x000002CBC0F2E310>
+2021-04-09 05:58:43,345 DEBUG botocore.hooks Thread-38 : Event before-parameter-build.s3.ListObjects: calling handler <bound method S3RegionRedirector.redirect_from_cache of <botocore.utils.S3RegionRedirector object at 0x000002CBD25D5460>>
+2021-04-09 05:58:43,345 DEBUG botocore.hooks Thread-38 : Event before-parameter-build.s3.ListObjects: calling handler <bound method S3ArnParamHandler.handle_arn of <botocore.utils.S3ArnParamHandler object at 0x000002CBD25D5490>>
+2021-04-09 05:58:43,345 DEBUG botocore.hooks Thread-38 : Event before-parameter-build.s3.ListObjects: calling handler <function generate_idempotent_uuid at 0x000002CBC0F2E160>
+2021-04-09 05:58:43,346 DEBUG botocore.hooks Thread-38 : Event before-call.s3.ListObjects: calling handler <function add_expect_header at 0x000002CBC0F2E670>
+2021-04-09 05:58:43,346 DEBUG botocore.hooks Thread-38 : Event before-call.s3.ListObjects: calling handler <bound method S3RegionRedirector.set_request_url of <botocore.utils.S3RegionRedirector object at 0x000002CBD25D5460>>
+2021-04-09 05:58:43,346 DEBUG botocore.hooks Thread-38 : Event before-call.s3.ListObjects: calling handler <function inject_api_version_header_if_needed at 0x000002CBC0F2F9D0>
+2021-04-09 05:58:43,346 DEBUG botocore.endpoint Thread-38 : Making request for OperationModel(name=ListObjects) with params: {'url_path': '/escapp-bucket-dev', 'query_string': {'encoding-type': 'url'}, 'method': 'GET', 'headers': {'User-Agent': 'Boto3/1.17.18 Python/3.9.1 Windows/10 Botocore/1.20.18'}, 'body': b'', 'url': 'https://s3.amazonaws.com/escapp-bucket-dev?encoding-type=url', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x000002CBD27AA4F0>, 'has_streaming_input': False, 'auth_type': None, 'encoding_type_auto_set': True, 'signing': {'bucket': 'escapp-bucket-dev'}}}
+2021-04-09 05:58:43,346 DEBUG botocore.hooks Thread-38 : Event request-created.s3.ListObjects: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x000002CBD27AA430>>
+2021-04-09 05:58:43,346 DEBUG botocore.hooks Thread-38 : Event choose-signer.s3.ListObjects: calling handler <bound method ClientCreator._default_s3_presign_to_sigv2 of <botocore.client.ClientCreator object at 0x000002CBD2171A90>>
+2021-04-09 05:58:43,346 DEBUG botocore.hooks Thread-38 : Event choose-signer.s3.ListObjects: calling handler <function set_operation_specific_signer at 0x000002CBC0F2E040>
+2021-04-09 05:58:43,346 DEBUG botocore.hooks Thread-38 : Event before-sign.s3.ListObjects: calling handler <bound method S3EndpointSetter.set_endpoint of <botocore.utils.S3EndpointSetter object at 0x000002CBD25D5550>>
+2021-04-09 05:58:43,346 DEBUG botocore.utils Thread-38 : Defaulting to S3 virtual host style addressing with path style addressing fallback.
+2021-04-09 05:58:43,346 DEBUG botocore.utils Thread-38 : Checking for DNS compatible bucket for: https://s3.amazonaws.com/escapp-bucket-dev?encoding-type=url
+2021-04-09 05:58:43,347 DEBUG botocore.utils Thread-38 : URI updated to: https://escapp-bucket-dev.s3.amazonaws.com/?encoding-type=url
+2021-04-09 05:58:43,373 INFO werkzeug Thread-38 : 127.0.0.1 - - [09/Apr/2021 05:58:43] "[35m[1mPOST /download_file HTTP/1.1[0m" 500 -
+2021-04-09 05:58:44,626 DEBUG botocore.credentials Thread-39 : Looking for credentials via: env
+2021-04-09 05:58:44,627 DEBUG botocore.credentials Thread-39 : Looking for credentials via: assume-role
+2021-04-09 05:58:44,627 DEBUG botocore.credentials Thread-39 : Looking for credentials via: assume-role-with-web-identity
+2021-04-09 05:58:44,627 DEBUG botocore.credentials Thread-39 : Looking for credentials via: sso
+2021-04-09 05:58:44,627 DEBUG botocore.credentials Thread-39 : Looking for credentials via: shared-credentials-file
+2021-04-09 05:58:44,627 DEBUG botocore.credentials Thread-39 : Looking for credentials via: custom-process
+2021-04-09 05:58:44,627 DEBUG botocore.credentials Thread-39 : Looking for credentials via: config-file
+2021-04-09 05:58:44,627 DEBUG botocore.credentials Thread-39 : Looking for credentials via: ec2-credentials-file
+2021-04-09 05:58:44,627 DEBUG botocore.credentials Thread-39 : Looking for credentials via: boto-config
+2021-04-09 05:58:44,627 DEBUG botocore.credentials Thread-39 : Looking for credentials via: container-role
+2021-04-09 05:58:44,627 DEBUG botocore.credentials Thread-39 : Looking for credentials via: iam-role
+2021-04-09 05:58:44,627 DEBUG urllib3.connectionpool Thread-39 : Starting new HTTP connection (3): 169.254.169.254:80
+2021-04-09 05:58:44,650 DEBUG botocore.utils Thread-39 : Caught retryable HTTP exception while making metadata service request to http://169.254.169.254/latest/api/token: Could not connect to the endpoint URL: "http://169.254.169.254/latest/api/token"
+Traceback (most recent call last):
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 159, in _new_conn
+    conn = connection.create_connection(
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 84, in create_connection
+    raise err
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 74, in create_connection
+    sock.connect(sa)
+OSError: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 311, in send
+    urllib_response = conn.urlopen(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 726, in urlopen
+    retries = retries.increment(
+  File "C:\Python39\lib\site-packages\urllib3\util\retry.py", line 386, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "C:\Python39\lib\site-packages\urllib3\packages\six.py", line 735, in reraise
+    raise value
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 670, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 392, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+  File "C:\Python39\lib\http\client.py", line 1255, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 92, in _send_request
+    rval = super(AWSConnection, self)._send_request(
+  File "C:\Python39\lib\http\client.py", line 1301, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "C:\Python39\lib\http\client.py", line 1250, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 120, in _send_output
+    self.send(msg)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 204, in send
+    return super(AWSConnection, self).send(str)
+  File "C:\Python39\lib\http\client.py", line 950, in send
+    self.connect()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 187, in connect
+    conn = self._new_conn()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 171, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <botocore.awsrequest.AWSHTTPConnection object at 0x000002CBD259BBE0>: Failed to establish a new connection: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\utils.py", line 377, in _fetch_metadata_token
+    response = self._session.send(request.prepare())
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 340, in send
+    raise EndpointConnectionError(endpoint_url=request.url, error=e)
+botocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: "http://169.254.169.254/latest/api/token"
+2021-04-09 05:58:44,651 DEBUG urllib3.connectionpool Thread-39 : Starting new HTTP connection (4): 169.254.169.254:80
+2021-04-09 05:58:44,667 DEBUG botocore.utils Thread-39 : Caught retryable HTTP exception while making metadata service request to http://169.254.169.254/latest/meta-data/iam/security-credentials/: Could not connect to the endpoint URL: "http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+Traceback (most recent call last):
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 159, in _new_conn
+    conn = connection.create_connection(
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 84, in create_connection
+    raise err
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 74, in create_connection
+    sock.connect(sa)
+OSError: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 311, in send
+    urllib_response = conn.urlopen(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 726, in urlopen
+    retries = retries.increment(
+  File "C:\Python39\lib\site-packages\urllib3\util\retry.py", line 386, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "C:\Python39\lib\site-packages\urllib3\packages\six.py", line 735, in reraise
+    raise value
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 670, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 392, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+  File "C:\Python39\lib\http\client.py", line 1255, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 92, in _send_request
+    rval = super(AWSConnection, self)._send_request(
+  File "C:\Python39\lib\http\client.py", line 1301, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "C:\Python39\lib\http\client.py", line 1250, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 120, in _send_output
+    self.send(msg)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 204, in send
+    return super(AWSConnection, self).send(str)
+  File "C:\Python39\lib\http\client.py", line 950, in send
+    self.connect()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 187, in connect
+    conn = self._new_conn()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 171, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <botocore.awsrequest.AWSHTTPConnection object at 0x000002CBD25D5130>: Failed to establish a new connection: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\utils.py", line 425, in _get_request
+    response = self._session.send(request.prepare())
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 340, in send
+    raise EndpointConnectionError(endpoint_url=request.url, error=e)
+botocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: "http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+2021-04-09 05:58:44,667 DEBUG botocore.utils Thread-39 : Max number of attempts exceeded (1) when attempting to retrieve data from metadata service.
+2021-04-09 05:58:44,668 DEBUG botocore.hooks Thread-39 : Event choose-service-name: calling handler <function handle_service_name_alias at 0x000002CBC0F0F9D0>
+2021-04-09 05:58:44,669 DEBUG botocore.hooks Thread-39 : Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x000002CBC0EC04C0>
+2021-04-09 05:58:44,669 DEBUG botocore.hooks Thread-39 : Event creating-client-class.s3: calling handler <function lazy_call.<locals>._handler at 0x000002CBD210CB80>
+2021-04-09 05:58:44,669 DEBUG botocore.hooks Thread-39 : Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x000002CBC0EC0280>
+2021-04-09 05:58:44,671 DEBUG botocore.endpoint Thread-39 : Setting s3 timeout as (60, 60)
+2021-04-09 05:58:44,672 DEBUG botocore.client Thread-39 : Registering retry handlers for service: s3
+2021-04-09 05:58:44,673 DEBUG botocore.hooks Thread-39 : Event before-parameter-build.s3.ListObjects: calling handler <function set_list_objects_encoding_type_url at 0x000002CBC0F2F5E0>
+2021-04-09 05:58:44,673 DEBUG botocore.hooks Thread-39 : Event before-parameter-build.s3.ListObjects: calling handler <function validate_bucket_name at 0x000002CBC0F2E310>
+2021-04-09 05:58:44,674 DEBUG botocore.hooks Thread-39 : Event before-parameter-build.s3.ListObjects: calling handler <bound method S3RegionRedirector.redirect_from_cache of <botocore.utils.S3RegionRedirector object at 0x000002CBD2931070>>
+2021-04-09 05:58:44,674 DEBUG botocore.hooks Thread-39 : Event before-parameter-build.s3.ListObjects: calling handler <bound method S3ArnParamHandler.handle_arn of <botocore.utils.S3ArnParamHandler object at 0x000002CBD29310A0>>
+2021-04-09 05:58:44,674 DEBUG botocore.hooks Thread-39 : Event before-parameter-build.s3.ListObjects: calling handler <function generate_idempotent_uuid at 0x000002CBC0F2E160>
+2021-04-09 05:58:44,674 DEBUG botocore.hooks Thread-39 : Event before-call.s3.ListObjects: calling handler <function add_expect_header at 0x000002CBC0F2E670>
+2021-04-09 05:58:44,674 DEBUG botocore.hooks Thread-39 : Event before-call.s3.ListObjects: calling handler <bound method S3RegionRedirector.set_request_url of <botocore.utils.S3RegionRedirector object at 0x000002CBD2931070>>
+2021-04-09 05:58:44,674 DEBUG botocore.hooks Thread-39 : Event before-call.s3.ListObjects: calling handler <function inject_api_version_header_if_needed at 0x000002CBC0F2F9D0>
+2021-04-09 05:58:44,674 DEBUG botocore.endpoint Thread-39 : Making request for OperationModel(name=ListObjects) with params: {'url_path': '/escapp-bucket-dev-tenant', 'query_string': {'encoding-type': 'url'}, 'method': 'GET', 'headers': {'User-Agent': 'Boto3/1.17.18 Python/3.9.1 Windows/10 Botocore/1.20.18'}, 'body': b'', 'url': 'https://s3.amazonaws.com/escapp-bucket-dev-tenant?encoding-type=url', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x000002CBD291C580>, 'has_streaming_input': False, 'auth_type': None, 'encoding_type_auto_set': True, 'signing': {'bucket': 'escapp-bucket-dev-tenant'}}}
+2021-04-09 05:58:44,675 DEBUG botocore.hooks Thread-39 : Event request-created.s3.ListObjects: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x000002CBD291C4F0>>
+2021-04-09 05:58:44,675 DEBUG botocore.hooks Thread-39 : Event choose-signer.s3.ListObjects: calling handler <bound method ClientCreator._default_s3_presign_to_sigv2 of <botocore.client.ClientCreator object at 0x000002CBD27AA430>>
+2021-04-09 05:58:44,675 DEBUG botocore.hooks Thread-39 : Event choose-signer.s3.ListObjects: calling handler <function set_operation_specific_signer at 0x000002CBC0F2E040>
+2021-04-09 05:58:44,675 DEBUG botocore.hooks Thread-39 : Event before-sign.s3.ListObjects: calling handler <bound method S3EndpointSetter.set_endpoint of <botocore.utils.S3EndpointSetter object at 0x000002CBD2931160>>
+2021-04-09 05:58:44,675 DEBUG botocore.utils Thread-39 : Defaulting to S3 virtual host style addressing with path style addressing fallback.
+2021-04-09 05:58:44,675 DEBUG botocore.utils Thread-39 : Checking for DNS compatible bucket for: https://s3.amazonaws.com/escapp-bucket-dev-tenant?encoding-type=url
+2021-04-09 05:58:44,675 DEBUG botocore.utils Thread-39 : URI updated to: https://escapp-bucket-dev-tenant.s3.amazonaws.com/?encoding-type=url
+2021-04-09 05:58:44,698 INFO werkzeug Thread-39 : 127.0.0.1 - - [09/Apr/2021 05:58:44] "[35m[1mPOST /download_file HTTP/1.1[0m" 500 -
+2021-04-09 05:58:52,371 INFO werkzeug Thread-40 : 127.0.0.1 - - [09/Apr/2021 05:58:52] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 05:59:05,625 INFO werkzeug Thread-41 : 127.0.0.1 - - [09/Apr/2021 05:59:05] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 05:59:07,211 ERROR app Thread-42 : Exception on /upload_file [POST]
+Traceback (most recent call last):
+  File "C:\Python39\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python39\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python39\lib\site-packages\flask_cors\extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "C:\Python39\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python39\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python39\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python39\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Python39\lib\site-packages\flask_cors\decorator.py", line 128, in wrapped_function
+    resp = make_response(f(*args, **kwargs))
+  File "C:\Users\ishaa\Documents\GitHub\escapp\backend\app\apis\__init__.py", line 295, in upload_file
+    img = Image.open(body.stream)
+AttributeError: type object 'Image' has no attribute 'open'
+2021-04-09 05:59:07,219 INFO werkzeug Thread-42 : 127.0.0.1 - - [09/Apr/2021 05:59:07] "[35m[1mPOST /upload_file HTTP/1.1[0m" 500 -
+2021-04-09 05:59:07,470 INFO werkzeug Thread-43 : 127.0.0.1 - - [09/Apr/2021 05:59:07] "[37mOPTIONS /upload_photo_info HTTP/1.1[0m" 200 -
+2021-04-09 05:59:09,949 INFO werkzeug Thread-45 : 127.0.0.1 - - [09/Apr/2021 05:59:09] "[35m[1mPOST /upload_photo_info HTTP/1.1[0m" 500 -
+2021-04-09 06:01:52,690 INFO werkzeug Thread-48 : 127.0.0.1 - - [09/Apr/2021 06:01:52] "[37mGET /tenant_list_non_FB HTTP/1.1[0m" 200 -
+2021-04-09 06:01:52,690 INFO werkzeug Thread-47 : 127.0.0.1 - - [09/Apr/2021 06:01:52] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:01:52,692 INFO werkzeug Thread-49 : 127.0.0.1 - - [09/Apr/2021 06:01:52] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 06:01:52,815 INFO werkzeug Thread-52 : 127.0.0.1 - - [09/Apr/2021 06:01:52] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 06:01:52,818 INFO werkzeug Thread-51 : 127.0.0.1 - - [09/Apr/2021 06:01:52] "[37mGET /tenant_list_non_FB HTTP/1.1[0m" 200 -
+2021-04-09 06:01:52,818 INFO werkzeug Thread-50 : 127.0.0.1 - - [09/Apr/2021 06:01:52] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:02:05,667 INFO werkzeug Thread-53 : 127.0.0.1 - - [09/Apr/2021 06:02:05] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:02:05,967 INFO werkzeug Thread-56 : 127.0.0.1 - - [09/Apr/2021 06:02:05] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 06:02:05,969 INFO werkzeug Thread-55 : 127.0.0.1 - - [09/Apr/2021 06:02:05] "[37mGET /tenant_list_non_FB HTTP/1.1[0m" 200 -
+2021-04-09 06:02:06,430 INFO werkzeug Thread-54 : 127.0.0.1 - - [09/Apr/2021 06:02:06] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:02:06,737 INFO werkzeug Thread-57 : 127.0.0.1 - - [09/Apr/2021 06:02:06] "[37mGET /tenant_list_non_FB HTTP/1.1[0m" 200 -
+2021-04-09 06:02:06,738 INFO werkzeug Thread-58 : 127.0.0.1 - - [09/Apr/2021 06:02:06] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 06:02:28,772 INFO werkzeug Thread-59 : 127.0.0.1 - - [09/Apr/2021 06:02:28] "[37mOPTIONS /login HTTP/1.1[0m" 200 -
+2021-04-09 06:02:32,273 INFO logger Thread-61 : ishaannair is attemping to log in
+2021-04-09 06:02:32,281 INFO werkzeug Thread-61 : 127.0.0.1 - - [09/Apr/2021 06:02:32] "[37mPOST /login HTTP/1.1[0m" 200 -
+2021-04-09 06:02:35,664 INFO werkzeug Thread-62 : 127.0.0.1 - - [09/Apr/2021 06:02:35] "[37mGET /staff_get_photo_notification HTTP/1.1[0m" 200 -
+2021-04-09 06:02:40,150 INFO werkzeug Thread-63 : 127.0.0.1 - - [09/Apr/2021 06:02:40] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:02:40,976 INFO werkzeug Thread-64 : 127.0.0.1 - - [09/Apr/2021 06:02:40] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:02:41,274 INFO werkzeug Thread-65 : 127.0.0.1 - - [09/Apr/2021 06:02:41] "[37mGET /tenant_list_non_FB HTTP/1.1[0m" 200 -
+2021-04-09 06:02:41,274 INFO werkzeug Thread-66 : 127.0.0.1 - - [09/Apr/2021 06:02:41] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 06:03:38,722 INFO werkzeug Thread-69 : 127.0.0.1 - - [09/Apr/2021 06:03:38] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 06:03:38,725 INFO werkzeug Thread-68 : 127.0.0.1 - - [09/Apr/2021 06:03:38] "[37mGET /tenant_list_non_FB HTTP/1.1[0m" 200 -
+2021-04-09 06:03:38,725 INFO werkzeug Thread-67 : 127.0.0.1 - - [09/Apr/2021 06:03:38] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:03:38,743 INFO werkzeug Thread-71 : 127.0.0.1 - - [09/Apr/2021 06:03:38] "[37mGET /tenant_list_non_FB HTTP/1.1[0m" 200 -
+2021-04-09 06:03:38,749 INFO werkzeug Thread-70 : 127.0.0.1 - - [09/Apr/2021 06:03:38] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:03:38,750 INFO werkzeug Thread-72 : 127.0.0.1 - - [09/Apr/2021 06:03:38] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 06:03:38,762 INFO werkzeug Thread-74 : 127.0.0.1 - - [09/Apr/2021 06:03:38] "[37mGET /tenant_list_non_FB HTTP/1.1[0m" 200 -
+2021-04-09 06:03:38,763 INFO werkzeug Thread-73 : 127.0.0.1 - - [09/Apr/2021 06:03:38] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:03:38,764 INFO werkzeug Thread-75 : 127.0.0.1 - - [09/Apr/2021 06:03:38] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 06:03:52,340 INFO werkzeug Thread-79 : 127.0.0.1 - - [09/Apr/2021 06:03:52] "[37mOPTIONS /login HTTP/1.1[0m" 200 -
+2021-04-09 06:03:55,553 INFO logger Thread-81 : ishaannair is attemping to log in
+2021-04-09 06:03:55,564 INFO werkzeug Thread-81 : 127.0.0.1 - - [09/Apr/2021 06:03:55] "[37mPOST /login HTTP/1.1[0m" 200 -
+2021-04-09 06:03:58,733 INFO werkzeug Thread-82 : 127.0.0.1 - - [09/Apr/2021 06:03:58] "[37mGET /staff_get_photo_notification HTTP/1.1[0m" 200 -
+2021-04-09 06:04:03,214 INFO werkzeug Thread-83 : 127.0.0.1 - - [09/Apr/2021 06:04:03] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:04:04,041 INFO werkzeug Thread-84 : 127.0.0.1 - - [09/Apr/2021 06:04:04] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:04:04,355 INFO werkzeug Thread-85 : 127.0.0.1 - - [09/Apr/2021 06:04:04] "[37mGET /tenant_list_non_FB HTTP/1.1[0m" 200 -
+2021-04-09 06:04:04,358 INFO werkzeug Thread-86 : 127.0.0.1 - - [09/Apr/2021 06:04:04] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 06:04:41,242 INFO werkzeug Thread-87 : 127.0.0.1 - - [09/Apr/2021 06:04:41] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:04:41,242 INFO werkzeug Thread-89 : 127.0.0.1 - - [09/Apr/2021 06:04:41] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 06:04:41,244 INFO werkzeug Thread-88 : 127.0.0.1 - - [09/Apr/2021 06:04:41] "[37mGET /tenant_list_non_FB HTTP/1.1[0m" 200 -
+2021-04-09 06:04:41,615 INFO werkzeug Thread-93 : 127.0.0.1 - - [09/Apr/2021 06:04:41] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 06:04:41,619 INFO werkzeug Thread-91 : 127.0.0.1 - - [09/Apr/2021 06:04:41] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:04:41,620 INFO werkzeug Thread-92 : 127.0.0.1 - - [09/Apr/2021 06:04:41] "[37mGET /tenant_list_non_FB HTTP/1.1[0m" 200 -
+2021-04-09 06:04:41,635 INFO werkzeug Thread-95 : 127.0.0.1 - - [09/Apr/2021 06:04:41] "[37mGET /tenant_list_non_FB HTTP/1.1[0m" 200 -
+2021-04-09 06:04:41,636 INFO werkzeug Thread-94 : 127.0.0.1 - - [09/Apr/2021 06:04:41] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:04:41,646 INFO werkzeug Thread-96 : 127.0.0.1 - - [09/Apr/2021 06:04:41] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 06:04:41,888 INFO werkzeug Thread-99 : 127.0.0.1 - - [09/Apr/2021 06:04:41] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:04:41,891 INFO werkzeug Thread-101 : 127.0.0.1 - - [09/Apr/2021 06:04:41] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 06:04:41,891 INFO werkzeug Thread-100 : 127.0.0.1 - - [09/Apr/2021 06:04:41] "[37mGET /tenant_list_non_FB HTTP/1.1[0m" 200 -
+2021-04-09 06:07:48,485 INFO werkzeug Thread-103 : 127.0.0.1 - - [09/Apr/2021 06:07:48] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:08:05,782 INFO werkzeug Thread-105 : 127.0.0.1 - - [09/Apr/2021 06:08:05] "[37mOPTIONS /email HTTP/1.1[0m" 200 -
+2021-04-09 06:08:05,788 ERROR app Thread-104 : Exception on /email [POST]
+Traceback (most recent call last):
+  File "C:\Python39\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python39\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python39\lib\site-packages\flask_cors\extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "C:\Python39\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python39\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python39\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python39\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Python39\lib\site-packages\flask_cors\decorator.py", line 128, in wrapped_function
+    resp = make_response(f(*args, **kwargs))
+  File "C:\Users\ishaa\Documents\GitHub\escapp\backend\app\apis\__init__.py", line 701, in email
+    with apis.open_resource(filename) as attachment:
+  File "C:\Python39\lib\site-packages\flask\helpers.py", line 1114, in open_resource
+    return open(os.path.join(self.root_path, resource), mode)
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\ishaa\\Documents\\GitHub\\escapp\\backend\\app\\apis\\picture.png'
+2021-04-09 06:08:05,795 INFO werkzeug Thread-104 : 127.0.0.1 - - [09/Apr/2021 06:08:05] "[35m[1mPOST /email HTTP/1.1[0m" 500 -
+2021-04-09 06:09:30,062 INFO werkzeug Thread-107 : 127.0.0.1 - - [09/Apr/2021 06:09:30] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:09:33,329 INFO werkzeug Thread-108 : 127.0.0.1 - - [09/Apr/2021 06:09:33] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:09:43,354 INFO werkzeug Thread-109 : 127.0.0.1 - - [09/Apr/2021 06:09:43] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:09:45,074 ERROR app Thread-110 : Exception on /upload_file [POST]
+Traceback (most recent call last):
+  File "C:\Python39\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python39\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python39\lib\site-packages\flask_cors\extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "C:\Python39\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python39\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python39\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python39\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Python39\lib\site-packages\flask_cors\decorator.py", line 128, in wrapped_function
+    resp = make_response(f(*args, **kwargs))
+  File "C:\Users\ishaa\Documents\GitHub\escapp\backend\app\apis\__init__.py", line 295, in upload_file
+    img = Image.open(body.stream)
+AttributeError: type object 'Image' has no attribute 'open'
+2021-04-09 06:09:45,082 INFO werkzeug Thread-110 : 127.0.0.1 - - [09/Apr/2021 06:09:45] "[35m[1mPOST /upload_file HTTP/1.1[0m" 500 -
+2021-04-09 06:09:45,370 INFO werkzeug Thread-111 : 127.0.0.1 - - [09/Apr/2021 06:09:45] "[37mOPTIONS /upload_photo_info HTTP/1.1[0m" 200 -
+2021-04-09 06:09:47,763 INFO werkzeug Thread-113 : 127.0.0.1 - - [09/Apr/2021 06:09:47] "[35m[1mPOST /upload_photo_info HTTP/1.1[0m" 500 -
+2021-04-09 06:13:20,114 INFO werkzeug Thread-115 : 127.0.0.1 - - [09/Apr/2021 06:13:20] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:13:37,967 INFO werkzeug Thread-116 : 127.0.0.1 - - [09/Apr/2021 06:13:37] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:13:39,416 INFO werkzeug Thread-117 : 127.0.0.1 - - [09/Apr/2021 06:13:39] "[37mOPTIONS /download_file HTTP/1.1[0m" 200 -
+2021-04-09 06:13:39,735 DEBUG botocore.credentials Thread-119 : Looking for credentials via: env
+2021-04-09 06:13:39,735 DEBUG botocore.credentials Thread-119 : Looking for credentials via: assume-role
+2021-04-09 06:13:39,735 DEBUG botocore.credentials Thread-119 : Looking for credentials via: assume-role-with-web-identity
+2021-04-09 06:13:39,735 DEBUG botocore.credentials Thread-119 : Looking for credentials via: sso
+2021-04-09 06:13:39,736 DEBUG botocore.credentials Thread-119 : Looking for credentials via: shared-credentials-file
+2021-04-09 06:13:39,736 DEBUG botocore.credentials Thread-119 : Looking for credentials via: custom-process
+2021-04-09 06:13:39,736 DEBUG botocore.credentials Thread-119 : Looking for credentials via: config-file
+2021-04-09 06:13:39,736 DEBUG botocore.credentials Thread-119 : Looking for credentials via: ec2-credentials-file
+2021-04-09 06:13:39,736 DEBUG botocore.credentials Thread-119 : Looking for credentials via: boto-config
+2021-04-09 06:13:39,736 DEBUG botocore.credentials Thread-119 : Looking for credentials via: container-role
+2021-04-09 06:13:39,736 DEBUG botocore.credentials Thread-119 : Looking for credentials via: iam-role
+2021-04-09 06:13:39,736 DEBUG urllib3.connectionpool Thread-119 : Starting new HTTP connection (5): 169.254.169.254:80
+2021-04-09 06:13:39,737 DEBUG botocore.utils Thread-119 : Caught retryable HTTP exception while making metadata service request to http://169.254.169.254/latest/api/token: Could not connect to the endpoint URL: "http://169.254.169.254/latest/api/token"
+Traceback (most recent call last):
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 159, in _new_conn
+    conn = connection.create_connection(
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 84, in create_connection
+    raise err
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 74, in create_connection
+    sock.connect(sa)
+OSError: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 311, in send
+    urllib_response = conn.urlopen(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 726, in urlopen
+    retries = retries.increment(
+  File "C:\Python39\lib\site-packages\urllib3\util\retry.py", line 386, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "C:\Python39\lib\site-packages\urllib3\packages\six.py", line 735, in reraise
+    raise value
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 670, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 392, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+  File "C:\Python39\lib\http\client.py", line 1255, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 92, in _send_request
+    rval = super(AWSConnection, self)._send_request(
+  File "C:\Python39\lib\http\client.py", line 1301, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "C:\Python39\lib\http\client.py", line 1250, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 120, in _send_output
+    self.send(msg)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 204, in send
+    return super(AWSConnection, self).send(str)
+  File "C:\Python39\lib\http\client.py", line 950, in send
+    self.connect()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 187, in connect
+    conn = self._new_conn()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 171, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <botocore.awsrequest.AWSHTTPConnection object at 0x000002CBD291C310>: Failed to establish a new connection: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\utils.py", line 377, in _fetch_metadata_token
+    response = self._session.send(request.prepare())
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 340, in send
+    raise EndpointConnectionError(endpoint_url=request.url, error=e)
+botocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: "http://169.254.169.254/latest/api/token"
+2021-04-09 06:13:39,738 DEBUG urllib3.connectionpool Thread-119 : Starting new HTTP connection (6): 169.254.169.254:80
+2021-04-09 06:13:39,761 DEBUG botocore.utils Thread-119 : Caught retryable HTTP exception while making metadata service request to http://169.254.169.254/latest/meta-data/iam/security-credentials/: Could not connect to the endpoint URL: "http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+Traceback (most recent call last):
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 159, in _new_conn
+    conn = connection.create_connection(
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 84, in create_connection
+    raise err
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 74, in create_connection
+    sock.connect(sa)
+OSError: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 311, in send
+    urllib_response = conn.urlopen(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 726, in urlopen
+    retries = retries.increment(
+  File "C:\Python39\lib\site-packages\urllib3\util\retry.py", line 386, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "C:\Python39\lib\site-packages\urllib3\packages\six.py", line 735, in reraise
+    raise value
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 670, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 392, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+  File "C:\Python39\lib\http\client.py", line 1255, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 92, in _send_request
+    rval = super(AWSConnection, self)._send_request(
+  File "C:\Python39\lib\http\client.py", line 1301, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "C:\Python39\lib\http\client.py", line 1250, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 120, in _send_output
+    self.send(msg)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 204, in send
+    return super(AWSConnection, self).send(str)
+  File "C:\Python39\lib\http\client.py", line 950, in send
+    self.connect()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 187, in connect
+    conn = self._new_conn()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 171, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <botocore.awsrequest.AWSHTTPConnection object at 0x000002CBD2923370>: Failed to establish a new connection: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\utils.py", line 425, in _get_request
+    response = self._session.send(request.prepare())
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 340, in send
+    raise EndpointConnectionError(endpoint_url=request.url, error=e)
+botocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: "http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+2021-04-09 06:13:39,761 DEBUG botocore.utils Thread-119 : Max number of attempts exceeded (1) when attempting to retrieve data from metadata service.
+2021-04-09 06:13:39,762 DEBUG botocore.hooks Thread-119 : Event choose-service-name: calling handler <function handle_service_name_alias at 0x000002CBC0F0F9D0>
+2021-04-09 06:13:39,762 DEBUG botocore.hooks Thread-119 : Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x000002CBC0EC04C0>
+2021-04-09 06:13:39,762 DEBUG botocore.hooks Thread-119 : Event creating-client-class.s3: calling handler <function lazy_call.<locals>._handler at 0x000002CBD210CB80>
+2021-04-09 06:13:39,763 DEBUG botocore.hooks Thread-119 : Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x000002CBC0EC0280>
+2021-04-09 06:13:39,764 DEBUG botocore.endpoint Thread-119 : Setting s3 timeout as (60, 60)
+2021-04-09 06:13:39,764 DEBUG botocore.client Thread-119 : Registering retry handlers for service: s3
+2021-04-09 06:13:39,765 DEBUG botocore.hooks Thread-119 : Event before-parameter-build.s3.ListObjects: calling handler <function set_list_objects_encoding_type_url at 0x000002CBC0F2F5E0>
+2021-04-09 06:13:39,765 DEBUG botocore.hooks Thread-119 : Event before-parameter-build.s3.ListObjects: calling handler <function validate_bucket_name at 0x000002CBC0F2E310>
+2021-04-09 06:13:39,765 DEBUG botocore.hooks Thread-119 : Event before-parameter-build.s3.ListObjects: calling handler <bound method S3RegionRedirector.redirect_from_cache of <botocore.utils.S3RegionRedirector object at 0x000002CBD25D50D0>>
+2021-04-09 06:13:39,765 DEBUG botocore.hooks Thread-119 : Event before-parameter-build.s3.ListObjects: calling handler <bound method S3ArnParamHandler.handle_arn of <botocore.utils.S3ArnParamHandler object at 0x000002CBD25D5100>>
+2021-04-09 06:13:39,765 DEBUG botocore.hooks Thread-119 : Event before-parameter-build.s3.ListObjects: calling handler <function generate_idempotent_uuid at 0x000002CBC0F2E160>
+2021-04-09 06:13:39,765 DEBUG botocore.hooks Thread-119 : Event before-call.s3.ListObjects: calling handler <function add_expect_header at 0x000002CBC0F2E670>
+2021-04-09 06:13:39,765 DEBUG botocore.hooks Thread-119 : Event before-call.s3.ListObjects: calling handler <bound method S3RegionRedirector.set_request_url of <botocore.utils.S3RegionRedirector object at 0x000002CBD25D50D0>>
+2021-04-09 06:13:39,765 DEBUG botocore.hooks Thread-119 : Event before-call.s3.ListObjects: calling handler <function inject_api_version_header_if_needed at 0x000002CBC0F2F9D0>
+2021-04-09 06:13:39,765 DEBUG botocore.endpoint Thread-119 : Making request for OperationModel(name=ListObjects) with params: {'url_path': '/escapp-bucket-dev', 'query_string': {'encoding-type': 'url'}, 'method': 'GET', 'headers': {'User-Agent': 'Boto3/1.17.18 Python/3.9.1 Windows/10 Botocore/1.20.18'}, 'body': b'', 'url': 'https://s3.amazonaws.com/escapp-bucket-dev?encoding-type=url', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x000002CBD25AC940>, 'has_streaming_input': False, 'auth_type': None, 'encoding_type_auto_set': True, 'signing': {'bucket': 'escapp-bucket-dev'}}}
+2021-04-09 06:13:39,766 DEBUG botocore.hooks Thread-119 : Event request-created.s3.ListObjects: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x000002CBD25ACA30>>
+2021-04-09 06:13:39,766 DEBUG botocore.hooks Thread-119 : Event choose-signer.s3.ListObjects: calling handler <bound method ClientCreator._default_s3_presign_to_sigv2 of <botocore.client.ClientCreator object at 0x000002CBD291CE80>>
+2021-04-09 06:13:39,766 DEBUG botocore.hooks Thread-119 : Event choose-signer.s3.ListObjects: calling handler <function set_operation_specific_signer at 0x000002CBC0F2E040>
+2021-04-09 06:13:39,766 DEBUG botocore.hooks Thread-119 : Event before-sign.s3.ListObjects: calling handler <bound method S3EndpointSetter.set_endpoint of <botocore.utils.S3EndpointSetter object at 0x000002CBD25D51F0>>
+2021-04-09 06:13:39,766 DEBUG botocore.utils Thread-119 : Defaulting to S3 virtual host style addressing with path style addressing fallback.
+2021-04-09 06:13:39,766 DEBUG botocore.utils Thread-119 : Checking for DNS compatible bucket for: https://s3.amazonaws.com/escapp-bucket-dev?encoding-type=url
+2021-04-09 06:13:39,766 DEBUG botocore.utils Thread-119 : URI updated to: https://escapp-bucket-dev.s3.amazonaws.com/?encoding-type=url
+2021-04-09 06:13:39,792 INFO werkzeug Thread-119 : 127.0.0.1 - - [09/Apr/2021 06:13:39] "[35m[1mPOST /download_file HTTP/1.1[0m" 500 -
+2021-04-09 06:13:40,765 DEBUG botocore.credentials Thread-120 : Looking for credentials via: env
+2021-04-09 06:13:40,765 DEBUG botocore.credentials Thread-120 : Looking for credentials via: assume-role
+2021-04-09 06:13:40,765 DEBUG botocore.credentials Thread-120 : Looking for credentials via: assume-role-with-web-identity
+2021-04-09 06:13:40,765 DEBUG botocore.credentials Thread-120 : Looking for credentials via: sso
+2021-04-09 06:13:40,765 DEBUG botocore.credentials Thread-120 : Looking for credentials via: shared-credentials-file
+2021-04-09 06:13:40,766 DEBUG botocore.credentials Thread-120 : Looking for credentials via: custom-process
+2021-04-09 06:13:40,766 DEBUG botocore.credentials Thread-120 : Looking for credentials via: config-file
+2021-04-09 06:13:40,766 DEBUG botocore.credentials Thread-120 : Looking for credentials via: ec2-credentials-file
+2021-04-09 06:13:40,766 DEBUG botocore.credentials Thread-120 : Looking for credentials via: boto-config
+2021-04-09 06:13:40,766 DEBUG botocore.credentials Thread-120 : Looking for credentials via: container-role
+2021-04-09 06:13:40,766 DEBUG botocore.credentials Thread-120 : Looking for credentials via: iam-role
+2021-04-09 06:13:40,766 DEBUG urllib3.connectionpool Thread-120 : Starting new HTTP connection (7): 169.254.169.254:80
+2021-04-09 06:13:40,778 DEBUG botocore.utils Thread-120 : Caught retryable HTTP exception while making metadata service request to http://169.254.169.254/latest/api/token: Could not connect to the endpoint URL: "http://169.254.169.254/latest/api/token"
+Traceback (most recent call last):
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 159, in _new_conn
+    conn = connection.create_connection(
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 84, in create_connection
+    raise err
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 74, in create_connection
+    sock.connect(sa)
+OSError: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 311, in send
+    urllib_response = conn.urlopen(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 726, in urlopen
+    retries = retries.increment(
+  File "C:\Python39\lib\site-packages\urllib3\util\retry.py", line 386, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "C:\Python39\lib\site-packages\urllib3\packages\six.py", line 735, in reraise
+    raise value
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 670, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 392, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+  File "C:\Python39\lib\http\client.py", line 1255, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 92, in _send_request
+    rval = super(AWSConnection, self)._send_request(
+  File "C:\Python39\lib\http\client.py", line 1301, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "C:\Python39\lib\http\client.py", line 1250, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 120, in _send_output
+    self.send(msg)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 204, in send
+    return super(AWSConnection, self).send(str)
+  File "C:\Python39\lib\http\client.py", line 950, in send
+    self.connect()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 187, in connect
+    conn = self._new_conn()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 171, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <botocore.awsrequest.AWSHTTPConnection object at 0x000002CBD25AC1C0>: Failed to establish a new connection: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\utils.py", line 377, in _fetch_metadata_token
+    response = self._session.send(request.prepare())
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 340, in send
+    raise EndpointConnectionError(endpoint_url=request.url, error=e)
+botocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: "http://169.254.169.254/latest/api/token"
+2021-04-09 06:13:40,778 DEBUG urllib3.connectionpool Thread-120 : Starting new HTTP connection (8): 169.254.169.254:80
+2021-04-09 06:13:40,794 DEBUG botocore.utils Thread-120 : Caught retryable HTTP exception while making metadata service request to http://169.254.169.254/latest/meta-data/iam/security-credentials/: Could not connect to the endpoint URL: "http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+Traceback (most recent call last):
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 159, in _new_conn
+    conn = connection.create_connection(
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 84, in create_connection
+    raise err
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 74, in create_connection
+    sock.connect(sa)
+OSError: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 311, in send
+    urllib_response = conn.urlopen(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 726, in urlopen
+    retries = retries.increment(
+  File "C:\Python39\lib\site-packages\urllib3\util\retry.py", line 386, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "C:\Python39\lib\site-packages\urllib3\packages\six.py", line 735, in reraise
+    raise value
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 670, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 392, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+  File "C:\Python39\lib\http\client.py", line 1255, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 92, in _send_request
+    rval = super(AWSConnection, self)._send_request(
+  File "C:\Python39\lib\http\client.py", line 1301, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "C:\Python39\lib\http\client.py", line 1250, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 120, in _send_output
+    self.send(msg)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 204, in send
+    return super(AWSConnection, self).send(str)
+  File "C:\Python39\lib\http\client.py", line 950, in send
+    self.connect()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 187, in connect
+    conn = self._new_conn()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 171, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <botocore.awsrequest.AWSHTTPConnection object at 0x000002CBD25AC8E0>: Failed to establish a new connection: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\utils.py", line 425, in _get_request
+    response = self._session.send(request.prepare())
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 340, in send
+    raise EndpointConnectionError(endpoint_url=request.url, error=e)
+botocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: "http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+2021-04-09 06:13:40,794 DEBUG botocore.utils Thread-120 : Max number of attempts exceeded (1) when attempting to retrieve data from metadata service.
+2021-04-09 06:13:40,794 DEBUG botocore.hooks Thread-120 : Event choose-service-name: calling handler <function handle_service_name_alias at 0x000002CBC0F0F9D0>
+2021-04-09 06:13:40,795 DEBUG botocore.hooks Thread-120 : Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x000002CBC0EC04C0>
+2021-04-09 06:13:40,795 DEBUG botocore.hooks Thread-120 : Event creating-client-class.s3: calling handler <function lazy_call.<locals>._handler at 0x000002CBD210CB80>
+2021-04-09 06:13:40,795 DEBUG botocore.hooks Thread-120 : Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x000002CBC0EC0280>
+2021-04-09 06:13:40,796 DEBUG botocore.endpoint Thread-120 : Setting s3 timeout as (60, 60)
+2021-04-09 06:13:40,796 DEBUG botocore.client Thread-120 : Registering retry handlers for service: s3
+2021-04-09 06:13:40,797 DEBUG botocore.hooks Thread-120 : Event before-parameter-build.s3.ListObjects: calling handler <function set_list_objects_encoding_type_url at 0x000002CBC0F2F5E0>
+2021-04-09 06:13:40,797 DEBUG botocore.hooks Thread-120 : Event before-parameter-build.s3.ListObjects: calling handler <function validate_bucket_name at 0x000002CBC0F2E310>
+2021-04-09 06:13:40,797 DEBUG botocore.hooks Thread-120 : Event before-parameter-build.s3.ListObjects: calling handler <bound method S3RegionRedirector.redirect_from_cache of <botocore.utils.S3RegionRedirector object at 0x000002CBD2975E50>>
+2021-04-09 06:13:40,797 DEBUG botocore.hooks Thread-120 : Event before-parameter-build.s3.ListObjects: calling handler <bound method S3ArnParamHandler.handle_arn of <botocore.utils.S3ArnParamHandler object at 0x000002CBD2975E80>>
+2021-04-09 06:13:40,797 DEBUG botocore.hooks Thread-120 : Event before-parameter-build.s3.ListObjects: calling handler <function generate_idempotent_uuid at 0x000002CBC0F2E160>
+2021-04-09 06:13:40,798 DEBUG botocore.hooks Thread-120 : Event before-call.s3.ListObjects: calling handler <function add_expect_header at 0x000002CBC0F2E670>
+2021-04-09 06:13:40,798 DEBUG botocore.hooks Thread-120 : Event before-call.s3.ListObjects: calling handler <bound method S3RegionRedirector.set_request_url of <botocore.utils.S3RegionRedirector object at 0x000002CBD2975E50>>
+2021-04-09 06:13:40,798 DEBUG botocore.hooks Thread-120 : Event before-call.s3.ListObjects: calling handler <function inject_api_version_header_if_needed at 0x000002CBC0F2F9D0>
+2021-04-09 06:13:40,798 DEBUG botocore.endpoint Thread-120 : Making request for OperationModel(name=ListObjects) with params: {'url_path': '/escapp-bucket-dev-tenant', 'query_string': {'encoding-type': 'url'}, 'method': 'GET', 'headers': {'User-Agent': 'Boto3/1.17.18 Python/3.9.1 Windows/10 Botocore/1.20.18'}, 'body': b'', 'url': 'https://s3.amazonaws.com/escapp-bucket-dev-tenant?encoding-type=url', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x000002CBD2975370>, 'has_streaming_input': False, 'auth_type': None, 'encoding_type_auto_set': True, 'signing': {'bucket': 'escapp-bucket-dev-tenant'}}}
+2021-04-09 06:13:40,798 DEBUG botocore.hooks Thread-120 : Event request-created.s3.ListObjects: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x000002CBD2975250>>
+2021-04-09 06:13:40,798 DEBUG botocore.hooks Thread-120 : Event choose-signer.s3.ListObjects: calling handler <bound method ClientCreator._default_s3_presign_to_sigv2 of <botocore.client.ClientCreator object at 0x000002CBD25AC580>>
+2021-04-09 06:13:40,798 DEBUG botocore.hooks Thread-120 : Event choose-signer.s3.ListObjects: calling handler <function set_operation_specific_signer at 0x000002CBC0F2E040>
+2021-04-09 06:13:40,798 DEBUG botocore.hooks Thread-120 : Event before-sign.s3.ListObjects: calling handler <bound method S3EndpointSetter.set_endpoint of <botocore.utils.S3EndpointSetter object at 0x000002CBD2975F40>>
+2021-04-09 06:13:40,798 DEBUG botocore.utils Thread-120 : Defaulting to S3 virtual host style addressing with path style addressing fallback.
+2021-04-09 06:13:40,799 DEBUG botocore.utils Thread-120 : Checking for DNS compatible bucket for: https://s3.amazonaws.com/escapp-bucket-dev-tenant?encoding-type=url
+2021-04-09 06:13:40,799 DEBUG botocore.utils Thread-120 : URI updated to: https://escapp-bucket-dev-tenant.s3.amazonaws.com/?encoding-type=url
+2021-04-09 06:13:40,821 INFO werkzeug Thread-120 : 127.0.0.1 - - [09/Apr/2021 06:13:40] "[35m[1mPOST /download_file HTTP/1.1[0m" 500 -
+2021-04-09 06:13:43,037 DEBUG botocore.credentials Thread-121 : Looking for credentials via: env
+2021-04-09 06:13:43,037 DEBUG botocore.credentials Thread-121 : Looking for credentials via: assume-role
+2021-04-09 06:13:43,037 DEBUG botocore.credentials Thread-121 : Looking for credentials via: assume-role-with-web-identity
+2021-04-09 06:13:43,037 DEBUG botocore.credentials Thread-121 : Looking for credentials via: sso
+2021-04-09 06:13:43,037 DEBUG botocore.credentials Thread-121 : Looking for credentials via: shared-credentials-file
+2021-04-09 06:13:43,037 DEBUG botocore.credentials Thread-121 : Looking for credentials via: custom-process
+2021-04-09 06:13:43,037 DEBUG botocore.credentials Thread-121 : Looking for credentials via: config-file
+2021-04-09 06:13:43,037 DEBUG botocore.credentials Thread-121 : Looking for credentials via: ec2-credentials-file
+2021-04-09 06:13:43,038 DEBUG botocore.credentials Thread-121 : Looking for credentials via: boto-config
+2021-04-09 06:13:43,038 DEBUG botocore.credentials Thread-121 : Looking for credentials via: container-role
+2021-04-09 06:13:43,038 DEBUG botocore.credentials Thread-121 : Looking for credentials via: iam-role
+2021-04-09 06:13:43,038 DEBUG urllib3.connectionpool Thread-121 : Starting new HTTP connection (9): 169.254.169.254:80
+2021-04-09 06:13:43,062 DEBUG botocore.utils Thread-121 : Caught retryable HTTP exception while making metadata service request to http://169.254.169.254/latest/api/token: Could not connect to the endpoint URL: "http://169.254.169.254/latest/api/token"
+Traceback (most recent call last):
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 159, in _new_conn
+    conn = connection.create_connection(
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 84, in create_connection
+    raise err
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 74, in create_connection
+    sock.connect(sa)
+OSError: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 311, in send
+    urllib_response = conn.urlopen(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 726, in urlopen
+    retries = retries.increment(
+  File "C:\Python39\lib\site-packages\urllib3\util\retry.py", line 386, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "C:\Python39\lib\site-packages\urllib3\packages\six.py", line 735, in reraise
+    raise value
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 670, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 392, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+  File "C:\Python39\lib\http\client.py", line 1255, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 92, in _send_request
+    rval = super(AWSConnection, self)._send_request(
+  File "C:\Python39\lib\http\client.py", line 1301, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "C:\Python39\lib\http\client.py", line 1250, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 120, in _send_output
+    self.send(msg)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 204, in send
+    return super(AWSConnection, self).send(str)
+  File "C:\Python39\lib\http\client.py", line 950, in send
+    self.connect()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 187, in connect
+    conn = self._new_conn()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 171, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <botocore.awsrequest.AWSHTTPConnection object at 0x000002CBD2975AF0>: Failed to establish a new connection: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\utils.py", line 377, in _fetch_metadata_token
+    response = self._session.send(request.prepare())
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 340, in send
+    raise EndpointConnectionError(endpoint_url=request.url, error=e)
+botocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: "http://169.254.169.254/latest/api/token"
+2021-04-09 06:13:43,062 DEBUG urllib3.connectionpool Thread-121 : Starting new HTTP connection (10): 169.254.169.254:80
+2021-04-09 06:13:43,062 DEBUG botocore.utils Thread-121 : Caught retryable HTTP exception while making metadata service request to http://169.254.169.254/latest/meta-data/iam/security-credentials/: Could not connect to the endpoint URL: "http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+Traceback (most recent call last):
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 159, in _new_conn
+    conn = connection.create_connection(
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 84, in create_connection
+    raise err
+  File "C:\Python39\lib\site-packages\urllib3\util\connection.py", line 74, in create_connection
+    sock.connect(sa)
+OSError: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 311, in send
+    urllib_response = conn.urlopen(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 726, in urlopen
+    retries = retries.increment(
+  File "C:\Python39\lib\site-packages\urllib3\util\retry.py", line 386, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "C:\Python39\lib\site-packages\urllib3\packages\six.py", line 735, in reraise
+    raise value
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 670, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Python39\lib\site-packages\urllib3\connectionpool.py", line 392, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+  File "C:\Python39\lib\http\client.py", line 1255, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 92, in _send_request
+    rval = super(AWSConnection, self)._send_request(
+  File "C:\Python39\lib\http\client.py", line 1301, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "C:\Python39\lib\http\client.py", line 1250, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 120, in _send_output
+    self.send(msg)
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\awsrequest.py", line 204, in send
+    return super(AWSConnection, self).send(str)
+  File "C:\Python39\lib\http\client.py", line 950, in send
+    self.connect()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 187, in connect
+    conn = self._new_conn()
+  File "C:\Python39\lib\site-packages\urllib3\connection.py", line 171, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <botocore.awsrequest.AWSHTTPConnection object at 0x000002CBD2975520>: Failed to establish a new connection: [WinError 10051] A socket operation was attempted to an unreachable network
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\utils.py", line 425, in _get_request
+    response = self._session.send(request.prepare())
+  File "C:\Users\ishaa\AppData\Roaming\Python\Python39\site-packages\botocore\httpsession.py", line 340, in send
+    raise EndpointConnectionError(endpoint_url=request.url, error=e)
+botocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: "http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+2021-04-09 06:13:43,063 DEBUG botocore.utils Thread-121 : Max number of attempts exceeded (1) when attempting to retrieve data from metadata service.
+2021-04-09 06:13:43,063 DEBUG botocore.hooks Thread-121 : Event choose-service-name: calling handler <function handle_service_name_alias at 0x000002CBC0F0F9D0>
+2021-04-09 06:13:43,064 DEBUG botocore.hooks Thread-121 : Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x000002CBC0EC04C0>
+2021-04-09 06:13:43,064 DEBUG botocore.hooks Thread-121 : Event creating-client-class.s3: calling handler <function lazy_call.<locals>._handler at 0x000002CBD210CB80>
+2021-04-09 06:13:43,064 DEBUG botocore.hooks Thread-121 : Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x000002CBC0EC0280>
+2021-04-09 06:13:43,065 DEBUG botocore.endpoint Thread-121 : Setting s3 timeout as (60, 60)
+2021-04-09 06:13:43,067 DEBUG botocore.client Thread-121 : Registering retry handlers for service: s3
+2021-04-09 06:13:43,067 DEBUG botocore.hooks Thread-121 : Event before-parameter-build.s3.ListObjects: calling handler <function set_list_objects_encoding_type_url at 0x000002CBC0F2F5E0>
+2021-04-09 06:13:43,067 DEBUG botocore.hooks Thread-121 : Event before-parameter-build.s3.ListObjects: calling handler <function validate_bucket_name at 0x000002CBC0F2E310>
+2021-04-09 06:13:43,067 DEBUG botocore.hooks Thread-121 : Event before-parameter-build.s3.ListObjects: calling handler <bound method S3RegionRedirector.redirect_from_cache of <botocore.utils.S3RegionRedirector object at 0x000002CBD29ADEB0>>
+2021-04-09 06:13:43,067 DEBUG botocore.hooks Thread-121 : Event before-parameter-build.s3.ListObjects: calling handler <bound method S3ArnParamHandler.handle_arn of <botocore.utils.S3ArnParamHandler object at 0x000002CBD29ADEE0>>
+2021-04-09 06:13:43,067 DEBUG botocore.hooks Thread-121 : Event before-parameter-build.s3.ListObjects: calling handler <function generate_idempotent_uuid at 0x000002CBC0F2E160>
+2021-04-09 06:13:43,067 DEBUG botocore.hooks Thread-121 : Event before-call.s3.ListObjects: calling handler <function add_expect_header at 0x000002CBC0F2E670>
+2021-04-09 06:13:43,067 DEBUG botocore.hooks Thread-121 : Event before-call.s3.ListObjects: calling handler <bound method S3RegionRedirector.set_request_url of <botocore.utils.S3RegionRedirector object at 0x000002CBD29ADEB0>>
+2021-04-09 06:13:43,067 DEBUG botocore.hooks Thread-121 : Event before-call.s3.ListObjects: calling handler <function inject_api_version_header_if_needed at 0x000002CBC0F2F9D0>
+2021-04-09 06:13:43,067 DEBUG botocore.endpoint Thread-121 : Making request for OperationModel(name=ListObjects) with params: {'url_path': '/escapp-bucket-dev', 'query_string': {'encoding-type': 'url'}, 'method': 'GET', 'headers': {'User-Agent': 'Boto3/1.17.18 Python/3.9.1 Windows/10 Botocore/1.20.18'}, 'body': b'', 'url': 'https://s3.amazonaws.com/escapp-bucket-dev?encoding-type=url', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x000002CBD29AD400>, 'has_streaming_input': False, 'auth_type': None, 'encoding_type_auto_set': True, 'signing': {'bucket': 'escapp-bucket-dev'}}}
+2021-04-09 06:13:43,068 DEBUG botocore.hooks Thread-121 : Event request-created.s3.ListObjects: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x000002CBD29AD370>>
+2021-04-09 06:13:43,068 DEBUG botocore.hooks Thread-121 : Event choose-signer.s3.ListObjects: calling handler <bound method ClientCreator._default_s3_presign_to_sigv2 of <botocore.client.ClientCreator object at 0x000002CBD2975DF0>>
+2021-04-09 06:13:43,068 DEBUG botocore.hooks Thread-121 : Event choose-signer.s3.ListObjects: calling handler <function set_operation_specific_signer at 0x000002CBC0F2E040>
+2021-04-09 06:13:43,068 DEBUG botocore.hooks Thread-121 : Event before-sign.s3.ListObjects: calling handler <bound method S3EndpointSetter.set_endpoint of <botocore.utils.S3EndpointSetter object at 0x000002CBD29ADFA0>>
+2021-04-09 06:13:43,068 DEBUG botocore.utils Thread-121 : Defaulting to S3 virtual host style addressing with path style addressing fallback.
+2021-04-09 06:13:43,068 DEBUG botocore.utils Thread-121 : Checking for DNS compatible bucket for: https://s3.amazonaws.com/escapp-bucket-dev?encoding-type=url
+2021-04-09 06:13:43,068 DEBUG botocore.utils Thread-121 : URI updated to: https://escapp-bucket-dev.s3.amazonaws.com/?encoding-type=url
+2021-04-09 06:13:43,090 INFO werkzeug Thread-121 : 127.0.0.1 - - [09/Apr/2021 06:13:43] "[35m[1mPOST /download_file HTTP/1.1[0m" 500 -
+2021-04-09 06:13:51,302 INFO werkzeug Thread-122 : 127.0.0.1 - - [09/Apr/2021 06:13:51] "[37mGET /staff_get_photo_notification HTTP/1.1[0m" 200 -
+2021-04-09 06:13:55,616 INFO werkzeug Thread-123 : 127.0.0.1 - - [09/Apr/2021 06:13:55] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:13:55,618 INFO werkzeug Thread-124 : 127.0.0.1 - - [09/Apr/2021 06:13:55] "[37mGET /tenant_list HTTP/1.1[0m" 200 -
+2021-04-09 06:14:07,571 INFO werkzeug Thread-118 : 127.0.0.1 - - [09/Apr/2021 06:14:07] "[37mOPTIONS /dashboard_data HTTP/1.1[0m" 200 -
+2021-04-09 06:14:07,571 INFO werkzeug Thread-125 : 127.0.0.1 - - [09/Apr/2021 06:14:07] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:14:07,885 INFO werkzeug Thread-127 : 127.0.0.1 - - [09/Apr/2021 06:14:07] "[37mGET /tenant_list HTTP/1.1[0m" 200 -
+2021-04-09 06:14:07,889 INFO werkzeug Thread-126 : 127.0.0.1 - - [09/Apr/2021 06:14:07] "[37mGET /staff_list HTTP/1.1[0m" 200 -
+2021-04-09 06:14:07,896 INFO werkzeug Thread-128 : 127.0.0.1 - - [09/Apr/2021 06:14:07] "[37mPOST /dashboard_data HTTP/1.1[0m" 200 -
+2021-04-09 06:14:25,370 INFO werkzeug Thread-129 : 127.0.0.1 - - [09/Apr/2021 06:14:25] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:14:25,372 INFO werkzeug Thread-130 : 127.0.0.1 - - [09/Apr/2021 06:14:25] "[37mGET /tenant_list HTTP/1.1[0m" 200 -
+2021-04-09 06:14:46,382 INFO werkzeug Thread-131 : 127.0.0.1 - - [09/Apr/2021 06:14:46] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:14:46,694 INFO werkzeug Thread-132 : 127.0.0.1 - - [09/Apr/2021 06:14:46] "[37mGET /tenant_list HTTP/1.1[0m" 200 -
+2021-04-09 06:14:49,040 INFO werkzeug Thread-134 : 127.0.0.1 - - [09/Apr/2021 06:14:49] "[37mGET /tenant_list HTTP/1.1[0m" 200 -
+2021-04-09 06:14:49,041 INFO werkzeug Thread-133 : 127.0.0.1 - - [09/Apr/2021 06:14:49] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:20:05,532 INFO werkzeug Thread-136 : 127.0.0.1 - - [09/Apr/2021 06:20:05] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:20:07,933 INFO werkzeug Thread-137 : 127.0.0.1 - - [09/Apr/2021 06:20:07] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:20:56,303 INFO werkzeug Thread-138 : 127.0.0.1 - - [09/Apr/2021 06:20:56] "[37mGET /staff_get_photo_notification HTTP/1.1[0m" 200 -
+2021-04-09 06:24:05,882 INFO werkzeug Thread-140 : 127.0.0.1 - - [09/Apr/2021 06:24:05] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:24:07,696 INFO werkzeug Thread-141 : 127.0.0.1 - - [09/Apr/2021 06:24:07] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:24:11,047 INFO werkzeug Thread-142 : 127.0.0.1 - - [09/Apr/2021 06:24:11] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:24:11,049 INFO werkzeug Thread-143 : 127.0.0.1 - - [09/Apr/2021 06:24:11] "[37mGET /tenant_list HTTP/1.1[0m" 200 -
+2021-04-09 06:24:32,822 INFO werkzeug Thread-145 : 127.0.0.1 - - [09/Apr/2021 06:24:32] "[33mGET /babel/parser/lib/index.js HTTP/1.1[0m" 404 -
+2021-04-09 06:24:34,272 INFO werkzeug Thread-144 : 127.0.0.1 - - [09/Apr/2021 06:24:34] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:25:06,485 INFO werkzeug Thread-146 : 127.0.0.1 - - [09/Apr/2021 06:25:06] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:26:20,449 INFO werkzeug Thread-148 : 127.0.0.1 - - [09/Apr/2021 06:26:20] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:26:25,506 INFO werkzeug Thread-150 : 127.0.0.1 - - [09/Apr/2021 06:26:25] "[37mOPTIONS //download_data_csv HTTP/1.1[0m" 200 -
+2021-04-09 06:26:25,511 INFO logger Thread-149 : admin selected table: User
+2021-04-09 06:26:25,710 INFO werkzeug Thread-149 : 127.0.0.1 - - [09/Apr/2021 06:26:25] "[37mPOST //download_data_csv HTTP/1.1[0m" 200 -
+2021-04-09 06:26:27,064 INFO werkzeug Thread-151 : 127.0.0.1 - - [09/Apr/2021 06:26:27] "[37mOPTIONS //display_data HTTP/1.1[0m" 200 -
+2021-04-09 06:26:27,377 INFO logger Thread-152 : admin selected table: User
+2021-04-09 06:26:27,386 INFO werkzeug Thread-152 : 127.0.0.1 - - [09/Apr/2021 06:26:27] "[37mPOST //display_data HTTP/1.1[0m" 200 -
+2021-04-09 06:29:25,710 INFO werkzeug Thread-154 : 127.0.0.1 - - [09/Apr/2021 06:29:25] "[37mOPTIONS //display_data HTTP/1.1[0m" 200 -
+2021-04-09 06:29:26,019 INFO logger Thread-156 : admin selected table: Photo
+2021-04-09 06:29:26,027 INFO werkzeug Thread-156 : 127.0.0.1 - - [09/Apr/2021 06:29:26] "[37mPOST //display_data HTTP/1.1[0m" 200 -
+2021-04-09 06:30:44,518 INFO werkzeug Thread-158 : 127.0.0.1 - - [09/Apr/2021 06:30:44] "[37mOPTIONS //display_data HTTP/1.1[0m" 200 -
+2021-04-09 06:30:44,828 INFO logger Thread-160 : admin selected table: User
+2021-04-09 06:30:44,836 INFO werkzeug Thread-160 : 127.0.0.1 - - [09/Apr/2021 06:30:44] "[37mPOST //display_data HTTP/1.1[0m" 200 -
+2021-04-09 06:30:52,917 INFO werkzeug Thread-159 : 127.0.0.1 - - [09/Apr/2021 06:30:52] "[37mOPTIONS //display_data HTTP/1.1[0m" 200 -
+2021-04-09 06:30:52,926 INFO logger Thread-161 : admin selected table: Photo
+2021-04-09 06:30:52,934 INFO werkzeug Thread-161 : 127.0.0.1 - - [09/Apr/2021 06:30:52] "[37mPOST //display_data HTTP/1.1[0m" 200 -
+2021-04-09 06:30:59,786 INFO werkzeug Thread-162 : 127.0.0.1 - - [09/Apr/2021 06:30:59] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -
+2021-04-09 06:31:04,201 INFO werkzeug Thread-164 : 127.0.0.1 - - [09/Apr/2021 06:31:04] "[37mOPTIONS //display_data HTTP/1.1[0m" 200 -
+2021-04-09 06:31:04,206 INFO logger Thread-163 : admin selected table: Photo
+2021-04-09 06:31:04,214 INFO werkzeug Thread-163 : 127.0.0.1 - - [09/Apr/2021 06:31:04] "[37mPOST //display_data HTTP/1.1[0m" 200 -
+2021-04-09 06:33:35,128 INFO werkzeug Thread-166 : 127.0.0.1 - - [09/Apr/2021 06:33:35] "[37mGET /get_current_username_and_datetime HTTP/1.1[0m" 200 -

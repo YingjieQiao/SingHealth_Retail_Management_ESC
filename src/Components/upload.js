@@ -32,8 +32,9 @@ class Upload extends Component {
         )}
     render() { 
         return ( //TODO: don't hardcode the list of tenants to select, retrieve the list of tenants from backend instead
+        <div><Navbar/>
             <div style={{margin: "10px"}}>
-                <Navbar/>
+                
                 <h2>Staff Upload photo</h2>
                 <div className="border border-dark" style={{display: "inline-block",margin: "10px"}}>
                     <ImUpload3 size="50" style={{display: "block", marginLeft: "auto", marginRight: "auto", marginTop: "10px"}}/>
@@ -71,7 +72,7 @@ class Upload extends Component {
                     </div>
                 </div>
             </div>
-
+            </div>
             
         );
     }

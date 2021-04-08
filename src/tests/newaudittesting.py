@@ -88,21 +88,21 @@ def AuditChecklistNonFB():
     print("non fnb selected")
     time.sleep(1)	
     n = random.randint(1,3)
-    chooseFile = browser.find_element_by_id("auditeeName")
-    if(n==1):
-        chooseFile.send_keys("KFC")
-    elif(n==2): 
-        chooseFile.send_keys("McD")
-    elif(n==3):
-        chooseFile.send_keys("MosB")
-    r = random.randint(1,3)
-    chooseFile = browser.find_element_by_id("auditorName")
-    if(r==1):
-        chooseFile.send_keys("Tom")
-    elif(r==2): 
-        chooseFile.send_keys("Jerry")
-    elif(r==3):
-        chooseFile.send_keys("Charlie")
+    # chooseFile = browser.find_element_by_id("auditeeName")
+    # if(n==1):
+    #     chooseFile.send_keys("KFC")
+    # elif(n==2): 
+    #     chooseFile.send_keys("McD")
+    # elif(n==3):
+    #     chooseFile.send_keys("MosB")
+    # r = random.randint(1,3)
+    # chooseFile = browser.find_element_by_id("auditorName")
+    # if(r==1):
+    #     chooseFile.send_keys("Tom")
+    # elif(r==2): 
+    #     chooseFile.send_keys("Jerry")
+    # elif(r==3):
+    #     chooseFile.send_keys("Charlie")
 
     t = random.randint(1,3)
     chooseFile = browser.find_element_by_id("auditorDepartment")

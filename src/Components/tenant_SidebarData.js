@@ -30,20 +30,20 @@ export const tenant_SidebarData = [
     cName: 'nav-text',
     id:"view"
   },
-  {
-    title: 'inbox',
-    path: '/email',
-    icon: <FaIcons.FaInbox />,
-    cName: 'nav-text',
-    id:"inbox"
-  },
-  {
-    title: 'Profile',
-    path: '/home',
-    icon: <BsIcons.BsPerson />,
-    cName: 'nav-text',
-    id:"inbox"
-  },
+  // {
+  //   title: 'inbox',
+  //   path: '/email',
+  //   icon: <FaIcons.FaInbox />,
+  //   cName: 'nav-text',
+  //   id:"inbox"
+  // },
+  // {
+  //   title: 'Profile',
+  //   path: '/home',
+  //   icon: <BsIcons.BsPerson />,
+  //   cName: 'nav-text',
+  //   id:"inbox"
+  // },
   {
     title: 'Get Statistics',
     path: '/dataDashboard',

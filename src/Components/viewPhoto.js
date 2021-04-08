@@ -24,6 +24,7 @@ class viewPhoto extends Component {
         )}
     render() { 
         return (
+            
             <div>
                 <Navbar/>
                 <h2>View Photos</h2>
