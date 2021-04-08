@@ -11,6 +11,8 @@ class User(db.Document):
     location = db.StringField(required=True, unique=False)
     mobile = db.IntField(required=True, unique=False)
     fnb = db.BooleanField(required=True, unique=False)
+    locked = db.BooleanField(required=True, unique=False)
+    attempts = db.IntField(required=True, unique=False)
     meta = {'strict': False}
 
     staff = db.BooleanField(required=True, default=False)
@@ -24,6 +26,9 @@ class User(db.Document):
     def check_password(self, password):
         return check_password_hash(self.password, password)
     
+
+    def is_acc_locked(self):
+        return self.locked
 
     def setfnb(self,val):
         self.fnb = val
@@ -74,29 +79,25 @@ class PhotoNotificationFromTenant(db.Document):
 
 
 class Audit_FB(db.Document):
-    date = db.StringField(required=True, unique=False)
-    staffName = db.StringField(required=True, unique=False)
-    staffDepartment = db.StringField(required=True, unique=False)
+    timestamp = db.StringField(required=True, unique=False)
+    auditorName = db.StringField(required=True, unique=False)
+    auditorDepartment = db.StringField(required=True, unique=False)
+    auditeeName = db.StringField(required=True, unique=False)
     totalScore = db.FloatField(required=True, unique=False)
     profScore = db.FloatField(required=True, unique=False)
-    profListScore = db.ListField(required=True, unique=False)
+    profstaffhydScoreList = db.ListField(required=False, unique=False)
     housekeepingScore = db.FloatField(required=True, unique=False)
-    houskeepingListScore = db.ListField(required=True, unique=False)
+    housekeepScoreList = db.ListField(required=False, unique=False)
     foodHygieneScore = db.FloatField(required=True, unique=False)
-    foodHygieneListScore = db.ListField(required=True, unique=False)
-    healthierChoiceScore = db.FloatField(required=True, unique=False)
-    healthierChoiceListScore = db.ListField(required=True, unique=False)
+    foodhydScoreList = db.ListField(required=False, unique=False)
+    healthierScore = db.FloatField(required=True, unique=False)
+    healthierScoreList = db.ListField(required=False, unique=False)
     workSafetyScore = db.FloatField(required=True, unique=False)
-    workSafetyListScore = db.ListField(required=True, unique=False)
-    comments = db.StringField(required=False, unique=False)
+    worksafetyhealthScoreList = db.ListField(required=False, unique=False)
+    comment = db.StringField(required=False, unique=False)
 
     def computeTotalScore(self):
-        self.profScore = sum(self.profListScore)
-        self.housekeepingScore = sum(self.houskeepingListScore)
-        self.foodHygieneScore = sum(self.foodHygieneListScore)
-        self.healthierChoiceScore = sum(self.healthierChoiceListScore)
-        self.workSafetyScore = sum(self.workSafetyListScore)
-        self.totalScore = 0.1*self.profScore + 0.2*self.housekeepingScore + 0.35*self.foodHygieneScore + 0.15*self.healthierChoiceScore + 0.2*self.workSafetyScore
+        self.totalScore = self.profScore + self.housekeepingScore + self.foodHygieneScore + self.healthierScore + self.workSafetyScore
 
 
 class Audit_non_FB(db.Document):
@@ -106,11 +107,11 @@ class Audit_non_FB(db.Document):
     auditeeName = db.StringField(required=True, unique=False)
     totalScore = db.FloatField(required=True, unique=False)
     profScore = db.FloatField(required=True, unique=False)
-    profListScore = db.ListField(required=False, unique=False)
+    profstaffhydScoreList = db.ListField(required=False, unique=False)
     housekeepingScore = db.FloatField(required=True, unique=False)
-    houskeepingListScore = db.ListField(required=False, unique=False)
+    housekeepScoreList = db.ListField(required=False, unique=False)
     workSafetyScore = db.FloatField(required=True, unique=False)
-    workSafetyListScore = db.ListField(required=False, unique=False)
+    worksafetyhealthScoreList = db.ListField(required=False, unique=False)
     comment = db.StringField(required=False, unique=False)
 
     def computeTotalScore(self):
@@ -121,9 +122,9 @@ class Audit_non_FB(db.Document):
 
 
 class Covid_Compliance(db.Document):
-    date = db.StringField(required=True, unique=False)
-    staffName = db.StringField(required=True, unique=False)
-    staffDepartment = db.StringField(required=True, unique=False)
-    comments = db.StringField(required=False, unique=False)
-    safetyFrontend = db.ListField(required=True, unique=False)
-    safetyBackend = db.ListField(required=True, unique=False)
+    timestamp = db.StringField(required=True, unique=False)
+    auditorName = db.StringField(required=True, unique=False)
+    auditorDepartment = db.StringField(required=True, unique=False)
+    auditeeName = db.StringField(required=True, unique=False)
+    comment = db.StringField(required=False, unique=False)
+    checklist = db.ListField(required=True, unique=False)
