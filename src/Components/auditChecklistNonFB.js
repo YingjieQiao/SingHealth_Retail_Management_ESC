@@ -218,7 +218,7 @@ class AuditChecklistNonFB extends Component {
                         <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="034" onInput={this.saveScore}/>
                     </div>
 
-                    <button type="button" class={this.getButtonClasses()} onClick={this.tabulateScore}>Tabulate scores</button>
+                    <button type="button" id="button22"class={this.getButtonClasses()} onClick={this.tabulateScore}>Tabulate scores</button>
 
                     <h4>Scoring</h4>
                     <p>Professionalism &#38; Staff Hygiene: {this.state.profStaffHydScore} /20%</p>
@@ -226,9 +226,9 @@ class AuditChecklistNonFB extends Component {
                     <p>Workplace Safety &#38; Health: {this.state.workSafetyHealthScore} /40%</p>
                     <p>Total Score: {this.state.totoalScore} /100%</p>
                     <label>Comments:</label>
-                    <input onInput={this.saveComment} type="text" />
+                    <input onInput={this.saveComment}id="comments" type="text" />
                 </form>
-                <button type="submit" class={this.getButtonClasses()} onClick={this.handleSubmit}>Submit</button>
+                <button type="submit" id="submit" class={this.getButtonClasses()} onClick={this.handleSubmit}>Submit</button>
 
             </div>
         )
