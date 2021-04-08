@@ -23,29 +23,25 @@ class DataDashboard extends Component {
                     }
                 }
             )
-        try {
-            axios.get("http://localhost:5000/tenant_list")
-            .then(
-                res => {
-                    console.log(res);
-
-                    if (res.data.result === true) {
-                        for (var i = 0; i < res.data.tenant_list.length; i++) {
-                            let newArray1 = this.state.tenantArray;
-                            let newArray2 = this.state.numOfTenant;
-                            newArray1.push(res.data.tenant_list[i]);
-                            newArray2.push(i);
-                            this.setState({tenantArray: newArray1, numOfTenant: newArray2});
-                        }
-                    }
-    
+        
+        axios.get("http://localhost:5000/tenant_list")
+        .then(
+            res => {
+                console.log(res);
+                for (var i = 0; i < res.data.tenant_list.length; i++) {
+                    let newArray1 = this.state.tenantArray;
+                    let newArray2 = this.state.numOfTenant;
+                    newArray1.push(res.data.tenant_list[i]);
+                    newArray2.push(i);
+                    this.setState({tenantArray: newArray1, numOfTenant: newArray2});
                 }
-            )
-        } catch (e) {}
 
+            }
+        )
     }
 
     render() {
+        let classes = this.getButtonClasses();
 
         return (
             <div>
@@ -92,14 +88,34 @@ class DataDashboard extends Component {
         }
         else {
             // proceeds to retrieve tenant's statistics
+            // console.log("result: ", this.state.tenant);
+            // const det = {
+            //     tenant: this.state.tenant
+            // }
+            
+            // const headers = {
+            //     'Content-Type': 'application/json',
+            //     'Access-Control-Allow-Origin': '*'
+            // };
+            // console.log('Show error notification!')
+            // axios.post(`http://localhost:5000/tenant_exists`, det, headers)
+            // .then(res => {
+            //     console.log(res.data);
+            //     if (res.data.result === true) {
+            //         alert("Tenant exists!","yolo");
+            //     } else {
+            //         alert("Tenant does not exist");
+            //     }
+            // }).catch(
+            //     function (error) {
+            //       console.log('Error!')
+            //       return Promise.reject(error)
+            //     });
+
             // Navigate to Tenant's performance score board if successful
-            let tenantProfile = {
-                name: this.state.tenantName,
-                email: this.state.tenant
-            }
             this.props.history.push({
                 pathname: '/dataDashboardTenant',
-                state: { tenant: tenantProfile}
+                state: { tenant: this.state.tenant }
             });
 
         }
