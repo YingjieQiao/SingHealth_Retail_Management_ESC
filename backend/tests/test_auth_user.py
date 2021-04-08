@@ -199,7 +199,7 @@ class TestUserSignUp(TestBase):
     """
 
     TEST_ACCOUNT_1 = {  # signup success testcase 1
-        'firstName': str(uuid.uuid4()),
+        'firstName': "UNIT", # str(uuid.uuid4())
         'lastName': 'TEST',
         'email': str(uuid.uuid4()) + "@test.com",
         'password': "asd123BNM",
@@ -212,7 +212,7 @@ class TestUserSignUp(TestBase):
     }
 
     TEST_ACCOUNT_2 = {  # signup success testcase 2
-        'firstName': str(uuid.uuid4()),
+        'firstName': "UNIT", # str(uuid.uuid4())
         'lastName': 'TEST',
         'email': str(uuid.uuid4()) + "@test.com",
         'password': "asd123BNM",
@@ -279,7 +279,23 @@ class TestUserSignUp(TestBase):
         assert rv.json['info'] == "Registeration Failed"
 
 
-class TestPostUserSignUp(TestBase):
+class TestUserTypeCheck(TestBase):
+
+    def test_check_staff_pass(self):
+        rv = self.client.get('/check_if_staff',
+                              content_type='application/json')
+        assert rv.status_code == 200
+        assert rv.json['result'] == True
+
+
+    def test_check_tenant_pass(self):
+        rv = self.client.get('/check_if_tenant',
+                              content_type='application/json')
+        assert rv.status_code == 200
+        assert rv.json['result'] == True
+
+
+class TestUserCleanUp(TestBase):
     """
     clean up
     """
