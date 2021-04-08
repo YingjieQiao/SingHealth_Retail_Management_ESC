@@ -34,114 +34,287 @@ class AuditChecklistNonFB extends Component {
             }
         )
       }
+        comment: "",
+        auditeeArray: [],
+        numOfAuditee: [],
+        options: [0,1,2,3,4,5,6,7,8,9,10],
+        hasSubmitForm: false,
+        auditorArray: [],
+    }
 
+    componentDidMount() {
+        try {
+            axios.get("http://localhost:5000/if_loggedin")
+            .then(
+                res => {
+                    console.log(res.data);
+                    if(res.data.username==""){
+                      alert("Please Log in!");
+                      this.props.history.push('/');
+                    }
+                }
+            );
+            axios.get("http://localhost:5000/tenant_list_non_FB")
+            .then(
+                res => {
+                    console.log(res);
+    
+                    for (var i = 0; i < res.data.tenant_list.length; i++) {
+                        let newArray1 = this.state.auditeeArray;
+                        let newArray2 = this.state.numOfAuditee;
+                        newArray1.push(res.data.tenant_list[i]);
+                        newArray2.push(i);
+                        this.setState({auditeeArray: newArray1, numOfAuditee: newArray2});
+                    }
+    
+                }
+            );
+            axios.get("http://localhost:5000/staff_list")
+            .then(
+                res => {
+                    if (res.data.result) {
+                        console.log(res);
+                        for (var i = 0; i < res.data.tenant_list.length; i++) {
+                            let newArray1 = this.state.auditorArray;
+                            let name = res.data.tenant_list[i]["firstName"] + res.data.tenant_list[i]["lastName"];
+                            newArray1.push(name);
+                            this.setState({auditorArray: newArray1});
+                        }
+                    }
+                }
+            );
+        } catch (e) { console.log(e); }
+    }
     render() {
 
         return (
             <div>                
-                <h2>New Audit</h2>
-                <h2>Audit Checklist (Non-F&#38;B)</h2>
-                <form>
-                    <label>Auditee:</label>
-                    <select class="custom-select my-1 mr-sm-2" id="auditeeName" onChange={this.handleAuditee}>
-                        <option selected value="-1">Choose...</option>
-                        <option value="KFC">KFC</option>
-                        <option value="McD">McD</option>
-                        <option value="MosB">MosB</option>
-                    </select>
-                    <label>Auditor:</label>
-                    <select class="custom-select my-1 mr-sm-2" id="auditorName" onChange={this.handleAuditor}>
-                        <option selected value="-1">Choose...</option>
-                        <option value="Tom">Tom</option>
-                        <option value="Jerry">Jerry</option>
-                        <option value="Charlie">Charlie</option>
-                    </select>
-                    <label>Auditor's Department:</label>
-                    <select class="custom-select my-1 mr-sm-2" id="auditorDepartment" onChange={this.handleDepartment}>
-                        <option selected value="-1">Choose...</option>
-                        <option value="CSR">CSR</option>
-                        <option value="HR">HR</option>
-                        <option value="Risk">Risk</option>
-                    </select>
 
-                    <h3>1. Professionalism &#38; Staff Hygiene (10%)</h3>
-                    <h4>Professionalism</h4>
-                    <div class="form-group">
-                        <label>Shop is open and ready to service patients/visitors according to operating hours.</label>
-                        <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="001" onInput={this.saveScore}/>
-                    </div>
-                    <div class="form-group">
-                        <label>Staff Attendance: adequate staff for peak and non-peak hours.</label>
-                        <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="002" onInput={this.saveScore}/>
-                    </div>
-                    <div class="form-group">
-                        <label>At least one (1) clearly assigned person in-charge on site.</label>
-                        <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="003" onInput={this.saveScore}/>
+                <form className={styles.form}>
+                    <div className={styles.qn_body}>
+                        <label className={styles.title}>New Audit</label>
+                        <label className={styles.form_qn}>Audit Checklist (Non-F&#38;B)</label>
                     </div>
 
-
-                    <h4>Staff Hygiene</h4>
-                    <div class="form-group">
-                        <label>Staff uniform/attire is not soiled.</label>
-                        <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="004" onInput={this.saveScore}/>
-                    </div>
-                    <div class="form-group">
-                        <label>Staff who are unfit for work due to illness should not report to work.</label>
-                        <input type="number"  min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="005" onInput={this.saveScore}/>
-                    </div>
-                    <div class="form-group">
-                        <label>Staff who are fit for work but suffering from the lingering effects of a cough and/or cold should cover their mouths with a surgical mask.</label>
-                        <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="006" onInput={this.saveScore}/>
+                    <div className={styles.qn_body} >
+                        <label className={styles.form_qn}>Auditee:</label>
+                        <select className={styles.form_qn} class="custom-select my-1 mr-sm-2" onChange={this.saveAuditee}>
+                            <option selected>Choose...</option>
+                            { this.state.numOfAuditee.map(index => <option value={index.toString()}>{this.handleAuditee(index)}</option> ) }
+                        </select>
                     </div>
 
-                    <h3>2. Housekeeping &#38; General Cleanliness (40%)</h3>
-                    <h4>General Environment Cleanliness</h4>
-                    <div class="form-group">
-                        <label>Adequate and regular pest control. Pest control record.</label>
-                        <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="007" onInput={this.saveScore}/>
+                    <div className={styles.qn_body} >
+                        <label className={styles.form_qn}>Auditor:</label>
+                        <select class="custom-select my-1 mr-sm-2" id="auditorName" onChange={this.handleAuditor}>
+                            <option selected value="-1">Choose...</option>
+                            { this.state.auditorArray.map(auditor => <option value={auditor}>{auditor}</option> ) }
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label>Goods and equipment are within shop boundary.</label>
-                        <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="008" onInput={this.saveScore}/>
+                    
+                    {/* <div className={styles.qn_body} >
+                        <label className={styles.form_qn}>Auditor:</label>
+                        <select class="custom-select my-1 mr-sm-2" id="auditorName" onChange={this.handleAuditor}>
+                            <option selected value="-1">Choose...</option>
+                            <option value="Tom">Tom</option>
+                            <option value="Jerry">Jerry</option>
+                            <option value="Charlie">Charlie</option>
+                        </select>
+                    </div> */}
+                    <div className={styles.qn_body}>
+                        <label className={styles.form_qn}>Auditor's Department:</label>
+                        <select class="custom-select my-1 mr-sm-2" id="auditorDepartment" onChange={this.handleDepartment}>
+                            <option selected value="-1">Choose...</option>
+                            <option value="CSR">CSR</option>
+                            <option value="HR">HR</option>
+                            <option value="Risk">Risk</option>
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label>Store display/ Shop front is neat and tidy.</label>
-                        <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="009" onInput={this.saveScore}/>
+
+
+                    <div className={styles.qn_body}>
+                        <label className={styles.heading}>Part 1: Professionalism &#38; Staff Hygiene (10%)</label>
+                        <label className={styles.form_qn}>Professionalism</label>
                     </div>
-                    <div class="form-group">
-                        <label>Work/ serving area is neat, clean and free of spillage.</label>
-                        <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="010" onInput={this.saveScore}/>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Shop is open and ready to service patients/visitors according to operating hours.</label>
+                        <div><label>Lowest score</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="001" id="001" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        <label>Highest score</label></div>
                     </div>
-                    <div class="form-group">
-                        <label>Uncluttered circulation space free of refuse/ furniture.</label>
-                        <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="011" onInput={this.saveScore}/>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Staff Attendance: adequate staff for peak and non-peak hours.</label>
+                        <div><label>Lowest score</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="002" id="002" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        <label>Highest score</label></div>
                     </div>
-                    <div class="form-group">
-                        <label>Fixtures and fittings including shelves, cupboards and drawers are clean and dry and in a good state.</label>
-                        <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="012" onInput={this.saveScore}/>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>At least one (1) clearly assigned person in-charge on site.</label>
+                        <div><label>Lowest score</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="003" id="003" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        <label>Highest score</label></div>
                     </div>
-                    <div class="form-group">
-                        <label>Ceiling/ ceiling boards are free from stains/ dust with no gaps.</label>
-                        <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="013" onInput={this.saveScore}/>
+                    <div className={styles.qn_body}>
+                        <label className={styles.form_qn}>Staff Hygiene</label>
                     </div>
-                    <div class="form-group">
-                        <label>Fans and air-con units are in proper working order and clean and free from dust. Proper maintenance and routine cleaning are carried out regularly.</label>
-                        <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="014" onInput={this.saveScore}/>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Staff uniform/attire is not soiled.</label>
+                        <div><label>Lowest score</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="004" id="004" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        <label>Highest score</label></div>
                     </div>
-                    <div class="form-group">
-                        <label>Equipment is clean, in good condition and serviced.</label>
-                        <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="015" onInput={this.saveScore}/>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Staff who are unfit for work due to illness should not report to work.</label>
+                        <div><label>Lowest score</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="005" id="005" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        <label>Highest score</label></div>
                     </div>
-                    <div class="form-group">
-                        <label>Surfaces, walls and ceilings within customer areas are dry and clean.</label>
-                        <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="016" onInput={this.saveScore}/>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Staff who are fit for work but suffering from the lingering effects of a cough and/or cold should cover their mouths with a surgical mask.</label>
+                        <div><label>Lowest score</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="006" id="006" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        <label>Highest score</label></div>
                     </div>
-                    <div class="form-group">
-                        <label>Floor within customer areas is clean and dry.</label>
-                        <input type="number" min="0" max="10" pattern='^([0-9]|([1-9][0-9])|100)$' id="017" onInput={this.saveScore}/>
+                    <div className={styles.qn_body}>
+                        <label className={styles.heading}>Part 2: Housekeeping &#38; General Cleanliness (40%)</label>
+                        <label className={styles.form_qn}>General Environment Cleanliness</label>
                     </div>
-                    <div class="form-group">
-                        <label>Waste is properly managed and disposed.</label>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Adequate and regular pest control. Pest control record.</label>
+                        <div><label>Lowest score</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="007" id="007" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        <label>Highest score</label></div>
+                    </div>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Goods and equipment are within shop boundary.</label>
+                        <div><label>Lowest score</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="008" id="008" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        <label>Highest score</label></div>
+                    </div>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Store display/ Shop front is neat and tidy.</label>
+                        <div><label>Lowest score</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="009" id="009" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        <label>Highest score</label></div>
+                    </div>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Work/ serving area is neat, clean and free of spillage.</label>
+                        <div><label>Lowest score</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="010" id="010" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        <label>Highest score</label></div>
+                    </div>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Uncluttered circulation space free of refuse/ furniture.</label>
+                        <div><label>Lowest score</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="011" id="011" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        <label>Highest score</label></div>
+                    </div>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Fixtures and fittings including shelves, cupboards and drawers are clean and dry and in a good state.</label>
+                        <div><label>Lowest score</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="012" id="012" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        <label>Highest score</label></div>
+                    </div>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Ceiling/ ceiling boards are free from stains/ dust with no gaps.</label>
+                        <div><label>Lowest score</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="013" id="013" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        <label>Highest score</label></div>
+                    </div>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Fans and air-con units are in proper working order and clean and free from dust. Proper maintenance and routine cleaning are carried out regularly.</label>
+                        <div><label>Lowest score</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="014" id="014" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        <label>Highest score</label></div>
+                    </div>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Equipment is clean, in good condition and serviced.</label>
+                        <div><label>Lowest score</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="015" id="015" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        <label>Highest score</label></div>
+                    </div>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Surfaces, walls and ceilings within customer areas are dry and clean.</label>
+                        <div><label>Lowest score</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="016" id="016" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        <label>Highest score</label></div>
+                    </div>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Floor within customer areas is clean and dry.</label>
+                        <div><label>Lowest score</label>
+                        {this.state.options.map(index => {return (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="017" id="017" onInput={this.saveScore} value={index} />
+                            <label class="form-check-label" >{index}</label>
+                        </div>)})}
+                        <label>Highest score</label></div>
+                    </div>
+                    <div class="form-group" className={styles.qn_body}>
+                        <label className={styles.form_qn}>Waste is properly managed and disposed.</label>
                         <ul>
                             <li>Waste bins are not over-filled.</li>
                             <li>Waste Management: Proper disposal of general waste.</li>
