@@ -1,4 +1,5 @@
-from app.models import User, Photo
+from app.models import User, Photo, TenantPhoto, PhotoNotification, PhotoNotificationFromTenant, \
+                        Audit_FB, Audit_non_FB, Covid_Compliance
 import csv, json, uuid, os, logging
 from flask import current_app, session
 import shutil
@@ -13,11 +14,43 @@ def get_current_username():
     #print("in utils get username: ", username)
     return username
 
-def get_data():
-    users = User.objects()
-    photos = Photo.objects()
+def get_data(tableName):
+    mapping = {
+        'User': 0,
+        'Photo': 1,
+        'TenantPhoto': 2,
+        'PhotoNotification': 3,
+        'PhotoNotificationFromTenant': 4,
+        'Audit_FB': 5,
+        'Audit_non_FB': 6,
+        'Covid_Compliance': 7
+    }
 
-    return users, photos
+    case = mapping.get(tableName, -1)
+    res = None
+    if case == 0:
+        res = User.objects()
+    elif case == 1:
+        res = Photo.objects()
+    elif case == 2:
+        res = TenantPhoto.objects()
+    elif case == 3:
+        res = PhotoNotification.objects()
+    elif case == 4:
+        res = PhotoNotificationFromTenant.objects()
+    elif case == 5:
+        res = Audit_FB.objects()
+    elif case == 6:
+        res = Audit_non_FB.objects()
+    elif case == 7:
+        res = Covid_Compliance.objects()
+    
+    if case != -1:
+        logger.info("admin selected table: ", tableName)
+    else:
+        logger.error("admin selected a non-existent table")
+
+    return res
 
 
 def mongo_object_to_dict(mongoObj):

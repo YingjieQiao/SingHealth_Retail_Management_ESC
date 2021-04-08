@@ -606,16 +606,11 @@ def display_data():
     try:
         body = request.get_json()
         tableName = body['tableName']
-        mapping = {
-            'User': 0,
-            'Photo': 1
-        }
-        res = utils.get_data()
+        data = utils.get_data(tableName)
     except Exception as e:
         # print("error: ", e)
         logger.error("In '/display_data' endpoint, error occurred: ", e)
         return {'result': False, 'data': None, 'info': 'failed'}, 500
-    data = res[mapping[tableName]]
 
     return {'result': True, 'data': data, 'info': 'success'}, 200
 
@@ -626,13 +621,8 @@ def download_data_csv():
     try:
         body = request.get_json()
         tableName = body['tableName']
-        mapping = {
-            'User': 0,
-            'Photo': 1
-        }
 
-        res = utils.get_data()
-        data = res[mapping[tableName]]
+        data = utils.get_data(tableName)
 
         dataDict = utils.mongo_object_to_dict(data)
         filePath, fileName = utils.write_to_csv(dataDict, tableName)
