@@ -26,7 +26,6 @@ import base64
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 
 import csv #new library
-from fpdf import FPDF #new library included
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER, TA_LEFT
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
@@ -39,8 +38,6 @@ s = URLSafeTimedSerializer('Thisisasecret!')
 
 sender_email = "starboypp69@gmail.com"
 password = "MDR-XB450AP"
-
-s = URLSafeTimedSerializer('Thisisasecret!')
 
 apis = Blueprint('apis', __name__)
 
