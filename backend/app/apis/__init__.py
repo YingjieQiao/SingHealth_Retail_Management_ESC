@@ -2189,8 +2189,6 @@ def report_checklistt():
         checklist = audit_ls['profstaffhydScoreList'] + audit_ls['housekeepScoreList'] + audit_ls['foodhydScoreList'] + audit_ls['healthierScoreList'] + audit_ls['worksafetyhealthScoreList']
         for i in range(len(checklist)):
             checklist[i] = str(checklist[i])
-        print(len(checklist))
-        print(len(audit_ls['worksafetyhealthScoreList']))
         checklist = ['',''] + checklist[:3] + [''] + checklist[3:13] + ['',''] + checklist[13:28] + [''] + checklist[28:30] + ['',''] + checklist[30:56] + [''] + checklist[56:67] + ['',''] + checklist[67:74] + [''] + checklist[74:78] + ['',''] + checklist[78:89] + [''] + checklist[89:92] + [''] + checklist[92:96]
 
         print(len(df['data']))
