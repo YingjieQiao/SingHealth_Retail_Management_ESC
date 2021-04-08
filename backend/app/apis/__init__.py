@@ -2097,7 +2097,7 @@ def report_checklistt():
         
     elif timeframe[:3] == "Non":
 
-        df = pd.read_csv("covid_audit.csv")
+        df = pd.read_csv("non_fnb_audit.csv")
         audit_ls = Audit_non_FB.objects(timestamp = timeframe[12:])[0]
 
         document.append(Paragraph(str(audit_ls["id"]),ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
@@ -2115,7 +2115,7 @@ def report_checklistt():
         document.append(Spacer(1,1))
         
         checklist = audit_ls['checklist']
-        checklist = [''] + checklist[:8] + [''] + checklist[8:]
+        checklist = ['',''] + checklist[:3] + [''] + checklist[3:13] + ['']
 
         for i in range(len(checklist)):
             if checklist[i] == -1:
@@ -2141,7 +2141,7 @@ def report_checklistt():
         SimpleDocTemplate('audit_checklist.pdf', pagesize=letter, rightMargin=12, leftMargin=12, topMargin=12, bottomMargin=6).build(document)
     elif timeframe[:3] == 'FnB':
 
-        df = pd.read_csv("covid_audit.csv")
+        df = pd.read_csv("fnb_audit.csv")
         audit_ls = Covid_Compliance.objects(timestamp = timeframe[12:])[0]
 
         document.append(Paragraph(str(audit_ls["id"]),ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
@@ -2159,7 +2159,7 @@ def report_checklistt():
         document.append(Spacer(1,1))
         
         checklist = audit_ls['checklist']
-        checklist = [''] + checklist[:8] + [''] + checklist[8:]
+        checklist = ['',''] + checklist[:3] + [''] + checklist[3:13] + ['',''] + checklist[13:28] + [''] + checklist[28:30] + ['',''] + checklist[30:56] + [''] + checklist[56:67] + ['',''] + checklist[56:]
 
         for i in range(len(checklist)):
             if checklist[i] == -1:
