@@ -17,9 +17,10 @@ import {Route, BrowserRouter as Router,Switch,Link} from "react-router-dom";
 import Navbar from './Components/Navbar';
 import Adminhome from './Components/adminhome';
 import Table from './Components/Table';
-import tenantHome from './Components/tenantHome'
-import tenantUpload from './Components/tenantUpload'
-import tenantViewPhoto from './Components/tenantViewPhoto'
+import tenantHome from './Components/tenantHome';
+import tenantUpload from './Components/tenantUpload';
+import tenantViewPhoto from './Components/tenantViewPhoto';
+import SignInSide from './Components/SignInSide';
 
 function App() {
 
@@ -44,6 +45,9 @@ function App() {
       <Route path="/tenantHome" exact component={tenantHome}/>
       <Route path="/tenantUpload" exact component={tenantUpload}/>
       <Route path="/tenantViewPhoto" exact component={tenantViewPhoto}/>
+      <Route path="/SignInSide" exact component={SignInSide}/>
+      
+
     </Switch>
     
     </div>

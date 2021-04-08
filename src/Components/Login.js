@@ -76,10 +76,8 @@ class Login extends Component {
 
     render() {
         return (
-            <div>
-                 <nav>
-                        <p>yolo</p>
-                   </nav>
+            <div class="container">
+
                 <Route path="/Register" exact component={Register}/>        
                 <form onSubmit={this.handleSubmit}>
                     <h1>LOGIN</h1>
