@@ -33,7 +33,7 @@ class Login extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-    
+
         const user = {
           password: this.state.password,
           email: this.state.email
@@ -61,12 +61,7 @@ class Login extends Component {
             }
         })
         .catch(function (error,res) {
-            console.log(error.response.status) // 401
-            console.log(error.response.data.error) //Please Authenticate or whatever returned from server
-          if(error.response.status==401){
-            alert("Login unsuccess!")
-            alert(res.data.info);
-          }
+            alert("Login unsuccessful:( \n");
         })
         
         
@@ -93,7 +88,6 @@ class Login extends Component {
                      {/* <li>
                          <label>admin home link   </label>
                         <Link to="/Adminhome">admin</Link>
-
                      </li> */}
                 </form>
 
