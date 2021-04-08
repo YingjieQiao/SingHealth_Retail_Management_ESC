@@ -190,6 +190,18 @@ rendervalue(){
     </div>
  )
 }
+componentDidMount() {
+  axios.get("http://localhost:5000/if_loggedin")
+  .then(
+      res => {
+          console.log(res.data);
+          if(res.data.username==""){
+            alert("Please Log in!");
+            this.props.history.push('/');
+          }
+      }
+  )
+}
 	render() {
     // const headers = {
 		// 	'Content-Type': 'multipart/form-data',
@@ -219,14 +231,14 @@ rendervalue(){
 		return (
 			<div>
         <h1>Admin Home</h1>
-        <label>Type of data :</label><select onChange={this.Datahandler} defaultValue="none">
+        <label>Type of data :</label><select id="data" onChange={this.Datahandler} defaultValue="none">
                         <option defaultValue>Select excel type</option>
                         <option value="User">User</option>
                         <option value="Photo">Photo</option>
                     </select><br />
-        <button onClick={this.testHandler1}>download_data_csv</button>
+        <button id="download_data_csv" onClick={this.testHandler1}>download_data_csv</button>
 
-         <button onClick={this.testHandler2}>display_data</button>
+         <button id="display_data" onClick={this.testHandler2}>display_data</button>
          
          {/* <form onSubmit={this.testHandler2}>
                     <label>Type of user :</label><select onChange={this.Datahandler} defaultValue="none">

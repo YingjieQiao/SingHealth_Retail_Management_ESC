@@ -1,5 +1,5 @@
 from flask import Blueprint, request, session, jsonify, url_for, current_app, send_from_directory
-from app.models import User, Audit_non_FB, Photo, TenantPhoto, PhotoNotification
+from app.models import User, Audit_non_FB, Photo, TenantPhoto, PhotoNotification, PhotoNotificationFromTenant
 import boto3
 from botocore.exceptions import ClientError
 import logging
@@ -7,7 +7,7 @@ from PIL import Image
 import os
 from datetime import datetime
 
-from . import settings, s3_methods, utils, notif_methods
+from . import settings, s3_methods, utils, notif_methods, email_methods
 
 import email, smtplib, ssl
 from email import encoders
@@ -33,8 +33,11 @@ s = URLSafeTimedSerializer('Thisisasecret!')
 apis = Blueprint('apis', __name__)
 
 logger = logging.getLogger("logger")
+
 #TODO remove all the print in the end
 #TODO more logging at successful executions
+#TODO remove downloaded csv from project directory 
+# after the file is downloaded on the frontned by the user for admin page
 
 @apis.route('/get_current_username_and_datetime', methods=['GET', 'POST'])
 def get_current_username_and_datetime():
@@ -46,6 +49,11 @@ def get_current_username_and_datetime():
     time_ = dateTimeArr[1]
 
     return {"username": settings.username, "time": time_, "date": date_}, 200
+
+@apis.route('/if_loggedin', methods=['GET', 'POST'])
+def if_loggedin():
+    return {"username": settings.username}, 200
+
 
 @apis.route('/check_if_staff', methods=['GET'])
 def check_if_staff():
@@ -257,7 +265,11 @@ def upload_file():
         rgb_img = img.convert('RGB')
         rgb_img.save(filename)
 
+<<<<<<< HEAD
     bucketName, counterPart_bucketName = utils.assign_s3_bucket(username)
+=======
+    bucketName, counterPart_bucketName = utils.assign_s3_bucket(username) # always False for upload
+>>>>>>> 0e97f405cbe98c867d4fb54fc0d137de9e99e0e6
     if bucketName == "":
         print("username invalid: ", username)
         logger.error("In '/upload_file' endpoint, username invalid: ", username)
@@ -338,7 +350,17 @@ def upload_photo_info():
     try:
         photo = Photo(**body)
         photo.save()
+
+        # notofication operations
         notif_methods.add_notification(body)
+
+        rcvEmail = utils.get_tenant_email(body["tenantName"])
+        subject = "A SingHealth staff has uploaded a non-compliance of your outlet"
+        emailTextBody = """
+        Please login to our retail-management platform using your tenant account, 
+        and take necessary actions accordingly.
+        """
+        email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
     except Exception as e:
         print("Error occurred: ", e)
         logger.error("In '/upload_photo_info' endpoint, error occurred: ", e)
@@ -354,6 +376,18 @@ def tenant_upload_photo_info():
     try:
         tenantPhoto = TenantPhoto(**body)
         tenantPhoto.save()
+
+        if not current_app.config['TESTING']:
+            # notofication operations
+            notif_methods.add_notification_from_tenant(body)
+
+            rcvEmail = utils.get_staff_email(body["staffName"])
+            subject = "A tenant from a SingHealth institution has uploaded a remedy effort"
+            emailTextBody = """
+                Please login to our retail-management platform using your staff account, 
+                and take necessary actions accordingly.
+                """
+            email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
     except Exception as e:
         print("Error occurred: ", e)
         logger.error("In '/tenant_upload_photo_info' endpoint, error occurred: ", e)
@@ -415,11 +449,12 @@ def tenant_get_photo_notification():
     """
     username = settings.username
     if username == "":
-        username = 'UnitTester'
+        username = 'RossGeller'
         print("testing") #TODO change to logging
     
     try:
         photoNotifications = PhotoNotification.objects(tenantName=username, deleted=False)
+        print(photoNotifications)
         return {"result": True, "tenantData": photoNotifications}, 200
     except Exception as e:
         print("error: ", e) # logger
@@ -429,6 +464,12 @@ def tenant_get_photo_notification():
 @apis.route('/tenant_delete_photo_notification', methods=['POST'])
 def tenant_delete_photo_notification():
     body = request.get_json()
+    try:
+        body.pop("_id", None)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/tenant_delete_photo_notification' endpoint, error occurred: ", e)
+    print(body)
 
     try:
         notif_methods.tenant_update_photo_notification("delete", settings.username, body)
@@ -443,6 +484,12 @@ def tenant_delete_photo_notification():
 @apis.route('/tenant_read_photo_notification', methods=['POST'])
 def tenant_read_photo_notification():
     body = request.get_json()
+    try:
+        body.pop("_id", None)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/tenant_read_photo_notification' endpoint, error occurred: ", e)
+    print(body)
 
     try:
         notif_methods.tenant_update_photo_notification("read", settings.username, body)
@@ -453,6 +500,64 @@ def tenant_read_photo_notification():
 
     return {'result': True}, 200
 
+
+@apis.route('/staff_get_photo_notification', methods=['GET', 'POST'])
+def staff_get_photo_notification():
+    """
+    get remedy photos of tenant user
+    """
+    username = settings.username
+    if username == "":
+        username = 'UnitTesterStaff'
+        print("testing") #TODO change to logging
+    
+    try:
+        photoNotificationsFromTenant = PhotoNotificationFromTenant.objects(staffName=username, deleted=False)
+        print(photoNotificationsFromTenant)
+        return {"result": True, "staffData": photoNotificationsFromTenant}, 200
+    except Exception as e:
+        print("error: ", e) # logger
+        return {"result": False, "staffData": None}, 500
+
+
+@apis.route('/staff_delete_photo_notification', methods=['POST'])
+def staff_delete_photo_notification():
+    body = request.get_json()
+    try:
+        body.pop("_id", None)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/staff_delete_photo_notification' endpoint, error occurred: ", e)
+    print(body)
+
+    try:
+        notif_methods.staff_update_photo_notification("delete", settings.username, body)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/staff_delete_photo_notification' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+@apis.route('/staff_read_photo_notification', methods=['POST'])
+def staff_read_photo_notification():
+    body = request.get_json()
+    try:
+        body.pop("_id", None)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/staff_read_photo_notification' endpoint, error occurred: ", e)
+    print(body)
+
+    try:
+        notif_methods.staff_update_photo_notification("read", settings.username, body)
+    except Exception as e:
+        print("error: ", e) 
+        logger.error("In '/staff_read_photo_notification' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
 
 @apis.route('/display_data', methods=['POST'])
 def display_data():
@@ -914,7 +1019,7 @@ def compare_tenant():
 
 
 @apis.route('/test_add_notif', methods=['POST'])
-def add_notification():
+def TEST_add_notification():
     """
     :param: body: json, same format as Photo
     add a column 'read' for nofitication
@@ -925,6 +1030,25 @@ def add_notification():
         body['deleted'] = False
         newPhotoNotification = PhotoNotification(**body)
         newPhotoNotification.save()
+    except Exception as e:
+        print("error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+@apis.route('/test_add_notif2', methods=['POST'])
+def TEST_add_notification_from_staff():
+    """
+    :param: body: json, same format as Photo
+    add a column 'read' for nofitication
+    """
+    body = request.get_json()
+    try:
+        body['read'] = False
+        body['deleted'] = False
+        newPhotoNotificationFromTenant = PhotoNotificationFromTenant(**body)
+        newPhotoNotificationFromTenant.save()
     except Exception as e:
         print("error occurred: ", e)
         return {'result': False}, 500

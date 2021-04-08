@@ -19,16 +19,16 @@ function Navbar() {
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>
         </div>
-        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
-          <ul className='nav-menu-items' onClick={showSidebar}>
-            <li className='navbar-toggle'>
+        <nav id="yolo" className={sidebar ? 'nav-menu active' : 'nav-menu'}>
+          <ul className='nav-menu-items'  onClick={showSidebar}>
+            <li className='navbar-toggle' >
               <Link to='#' className='menu-bars'>
                 <AiIcons.AiOutlineClose />
               </Link>
             </li>
             {SidebarData.map((item, index) => {
               return (
-                <li key={index} className={item.cName}>
+                <li key={index} className={item.cName} id={item.id}>
                   <Link to={item.path}>
                     {item.icon}
                     <span>{item.title}</span>

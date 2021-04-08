@@ -59,14 +59,14 @@ class Login extends Component {
                 alert("Login unsuccessful:( \n"+res.data.info);
             }
         })
-        // .catch(function (error,res) {
-        //     console.log(error.response.status) // 401
-        //     console.log(error.response.data.error) //Please Authenticate or whatever returned from server
-        //   if(error.response.status==401){
-        //     alert("Login unsuccess!")
-        //     alert(res.data.info);
-        //   }
-        // })
+        .catch(function (error,res) {
+            console.log(error.response.status) // 401
+            console.log(error.response.data.error) //Please Authenticate or whatever returned from server
+          if(error.response.status==401){
+            alert("Login unsuccess!")
+            alert(res.data.info);
+          }
+        })
         
         
         
@@ -83,9 +83,9 @@ class Login extends Component {
                 <Route path="/Register" exact component={Register}/>        
                 <form onSubmit={this.handleSubmit}>
                     <h1>LOGIN</h1>
-                    <label>Email :</label> <input type="text" value={this.state.email} onChange={this.emailhandler} placeholder="Email..." /><br />
-                    <label>Password :</label> <input type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password..." /><br />
-                    <input type="submit" value="Log In" />
+                    <label>Email :</label> <input id="email" type="text" value={this.state.email} onChange={this.emailhandler} placeholder="Email..." /><br />
+                    <label>Password :</label> <input id="password" type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password..." /><br />
+                    <input id="submit" type="submit" value="Log In" />
                     <li>
                          <label>new tenant?  </label>
                         <Link to="/Register">Register</Link>

@@ -88,7 +88,7 @@ def clear_assets():
 def check_if_staff(username, flag):
     if flag:
         username = "UNITTEST"
-    users = User.objects(staff=True) # all?
+    users = User.objects(staff=True)
     for user in users:
         username_check = "".join([user["firstName"], user["lastName"]])
         if (username == username_check):
@@ -136,3 +136,27 @@ def assign_audience_name(username, staffName, tenantName):
     else:
         res = ""
     return res
+
+
+def get_tenant_email(tenantName):
+    tenantEmail = ""
+    users = User.objects(tenant=True)
+    for user in users:
+        tenantName_check = "".join([user["firstName"], user["lastName"]])
+        if (tenantName == tenantName_check):
+            tenantEmail = user["email"]
+            print("found tenant email: ", tenantEmail)
+            break
+    return tenantEmail
+
+
+def get_staff_email(staffName):
+    staffEmail = ""
+    users = User.objects(staff=True)
+    for user in users:
+        staffName_check = "".join([user["firstName"], user["lastName"]])
+        if (staffName == staffName_check):
+            staffEmail = user["email"]
+            print("found tenant email: ", staffEmail)
+            break
+    return staffEmail

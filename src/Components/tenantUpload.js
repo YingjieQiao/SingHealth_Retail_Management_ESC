@@ -18,7 +18,18 @@ class Upload extends Component {
         tenantName: "",
         rectified: false
     };
+    componentDidMount() {
 
+        axios.get("http://localhost:5000/if_loggedin")
+        .then(
+            res => {
+                console.log(res.data);
+                if(res.data.username==""){
+                  alert("Please Log in!");
+                  this.props.history.push('/');
+                }
+            }
+        )}
     render() { 
         return (
             <div style={{margin: "10px"}}>
@@ -83,6 +94,7 @@ class Upload extends Component {
     }
 
     checkTenantName = () => {
+
         if (this.state.tenantName.length != 0) {
             // proceeds to upload info
             const photo = {

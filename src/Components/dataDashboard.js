@@ -13,11 +13,21 @@ class DataDashboard extends Component {
     }
 
     componentDidMount() {
+        axios.get("http://localhost:5000/if_loggedin")
+            .then(
+                res => {
+                    console.log(res.data);
+                    if(res.data.username==""){
+                      alert("Please Log in!");
+                      this.props.history.push('/');
+                    }
+                }
+            )
+        
         axios.get("http://localhost:5000/tenant_list")
         .then(
             res => {
                 console.log(res);
-
                 for (var i = 0; i < res.data.tenant_list.length; i++) {
                     let newArray1 = this.state.tenantArray;
                     let newArray2 = this.state.numOfTenant;
