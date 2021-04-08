@@ -1997,30 +1997,45 @@ def report_timeframe():
 
     body = request.get_json()
 
+    print(body)
+
     report_timeframe_ls = []
     
-    audit_ls = Audit_FB.objects(auditeeName = body.get('tenant'))
+    audit_ls = Audit_FB.objects(auditeeName = body.get('email'))
 
     for i in audit_ls:
         report_timeframe_ls.append("FnB_Audit_"+str(i.timestamp))
 
-    audit_ls = Audit_non_FB.objects(auditeeName = body.get('tenant'))
+    audit_ls = Audit_non_FB.objects(auditeeName = body.get('email'))
 
     for i in audit_ls:
         report_timeframe_ls.append("Non_FnB_Audit_"+str(i.timestamp))
 
-    audit_ls = Covid_Compliance.objects(auditeeName = body.get('tenant'))
+    audit_ls = Covid_Compliance.objects(auditeeName = body.get('email'))
 
     for i in audit_ls:
         report_timeframe_ls.append("Covid_Audit_"+str(i.timestamp))
 
+    print(report_timeframe_ls)
+
     return {'status': True, 'timeframe_list': report_timeframe_ls}
 
 
-# @apis.route('/report_checklist', methods=['GET', 'POST'])
-# def report_checklistt():
-#     #covid list first, for all the sections 
-#     pdfkit.from_string('Hello!', 'out.pdf')
+@apis.route('/report_checklist', methods=['GET', 'POST'])
+def report_checklistt():
+
+
+    body = request.get_json()
+
+    print(body)
+
+    df = pd.read_csv("covid_audit.csv")
+
+
+
+
+
+    # pdfkit.from_string('Hello!', 'out.pdf')
     # from fpdf import FPDF
   
   

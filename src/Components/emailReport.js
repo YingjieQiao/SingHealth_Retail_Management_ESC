@@ -71,6 +71,8 @@ class EmailReport extends Component {
 
     saveReceiverEmail = event => {
         const data = event.target.value;
+        console.log(data)
+        console.log(this.state)
         var newEmailContent = this.state.emailContent;
         if (data === "Choose...") {
             newEmailContent["email"] = "";
@@ -83,7 +85,7 @@ class EmailReport extends Component {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'Access-Control-Allow-Origin': '*'
                 };
-                axios.post("http://localhost:5000/report_timeframe", data, headers)
+                axios.post("http://localhost:5000/report_timeframe", this.state.emailContent, headers)
                 .then(
                     res => {
                         console.log(res);
@@ -113,7 +115,12 @@ class EmailReport extends Component {
 
     handleSendReport = event => {
         // try {
-        //     // axios.post here
+        //     axios.post("http://localhost:5000/report_checklist", timestamp, headers)
+        //         .then(
+        //             res => {
+        //                 console.log(res);
+        //             }
+        //         );
         // } catch (e) {
         //     console.log(e);
             
