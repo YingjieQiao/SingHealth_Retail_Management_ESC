@@ -8,7 +8,7 @@ from PIL import Image
 import os
 from datetime import datetime
 
-from . import settings, s3_methods, utils, notif_methods, email_methods
+from . import s3_methods, utils, notif_methods, email_methods
 
 import email, smtplib, ssl
 from email import encoders

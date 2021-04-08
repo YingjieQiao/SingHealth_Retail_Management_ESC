@@ -6,8 +6,8 @@ from botocore.exceptions import ClientError
 import os, json
 from PIL import Image
 from app.models import Photo, TenantPhoto
-from . import settings, utils
-from flask import request
+from . import utils
+from flask import request, session
 
 logger = logging.getLogger("logger")
 
@@ -110,7 +110,7 @@ def get_photo_info(date_, time_, counterPart, username):
     get the information assciated with a given photo name
     """
     
-    if session['username'] == "":
+    if username == "":
         session['username'] = "UnitTester"
         print("testing")
         logger.error("In 'get_photo_info' function, error occurred")
