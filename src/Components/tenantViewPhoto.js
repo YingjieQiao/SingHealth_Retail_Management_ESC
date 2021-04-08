@@ -125,6 +125,13 @@ class viewPhoto extends Component {
         )
 
         console.log("done");
+
+        this.setState({
+            reviewPhotoMsg: "There is no photo in album",
+            numberOfImage: [],
+            imageSource: [],
+            photoAttrData: []
+        })
     }
 
     showPhotoByStaffHandler = event => {
@@ -171,6 +178,13 @@ class viewPhoto extends Component {
         )
 
         console.log("showPhotoByStaffHandler");
+
+        this.setState({
+            reviewPhotoMsg: "There is no photo in album",
+            numberOfImage: [],
+            imageSource: [],
+            photoAttrData: []
+        })
     }
 
 

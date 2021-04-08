@@ -26,6 +26,8 @@ rectify photo:
 get number of photos post rectify:
     - success testcase: the number of photos whose `rectified == False` is correct
     (also remove dummy entries from the database)
+    
+same test cases for tenant endpoints
 """
 
 class TestPhoto(TestBase):
@@ -236,3 +238,52 @@ class TestPostRectifyView(TestBase):
         TestBase.clean_db_post_test(self)
         TestBase.clean_s3_post_test(self, self.TEST_FILES)
         #TODO delete off entries in notif table too
+
+
+class TestTenantPhotoAdd(TestBase):
+    """
+    Test adding photo to table `TenantPhoto`
+
+    """
+    TEST_PHOTO_1 = {
+        "tags": "tag2",
+        "date": "01-01-2222",
+        "time": "00:00:00",
+        "notes": "UNIT TEST ENTRY",
+        "staffName": "BigBrother",
+        "tenantName": "UnitTester",
+        "rectified": False
+    }
+
+    TEST_PHOTO_1_JSON = json.dumps(TEST_PHOTO_1)
+
+    def test_db_and_s3_upload_pass_1(self):
+        rv = self.client.post('/tenant_upload_photo_info', data=self.TEST_PHOTO_1_JSON,
+                              content_type='application/json')
+        assert rv.status_code == 200
+        assert rv.json['result'] == True
+
+
+class TestTenantPhotoRectify(TestBase):
+    """
+    Test rectify tenant photo
+
+    """
+    TEST_PHOTO_RECTIFY_1 = {
+        "tags": "tag2",
+        "date": "01-01-2222",
+        "time": "00:00:00",
+        "notes": "UNIT TEST ENTRY",
+        "staffName": "BigBrother",
+        "tenantName": "UnitTester",
+        "rectified": False
+    }
+
+
+    TEST_PHOTO_RECTIFY_1_JSON = json.dumps(TEST_PHOTO_RECTIFY_1)
+
+    def test_photo_rectify_1(self):
+        rv = self.client.post('/tenant_rectify_photo', data=self.TEST_PHOTO_RECTIFY_1_JSON,
+                              content_type='application/json')
+        assert rv.status_code == 200
+        assert rv.json['result'] == True
