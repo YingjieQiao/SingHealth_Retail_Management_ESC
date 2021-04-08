@@ -125,17 +125,23 @@ class EmailReport extends Component {
 
     handleSendReport = event => {
         console.log(this.state.emailContent);
-        // try {
-        //     axios.post("http://localhost:5000/report_checklist", timestamp, headers)
-        //         .then(
-        //             res => {
-        //                 console.log(res);
-        //             }
-        //         );
-        // } catch (e) {
-        //     console.log(e);
-            
-        // }
+        try {
+            const headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Access-Control-Allow-Origin': '*'
+            };
+            axios.post("http://localhost:5000/report_checklist", this.state.emailContent, headers)
+                .then(
+                    res => {
+                        console.log(res);
+
+                        alert("Email has been sent successfully.");
+                    }
+                );
+        } catch (e) {
+            console.log(e);
+            alert("Not able to send an email. Please try again");
+        }
     }
     
 
