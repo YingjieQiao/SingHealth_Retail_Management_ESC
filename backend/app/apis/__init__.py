@@ -484,6 +484,8 @@ def auditchecklistFB():
 def auditchecklistNonFB():
     ts = datetime.now().today()
     body = request.get_json()
+    print(body)
+    print(body['workSafetyHealthScore'])
     try:
         body['workSafetyScore'] = body['workSafetyHealthScore']
         body['profScore'] = body['profStaffHydScore']
@@ -491,6 +493,8 @@ def auditchecklistNonFB():
         body.pop('workSafetyHealthScore')
         body.pop('profStaffHydScore')
         body.pop('houseGeneralScore')
+        print(body)
+
         audit = Audit_non_FB(**body)
         audit.timestamp = str(ts)
         audit.computeTotalScore()
@@ -2098,34 +2102,45 @@ def report_checklistt():
     elif timeframe[:3] == "Non":
 
         df = pd.read_csv("non_fnb_audit.csv")
-        audit_ls = Audit_non_FB.objects(timestamp = timeframe[12:])[0]
+        print(timeframe[14:])
+        audit_ls = Audit_non_FB.objects(timestamp = timeframe[14:])[0]
+        print(audit_ls)
 
         document.append(Paragraph(str(audit_ls["id"]),ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
         document.append(Image('singhealth_logo.png', 2.2*inch, 2.2*inch))
-        document = addTitle(document, "COVID SAFE MANAGEMENT MEASURES ")
-        document = addTitle(document, "COMPLIANCE CHECKLIST GUIDE")
+        document = addTitle(document, "Audit Checklist (Non-F&B)")
         document.append(Spacer(1,20))
         document.append(Paragraph("Name of Auditee : " + audit_ls['auditeeName'],ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
-        document.append(Spacer(1,1))
+        document.append(Spacer(1,3))
         document.append(Paragraph("Name of Auditor : " + audit_ls['auditorName'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
-        document.append(Spacer(1,1))
+        document.append(Spacer(1,3))
         document.append(Paragraph("Name of Auditor's department : " + audit_ls['auditorDepartment'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
-        document.append(Spacer(1,1))
+        document.append(Spacer(1,3))
         document.append(Paragraph("Timestamp : " + audit_ls['timestamp'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
-        document.append(Spacer(1,1))
+        document.append(Spacer(1,10))
+        document.append(Paragraph("Professionalism & Staff Hygiene Score : " + str(audit_ls['profScore']) + "/10", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Housekeeping & General Cleaniness : " + str(audit_ls['housekeepingScore']) + "/20", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Work Safety and Health Score : " + str(audit_ls['workSafetyScore']) + "/20", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Total Score : " + str(audit_ls['totalScore']) + "/100", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
         
-        checklist = audit_ls['checklist']
-        checklist = ['',''] + checklist[:3] + [''] + checklist[3:13] + ['']
-
+        print( audit_ls['profstaffhydScoreList'])
+        print(audit_ls['housekeepScoreList'])
+        print(audit_ls['worksafetyhealthScoreList'])
+        checklist = audit_ls['profstaffhydScoreList'] + audit_ls['housekeepScoreList'] + audit_ls['worksafetyhealthScoreList']
         for i in range(len(checklist)):
-            if checklist[i] == -1:
-                checklist[i] = 'NA'
-            elif checklist[i] == 1:
-                checklist[i] = 'yes'
-            elif checklist[i] == 0:
-                checklist[i] = 'no'
+            checklist[i] = str(checklist[i])
+        checklist = ['',''] + checklist[:3] + [''] + checklist[3:6] + ['',''] + checklist[6:18] + ['',''] + checklist[18:27] + [''] + checklist[27:35]
+
+        print(len(df['data']))
+        print(len(checklist))
 
         df['data'] = checklist
+
+        print(df)
 
         text = ""
 
@@ -2139,6 +2154,7 @@ def report_checklistt():
         document.append(Paragraph("Comments : " + audit_ls['comment']))
 
         SimpleDocTemplate('audit_checklist.pdf', pagesize=letter, rightMargin=12, leftMargin=12, topMargin=12, bottomMargin=6).build(document)
+
     elif timeframe[:3] == 'FnB':
 
         df = pd.read_csv("fnb_audit.csv")
@@ -2147,17 +2163,28 @@ def report_checklistt():
 
         document.append(Paragraph(str(audit_ls["id"]),ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
         document.append(Image('singhealth_logo.png', 2.2*inch, 2.2*inch))
-        document = addTitle(document, "COVID SAFE MANAGEMENT MEASURES ")
-        document = addTitle(document, "COMPLIANCE CHECKLIST GUIDE")
+        document = addTitle(document, "Audit Checklist (F&B)")
         document.append(Spacer(1,20))
         document.append(Paragraph("Name of Auditee : " + audit_ls['auditeeName'],ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
-        document.append(Spacer(1,1))
+        document.append(Spacer(1,3))
         document.append(Paragraph("Name of Auditor : " + audit_ls['auditorName'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
-        document.append(Spacer(1,1))
+        document.append(Spacer(1,3))
         document.append(Paragraph("Name of Auditor's department : " + audit_ls['auditorDepartment'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
-        document.append(Spacer(1,1))
+        document.append(Spacer(1,3))
         document.append(Paragraph("Timestamp : " + audit_ls['timestamp'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
-        document.append(Spacer(1,1))
+        document.append(Spacer(1,10))
+        document.append(Paragraph("Professionalism & Staff Hygiene Score : " + str(audit_ls['profScore']) + "/10", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Housekeeping & General Cleaniness : " + str(audit_ls['housekeepingScore']) + "/20", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Food Hygiene Score : " + str(audit_ls['foodHygieneScore']) + "/35", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Healthier Choice Score : " + str(audit_ls['healthierScore']) + "/15", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Work Safety and Health Score : " + str(audit_ls['workSafetyScore']) + "/20", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Total Score : " + str(audit_ls['totalScore']) + "/100", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
         
         checklist = audit_ls['profstaffhydScoreList'] + audit_ls['housekeepScoreList'] + audit_ls['foodhydScoreList'] + audit_ls['healthierScoreList'] + audit_ls['worksafetyhealthScoreList']
         for i in range(len(checklist)):
