@@ -13,7 +13,8 @@ class DataDashboard extends Component {
     }
 
     componentDidMount() {
-        axios.get("http://localhost:5000/if_loggedin")
+        try {
+            axios.get("http://localhost:5000/if_loggedin")
             .then(
                 res => {
                     console.log(res.data);
@@ -22,8 +23,7 @@ class DataDashboard extends Component {
                       this.props.history.push('/');
                     }
                 }
-            )
-        try {
+            );
             axios.get("http://localhost:5000/tenant_list")
             .then(
                 res => {
@@ -40,9 +40,8 @@ class DataDashboard extends Component {
                     }
     
                 }
-            )
-        } catch (e) {}
-
+            );
+        } catch (e) { console.log(e); }
     }
 
     render() {
