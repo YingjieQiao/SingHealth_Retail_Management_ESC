@@ -646,6 +646,25 @@ def email():
         server.sendmail(sender_email, receiver_email, text)
     return {'result': True, 'info': "Email was shared"}, 200
 
+@apis.route('/staff_list', methods=['GET', 'POST'])
+def staff_list():
+    
+    tenant_list = User.objects(staff = True)
+
+    try:
+        temp_ls = []
+        for i in tenant_list:
+            if i['tenant'] == True:
+                temp_ls.append({'firstName': i['firstName'], 'lastName': i['lastName'], 'email': i["email"], 'location': i['location']}) # need to hash email when sent to front-end, being used as an id to find graphs later
+        
+        if tenant_list != None:
+            return {'result': True, 'user_type': "temp", 'tenant_list': temp_ls}
+        else:
+            return {'result': False}
+    except:
+        print("error")
+        return {'result': False}
+
 @apis.route('/tenant_list', methods=['GET', 'POST'])
 def tenant_list():
     
