@@ -2142,7 +2142,8 @@ def report_checklistt():
     elif timeframe[:3] == 'FnB':
 
         df = pd.read_csv("fnb_audit.csv")
-        audit_ls = Covid_Compliance.objects(timestamp = timeframe[12:])[0]
+        print(timeframe[10:])
+        audit_ls = Audit_FB.objects(timestamp = timeframe[10:])[0]
 
         document.append(Paragraph(str(audit_ls["id"]),ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
         document.append(Image('singhealth_logo.png', 2.2*inch, 2.2*inch))
@@ -2158,18 +2159,18 @@ def report_checklistt():
         document.append(Paragraph("Timestamp : " + audit_ls['timestamp'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
         document.append(Spacer(1,1))
         
-        checklist = audit_ls['checklist']
-        checklist = ['',''] + checklist[:3] + [''] + checklist[3:13] + ['',''] + checklist[13:28] + [''] + checklist[28:30] + ['',''] + checklist[30:56] + [''] + checklist[56:67] + ['',''] + checklist[56:]
-
+        checklist = audit_ls['profstaffhydScoreList'] + audit_ls['housekeepScoreList'] + audit_ls['foodhydScoreList'] + audit_ls['healthierScoreList'] + audit_ls['worksafetyhealthScoreList']
         for i in range(len(checklist)):
-            if checklist[i] == -1:
-                checklist[i] = 'NA'
-            elif checklist[i] == 1:
-                checklist[i] = 'yes'
-            elif checklist[i] == 0:
-                checklist[i] = 'no'
+            checklist[i] = str(checklist[i])
+        print(len(checklist))
+        print(len(audit_ls['worksafetyhealthScoreList']))
+        checklist = ['',''] + checklist[:3] + [''] + checklist[3:13] + ['',''] + checklist[13:28] + [''] + checklist[28:30] + ['',''] + checklist[30:56] + [''] + checklist[56:67] + ['',''] + checklist[67:74] + [''] + checklist[74:78] + ['',''] + checklist[78:89] + [''] + checklist[89:92] + [''] + checklist[92:96]
+
+        print(len(df['data']))
 
         df['data'] = checklist
+
+        print(df)
 
         text = ""
 
