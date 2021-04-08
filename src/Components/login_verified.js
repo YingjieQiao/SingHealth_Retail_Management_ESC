@@ -19,35 +19,35 @@ class login_verified extends Component {
         Enter_Token: event.target.value
     })
   }
-  handleClick() {
-    console.log('Click happened');
-    console.log(this.props.location.state.detail);
-    axios.get(`http://localhost:5000//login_verified/`+this.props.location.state.detail)
-          .then(res => {
+  // handleClick() {
+  //   console.log('Click happened');
+  //   console.log(this.props.location.state.detail);
+  //   axios.get(`http://localhost:5000//login_verified/`+this.props.location.state.detail)
+  //         .then(res => {
 
-            console.log(res.data);
-            console.log('Click happened');
-            if (res.data.result === true) {
-                alert("Login success!\n "+res.data.result+"\n"+res.data.info);
-                this.props.history.push('/home');
+  //           console.log(res.data);
+  //           console.log('Click happened');
+  //           if (res.data.result === true) {
+  //               alert("Login success!\n "+res.data.result+"\n"+res.data.info);
+  //               this.props.history.push('/home');
               
-            } 
-            else {
-                if(res.data.info=="Link has expired"){
-                alert("Login unsuccessful:( \n"+res.data.info);
-                this.props.history.push('/');
-                } 
+  //           } 
+  //           else {
+  //               if(res.data.info=="Link has expired"){
+  //               alert("Login unsuccessful:( \n"+res.data.info);
+  //               this.props.history.push('/');
+  //               } 
 
-              }
-        })
+  //             }
+  //       })
 
-  }
+  //}
   handleSubmit = event => {
     event.preventDefault();
 
     const user = {
-      password: this.state.password,
-      email: this.state.email
+      token: this.state.Enter_Token,
+
     };
     const headers = {
         'Content-Type': 'application/json',
