@@ -127,6 +127,7 @@ def assign_s3_bucket(username):
         bucketName, counterPart_bucketName = "escapp-bucket-dev-tenant", "escapp-bucket-dev"
     else:
         #print("something wrong")
+        pass
 
     return bucketName, counterPart_bucketName
 
