@@ -27,7 +27,6 @@ class viewPhoto extends Component {
             <div>
                 <TenantNavbar/>
                 <h2>Tenant View Photos</h2>
-                <h2>The button on the left is not working yet</h2>
                 <p>{this.state.reviewPhotoMsg}</p>
                 <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoByStaffHandler}>View Photos Uploaded By Staff</button>
                 <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoByTenantHandler}>View Previously Uploaded Photos</button>
