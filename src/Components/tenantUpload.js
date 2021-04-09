@@ -16,20 +16,38 @@ class Upload extends Component {
         notes: "",
         staffName: "",
         tenantName: "",
-        rectified: false
+        rectified: false,
+        staffList: [],
     };
-    componentDidMount() {
 
-        axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
-        .then(
-            res => {
-                console.log(res.data);
-                if(res.data.username==""){
-                  alert("Please Log in!");
-                  this.props.history.push('/');
+    componentDidMount() {
+        try {
+            axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
+            .then(
+                res => {
+                    console.log(res.data);
+                    if(res.data.username==""){
+                      alert("Please Log in!");
+                      this.props.history.push('/');
+                    }
                 }
-            }
-        )}
+            );
+            axios.get("http://localhost:5000/get_staff_list", {withCredentials: true})
+            .then(
+                res => {
+                    console.log(res.data);
+                    if (res.data.result) {
+                        for (var i = 0; i < res.data.staffList.length; i++) {
+                            let newArray1 = this.state.staffList;
+                            newArray1.push(res.data.staffList[i]);
+                            this.setState({staffList: newArray1});
+                        }
+                    }
+                }
+            );
+        } catch (e) { console.log(e); }
+    }
+
     render() { 
         return (
             <div style={{margin: "10px"}}>
@@ -46,7 +64,7 @@ class Upload extends Component {
                     <form>
                         <h1>Photo Information</h1>
 
-                        <label>tags :</label><select onChange={this.tagsHandler} defaultValue="none">
+                        <label>Tags:</label><select onChange={this.tagsHandler} defaultValue="none">
                             <option defaultValue>Select tags</option>
                             <option value="Professionalism and Staff Hygiene">Professionalism and Staff Hygiene</option>
                             <option value="HouseKeeping and General Cleanliness2">HouseKeeping and General Cleanliness</option>
@@ -55,14 +73,16 @@ class Upload extends Component {
                             <option value="Workplace Safety and Health">Workplace Safety and Health</option>
                         </select><br />
                         
-                        <label>notes :</label> <input type="text" 
+                        <label>Notes:</label> <input type="text" 
                             value={this.state.notes} onChange={this.notesHandler} placeholder="notes..." /><br />
 
-                        <label>tenant :</label><select onChange={this.staffHandler} defaultValue="none">
+                        <label>Staff:</label><select onChange={this.staffHandler} defaultValue="none">
                             <option defaultValue>Select staff to answer to</option>
-                            <option value="YingjieQiao">YingjieQiao</option>
+                            { this.state.staffList.map(staff => <option value={staff} key={staff}>{staff}</option> ) }
+                            {/* <option value="YingjieQiao">YingjieQiao</option>
                             <option value="CarlJohnson">CarlJohnson</option>
                             <option value="good staff">good staff</option>
+                            <option value="Li WenTest2">Li WenTest2</option> */}
                         </select><br />
 
                     </form >
