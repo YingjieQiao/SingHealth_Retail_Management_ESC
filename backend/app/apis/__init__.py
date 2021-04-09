@@ -680,25 +680,25 @@ def email():
 
     # attaching a picture
 
-    filename = "picture.png"  # In same directory as script
+    # filename = "picture.png"  # In same directory as script
 
-    with apis.open_resource(filename) as attachment:
-    # Add file as application/octet-stream
-    # Email client can usually download this automatically as attachment
-        part = MIMEBase("application", "octet-stream")
-        part.set_payload(attachment.read())
+    # with apis.open_resource(filename) as attachment:
+    # # Add file as application/octet-stream
+    # # Email client can usually download this automatically as attachment
+    #     part = MIMEBase("application", "octet-stream")
+    #     part.set_payload(attachment.read())
 
-    # Encode file in ASCII characters to send by email    
-    encoders.encode_base64(part)
+    # # Encode file in ASCII characters to send by email    
+    # encoders.encode_base64(part)
 
-    # Add header as key/value pair to attachment part
-    part.add_header(
-        "Content-Disposition",
-        f"attachment; filename= {filename}",
-    )
+    # # Add header as key/value pair to attachment part
+    # part.add_header(
+    #     "Content-Disposition",
+    #     f"attachment; filename= {filename}",
+    # )
 
-    # Add attachment to message and convert message to string
-    message.attach(part)
+    # # Add attachment to message and convert message to string
+    # message.attach(part)
     text = message.as_string()
 
     # Log in to server using secure context and send email
