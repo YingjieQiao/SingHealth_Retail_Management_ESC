@@ -77,9 +77,7 @@ class Upload extends Component {
 
                         <label>Tenant:</label><select id= "tenant" onChange={this.tenantHandler} defaultValue="none">
                             <option defaultValue>Select tenant</option>
-                            <option value="mihirchibs">mihirchibs</option>
-                            <option value="mihirnair">mihirnair</option>
-                            <option value="ishaan">ishaannair</option>
+                            { this.state.tenantList.map(tenant => <option value={tenant} key={tenant}>{tenant}</option> ) }
                         </select><br />
 
                     </form >

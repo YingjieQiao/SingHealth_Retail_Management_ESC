@@ -68,7 +68,7 @@ def get_current_username_and_datetime():
     username = utils.get_current_username()
     userEmail = utils.get_user_email(username)
 
-    return {"username": username, "time": time_, "date": date_, "email": email, "session": session.sid}, 200
+    return {"username": username, "time": time_, "date": date_, "email": userEmail, "session": session.sid}, 200
 
 
 @apis.route('/check_if_staff', methods=['GET'])
@@ -178,7 +178,6 @@ def user_signup():
 def user_login():
     body = request.get_json()
     try:
-        print(body)
         user = User.objects.get(email=body.get('email'))
         locked = user.is_acc_locked()
         if locked:
