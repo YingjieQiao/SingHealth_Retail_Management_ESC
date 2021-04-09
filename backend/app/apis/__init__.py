@@ -284,9 +284,9 @@ def upload_file():
     audienceName = ""
     try:
         audienceName = utils.assign_audience_name(username, request.form["staffName"], request.form["tenantName"])
-    except Exception as e:
+    except:
         #print("Error occurred: ", e)
-        logger.error("In '/upload_file' endpoint, error occurred: ", e)
+        logger.error("In '/upload_file' endpoint, error occurred: ")
         return {'result': False}, 500
 
     if username == "":
@@ -328,9 +328,9 @@ def download_file():
     try:
         body = request.get_json()
         counterPart = body["counterPart"]
-    except Exception as e:
+    except:
         # print("Error occurred: ", e)
-        logger.error("In '/download_file' endpoint, error occurred: ", e)
+        logger.error("In '/download_file' endpoint, error occurred: ")
         return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
 
     username = utils.get_current_username()
@@ -378,7 +378,7 @@ def download_file():
     return {'result': True, 'photoData': photoData, 'photoAttrData': photoAttrData}, 200
 
 
-@apis.route('/upload_photo_info', methods=['GET', 'POST'])
+@apis.route('/upload_photo_info', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def upload_photo_info():
     body = request.get_json()
@@ -450,9 +450,9 @@ def rectify_photo():
     try:
         photoInfo = Photo.objects(date=date_, time=time_, staffName=username)
         photoInfo.update(**body)
-    except Exception as e:
+    except:
         # print("error: ", e) 
-        logger.error("In '/rectify_photo' endpoint, error occurred: ", e)
+        logger.error("In '/rectify_photo' endpoint, error occurred: ")
         return {'result': False}, 500
 
     return {'result': True}, 200
@@ -554,7 +554,7 @@ def staff_get_photo_notification():
     """
     username = utils.get_current_username()
     if username == "":
-        username = 'UnitTesterStaff'
+        username = 'UnitTester'
         # print("testing") #TODO change to logging
     
     try:
@@ -2685,7 +2685,7 @@ def TEST_add_notification():
         body['deleted'] = False
         newPhotoNotification = PhotoNotification(**body)
         newPhotoNotification.save()
-    except Exception as e:
+    except:
         #print("error occurred: ", e)
         return {'result': False}, 500
 
@@ -2705,7 +2705,7 @@ def TEST_add_notification_from_staff():
         body['deleted'] = False
         newPhotoNotificationFromTenant = PhotoNotificationFromTenant(**body)
         newPhotoNotificationFromTenant.save()
-    except Exception as e:
+    except:
         #print("error occurred: ", e)
         return {'result': False}, 500
 

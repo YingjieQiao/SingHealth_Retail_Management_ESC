@@ -68,7 +68,7 @@ def staff_update_photo_notification(op, username, body):
         body['read'] = True
 
     if username == "":
-        username = "UnitTesterStaff"
+        username = "UnitTester"
         # print("testing: ", username)
         logger.info("testing '/staff_delete_photo_notification' endpoint")
 

@@ -1,6 +1,6 @@
 from app.config import Config
 from app import create_app
-from app.models import Photo, User
+from app.models import Photo, User, PhotoNotification, PhotoNotificationFromTenant
 import boto3
 from botocore.exceptions import ClientError
 import os, json
@@ -39,3 +39,12 @@ class TestBase:
         realUsers = User.objects()
         res = json.loads(realUsers.to_json())
         return len(res) == 5
+
+
+    def clean_db_notif_test(self):
+        testPhotoNotifications = PhotoNotification.objects(staffName="UnitTester")
+        testPhotoNotifications.delete()
+
+    def clean_db_notif_tenant_test(self):
+        testPhotoNotificationFromTenant = PhotoNotificationFromTenant.objects(staffName="UnitTester")
+        testPhotoNotificationFromTenant.delete()
