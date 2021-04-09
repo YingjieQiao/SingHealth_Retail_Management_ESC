@@ -1,10 +1,17 @@
 from app.models import User, Photo
 import csv, json, uuid, os, logging
-from flask import current_app
+from flask import current_app, session
 import shutil
 
 
 logger = logging.getLogger("logger")
+
+def get_current_username():
+    username = ""
+    if "username" in session:
+        username = session['username']
+    #print("in utils get username: ", username)
+    return username
 
 def get_data():
     users = User.objects()
@@ -64,7 +71,7 @@ def write_to_csv(inputData, dataType):
 
     assetsFolderName = get_assets_folder_string()
     filePath = os.path.join(os.getcwd(), assetsFolderName)
-    print(os.path.join(filePath + fileName))
+    #print(os.path.join(filePath + fileName))
     with open(os.path.join(filePath + fileName), mode='w') as csvFile:
         writer = csv.DictWriter(csvFile, fieldnames=fileHeaders)
         writer.writeheader()
@@ -92,7 +99,7 @@ def check_if_staff(username, flag):
     for user in users:
         username_check = "".join([user["firstName"], user["lastName"]])
         if (username == username_check):
-            print("found staff: ", username)
+            #print("found staff: ", username)
             return True
     return False
 
@@ -104,7 +111,7 @@ def check_if_tenant(username, flag):
     for user in users:
         username_check = "".join([user["firstName"], user["lastName"]])
         if (username == username_check):
-            print("found tenant: ", username)
+            #print("found tenant: ", username)
             return True
     return False
 
@@ -119,7 +126,8 @@ def assign_s3_bucket(username):
     elif (check_if_tenant(username, False)):
         bucketName, counterPart_bucketName = "escapp-bucket-dev-tenant", "escapp-bucket-dev"
     else:
-        print("something wrong")
+        #print("something wrong")
+        pass
 
     return bucketName, counterPart_bucketName
 
@@ -145,7 +153,7 @@ def get_tenant_email(tenantName):
         tenantName_check = "".join([user["firstName"], user["lastName"]])
         if (tenantName == tenantName_check):
             tenantEmail = user["email"]
-            print("found tenant email: ", tenantEmail)
+            #print("found tenant email: ", tenantEmail)
             break
     return tenantEmail
 
@@ -157,6 +165,34 @@ def get_staff_email(staffName):
         staffName_check = "".join([user["firstName"], user["lastName"]])
         if (staffName == staffName_check):
             staffEmail = user["email"]
-            print("found tenant email: ", staffEmail)
+            #print("found tenant email: ", staffEmail)
             break
     return staffEmail
+
+
+def counter_brute_force(firstName, lastName):
+    user = User.objects().get_or_404(firstName=firstName, lastName=lastName)
+    body = mongo_object_to_dict(user)
+    body["attempts"] += 1
+    print(body["attempts"])
+    body.pop("_id", None)
+    user.update(**body)
+    if body["attempts"] >= 10:
+        return True
+    return False
+
+
+def reset_counter_brute_force(firstName, lastName):
+    user = User.objects().get_or_404(firstName=firstName, lastName=lastName)
+    body = mongo_object_to_dict(user)
+    body["attempts"] = 0
+    body.pop("_id", None)
+    user.update(**body)
+
+
+def lock_acc(firstName, lastName):
+    user = User.objects().get_or_404(firstName=firstName, lastName=lastName)
+    body = mongo_object_to_dict(user)
+    body["locked"] = True
+    body.pop("_id", None)
+    user.update(**body)

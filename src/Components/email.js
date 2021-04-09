@@ -46,7 +46,8 @@ class Email extends Component {
         };
         const headers = {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            withCredentials: true
         };
     
         axios.post('http://localhost:5000/email', user, headers)
@@ -66,7 +67,7 @@ class Email extends Component {
     
     componentDidMount() {
 
-        axios.get("http://localhost:5000/if_loggedin")
+        axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
         .then(
             res => {
                 console.log(res.data);

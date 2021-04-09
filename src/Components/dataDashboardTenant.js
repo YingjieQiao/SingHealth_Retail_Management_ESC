@@ -23,7 +23,7 @@ class DataDashboardTenant extends Component {
 
     componentDidMount() {
         try {
-            axios.get("http://localhost:5000/if_loggedin")
+            axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
             .then(
                 res => {
                     console.log(res.data);
@@ -34,8 +34,14 @@ class DataDashboardTenant extends Component {
                 }
             );
 
+            const headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Access-Control-Allow-Origin': '*',
+                withCredentials: true
+            };
+
             const data = {tenant: this.state.tenant};
-            axios.post("http://localhost:5000/dashboard_data", data)
+            axios.post("http://localhost:5000/dashboard_data", data, headers)
             .then(
                 res => {
                     if (res.data.result) {
@@ -45,7 +51,7 @@ class DataDashboardTenant extends Component {
                 }
             );
 
-            axios.get("http://localhost:5000/staff_list")
+            axios.get("http://localhost:5000/staff_list", {withCredentials: true})
             .then(
                 res => {
                     if (res.data.result) {
@@ -59,7 +65,7 @@ class DataDashboardTenant extends Component {
                 }
             );
 
-            axios.get("http://localhost:5000/tenant_list")
+            axios.get("http://localhost:5000/tenant_list", {withCredentials: true})
             .then(
                 res => {
                     if (res.data.result) {
@@ -310,8 +316,15 @@ class DataDashboardTenant extends Component {
 
     handleSendReport = event => {
         try {
+
+            const headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Access-Control-Allow-Origin': '*',
+                withCredentials: true
+            };
+
             console.log(this.state);
-            axios.post("http://localhost:5000/report_dashboard", this.state)
+            axios.post("http://localhost:5000/report_dashboard", this.state, headers)
             .then(
                 res => {
                     console.log(res.data);

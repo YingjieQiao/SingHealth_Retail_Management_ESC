@@ -20,7 +20,7 @@ class EmailReport extends Component {
 
     componentDidMount() {
         try {
-            axios.get("http://localhost:5000/tenant_list")
+            axios.get("http://localhost:5000/tenant_list", {withCredentials: true})
             .then(
                 res => {
                     console.log(res);
@@ -82,7 +82,8 @@ class EmailReport extends Component {
             try {
                 const headers = {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    'Access-Control-Allow-Origin': '*'
+                    'Access-Control-Allow-Origin': '*',
+                    withCredentials: true
                 };
                 axios.post("http://localhost:5000/report_timeframe", this.state.emailContent, headers)
                 .then(
@@ -128,7 +129,8 @@ class EmailReport extends Component {
         try {
             const headers = {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                withCredentials: true
             };
             axios.post("http://localhost:5000/report_checklist", this.state.emailContent, headers)
                 .then(

@@ -20,7 +20,7 @@ class Upload extends Component {
     };
     componentDidMount() {
 
-        axios.get("http://localhost:5000/if_loggedin")
+        axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
         .then(
             res => {
                 console.log(res.data);
@@ -81,7 +81,7 @@ class Upload extends Component {
         event.preventDefault()
 
         // set staff username
-        axios.get("http://localhost:5000/get_current_username_and_datetime").then(
+        axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true}).then(
             res => {
                 console.log(res);
                 // this.setState({staffName: res.data.result});
@@ -106,7 +106,8 @@ class Upload extends Component {
             };
             const headers = {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                withCredentials: true
             };
         
             axios.post(`http://localhost:5000/upload_photo_info`, photo, headers)

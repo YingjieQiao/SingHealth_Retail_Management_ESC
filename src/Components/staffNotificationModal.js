@@ -10,7 +10,7 @@ class stafftNotificationModal extends Component {
   }
 
   componentDidMount() {
-    axios.get("http://localhost:5000/staff_get_photo_notification")
+    axios.get("http://localhost:5000/staff_get_photo_notification", { withCredentials: true })
     .then(
         res => {
             console.log(res);
@@ -79,7 +79,8 @@ class stafftNotificationModal extends Component {
     try {
       const headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        withCredentials: true
       };
   
       axios.post("http://localhost:5000/staff_read_photo_notification", this.state.data[index], headers
@@ -102,7 +103,8 @@ class stafftNotificationModal extends Component {
     try {
       const headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        withCredentials: true
       };
       axios.post("http://localhost:5000/staff_delete_photo_notification", this.state.data[index], headers
       ).then(res => {

@@ -1,4 +1,5 @@
 from flask import Blueprint, request, session, jsonify, url_for, current_app, send_from_directory
+from flask_cors import cross_origin
 from app.models import User, Audit_non_FB, Photo, TenantPhoto, PhotoNotification, PhotoNotificationFromTenant, Audit_FB, Covid_Compliance
 import boto3
 from botocore.exceptions import ClientError
@@ -8,7 +9,7 @@ import os
 from datetime import datetime
 import json
 
-from . import settings, s3_methods, utils, notif_methods, email_methods
+from . import s3_methods, utils, notif_methods, email_methods
 
 import email, smtplib, ssl
 from email import encoders
@@ -25,11 +26,13 @@ import base64
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 
 import csv #new library
-from fpdf import FPDF #new library included
+from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER, TA_LEFT
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
 
 import shutil
-
-s = URLSafeTimedSerializer('Thisisasecret!')
 
 sender_email = "starboypp69@gmail.com"
 password = "MDR-XB450AP"
@@ -45,7 +48,15 @@ logger = logging.getLogger("logger")
 #TODO remove downloaded csv from project directory 
 # after the file is downloaded on the frontned by the user for admin page
 
+
+@apis.after_request
+def creds(response):
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    return response
+
+
 @apis.route('/get_current_username_and_datetime', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def get_current_username_and_datetime():
     now = datetime.now() # current date and time
     dateTime = now.strftime("%m/%d/%Y %H:%M:%S")
@@ -54,14 +65,13 @@ def get_current_username_and_datetime():
     date_ = date_.replace("/", "-")
     time_ = dateTimeArr[1]
 
-    return {"username": settings.username, "time": time_, "date": date_}, 200
+    username = utils.get_current_username()
 
-@apis.route('/if_loggedin', methods=['GET', 'POST'])
-def if_loggedin():
-    return {"username": settings.username}, 200
+    return {"username": username, "time": time_, "date": date_, "session": session.sid}, 200
 
 
 @apis.route('/check_if_staff', methods=['GET'])
+@cross_origin(supports_credentials=True)
 def check_if_staff():
     if current_app.config['TESTING']:
         flag = True
@@ -69,14 +79,15 @@ def check_if_staff():
         flag = False
 
     try:
-        res = utils.check_if_staff(settings.username, flag)
+        res = utils.check_if_staff(utils.get_current_username(), flag)
     except Exception as e:
         logger.error("error in '/check_if_staff' endpoint: %s", e)
-        return {"result": False}, 500
-    return {"result": res}, 200
+        return {"result": False, "session": session.sid}, 500
+    return {"result": res, "session": session.sid}, 200
 
 
 @apis.route('/check_if_tenant', methods=['GET'])
+@cross_origin(supports_credentials=True)
 def check_if_tenant():
     if current_app.config['TESTING']:
         flag = True
@@ -84,14 +95,15 @@ def check_if_tenant():
         flag = False
         
     try:
-        res = utils.check_if_tenant(settings.username, flag)
+        res = utils.check_if_tenant(utils.get_current_username(), flag)
     except Exception as e:
         logger.error("error in '/check_if_tenant' endpoint: %s", e)
-        return {"result": False}, 500
-    return {"result": res}, 200
+        return {"result": False, "session": session.sid}, 500
+    return {"result": res, "session": session.sid}, 200
 
 
 @apis.route('/signup', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def user_signup():
     body = request.get_json()
     print(body)
@@ -101,7 +113,6 @@ def user_signup():
         user.save()
         userid = user.id
     except Exception as e:
-        print("error: ", e)
         logger.error("error in '/signup' endpoint: %s", e)
         return {'result': False, 'info': "Registeration Failed"}, 500
 
@@ -112,6 +123,7 @@ def user_signup():
         'email': body['email'],
         'mobile': body['mobile'],
         'location': body['location'],
+        "session": session.sid
     }
 
     # code to verify user
@@ -144,7 +156,7 @@ def user_signup():
     #     server.login(sender_email, password)
     #     server.sendmail(sender_email, email, text)
     logger.info("username %s sign up success", body['firstName']+body['lastName'])
-    return {'result': True, 'info': "Registeration Success"}, 200
+    return {'result': True, 'info': "Registeration Success", "session": session.sid}, 200
 
 # Code to verify the link for user registration, not being used for now
 
@@ -161,6 +173,7 @@ def user_signup():
 #         return {'result': False, 'info': "Link has expired"}, 200
 
 @apis.route('/login', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def user_login():
     body = request.get_json()
     try:
@@ -169,14 +182,20 @@ def user_login():
         firstName = user.firstName
         lastName = user.lastName
         authorized = user.check_password(body.get('password'))
+        #print(authorized)
         if not authorized:
+            if utils.counter_brute_force(firstName, lastName):
+                logger.error("brute force attack detected!")
+                utils.lock_acc(firstName, lastName)
+                return {'result': False, 'info': "brute force attack detected! your account is locked. Please contact admin to unlock"}, 200
             logger.error("error in '/login' endpoint: %s", "password error")
-            return {'result': False, 'info': "password error"}, 500
+            raise Exception("password error")
+        session['username'] = firstName + lastName
+        session.modified = True
+        #print("username set: ", session['username'])
     except:
-        logger.error("error in '/login' endpoint: %s", "user does not exist or payload error")
-        return {'result': False, 'info': "user does not exist or payload error"}, 500
-
-    settings.username = firstName + lastName
+        logger.error("error in '/login' endpoint: %s", "user does not exist or payload error or password incorrect")
+        return {'result': False, 'info': "user does not exist or password error"}, 200
 
     try:
         message = MIMEMultipart()
@@ -185,7 +204,7 @@ def user_login():
         message["To"] = email
         message["Subject"] = "Link to login to SingHealth"
     except:
-        print("error occured")
+        #print("error occured")
         logger.error("error in '/login' endpoint: %s", "user does not exist")
         return {'result': False, 'info': "user does not exist"}, 500
 
@@ -206,16 +225,15 @@ def user_login():
         server.login(sender_email, password)
         server.sendmail(sender_email, email, text)
 
-    settings.username = firstName + lastName
-    print(settings.username)
     logger.info("%s is attemping to log in", firstName+lastName)
 
     return {'result': True, 'info': "2FA sent", "token":token,
              'firstName': firstName, 'lastName': lastName,
-             'staff': user.staff, 'tenant': user.tenant, 'admin': user.admin}
+             'staff': user.staff, 'tenant': user.tenant, 'admin': user.admin, "session": session.sid}
 
 
 @apis.route('/login_verified', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def login_verified():
 
     body = request.get_json()
@@ -229,17 +247,22 @@ def login_verified():
         staff=user.staff
         admin=user.admin
         tenant=user.tenant
-        settings.username = firstName + lastName
+        session['username'] = firstName + lastName
+        session.modified = True
+        #print(session['username'])
         logger.info("%s has logged in", firstName+lastName)
-        return {'result': True, 'firstName': firstName, 'lastName': lastName, 'staff':staff, 'admin':admin, 'tenant':tenant}, 200 #this returns the details of the user 
-    except:
-        logger.info("%s 2FA error", firstName+lastName)
-        return {'result': False, 'info': "2FA error"}, 500
+        utils.reset_counter_brute_force(firstName, lastName)
+        return {'result': True, 'firstName': firstName, 'lastName': lastName, 
+            'staff':staff, 'admin':admin, 'tenant':tenant, "session": session.sid}, 200 #this returns the details of the user 
+    except Exception as e:
+        logger.error("%s 2FA error", e)
+        return {'result': False, 'info': "2FA error", "session": session.sid}, 500
     # except SignatureExpired:
     #     return {'result': False, 'info': "Link has expired"}, 200
 
     
 @apis.route('/upload_file', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def upload_file():
     if current_app.config['TESTING']:
         testFilePath = os.getcwd() + "/assets/image.jpg"
@@ -250,18 +273,18 @@ def upload_file():
     time_ = request.form['time']
     date_ = request.form['date']
 
-    username = settings.username
+    username = utils.get_current_username()
     audienceName = ""
     try:
         audienceName = utils.assign_audience_name(username, request.form["staffName"], request.form["tenantName"])
     except Exception as e:
-        print("Error occurred: ", e)
+        #print("Error occurred: ", e)
         logger.error("In '/upload_file' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
     if username == "":
         username = 'UnitTester'
-        print("testing s3 upload")
+        #print("testing s3 upload")
         logger.info("testing s3 upload")
     filename = username + "_" + audienceName + "_" + date_ + "_" + time_ + ".jpg"
     
@@ -275,14 +298,14 @@ def upload_file():
 
     bucketName, counterPart_bucketName = utils.assign_s3_bucket(username) # always False for upload
     if bucketName == "":
-        print("username invalid: ", username)
+        #print("username invalid: ", username)
         logger.error("In '/upload_file' endpoint, username invalid: ", username)
         return {'result': False}, 500
     
     try:
         s3_methods.upload_file(filename, bucketName, None)
     except Exception as e:
-        print("Error occurred: ", e)
+        # print("Error occurred: ", e)
         logger.error("In '/upload_file' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -293,26 +316,27 @@ def upload_file():
 
 
 @apis.route('/download_file', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def download_file():
     try:
         body = request.get_json()
         counterPart = body["counterPart"]
     except Exception as e:
-        print("Error occurred: ", e)
+        # print("Error occurred: ", e)
         logger.error("In '/download_file' endpoint, error occurred: ", e)
         return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
 
-    username = settings.username
+    username = utils.get_current_username()
     if username == "":
         username = 'UnitTester'
-        print("testing s3 download")
+        # print("testing s3 download")
         logger.info("testing s3 download")
     timeInput = None
     dateInput = None
 
     bucketName, counterPart_bucketName = utils.assign_s3_bucket(username)
     if bucketName == "":
-        print("username invalid: ", username)
+        # print("username invalid: ", username)
         logger.error("In '/download_file' endpoint, username invalid: ", username)
         return {'result': False}, 500
 
@@ -321,7 +345,7 @@ def download_file():
             res = s3_methods.download_user_objects(bucketName, username,
                                                         timeInput, dateInput, counterPart)
         except Exception as e:
-            print("Error occurred: ", e)
+            # print("Error occurred: ", e)
             logger.error("In '/download_file' endpoint, error occurred: ", e)
             return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
     else:
@@ -329,7 +353,7 @@ def download_file():
             res = s3_methods.download_user_objects(counterPart_bucketName, username,
                                                         timeInput, dateInput, counterPart)
         except Exception as e:
-            print("Error occurred: ", e)
+            # print("Error occurred: ", e)
             logger.error("In '/download_file' endpoint, error occurred: ", e)
             return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
     
@@ -348,10 +372,9 @@ def download_file():
 
 
 @apis.route('/upload_photo_info', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def upload_photo_info():
     body = request.get_json()
-
-    print(body)
 
     try:
         photo = Photo(**body)
@@ -368,7 +391,7 @@ def upload_photo_info():
         """
         email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
     except Exception as e:
-        print("Error occurred: ", e)
+        # print("Error occurred: ", e)
         logger.error("In '/upload_photo_info' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -376,27 +399,27 @@ def upload_photo_info():
 
 
 @apis.route('/tenant_upload_photo_info', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def tenant_upload_photo_info():
     body = request.get_json()
-
-    print(body)
 
     try:
         tenantPhoto = TenantPhoto(**body)
         tenantPhoto.save()
 
-        # notofication operations
-        notif_methods.add_notification_from_tenant(body)
+        if not current_app.config['TESTING']:
+            # notofication operations
+            notif_methods.add_notification_from_tenant(body)
 
-        rcvEmail = utils.get_staff_email(body["staffName"])
-        subject = "A tenant from a SingHealth institution has uploaded a remedy effort"
-        emailTextBody = """
-        Please login to our retail-management platform using your staff account, 
-        and take necessary actions accordingly.
-        """
-        email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
+            rcvEmail = utils.get_staff_email(body["staffName"])
+            subject = "A tenant from a SingHealth institution has uploaded a remedy effort"
+            emailTextBody = """
+                Please login to our retail-management platform using your staff account, 
+                and take necessary actions accordingly.
+                """
+            email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
     except Exception as e:
-        print("Error occurred: ", e)
+        # print("Error occurred: ", e)
         logger.error("In '/tenant_upload_photo_info' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -404,23 +427,49 @@ def tenant_upload_photo_info():
 
 
 @apis.route('/rectify_photo', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def rectify_photo():
     body = request.get_json()
     body['rectified'] = True
     time_ = body['time']
     date_ = body['date']
-    print(body)
 
-    if settings.username == "":
-        settings.username = "UnitTester"
-        print("testing")
+    username = utils.get_current_username()
+    if username == "":
+        username = "UnitTester"
+        # print("testing")
         logger.info("testing '/rectify_photo' endpoint")
 
     try:
-        photoInfo = Photo.objects(date=date_, time=time_, staffName=settings.username)
+        photoInfo = Photo.objects(date=date_, time=time_, staffName=username)
         photoInfo.update(**body)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
+        logger.error("In '/rectify_photo' endpoint, error occurred: ", e)
+        return {'result': False}, 500
+
+    return {'result': True}, 200
+
+
+@apis.route('/tenant_rectify_photo', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
+def tenant_rectify_photo():
+    body = request.get_json()
+    body['rectified'] = True
+    time_ = body['time']
+    date_ = body['date']
+
+    username = utils.get_current_username()
+    if username == "":
+        username = "UnitTester"
+        # print("testing")
+        logger.info("testing '/rectify_photo' endpoint")
+
+    try:
+        photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=username)
+        photoInfo.update(**body)
+    except Exception as e:
+        # print("error: ", e) 
         logger.error("In '/rectify_photo' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -428,38 +477,40 @@ def rectify_photo():
 
 
 @apis.route('/tenant_get_photo_notification', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def tenant_get_photo_notification():
     """
     get non-compliance photos of tenant user
     """
-    username = settings.username
+    username = utils.get_current_username()
     if username == "":
         username = 'RossGeller'
-        print("testing") #TODO change to logging
+        # print("testing") #TODO change to logging
     
     try:
         photoNotifications = PhotoNotification.objects(tenantName=username, deleted=False)
-        print(photoNotifications)
+        # print(photoNotifications)
         return {"result": True, "tenantData": photoNotifications}, 200
     except Exception as e:
-        print("error: ", e) # logger
+        # print("error: ", e) # logger
         return {"result": False, "tenantData": None}, 500
 
 
 @apis.route('/tenant_delete_photo_notification', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def tenant_delete_photo_notification():
     body = request.get_json()
     try:
         body.pop("_id", None)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/tenant_delete_photo_notification' endpoint, error occurred: ", e)
-    print(body)
+    # print(body)
 
     try:
-        notif_methods.tenant_update_photo_notification("delete", settings.username, body)
+        notif_methods.tenant_update_photo_notification("delete", utils.get_current_username(), body)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/tenant_delete_photo_notification' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -467,19 +518,20 @@ def tenant_delete_photo_notification():
 
 
 @apis.route('/tenant_read_photo_notification', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def tenant_read_photo_notification():
     body = request.get_json()
     try:
         body.pop("_id", None)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/tenant_read_photo_notification' endpoint, error occurred: ", e)
-    print(body)
+    # print(body)
 
     try:
-        notif_methods.tenant_update_photo_notification("read", settings.username, body)
+        notif_methods.tenant_update_photo_notification("read", utils.get_current_username(), body)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/tenant_read_photo_notification' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -487,38 +539,41 @@ def tenant_read_photo_notification():
 
 
 @apis.route('/staff_get_photo_notification', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
+# @cross_origin(supports_credentials=True)
 def staff_get_photo_notification():
     """
     get remedy photos of tenant user
     """
-    username = settings.username
+    username = utils.get_current_username()
     if username == "":
         username = 'UnitTesterStaff'
-        print("testing") #TODO change to logging
+        # print("testing") #TODO change to logging
     
     try:
         photoNotificationsFromTenant = PhotoNotificationFromTenant.objects(staffName=username, deleted=False)
-        print(photoNotificationsFromTenant)
-        return {"result": True, "staffData": photoNotificationsFromTenant}, 200
+        # print(photoNotificationsFromTenant)
+        return {"result": True, "staffData": photoNotificationsFromTenant, "session": session.sid}, 200
     except Exception as e:
-        print("error: ", e) # logger
-        return {"result": False, "staffData": None}, 500
+        # print("error: ", e) # logger
+        return {"result": False, "staffData": None, "session": session.sid}, 500
 
 
 @apis.route('/staff_delete_photo_notification', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def staff_delete_photo_notification():
     body = request.get_json()
     try:
         body.pop("_id", None)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/staff_delete_photo_notification' endpoint, error occurred: ", e)
-    print(body)
+    # print(body)
 
     try:
-        notif_methods.staff_update_photo_notification("delete", settings.username, body)
+        notif_methods.staff_update_photo_notification("delete", utils.get_current_username(), body)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/staff_delete_photo_notification' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -526,25 +581,27 @@ def staff_delete_photo_notification():
 
 
 @apis.route('/staff_read_photo_notification', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def staff_read_photo_notification():
     body = request.get_json()
     try:
         body.pop("_id", None)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/staff_read_photo_notification' endpoint, error occurred: ", e)
-    print(body)
+    # print(body)
 
     try:
-        notif_methods.staff_update_photo_notification("read", settings.username, body)
+        notif_methods.staff_update_photo_notification("read", utils.get_current_username(), body)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/staff_read_photo_notification' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
     return {'result': True}, 200
 
 @apis.route('/display_data', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def display_data():
     
     body = request.get_json()
@@ -556,7 +613,7 @@ def display_data():
         }
         res = utils.get_data()
     except Exception as e:
-        print("error: ", e)
+        # print("error: ", e)
         logger.error("In '/display_data' endpoint, error occurred: ", e)
         return {'result': False, 'data': None, 'info': 'failed'}, 500
     data = res[mapping[tableName]]
@@ -565,6 +622,7 @@ def display_data():
 
 
 @apis.route('/download_data_csv', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def download_data_csv():
     try:
         body = request.get_json()
@@ -580,7 +638,7 @@ def download_data_csv():
         dataDict = utils.mongo_object_to_dict(data)
         filePath, fileName = utils.write_to_csv(dataDict, tableName)
     except Exception as e:
-        print("error, ", e)
+        # print("error, ", e)
         logger.error("In '/download_data_csv' endpoint, error occurred: ", e)
         return {'result': False, 'data': None, 'info': 'failed'}, 500
 
@@ -588,11 +646,12 @@ def download_data_csv():
 
 
 @apis.route('/remove_temp_files', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def remove_temp_files():
     try:
         utils.clear_assets()
     except Exception as e:
-        print("error: ", e)
+        # print("error: ", e)
         logger.error("In '/remove_temp_files' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -600,13 +659,14 @@ def remove_temp_files():
 
 
 @apis.route('/email', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def email():
 
     data = request.get_json(silent=True)
     receiver_email = data.get('email')
     subject = data.get('subject')
     body = data.get('content')
-    print(receiver_email,subject,body)
+    # print(receiver_email,subject,body)
     try:
 
         message = MIMEMultipart()
@@ -620,25 +680,25 @@ def email():
 
     # attaching a picture
 
-    filename = "picture.png"  # In same directory as script
+    # filename = "picture.png"  # In same directory as script
 
-    with apis.open_resource(filename) as attachment:
-    # Add file as application/octet-stream
-    # Email client can usually download this automatically as attachment
-        part = MIMEBase("application", "octet-stream")
-        part.set_payload(attachment.read())
+    # with apis.open_resource(filename) as attachment:
+    # # Add file as application/octet-stream
+    # # Email client can usually download this automatically as attachment
+    #     part = MIMEBase("application", "octet-stream")
+    #     part.set_payload(attachment.read())
 
-    # Encode file in ASCII characters to send by email    
-    encoders.encode_base64(part)
+    # # Encode file in ASCII characters to send by email    
+    # encoders.encode_base64(part)
 
-    # Add header as key/value pair to attachment part
-    part.add_header(
-        "Content-Disposition",
-        f"attachment; filename= {filename}",
-    )
+    # # Add header as key/value pair to attachment part
+    # part.add_header(
+    #     "Content-Disposition",
+    #     f"attachment; filename= {filename}",
+    # )
 
-    # Add attachment to message and convert message to string
-    message.attach(part)
+    # # Add attachment to message and convert message to string
+    # message.attach(part)
     text = message.as_string()
 
     # Log in to server using secure context and send email
@@ -649,6 +709,7 @@ def email():
     return {'result': True, 'info': "Email was shared"}, 200
 
 @apis.route('/staff_list', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def staff_list():
     
     tenant_list = User.objects(staff = True)
@@ -671,6 +732,7 @@ def staff_list():
         return {'result': False}
 
 @apis.route('/tenant_list', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def tenant_list():
     
     tenant_list = User.objects(tenant = True)
@@ -685,10 +747,11 @@ def tenant_list():
         else:
             return {'result': False}
     except:
-        print("error")
+        # print("error")
         return {'result': False}
 
 @apis.route('/tenant_list_FB', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def tenant_list_FB():
     
     # The statement below can be used to filter entried from the table
@@ -709,6 +772,7 @@ def tenant_list_FB():
         return {'result': False}, 500
 
 @apis.route('/tenant_list_non_FB', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def tenant_list_non_FB():
     
     # The statement below can be used to filter entried from the table
@@ -729,6 +793,7 @@ def tenant_list_non_FB():
         return {'result': False}, 500
 
 @apis.route('/auditChecklistFB', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def auditchecklistFB():
     ts = datetime.now().today()
     body = request.get_json()
@@ -749,13 +814,13 @@ def auditchecklistFB():
     return {'statusText': True}
 
 @apis.route('/auditChecklistNonFB', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def auditchecklistNonFB():
     ts = datetime.now().today()
     body = request.get_json()
     print(body)
-
-    if 1==1:
-
+    print(body['workSafetyHealthScore'])
+    try:
         body['workSafetyScore'] = body['workSafetyHealthScore']
         body['profScore'] = body['profStaffHydScore']
         body['housekeepingScore'] = body['houseGeneralScore']
@@ -764,8 +829,6 @@ def auditchecklistNonFB():
         body.pop('profStaffHydScore')
         body.pop('houseGeneralScore')
         body.pop('houseGeneralScoreList')
-        print("\n\n")
-        print(body)
         audit = Audit_non_FB(**body)
         audit.timestamp = str(ts)
         audit.computeTotalScore()
@@ -776,6 +839,7 @@ def auditchecklistNonFB():
     #     return {'statusText': False}, 500
 
 @apis.route('/covidChecklist', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def covidchecklist():
     ts = datetime.now().today()
     body = request.get_json()
@@ -797,6 +861,7 @@ def covidchecklist():
     return {'statusText': True}
 
 @apis.route('/dashboard_data', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def dashboard_data():
     
     body = request.get_json(silent=True)
@@ -1061,6 +1126,7 @@ def dashboard_data():
 
 
 @apis.route('/compare_tenant', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def compare_tenant():
     
     body = request.get_json()
@@ -1460,6 +1526,7 @@ def compare_tenant():
             "audit_csv_2": [list(df_day_1.columns)] + df_2.values.tolist()}
 
 @apis.route('/report_dashboard', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def report_dashboard():
     
     body = request.get_json(silent=True)
@@ -1816,6 +1883,7 @@ def report_dashboard():
         return {'status': True}, 200
 
 @apis.route('/report_compare_tenant', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def report_compare_tenant():
     
     body = request.get_json()
@@ -2293,6 +2361,7 @@ def report_compare_tenant():
         return {'status': True}, 200
 
 @apis.route('/report_timeframe', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def report_timeframe():  
 
     body = request.get_json()
@@ -2320,93 +2389,228 @@ def report_timeframe():
 
     return {'status': True, 'timeframe_list': report_timeframe_ls}
 
+def addTitle(doc, title):
+    doc.append(Spacer(1, 20))
+    doc.append(Paragraph(title , ParagraphStyle(name='Name', fontFamily='Arial', fontSize=20, spaceAfter=1.5, alignment=TA_CENTER, bold=1)))
+    return doc
 
-@apis.route('/report_checklist') #, methods=['GET', 'POST'])
+def addParagraphs(doc, text):
+    for line in text.split('\n'):
+        doc.append(Paragraph(line))
+        doc.append(Spacer(1,1))
+    return doc
+
+@apis.route('/report_checklist', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def report_checklistt():
 
+    body = request.get_json()
 
-    # body = request.get_json()
+    timeframe = body.get('report')
 
-    # print(body)
+    document = []
 
-    df = pd.read_csv("covid_audit.csv")
+    if timeframe[:3] == "Cov":
 
-    audit_ls = Covid_Compliance.objects(timestamp = "2021-03-31 02:54:48.316355")[0]#body.get('email'))
+        df = pd.read_csv("covid_audit.csv")
+        audit_ls = Covid_Compliance.objects(timestamp = timeframe[12:])[0]
 
-    print(audit_ls)
-
-    checklist = audit_ls['checklist']
-    print(checklist)
-
-    checklist = [''] + checklist[:8] + [''] + checklist[8:]
-    print(checklist)
-
-    for i in range(len(checklist)):
-        if checklist[i] == -1:
-            checklist[i] = 'NA'
-        elif checklist[i] == 1:
-            checklist[i] = 'yes'
-        elif checklist[i] == 0:
-            checklist[i] = 'no'
-
-    print(df)
-
-    df['data'] = checklist
-
-    text = ""
-
-    print(len(df))
-
-    for i in range(len(df)-1):
-        text += df["Audit Questions"][i] + " : " + df["data"][i] + '\n'
-
-    print(text)
-
-    pdf = FPDF()
-    pdf.add_page()
-
-    page_width = pdf.w - 2 * pdf.l_margin
-    pdf.set_font('Times', 'B', 14.0)
-    pdf.cell(page_width, 0.0, 'Covid Checklist', align='C')
-
-    pdf.ln(10)
-    pdf.set_font('Courier', '', 10)
-
-    pdf.cell(page_width, 0.0, "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", ln = True ,align='L')
-    pdf.ln(10)
-
-    pdf.set_font('Times','',10.0)
-    pdf.cell(page_width, 0.0, '- end of report -', align='C')
-
-    pdf.output('student.pdf', 'F')
-
-
-
-    #     pdf.set_font('Courier', '', 10)
-
-    #     col_width = page_width/4
-
-    #     th = pdf.font_size
-
-    #     i = 0
+        document.append(Paragraph(str(audit_ls["id"]),ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Image('singhealth_logo.png', 2.2*inch, 2.2*inch))
+        document = addTitle(document, "COVID SAFE MANAGEMENT MEASURES ")
+        document = addTitle(document, "COMPLIANCE CHECKLIST GUIDE")
+        document.append(Spacer(1,20))
+        document.append(Paragraph("Name of Auditee : " + audit_ls['auditeeName'],ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,1))
+        document.append(Paragraph("Name of Auditor : " + audit_ls['auditorName'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,1))
+        document.append(Paragraph("Name of Auditor's department : " + audit_ls['auditorDepartment'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,1))
+        document.append(Paragraph("Timestamp : " + audit_ls['timestamp'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,1))
         
-    #     for row in reader:
-    #         print(row)
-    #         pdf.cell(col_width, th, str(row[0]), border=1)
-    #         pdf.cell(col_width, th, row[1], border=1)
-    #         pdf.cell(col_width, th, row[2], border=1)
-    #         pdf.ln(th)
-    #         i+=1
-    #         if i == 2:
-    #             break
-            
+        checklist = audit_ls['checklist']
+        checklist = [''] + checklist[:8] + [''] + checklist[8:]
 
-    #     pdf.ln(10)
+        for i in range(len(checklist)):
+            if checklist[i] == -1:
+                checklist[i] = 'NA'
+            elif checklist[i] == 1:
+                checklist[i] = 'yes'
+            elif checklist[i] == 0:
+                checklist[i] = 'no'
+
+        df['data'] = checklist
+
+        text = ""
+
+        for i in range(len(df)-1):
+            text += df["Audit Questions"][i] + " : " + df["data"][i] + '\n'
+
+        document.append(Spacer(1,20))
+
+        document = addParagraphs(document, text)
+        document.append(Spacer(1,5))
+        document.append(Paragraph("Comments : " + audit_ls['comment']))
+
+        SimpleDocTemplate('audit_checklist.pdf', pagesize=letter, rightMargin=12, leftMargin=12, topMargin=12, bottomMargin=6).build(document)
         
-    #     pdf.set_font('Times','',10.0)
-    #     pdf.cell(page_width, 0.0, '- end of report -', align='C')
+    elif timeframe[:3] == "Non":
 
-    #     pdf.output('student.pdf', 'F')
+        df = pd.read_csv("non_fnb_audit.csv")
+        print(timeframe[14:])
+        audit_ls = Audit_non_FB.objects(timestamp = timeframe[14:])[0]
+        print(audit_ls)
+
+        document.append(Paragraph(str(audit_ls["id"]),ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Image('singhealth_logo.png', 2.2*inch, 2.2*inch))
+        document = addTitle(document, "Audit Checklist (Non-F&B)")
+        document.append(Spacer(1,20))
+        document.append(Paragraph("Name of Auditee : " + audit_ls['auditeeName'],ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Name of Auditor : " + audit_ls['auditorName'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Name of Auditor's department : " + audit_ls['auditorDepartment'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Timestamp : " + audit_ls['timestamp'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,10))
+        document.append(Paragraph("Professionalism & Staff Hygiene Score : " + str(audit_ls['profScore']) + "/10", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Housekeeping & General Cleaniness : " + str(audit_ls['housekeepingScore']) + "/20", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Work Safety and Health Score : " + str(audit_ls['workSafetyScore']) + "/20", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Total Score : " + str(audit_ls['totalScore']) + "/100", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        
+        print( audit_ls['profstaffhydScoreList'])
+        print(audit_ls['housekeepScoreList'])
+        print(audit_ls['worksafetyhealthScoreList'])
+        checklist = audit_ls['profstaffhydScoreList'] + audit_ls['housekeepScoreList'] + audit_ls['worksafetyhealthScoreList']
+        for i in range(len(checklist)):
+            checklist[i] = str(checklist[i])
+        checklist = ['',''] + checklist[:3] + [''] + checklist[3:6] + ['',''] + checklist[6:18] + ['',''] + checklist[18:27] + [''] + checklist[27:35]
+
+        print(len(df['data']))
+        print(len(checklist))
+
+        df['data'] = checklist
+
+        print(df)
+
+        text = ""
+
+        for i in range(len(df)-1):
+            text += df["Audit Questions"][i] + " : " + df["data"][i] + '\n'
+
+        document.append(Spacer(1,20))
+
+        document = addParagraphs(document, text)
+        document.append(Spacer(1,5))
+        document.append(Paragraph("Comments : " + audit_ls['comment']))
+
+        SimpleDocTemplate('audit_checklist.pdf', pagesize=letter, rightMargin=12, leftMargin=12, topMargin=12, bottomMargin=6).build(document)
+
+    elif timeframe[:3] == 'FnB':
+
+        df = pd.read_csv("fnb_audit.csv")
+        print(timeframe[10:])
+        audit_ls = Audit_FB.objects(timestamp = timeframe[10:])[0]
+
+        document.append(Paragraph(str(audit_ls["id"]),ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Image('singhealth_logo.png', 2.2*inch, 2.2*inch))
+        document = addTitle(document, "Audit Checklist (F&B)")
+        document.append(Spacer(1,20))
+        document.append(Paragraph("Name of Auditee : " + audit_ls['auditeeName'],ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Name of Auditor : " + audit_ls['auditorName'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Name of Auditor's department : " + audit_ls['auditorDepartment'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Timestamp : " + audit_ls['timestamp'], ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,10))
+        document.append(Paragraph("Professionalism & Staff Hygiene Score : " + str(audit_ls['profScore']) + "/10", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Housekeeping & General Cleaniness : " + str(audit_ls['housekeepingScore']) + "/20", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Food Hygiene Score : " + str(audit_ls['foodHygieneScore']) + "/35", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Healthier Choice Score : " + str(audit_ls['healthierScore']) + "/15", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Work Safety and Health Score : " + str(audit_ls['workSafetyScore']) + "/20", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        document.append(Paragraph("Total Score : " + str(audit_ls['totalScore']) + "/100", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
+        document.append(Spacer(1,3))
+        
+        checklist = audit_ls['profstaffhydScoreList'] + audit_ls['housekeepScoreList'] + audit_ls['foodhydScoreList'] + audit_ls['healthierScoreList'] + audit_ls['worksafetyhealthScoreList']
+        for i in range(len(checklist)):
+            checklist[i] = str(checklist[i])
+        checklist = ['',''] + checklist[:3] + [''] + checklist[3:13] + ['',''] + checklist[13:28] + [''] + checklist[28:30] + ['',''] + checklist[30:56] + [''] + checklist[56:67] + ['',''] + checklist[67:74] + [''] + checklist[74:78] + ['',''] + checklist[78:89] + [''] + checklist[89:92] + [''] + checklist[92:96]
+
+        print(len(df['data']))
+
+        df['data'] = checklist
+
+        print(df)
+
+        text = ""
+
+        for i in range(len(df)-1):
+            text += df["Audit Questions"][i] + " : " + df["data"][i] + '\n'
+
+        document.append(Spacer(1,20))
+
+        document = addParagraphs(document, text)
+        document.append(Spacer(1,5))
+        document.append(Paragraph("Comments : " + audit_ls['comment']))
+
+        SimpleDocTemplate('audit_checklist.pdf', pagesize=letter, rightMargin=12, leftMargin=12, topMargin=12, bottomMargin=6).build(document)
+
+    original = "audit_checklist.pdf"
+    target = "app/apis/audit_checklist.pdf"
+
+    shutil.move(original,target)
+
+    receiver_email = body.get('email')
+    subject = body.get('subject')
+    try:
+
+        message = MIMEMultipart()
+        message["From"] = sender_email
+        message["To"] = receiver_email
+        message["Subject"] = subject
+        message.attach(MIMEText(body.get("body"), "plain"))
+    except:
+        print("error occured")
+        return {'result': False, 'info': "user does not exist"}
+
+    filename = "audit_checklist.pdf"  # In same directory as script
+
+    with apis.open_resource(filename) as attachment:
+    # Add file as application/octet-stream
+    # Email client can usually download this automatically as attachment
+        part = MIMEBase("application", "octet-stream")
+        part.set_payload(attachment.read())
+
+    # Encode file in ASCII characters to send by email    
+    encoders.encode_base64(part)
+
+    # Add header as key/value pair to attachment part
+    part.add_header(
+        "Content-Disposition",
+        f"attachment; filename= {filename}",
+    )
+
+    # Add attachment to message and convert message to string
+    message.attach(part)
+    text = message.as_string()
+
+    # Log in to server using secure context and send email
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+        server.login(sender_email, password)
+        server.sendmail(sender_email, receiver_email, text)
+
 
     return {'status': True}
 
@@ -2448,6 +2652,7 @@ def report_checklistt():
 
 
 @apis.route('/test_add_notif', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def TEST_add_notification():
     """
     :param: body: json, same format as Photo
@@ -2460,13 +2665,14 @@ def TEST_add_notification():
         newPhotoNotification = PhotoNotification(**body)
         newPhotoNotification.save()
     except Exception as e:
-        print("error occurred: ", e)
+        #print("error occurred: ", e)
         return {'result': False}, 500
 
     return {'result': True}, 200
 
 
 @apis.route('/test_add_notif2', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def TEST_add_notification_from_staff():
     """
     :param: body: json, same format as Photo
@@ -2479,8 +2685,7 @@ def TEST_add_notification_from_staff():
         newPhotoNotificationFromTenant = PhotoNotificationFromTenant(**body)
         newPhotoNotificationFromTenant.save()
     except Exception as e:
-        print("error occurred: ", e)
+        #print("error occurred: ", e)
         return {'result': False}, 500
 
     return {'result': True}, 200
-
