@@ -190,6 +190,9 @@ def user_login():
                 return {'result': False, 'info': "brute force attack detected! your account is locked. Please contact admin to unlock"}, 200
             logger.error("error in '/login' endpoint: %s", "password error")
             raise Exception("password error")
+        if utils.counter_brute_force(firstName, lastName):
+            logger.error("brute force attack detected!")
+            return {'result': False, 'info': "brute force attack detected! your account is locked. Please contact admin to unlock"}, 200
         session['username'] = firstName + lastName
         session.modified = True
         #print("username set: ", session['username'])
