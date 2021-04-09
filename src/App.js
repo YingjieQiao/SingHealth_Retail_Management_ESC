@@ -19,9 +19,10 @@ import Navbar from './Components/Navbar';
 import Adminhome from './Components/adminhome';
 import Table from './Components/Table';
 import emailReport from './Components/emailReport';
-import tenantHome from './Components/tenantHome'
-import tenantUpload from './Components/tenantUpload'
-import tenantViewPhoto from './Components/tenantViewPhoto'
+import tenantHome from './Components/tenantHome';
+import tenantUpload from './Components/tenantUpload';
+import tenantViewPhoto from './Components/tenantViewPhoto';
+import My404Component from './Components/My404Component';
 function App() {
 
   return (
@@ -47,6 +48,7 @@ function App() {
       <Route path="/emailReport" exact component={emailReport}/>
       <Route path="/tenantUpload" exact component={tenantUpload}/>
       <Route path="/tenantViewPhoto" exact component={tenantViewPhoto}/>
+      <Route path='*' exact={true} component={My404Component} />	
     </Switch>
     
     </div>
