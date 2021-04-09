@@ -65,7 +65,7 @@ export const SidebarData = [
     path: '/compareTenant',
     icon: <MdIcons.MdCompareArrows />,
     cName: 'nav-text',
-    id:'tenent'
+    id:'tenant'
   },
   {
     title: 'New Audit',
