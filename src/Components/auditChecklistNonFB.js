@@ -31,16 +31,16 @@ class AuditChecklistNonFB extends Component {
 
     componentDidMount() {
         try {
-            // axios.get("http://localhost:5000/if_loggedin")
-            // .then(
-            //     res => {
-            //         console.log(res.data);
-            //         if(res.data.username==""){
-            //           alert("Please Log in!");
-            //           this.props.history.push('/');
-            //         }
-            //     }
-            // );
+            axios.get("http://localhost:5000/if_loggedin")
+            .then(
+                res => {
+                    console.log(res.data);
+                    if(res.data.username==""){
+                      alert("Please Log in!");
+                      this.props.history.push('/');
+                    }
+                }
+            );
             axios.get("http://localhost:5000/tenant_list_non_FB")
             .then(
                 res => {
