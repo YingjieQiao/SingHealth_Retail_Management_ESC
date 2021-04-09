@@ -824,15 +824,16 @@ def auditchecklistNonFB():
         body['workSafetyScore'] = body['workSafetyHealthScore']
         body['profScore'] = body['profStaffHydScore']
         body['housekeepingScore'] = body['houseGeneralScore']
+        body['housekeepScoreList'] = body['houseGeneralScoreList']
         body.pop('workSafetyHealthScore')
         body.pop('profStaffHydScore')
         body.pop('houseGeneralScore')
-        print(body)
-
+        body.pop('houseGeneralScoreList')
         audit = Audit_non_FB(**body)
         audit.timestamp = str(ts)
         audit.computeTotalScore()
         audit.save()
+        print("\n\n\n")
         return {'statusText': True}, 200
     except:
         return {'statusText': False}, 500
@@ -2488,7 +2489,7 @@ def report_checklistt():
         checklist = audit_ls['profstaffhydScoreList'] + audit_ls['housekeepScoreList'] + audit_ls['worksafetyhealthScoreList']
         for i in range(len(checklist)):
             checklist[i] = str(checklist[i])
-        checklist = ['',''] + checklist[:3] + [''] + checklist[3:6] + ['',''] + checklist[6:18] + ['',''] + checklist[18:27] + [''] + checklist[27:35]
+        checklist = ['',''] + checklist[:3] + [''] + checklist[3:6] + ['',''] + checklist[6:18] + ['',''] + checklist[18:27] + [''] + checklist[27:35] + ['']
 
         print(len(df['data']))
         print(len(checklist))
