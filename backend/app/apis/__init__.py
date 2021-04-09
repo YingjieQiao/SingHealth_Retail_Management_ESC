@@ -20,7 +20,6 @@ from email.mime.text import MIMEText
 # new library added, please take note
 # import seaborn as sns
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import base64
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
@@ -680,25 +679,25 @@ def email():
 
     # attaching a picture
 
-    filename = "picture.png"  # In same directory as script
+    # filename = "picture.png"  # In same directory as script
 
-    with apis.open_resource(filename) as attachment:
-    # Add file as application/octet-stream
-    # Email client can usually download this automatically as attachment
-        part = MIMEBase("application", "octet-stream")
-        part.set_payload(attachment.read())
+    # with apis.open_resource(filename) as attachment:
+    # # Add file as application/octet-stream
+    # # Email client can usually download this automatically as attachment
+    #     part = MIMEBase("application", "octet-stream")
+    #     part.set_payload(attachment.read())
 
-    # Encode file in ASCII characters to send by email    
-    encoders.encode_base64(part)
+    # # Encode file in ASCII characters to send by email    
+    # encoders.encode_base64(part)
 
-    # Add header as key/value pair to attachment part
-    part.add_header(
-        "Content-Disposition",
-        f"attachment; filename= {filename}",
-    )
+    # # Add header as key/value pair to attachment part
+    # part.add_header(
+    #     "Content-Disposition",
+    #     f"attachment; filename= {filename}",
+    # )
 
-    # Add attachment to message and convert message to string
-    message.attach(part)
+    # # Add attachment to message and convert message to string
+    # message.attach(part)
     text = message.as_string()
 
     # Log in to server using secure context and send email
@@ -824,15 +823,16 @@ def auditchecklistNonFB():
         body['workSafetyScore'] = body['workSafetyHealthScore']
         body['profScore'] = body['profStaffHydScore']
         body['housekeepingScore'] = body['houseGeneralScore']
+        body['housekeepScoreList'] = body['houseGeneralScoreList']
         body.pop('workSafetyHealthScore')
         body.pop('profStaffHydScore')
         body.pop('houseGeneralScore')
-        print(body)
-
+        body.pop('houseGeneralScoreList')
         audit = Audit_non_FB(**body)
         audit.timestamp = str(ts)
         audit.computeTotalScore()
         audit.save()
+        print("\n\n\n")
         return {'statusText': True}, 200
     except:
         return {'statusText': False}, 500
@@ -2488,7 +2488,7 @@ def report_checklistt():
         checklist = audit_ls['profstaffhydScoreList'] + audit_ls['housekeepScoreList'] + audit_ls['worksafetyhealthScoreList']
         for i in range(len(checklist)):
             checklist[i] = str(checklist[i])
-        checklist = ['',''] + checklist[:3] + [''] + checklist[3:6] + ['',''] + checklist[6:18] + ['',''] + checklist[18:27] + [''] + checklist[27:35]
+        checklist = ['',''] + checklist[:3] + [''] + checklist[3:6] + ['',''] + checklist[6:18] + ['',''] + checklist[18:27] + [''] + checklist[27:35] + ['']
 
         print(len(df['data']))
         print(len(checklist))
