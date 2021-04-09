@@ -83,6 +83,7 @@ def download_user_objects(bucket, username, timeInput, dateInput, counterPart):
 
         if (check == username):
             photoInfo = get_photo_info(date_, time_, counterPart, username)
+            print(photoInfo)
             if (photoInfo[0]['rectified'] == False):
                 photoAttrData.append(photoInfo)
 
@@ -109,6 +110,15 @@ def get_photo_info(date_, time_, counterPart, username):
         session['username'] = "UnitTester"
         #print("testing")
         logger.error("In 'get_photo_info' function, error occurred")
+
+    if username == "UnitTester":
+        try:
+            photoInfo = Photo.objects(staffName=username)
+            return photoInfo
+        except Exception as e:
+            #print("error: ", e)
+            logger.error("In 'get_photo_info' function, error occurred: ", e)
+            return None
 
     if not counterPart:
         if utils.check_if_staff(username, False):

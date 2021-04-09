@@ -46,7 +46,7 @@ export const tenant_SidebarData = [
   // },
   {
     title: 'Get Statistics',
-    path: '/dataDashboard',
+    path: '/tenantDataDashboard',
     icon: <BsIcons.BsGraphUp />,
     cName: 'nav-text',
     id:"profile"

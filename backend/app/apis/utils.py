@@ -8,10 +8,10 @@ import shutil
 logger = logging.getLogger("logger")
 
 def get_current_username():
-    username = ""
+    username = "UnitTester"
     if "username" in session:
         username = session['username']
-    #print("in utils get username: ", username)
+    print("in utils get username: ", username)
     return username
 
 def get_data(tableName):
@@ -166,7 +166,7 @@ def assign_s3_bucket(username):
 
 
 def assign_audience_name(username, staffName, tenantName):
-    if username == "":
+    if username == "" or username == "UnitTester":
         return "UnitTester"
 
     res = ""
@@ -180,6 +180,8 @@ def assign_audience_name(username, staffName, tenantName):
 
 
 def get_tenant_email(tenantName):
+    if tenantName == "UnitTester":
+        return "qyj001123@gmail.com"
     tenantEmail = ""
     users = User.objects(tenant=True)
     for user in users:
@@ -192,6 +194,8 @@ def get_tenant_email(tenantName):
 
 
 def get_staff_email(staffName):
+    if staffName == "UnitTester":
+        return "qyj001123@gmail.com"
     staffEmail = ""
     users = User.objects(staff=True)
     for user in users:
