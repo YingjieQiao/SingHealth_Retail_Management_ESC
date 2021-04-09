@@ -180,6 +180,10 @@ def user_login():
     try:
         print(body)
         user = User.objects.get(email=body.get('email'))
+        locked = user.is_acc_locked()
+        if locked:
+            logger.error("brute force attack detected!")
+            return {'result': False, 'info': "brute force attack detected! your account is locked. Please contact admin to unlock"}, 200
         firstName = user.firstName
         lastName = user.lastName
         authorized = user.check_password(body.get('password'))
