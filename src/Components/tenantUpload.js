@@ -67,7 +67,7 @@ class Upload extends Component {
                         <label>Tags:</label><select onChange={this.tagsHandler} defaultValue="none">
                             <option defaultValue>Select tags</option>
                             <option value="Professionalism and Staff Hygiene">Professionalism and Staff Hygiene</option>
-                            <option value="HouseKeeping and General Cleanliness2">HouseKeeping and General Cleanliness</option>
+                            <option value="HouseKeeping and General Cleanliness">HouseKeeping and General Cleanliness</option>
                             <option value="Food Hygiene">Food Hygiene</option>
                             <option value="Healthier Choice">Healthier Choice</option>
                             <option value="Workplace Safety and Health">Workplace Safety and Health</option>
