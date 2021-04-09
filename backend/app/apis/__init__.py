@@ -20,7 +20,6 @@ from email.mime.text import MIMEText
 # new library added, please take note
 # import seaborn as sns
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import base64
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
