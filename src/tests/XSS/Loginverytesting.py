@@ -86,11 +86,10 @@ def logintesting(email,Password):
     except TimeoutException:
         print("no alert")	
 
-def finalaily(value):        
-    browser.find_element_by_id("token").clear()
+def finalaily():        
     username = browser.find_element_by_id("token")
     time.sleep(1)	
-    username.send_keys(value)
+    username.send_keys(tokenadmin)
     time.sleep(1)
     button = browser.find_element_by_id("submiting").click()
     time.sleep(1)	
@@ -105,13 +104,13 @@ def finalaily(value):
         print("alert accepted")
     except TimeoutException:
         print("no alert")	
-    time.sleep(1)
-    print("***testing ended successfully***")
-    
 
-logintesting(myUserName,myPassword)
+    print("***testing ended successfully***")
+    browser.quit()
+
+# logintesting(myUserName,incorrectpass)
 # logintesting(incorrectuser,incorrectpass)
 # logintesting(incorrectuser,myPassword)
-for i in ls_inputs: 
-    finalaily(i)
-browser.quit()
+for i in ls_inputs:
+    logintesting(i,i)
+finalaily()

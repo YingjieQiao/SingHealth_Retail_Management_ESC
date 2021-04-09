@@ -42,14 +42,15 @@ repassword="1234"
 location="SUTD"
 def logintesting(email,Password):
     browser.find_element_by_id("email").clear()
-    browser.find_element_by_id("password").clear()
+
     username = browser.find_element_by_id("email")
     time.sleep(1)	
     username.send_keys(email)
     time.sleep(1)
-    username = browser.find_element_by_id("password")
+    browser.find_element_by_id("password").clear()
+    password = browser.find_element_by_id("password")
     time.sleep(1)	
-    username.send_keys(Password)
+    password.send_keys(Password)
     time.sleep(1)
     button = browser.find_element_by_id("submit").click()
     time.sleep(1)	
@@ -88,7 +89,14 @@ def finalaily():
     browser.quit()
 
 logintesting(myUserName,incorrectpass)
+browser.find_element_by_id("email").clear()
+browser.find_element_by_id("password").clear()
 logintesting(incorrectuser,incorrectpass)
+browser.find_element_by_id("email").clear()
+browser.find_element_by_id("password").clear()
 logintesting(incorrectuser,myPassword)
+browser.find_element_by_id("email").clear()
+browser.find_element_by_id("password").clear()
 logintesting(myUserName,myPassword)
+
 finalaily()
