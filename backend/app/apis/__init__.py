@@ -464,12 +464,12 @@ def tenant_rectify_photo():
         username = "UnitTester"
         # print("testing")
         logger.info("testing '/rectify_photo' endpoint")
-
+    print(username, date_, time_)
     try:
-        photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=username)
+        photoInfo = TenantPhoto.objects(date=date_, time=time_, staffName=username)
         photoInfo.update(**body)
     except Exception as e:
-        # print("error: ", e) 
+        print("error: ", e) 
         logger.error("In '/rectify_photo' endpoint, error occurred: ", e)
         return {'result': False}, 500
 

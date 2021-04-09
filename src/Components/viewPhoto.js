@@ -159,13 +159,6 @@ class viewPhoto extends Component {
             'counterPart': true
         };
 
-        axios.post("http://localhost:5000/tenant_upload_photo_info", payload, headers)
-        .then(
-            res => {
-                console.log("tenant: ", res);
-            }
-        )
-
         axios.post("http://localhost:5000/download_file", payload, headers)
         .then(
             res => {
@@ -238,7 +231,7 @@ class viewPhoto extends Component {
             });
         } 
         else if (this.state.viewTenantUpload) {
-            axios.post(`http://localhost:5000/tenant_upload_photo_info`, currPhoto, headers)
+            axios.post(`http://localhost:5000/tenant_rectify_photo`, currPhoto, headers)
             .then(res => {
                 console.log(currPhoto);
                 console.log(res);
