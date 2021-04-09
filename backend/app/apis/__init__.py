@@ -4,7 +4,7 @@ from app.models import User, Audit_non_FB, Photo, TenantPhoto, PhotoNotification
 import boto3
 from botocore.exceptions import ClientError
 import logging
-from PIL import Image
+import PIL.Image
 import os
 from datetime import datetime
 import json
@@ -266,7 +266,7 @@ def login_verified():
 def upload_file():
     if current_app.config['TESTING']:
         testFilePath = os.getcwd() + "/assets/image.jpg"
-        body = Image.open(testFilePath)
+        body = PIL.Image.open(testFilePath)
     else:
         body = request.files['file']
         
@@ -292,7 +292,7 @@ def upload_file():
         rgb_img = body.convert('RGB')
         rgb_img.save(filename)
     else:
-        img = Image.open(body.stream)
+        img = PIL.Image.open(body.stream)
         rgb_img = img.convert('RGB')
         rgb_img.save(filename)
 
