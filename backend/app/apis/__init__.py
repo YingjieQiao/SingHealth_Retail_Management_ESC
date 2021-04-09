@@ -66,8 +66,9 @@ def get_current_username_and_datetime():
     time_ = dateTimeArr[1]
 
     username = utils.get_current_username()
+    userEmail = utils.get_user_email(username)
 
-    return {"username": username, "time": time_, "date": date_, "session": session.sid}, 200
+    return {"username": username, "time": time_, "date": date_, "email": email, "session": session.sid}, 200
 
 
 @apis.route('/check_if_staff', methods=['GET'])
