@@ -203,6 +203,18 @@ def get_staff_email(staffName):
     return staffEmail
 
 
+def get_user_email(userName):
+    userEmail = ""
+    users = User.objects()
+    for user in users:
+        userName_check = "".join([user["firstName"], user["lastName"]])
+        if (userName == userName_check):
+            userEmail = user["email"]
+            #print("found tenant email: ", staffEmail)
+            break
+    return userEmail
+
+
 def counter_brute_force(firstName, lastName):
     user = User.objects().get_or_404(firstName=firstName, lastName=lastName)
     body = mongo_object_to_dict(user)
