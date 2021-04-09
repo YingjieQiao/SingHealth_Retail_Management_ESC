@@ -31,11 +31,11 @@ for elem in links:
 print("***sign in sign out functionality***")
 
 myUserName = "ishaan_nair@mymail.sutd.edu.sg"
-myPassword = "asdasdF"
+wrongPassword = "asdasdF"
 tokenadmin = "admin"
 tokentenant = "tenant"
 mobile = "12345678"
-myPassword = "asdasdasf"
+correctPassword = "1234"
 repassword="1234"
 location="SUTD"
 username = browser.find_element_by_id("email")
@@ -44,13 +44,13 @@ username.send_keys(myUserName)
 time.sleep(1)
 username = browser.find_element_by_id("password")
 time.sleep(1)	
-username.send_keys(myPassword)
+username.send_keys(wrongPassword)
 time.sleep(1)
 for i in range(1,20):
     button = browser.find_element_by_id("submit").click()
     time.sleep(1)	
     try:
-        WebDriverWait(browser, 10).until(EC.alert_is_present(),
+        WebDriverWait(browser, 10).until(EC.alert_is_present(), 
                                        'Timed out waiting for PA creation ' +
                                        'confirmation popup to appear.')
 
@@ -60,12 +60,13 @@ for i in range(1,20):
         print("alert accepted")
     except TimeoutException:
         print("no alert")	
-username = browser.find_element_by_id("token")
+
 time.sleep(1)	
-username.send_keys(tokenadmin)
-time.sleep(1)
-button = browser.find_element_by_id("submiting").click()
+browser.find_element_by_id("password").clear()
+username = browser.find_element_by_id("password")
 time.sleep(1)	
+username.send_keys(correctPassword)
+time.sleep(1)   
 try:
     WebDriverWait(browser, 3).until(EC.alert_is_present(),
                                    'Timed out waiting for PA creation ' +

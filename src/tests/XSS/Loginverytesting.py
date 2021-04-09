@@ -40,6 +40,26 @@ mobile = "12345678"
 myPassword = "1234"
 repassword="1234"
 location="SUTD"
+ls_inputs = [
+"<script>alert('...haha, you have been XSS-ed...')</script>",
+
+'data" onerror="alert("Hacked!")',
+
+'data "/><script>alert("...haha, you have been XSS-ed...")</script><input type="text" value="lol',
+
+'data "/><b onmouseover=alert("Wufff!")>click me!</b><input type="text" value="lol',
+
+'data "/><body onload=alert("XSS")><input type="text" value="lol',
+
+'data "/><img lowsrc="javascript:alert("XSS")"><input type="text" value="lol',
+
+'data "/><input type="image" src="javascript:alert("XSS");"><input type="text" value="lol',
+
+'data "/><link rel="stylesheet" href="javascript:alert("XSS");"><input type="text" value="lol',
+
+'data "/>"\uFE64script\uFE65 alert("TEST") \uFE64/script\uFE65 <input type="text" value="lol'
+
+]
 def logintesting(email,Password):
     browser.find_element_by_id("email").clear()
 
@@ -88,15 +108,9 @@ def finalaily():
     print("***testing ended successfully***")
     browser.quit()
 
-logintesting(myUserName,incorrectpass)
-browser.find_element_by_id("email").clear()
-browser.find_element_by_id("password").clear()
-logintesting(incorrectuser,incorrectpass)
-browser.find_element_by_id("email").clear()
-browser.find_element_by_id("password").clear()
-logintesting(incorrectuser,myPassword)
-browser.find_element_by_id("email").clear()
-browser.find_element_by_id("password").clear()
-logintesting(myUserName,myPassword)
-
+# logintesting(myUserName,incorrectpass)
+# logintesting(incorrectuser,incorrectpass)
+# logintesting(incorrectuser,myPassword)
+for i in ls_inputs:
+    logintesting(i,i)
 finalaily()

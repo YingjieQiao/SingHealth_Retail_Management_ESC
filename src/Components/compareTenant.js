@@ -34,10 +34,10 @@ class CompareTenant extends Component {
     
                     for (var i = 0; i < res.data.tenant_list.length; i++) {
                         let newArray1 = this.state.instituteArray;
-                        let newArray2 = this.state.numOfInstitue;
+                        let newArray2 = this.state.numOfInstitute;
                         newArray1.push(res.data.tenant_list[i]);
                         newArray2.push(i);
-                        this.setState({instituteArray: newArray1, numOfInstitue: newArray2});
+                        this.setState({instituteArray: newArray1, numOfInstitute: newArray2});
                     }
     
                 }

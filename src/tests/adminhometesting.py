@@ -137,4 +137,101 @@ try:
 except TimeoutException:
     print("no alert")
 print("***testing ended successfully***")
+
+username = browser.find_element_by_id("data")
+username.send_keys("PhotoNotification")
+time.sleep(1)	
+button = browser.find_element_by_id("display_data").click()
+try:
+    WebDriverWait(browser, 3).until(EC.alert_is_present(),
+                                   'Timed out waiting for PA creation ' +
+                                   'confirmation popup to appear.')
+
+    alert = browser.switch_to.alert
+    print(alert)
+    alert.accept()
+    print("alert accepted")
+except TimeoutException:
+    print("no alert")
+time.sleep(1)		
+button = browser.find_element_by_id("download_data_csv").click()
+time.sleep(1)	
+try:
+    WebDriverWait(browser, 3).until(EC.alert_is_present(),
+                                   'Timed out waiting for PA creation ' +
+                                   'confirmation popup to appear.')
+
+    alert = browser.switch_to.alert
+    print(alert)
+    alert.accept()
+    print("alert accepted")
+except TimeoutException:
+    print("no alert")
+print("***testing ended successfully***")
+
+
+username = browser.find_element_by_id("data")
+username.send_keys("tenant_Photo")
+time.sleep(1)	
+button = browser.find_element_by_id("display_data").click()
+try:
+    WebDriverWait(browser, 3).until(EC.alert_is_present(),
+                                   'Timed out waiting for PA creation ' +
+                                   'confirmation popup to appear.')
+
+    alert = browser.switch_to.alert
+    print(alert)
+    alert.accept()
+    print("alert accepted")
+except TimeoutException:
+    print("no alert")
+time.sleep(1)		
+button = browser.find_element_by_id("download_data_csv").click()
+time.sleep(1)	
+try:
+    WebDriverWait(browser, 3).until(EC.alert_is_present(),
+                                   'Timed out waiting for PA creation ' +
+                                   'confirmation popup to appear.')
+
+    alert = browser.switch_to.alert
+    print(alert)
+    alert.accept()
+    print("alert accepted")
+except TimeoutException:
+    print("no alert")
+time.sleep(1)
+
+
+username = browser.find_element_by_id("data")
+username.send_keys("PhotoNotification_from_tenant")
+time.sleep(1)	
+button = browser.find_element_by_id("display_data").click()
+try:
+    WebDriverWait(browser, 3).until(EC.alert_is_present(),
+                                   'Timed out waiting for PA creation ' +
+                                   'confirmation popup to appear.')
+
+    alert = browser.switch_to.alert
+    print(alert)
+    alert.accept()
+    print("alert accepted")
+except TimeoutException:
+    print("no alert")
+time.sleep(1)		
+button = browser.find_element_by_id("download_data_csv").click()
+time.sleep(1)	
+try:
+    WebDriverWait(browser, 3).until(EC.alert_is_present(),
+                                   'Timed out waiting for PA creation ' +
+                                   'confirmation popup to appear.')
+
+    alert = browser.switch_to.alert
+    print(alert)
+    alert.accept()
+    print("alert accepted")
+except TimeoutException:
+    print("no alert")
+time.sleep(1)
+print("***testing ended successfully***")
+time.sleep(1)
 browser.quit()
