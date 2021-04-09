@@ -752,20 +752,28 @@ def auditchecklistFB():
 def auditchecklistNonFB():
     ts = datetime.now().today()
     body = request.get_json()
-    try:
+    print(body)
+
+    if 1==1:
+
         body['workSafetyScore'] = body['workSafetyHealthScore']
         body['profScore'] = body['profStaffHydScore']
         body['housekeepingScore'] = body['houseGeneralScore']
+        body['housekeepScoreList'] = body['houseGeneralScoreList']
         body.pop('workSafetyHealthScore')
         body.pop('profStaffHydScore')
         body.pop('houseGeneralScore')
+        body.pop('houseGeneralScoreList')
+        print("\n\n")
+        print(body)
         audit = Audit_non_FB(**body)
         audit.timestamp = str(ts)
         audit.computeTotalScore()
         audit.save()
+        print("\n\n\n")
         return {'statusText': True}, 200
-    except:
-        return {'statusText': False}, 500
+    # except:
+    #     return {'statusText': False}, 500
 
 @apis.route('/covidChecklist', methods=['GET', 'POST'])
 def covidchecklist():
