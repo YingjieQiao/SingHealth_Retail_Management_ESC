@@ -178,7 +178,6 @@ def user_signup():
 def user_login():
     body = request.get_json()
     try:
-        print(body)
         user = User.objects.get(email=body.get('email'))
         locked = user.is_acc_locked()
         if locked:
