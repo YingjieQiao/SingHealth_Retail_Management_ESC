@@ -835,8 +835,8 @@ def auditchecklistNonFB():
         audit.save()
         print("\n\n\n")
         return {'statusText': True}, 200
-    # except:
-    #     return {'statusText': False}, 500
+    except:
+        return {'statusText': False}, 500
 
 @apis.route('/covidChecklist', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
@@ -2489,7 +2489,7 @@ def report_checklistt():
         checklist = audit_ls['profstaffhydScoreList'] + audit_ls['housekeepScoreList'] + audit_ls['worksafetyhealthScoreList']
         for i in range(len(checklist)):
             checklist[i] = str(checklist[i])
-        checklist = ['',''] + checklist[:3] + [''] + checklist[3:6] + ['',''] + checklist[6:18] + ['',''] + checklist[18:27] + [''] + checklist[27:35]
+        checklist = ['',''] + checklist[:3] + [''] + checklist[3:6] + ['',''] + checklist[6:18] + ['',''] + checklist[18:27] + [''] + checklist[27:35] + ['']
 
         print(len(df['data']))
         print(len(checklist))
