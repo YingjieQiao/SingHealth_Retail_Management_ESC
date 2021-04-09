@@ -6,7 +6,7 @@ import axios from 'axios';
 class tenantNotificationModal extends Component { 
 
   state = {
-    data: null,
+    data: [],
     numOfData: [],
   }
 
@@ -44,6 +44,12 @@ class tenantNotificationModal extends Component {
           <div>
             <div>
               <label>Sender: {this.state.data[index]["staffName"]}</label>
+            </div>
+            <div>
+              <label>Date: {this.state.data[index]["date"]}</label>
+            </div>
+            <div>
+              <label>Time: {this.state.data[index]["time"]}</label>
             </div>
             <div>
               <label>Rectified: {this.handleRectifyStatus(index)}</label>

@@ -190,6 +190,9 @@ def user_login():
                 return {'result': False, 'info': "brute force attack detected! your account is locked. Please contact admin to unlock"}, 200
             logger.error("error in '/login' endpoint: %s", "password error")
             raise Exception("password error")
+        if utils.counter_brute_force(firstName, lastName):
+            logger.error("brute force attack detected!")
+            return {'result': False, 'info': "brute force attack detected! your account is locked. Please contact admin to unlock"}, 200
         session['username'] = firstName + lastName
         session.modified = True
         #print("username set: ", session['username'])
@@ -464,12 +467,12 @@ def tenant_rectify_photo():
         username = "UnitTester"
         # print("testing")
         logger.info("testing '/rectify_photo' endpoint")
-
+    print(username, date_, time_)
     try:
-        photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=username)
+        photoInfo = TenantPhoto.objects(date=date_, time=time_, staffName=username)
         photoInfo.update(**body)
     except Exception as e:
-        # print("error: ", e) 
+        print("error: ", e) 
         logger.error("In '/rectify_photo' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
