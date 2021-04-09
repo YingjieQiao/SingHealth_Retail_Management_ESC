@@ -86,10 +86,10 @@ class Email extends Component {
      
                 <form onSubmit={this.handleSubmit}>
                     <h1>Send email</h1>
-                    <label>Email :</label> <input type="text" value={this.state.email} onChange={this.emailhandler} placeholder="Email..." /><br />
-                    <label>Subject :</label> <input type="text" value={this.state.subject} onChange={this.subjecthandler} placeholder="subject..." /><br />
-                    <label>Content :</label> <input type="text" value={this.state.content} onChange={this.contenthandler} placeholder="content..." /><br />            
-                    <input type="submit" value="Send" />
+                    <label>Email :</label> <input  type="text" id="emailid" value={this.state.email} onChange={this.emailhandler} placeholder="Email..." /><br />
+                    <label>Subject :</label> <input type="text" id="subject" value={this.state.subject} onChange={this.subjecthandler} placeholder="subject..." /><br />
+                    <label>Content :</label> <input type="text" id="content" value={this.state.content} onChange={this.contenthandler} placeholder="content..." /><br />            
+                    <input type="submit" id="submit" value="Send" />
 
                 </form>
 

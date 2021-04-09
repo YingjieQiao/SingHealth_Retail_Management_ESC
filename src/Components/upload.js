@@ -16,35 +16,54 @@ class Upload extends Component {
         notes: "",
         staffName: "",
         tenantName: "",
-        rectified: false
+        rectified: false,
+        tenantList: [],
     };
-    componentDidMount() {
 
-        axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
-        .then(
-            res => {
-                console.log(res.data);
-                if(res.data.username==""){
-                  alert("Please Log in!");
-                  this.props.history.push('/');
+    componentDidMount() {
+        try {
+            axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
+            .then(
+                res => {
+                    console.log(res.data);
+                    if(res.data.username==""){
+                      alert("Please Log in!");
+                      this.props.history.push('/');
+                    }
                 }
-            }
-        )}
+            );
+            axios.get("http://localhost:5000/get_tenant_list", {withCredentials: true})
+            .then(
+                res => {
+                    console.log(res.data);
+                    if (res.data.result) {
+                        for (var i = 0; i < res.data.tenantList.length; i++) {
+                            let newArray1 = this.state.tenantList;
+                            newArray1.push(res.data.tenantList[i]);
+                            this.setState({tenantList: newArray1});
+                        }
+                    }
+                }
+            );
+        } catch (e) { console.log(e); }
+    }
+
     render() { 
-        return ( //TODO: don't hardcode the list of tenants to select, retrieve the list of tenants from backend instead
+        return (
+        <div><Navbar/>
             <div style={{margin: "10px"}}>
-                <Navbar/>
+                
                 <h2>Staff Upload photo</h2>
                 <div className="border border-dark" style={{display: "inline-block",margin: "10px"}}>
                     <ImUpload3 size="50" style={{display: "block", marginLeft: "auto", marginRight: "auto", marginTop: "10px"}}/>
-                    <input type="file" name="file" onChange={this.onChooseFileHandler} style={{display: "block", margin: '10px'}}/>
+                    <input type="file" id= "choose" name="file" onChange={this.onChooseFileHandler} style={{display: "block", margin: '10px'}}/>
                 </div>
 
                 <div>
                     <form>
                         <h1>Photo Information</h1>
 
-                        <label>tags :</label><select onChange={this.tagsHandler} defaultValue="none">
+                        <label>Tags:</label><select id="select" onChange={this.tagsHandler} defaultValue="none">
                             <option defaultValue>Select tags</option>
                             <option value="Professionalism and Staff Hygiene">Professionalism and Staff Hygiene</option>
                             <option value="HouseKeeping and General Cleanliness">HouseKeeping and General Cleanliness</option>
@@ -53,25 +72,23 @@ class Upload extends Component {
                             <option value="Workplace Safety and Health">Workplace Safety and Health</option>
                         </select><br />
                         
-                        <label>notes :</label> <input type="text" 
+                        <label>Notes:</label> <input type="text" id="notes"
                             value={this.state.notes} onChange={this.notesHandler} placeholder="notes..." /><br />
 
-                        <label>tenant :</label><select onChange={this.tenantHandler} defaultValue="none">
+                        <label>Tenant:</label><select id= "tenant" onChange={this.tenantHandler} defaultValue="none">
                             <option defaultValue>Select tenant</option>
-                            <option value="RossGeller">RossGeller</option>
-                            <option value="711">711</option>
-                            <option value="good tenant">good tenant</option>
+                            { this.state.tenantList.map(tenant => <option value={tenant} key={tenant}>{tenant}</option> ) }
                         </select><br />
 
                     </form >
 
                     <div>
-                        <button type="button" className="btn btn-primary m-2" 
+                        <button type="button" id="button" className="btn btn-primary m-2" 
                             onClick={this.photoInfoButtonHandler} >Upload Photo Information</button>
                     </div>
                 </div>
             </div>
-
+            </div>
             
         );
     }

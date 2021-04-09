@@ -8,28 +8,38 @@ class viewPhoto extends Component {
         reviewPhotoMsg: "There is no photo in album",
         numberOfImage: [],
         imageSource: [],
-        photoAttrData: []
+        photoAttrData: [],
+        tenantNumOfImage: [],
+        tenantImgSrc: [],
+        tenantPhotoAttrData: [],
+        viewTenantUpload: false,
+        viewStaffUpload: false,
     };
-    componentDidMount() {
 
-        axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
-        .then(
-            res => {
-                console.log(res.data);
-                if(res.data.username==""){
-                  alert("Please Log in!");
-                  this.props.history.push('/');
+    componentDidMount() {
+        try {
+            axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
+            .then(
+                res => {
+                    console.log(res.data);
+                    if(res.data.username==""){
+                      alert("Please Log in!");
+                      this.props.history.push('/');
+                    }
                 }
-            }
-        )}
+            );
+        } catch (e) { console.log(e); }
+    }
+
     render() { 
         return (
+            
             <div>
                 <Navbar/>
                 <h2>View Photos</h2>
                 <p>{this.state.reviewPhotoMsg}</p>
-                <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoByTenantHandler}>View Photos Uploaded By Tenants</button>
-                <button type="button" className="btn btn-primary m-2" onClick={this.showPhotoByStaffHandler}>View Previously Updated Photos</button>
+                <button type="button" id="button1" className="btn btn-primary m-2" onClick={this.showPhotoByTenantHandler}>View Photos Uploaded By Tenants</button>
+                <button type="button" id="button2" className="btn btn-primary m-2" onClick={this.showPhotoByStaffHandler}>View Previously Updated Photos</button>
                 <div>
                     {this.state.numberOfImage.map(image => {
                         return(
@@ -93,7 +103,6 @@ class viewPhoto extends Component {
             'counterPart': false
         };
 
-
         axios.post("http://localhost:5000/download_file", payload, headers)
         .then(
             res => {
@@ -102,7 +111,8 @@ class viewPhoto extends Component {
                 // each dictionary contains the info about this photo
 
                 this.setState({reviewPhotoMsg: ""});
-                
+                this.setState({viewStaffUpload: true, viewTenantUpload: false});
+
                 for (var i = 0; i < res.data.photoData.length; i++) {
                     let photoData = res.data.photoData[i];
                     let imgsrc = "data:image/jpeg;base64," + photoData;
@@ -156,7 +166,8 @@ class viewPhoto extends Component {
                 // res.photoAttrData is an array of dictionary, each dictionary contains the info about this photo
 
                 this.setState({reviewPhotoMsg: ""});
-                
+                this.setState({viewTenantUpload: true, viewStaffUpload: false});
+
                 for (var i = 0; i < res.data.photoData.length; i++) {
                     let photoData = res.data.photoData[i];
                     let imgsrc = "data:image/jpeg;base64," + photoData;
@@ -181,7 +192,7 @@ class viewPhoto extends Component {
             }
         )
 
-        console.log("showPhotoByStaffHandler");
+        console.log("showPhotoByTenantHandler");
 
         this.setState({
             reviewPhotoMsg: "There is no photo in album",
@@ -190,7 +201,6 @@ class viewPhoto extends Component {
             photoAttrData: []
         })
     }
-
 
     rectify = event => {
         event.preventDefault();
@@ -213,12 +223,20 @@ class viewPhoto extends Component {
             rectified: this.state.photoAttrData[index]["rectified"]
         };
 
-        axios.post(`http://localhost:5000/rectify_photo`, currPhoto, headers)
+        if (this.state.viewStaffUpload) {
+            axios.post(`http://localhost:5000/rectify_photo`, currPhoto, headers)
             .then(res => {
                 console.log(currPhoto);
                 console.log(res);
-        })
-
+            });
+        } 
+        else if (this.state.viewTenantUpload) {
+            axios.post(`http://localhost:5000/tenant_rectify_photo`, currPhoto, headers)
+            .then(res => {
+                console.log(currPhoto);
+                console.log(res);
+            });
+        }
 
         let newPhotoAttr = this.state.photoAttrData;
         newPhotoAttr[index]["rectified"] = true;
@@ -238,6 +256,54 @@ class viewPhoto extends Component {
         this.setState(numberOfImage => {return newImgArray});
         
     }
+
+
+    // rectify = event => {
+    //     event.preventDefault();
+
+    //     const index = event.target.id;
+
+    //     const headers = {
+    //         'Content-Type': 'application/json',
+    //         'Access-Control-Allow-Origin': '*',
+    //         withCredentials: true
+    //     };
+        
+    //     const currPhoto = {
+    //         tags: this.state.photoAttrData[index]["tags"],
+    //         date: this.state.photoAttrData[index]["date"],
+    //         time: this.state.photoAttrData[index]["time"],
+    //         notes: this.state.photoAttrData[index]["notes"],
+    //         staffName: this.state.photoAttrData[index]["staffName"],
+    //         tenantName: this.state.photoAttrData[index]["tenantName"],
+    //         rectified: this.state.photoAttrData[index]["rectified"]
+    //     };
+
+    //     axios.post(`http://localhost:5000/rectify_photo`, currPhoto, headers)
+    //         .then(res => {
+    //             console.log(currPhoto);
+    //             console.log(res);
+    //     })
+
+
+    //     let newPhotoAttr = this.state.photoAttrData;
+    //     newPhotoAttr[index]["rectified"] = true;
+    //     this.setState({photoAttrData: newPhotoAttr});
+
+    //     let newNumArray = this.state.numberOfImage;
+    //     newNumArray.pop();
+
+    //     let newImgArray = this.state.imageSource
+    //     newImgArray.splice(index, 1);
+
+    //     let newPhotoAttrData = this.state.photoAttrData;
+    //     newPhotoAttrData.splice(index, 1);
+
+    //     this.setState(imageSource => {return newImgArray});
+    //     this.setState(photoAttrData => {return newPhotoAttrData});
+    //     this.setState(numberOfImage => {return newImgArray});
+        
+    // }
 
 }
 

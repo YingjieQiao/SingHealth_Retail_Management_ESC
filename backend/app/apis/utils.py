@@ -1,4 +1,5 @@
-from app.models import User, Photo
+from app.models import User, Photo, TenantPhoto, PhotoNotification, PhotoNotificationFromTenant, \
+                        Audit_FB, Audit_non_FB, Covid_Compliance
 import csv, json, uuid, os, logging
 from flask import current_app, session
 import shutil
@@ -7,17 +8,49 @@ import shutil
 logger = logging.getLogger("logger")
 
 def get_current_username():
-    username = ""
+    username = "UnitTester"
     if "username" in session:
         username = session['username']
-    #print("in utils get username: ", username)
+    print("in utils get username: ", username)
     return username
 
-def get_data():
-    users = User.objects()
-    photos = Photo.objects()
+def get_data(tableName):
+    mapping = {
+        'User': 0,
+        'Photo': 1,
+        'TenantPhoto': 2,
+        'PhotoNotification': 3,
+        'PhotoNotificationFromTenant': 4,
+        'Audit_FB': 5,
+        'Audit_non_FB': 6,
+        'Covid_Compliance': 7
+    }
 
-    return users, photos
+    case = mapping.get(tableName, -1)
+    res = None
+    if case == 0:
+        res = User.objects()
+    elif case == 1:
+        res = Photo.objects()
+    elif case == 2:
+        res = TenantPhoto.objects()
+    elif case == 3:
+        res = PhotoNotification.objects()
+    elif case == 4:
+        res = PhotoNotificationFromTenant.objects()
+    elif case == 5:
+        res = Audit_FB.objects()
+    elif case == 6:
+        res = Audit_non_FB.objects()
+    elif case == 7:
+        res = Covid_Compliance.objects()
+    
+    if case != -1:
+        logger.info("admin selected table: %s", tableName)
+    else:
+        logger.error("admin selected a non-existent table")
+
+    return res
 
 
 def mongo_object_to_dict(mongoObj):
@@ -133,7 +166,7 @@ def assign_s3_bucket(username):
 
 
 def assign_audience_name(username, staffName, tenantName):
-    if username == "":
+    if username == "" or username == "UnitTester":
         return "UnitTester"
 
     res = ""
@@ -147,6 +180,8 @@ def assign_audience_name(username, staffName, tenantName):
 
 
 def get_tenant_email(tenantName):
+    if tenantName == "UnitTester":
+        return "qyj001123@gmail.com"
     tenantEmail = ""
     users = User.objects(tenant=True)
     for user in users:
@@ -159,6 +194,8 @@ def get_tenant_email(tenantName):
 
 
 def get_staff_email(staffName):
+    if staffName == "UnitTester":
+        return "qyj001123@gmail.com"
     staffEmail = ""
     users = User.objects(staff=True)
     for user in users:
@@ -168,6 +205,18 @@ def get_staff_email(staffName):
             #print("found tenant email: ", staffEmail)
             break
     return staffEmail
+
+
+def get_user_email(userName):
+    userEmail = ""
+    users = User.objects()
+    for user in users:
+        userName_check = "".join([user["firstName"], user["lastName"]])
+        if (userName == userName_check):
+            userEmail = user["email"]
+            #print("found tenant email: ", staffEmail)
+            break
+    return userEmail
 
 
 def counter_brute_force(firstName, lastName):

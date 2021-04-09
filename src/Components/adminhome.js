@@ -109,7 +109,16 @@ class Adminhome extends Component {
       if (this.state.DataTypefinal=="User"){
       this.state.students= [{ id: '', firstName: '',lastName: '',  mobile: '',email: '', location: '' }];
       }
-      else{
+      else if((this.state.DataTypefinal=="Photo")){
+        this.state.students= [{ id: '', tags: '',date: '',  time: '',notes: '', staffName: '' , tenantName: '', rectified:null }];
+      }
+      else if((this.state.DataTypefinal=="PhotoNotification")){
+        this.state.students= [{ id: '', tags: '',date: '',  time: '',notes: '', staffName: '' , tenantName: '', rectified:null }];
+      }
+      else if((this.state.DataTypefinal=="TenantPhoto")){
+        this.state.students= [{ id: '', tags: '',date: '',  time: '',notes: '', staffName: '' , tenantName: '', rectified:null }];
+      }
+      else if((this.state.DataTypefinal=="PhotoNotificationFromTenant")){
         this.state.students= [{ id: '', tags: '',date: '',  time: '',notes: '', staffName: '' , tenantName: '', rectified:null }];
       }
       this.state.student.forEach(element => {
@@ -237,7 +246,11 @@ componentDidMount() {
                         <option defaultValue>Select excel type</option>
                         <option value="User">User</option>
                         <option value="Photo">Photo</option>
+                        <option value="PhotoNotification">PhotoNotification</option>
+                        <option value="TenantPhoto">tenant_Photo</option>
+                        <option value="PhotoNotificationFromTenant">PhotoNotification_from_tenant</option>
                     </select><br />
+                    
         <button id="download_data_csv" onClick={this.testHandler1}>download_data_csv</button>
 
          <button id="display_data" onClick={this.testHandler2}>display_data</button>

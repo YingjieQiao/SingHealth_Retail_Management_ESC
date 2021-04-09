@@ -19,8 +19,8 @@ TEST_PHOTO_NOTIF_PASS_1 = {
     "date": "01-01-2222",
     "time": "00:00:00",
     "notes": "UNIT TEST ENTRY",
-    "staffName": "UnitTesterStaff",
-    "tenantName": "UnitTesterTenant",
+    "staffName": "UnitTester",
+    "tenantName": "UnitTester",
     "rectified": False,
     "read": False,
     "deleted": False
@@ -31,8 +31,8 @@ TEST_PHOTO_NOTIF_PASS_2 = {
     "date": "01-02-2222",
     "time": "00:02:00",
     "notes": "UNIT TEST ENTRY",
-    "staffName": "UnitTesterStaff",
-    "tenantName": "UnitTesterTenant",
+    "staffName": "UnitTester",
+    "tenantName": "UnitTester",
     "rectified": False,
     "read": False,
     "deleted": False
@@ -227,14 +227,7 @@ class TestDeleteNotifStaff(TestBase):
         assert len(rv.json['staffData']) == 0
 
 
-class TestTemp(TestBase):
-
-
-    def test_get(self):
-        rv = self.client.get('/tenant_get_photo_notification',
-                             content_type='application/json')
-
-        assert rv.status_code == 200
-        assert rv.json['result'] == True
-        assert type(rv.json['tenantData']) == list
-        assert len(rv.json['tenantData']) == 2
+class TestClean(TestBase):
+    def test_clean(self):
+        TestBase.clean_db_notif_test(self)
+        TestBase.clean_db_notif_tenant_test(self)

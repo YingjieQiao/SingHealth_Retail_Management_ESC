@@ -118,9 +118,19 @@ class Register extends Component {
         
     }
     tenanttypehandler = (event) => {
+        
         this.setState({
             tenanttype: event.target.value
+
         })
+        if (event.target.value=="fnb"){
+            this.setState({
+            fnb: true
+        })}
+        else {
+            this.setState({
+            fnb: false
+        })}
     }
 
     rendervalue(){
@@ -175,7 +185,7 @@ class Register extends Component {
                     tenant: this.state.tenant,
                     staff: this.state.staff,
                     admin:this.state.admin ,
-                    fnb:this.state.tenanttype,
+                    fnb:this.state.fnb,
                     locked:false,
                     attempts: 0
                 };

@@ -65,8 +65,9 @@ def get_current_username_and_datetime():
     time_ = dateTimeArr[1]
 
     username = utils.get_current_username()
+    userEmail = utils.get_user_email(username)
 
-    return {"username": username, "time": time_, "date": date_, "session": session.sid}, 200
+    return {"username": username, "time": time_, "date": date_, "email": userEmail, "session": session.sid}, 200
 
 
 @apis.route('/check_if_staff', methods=['GET'])
@@ -176,8 +177,11 @@ def user_signup():
 def user_login():
     body = request.get_json()
     try:
-        print(body)
         user = User.objects.get(email=body.get('email'))
+        locked = user.is_acc_locked()
+        if locked:
+            logger.error("brute force attack detected!")
+            return {'result': False, 'info': "brute force attack detected! your account is locked. Please contact admin to unlock"}, 200
         firstName = user.firstName
         lastName = user.lastName
         authorized = user.check_password(body.get('password'))
@@ -189,6 +193,9 @@ def user_login():
                 return {'result': False, 'info': "brute force attack detected! your account is locked. Please contact admin to unlock"}, 200
             logger.error("error in '/login' endpoint: %s", "password error")
             raise Exception("password error")
+        if utils.counter_brute_force(firstName, lastName):
+            logger.error("brute force attack detected!")
+            return {'result': False, 'info': "brute force attack detected! your account is locked. Please contact admin to unlock"}, 200
         session['username'] = firstName + lastName
         session.modified = True
         #print("username set: ", session['username'])
@@ -276,9 +283,9 @@ def upload_file():
     audienceName = ""
     try:
         audienceName = utils.assign_audience_name(username, request.form["staffName"], request.form["tenantName"])
-    except Exception as e:
+    except:
         #print("Error occurred: ", e)
-        logger.error("In '/upload_file' endpoint, error occurred: ", e)
+        logger.error("In '/upload_file' endpoint, error occurred: ")
         return {'result': False}, 500
 
     if username == "":
@@ -320,9 +327,9 @@ def download_file():
     try:
         body = request.get_json()
         counterPart = body["counterPart"]
-    except Exception as e:
+    except:
         # print("Error occurred: ", e)
-        logger.error("In '/download_file' endpoint, error occurred: ", e)
+        logger.error("In '/download_file' endpoint, error occurred: ")
         return {'result': False, 'photoData': None, 'photoAttrData': None}, 500
 
     username = utils.get_current_username()
@@ -370,7 +377,7 @@ def download_file():
     return {'result': True, 'photoData': photoData, 'photoAttrData': photoAttrData}, 200
 
 
-@apis.route('/upload_photo_info', methods=['GET', 'POST'])
+@apis.route('/upload_photo_info', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def upload_photo_info():
     body = request.get_json()
@@ -442,9 +449,9 @@ def rectify_photo():
     try:
         photoInfo = Photo.objects(date=date_, time=time_, staffName=username)
         photoInfo.update(**body)
-    except Exception as e:
+    except:
         # print("error: ", e) 
-        logger.error("In '/rectify_photo' endpoint, error occurred: ", e)
+        logger.error("In '/rectify_photo' endpoint, error occurred: ")
         return {'result': False}, 500
 
     return {'result': True}, 200
@@ -463,12 +470,12 @@ def tenant_rectify_photo():
         username = "UnitTester"
         # print("testing")
         logger.info("testing '/rectify_photo' endpoint")
-
+    print(username, date_, time_)
     try:
-        photoInfo = TenantPhoto.objects(date=date_, time=time_, tenantName=username)
+        photoInfo = TenantPhoto.objects(date=date_, time=time_, staffName=username)
         photoInfo.update(**body)
     except Exception as e:
-        # print("error: ", e) 
+        print("error: ", e) 
         logger.error("In '/rectify_photo' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -546,7 +553,7 @@ def staff_get_photo_notification():
     """
     username = utils.get_current_username()
     if username == "":
-        username = 'UnitTesterStaff'
+        username = 'UnitTester'
         # print("testing") #TODO change to logging
     
     try:
@@ -599,6 +606,29 @@ def staff_read_photo_notification():
 
     return {'result': True}, 200
 
+
+@apis.route('/get_staff_list', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_staff_list():
+    staffUsers = User.objects(staff=True)
+    res = []
+    for staff in staffUsers:
+        username = staff.firstName + staff.lastName
+        res.append(username)
+    return {"result": True, "staffList": res}, 200
+
+
+@apis.route('/get_tenant_list', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_tenant_list():
+    tenantUsers = User.objects(tenant=True)
+    res = []
+    for tenant in tenantUsers:
+        username = tenant.firstName + tenant.lastName
+        res.append(username)
+    return {"result": True, "tenantList": res}, 200
+
+
 @apis.route('/display_data', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def display_data():
@@ -606,16 +636,13 @@ def display_data():
     body = request.get_json()
     tableName = body['tableName']
     try:
-        mapping = {
-            'User': 0,
-            'Photo': 1
-        }
-        res = utils.get_data()
+        body = request.get_json()
+        tableName = body['tableName']
+        data = utils.get_data(tableName)
     except Exception as e:
         # print("error: ", e)
         logger.error("In '/display_data' endpoint, error occurred: ", e)
         return {'result': False, 'data': None, 'info': 'failed'}, 500
-    data = res[mapping[tableName]]
 
     return {'result': True, 'data': data, 'info': 'success'}, 200
 
@@ -626,13 +653,8 @@ def download_data_csv():
     try:
         body = request.get_json()
         tableName = body['tableName']
-        mapping = {
-            'User': 0,
-            'Photo': 1
-        }
 
-        res = utils.get_data()
-        data = res[mapping[tableName]]
+        data = utils.get_data(tableName)
 
         dataDict = utils.mongo_object_to_dict(data)
         filePath, fileName = utils.write_to_csv(dataDict, tableName)
@@ -2663,7 +2685,7 @@ def TEST_add_notification():
         body['deleted'] = False
         newPhotoNotification = PhotoNotification(**body)
         newPhotoNotification.save()
-    except Exception as e:
+    except:
         #print("error occurred: ", e)
         return {'result': False}, 500
 
@@ -2683,7 +2705,7 @@ def TEST_add_notification_from_staff():
         body['deleted'] = False
         newPhotoNotificationFromTenant = PhotoNotificationFromTenant(**body)
         newPhotoNotificationFromTenant.save()
-    except Exception as e:
+    except:
         #print("error occurred: ", e)
         return {'result': False}, 500
 
