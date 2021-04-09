@@ -31,16 +31,16 @@ class AuditChecklistNonFB extends Component {
 
     componentDidMount() {
         try {
-            axios.get("http://localhost:5000/if_loggedin")
-            .then(
-                res => {
-                    console.log(res.data);
-                    if(res.data.username==""){
-                      alert("Please Log in!");
-                      this.props.history.push('/');
-                    }
-                }
-            );
+            // axios.get("http://localhost:5000/if_loggedin")
+            // .then(
+            //     res => {
+            //         console.log(res.data);
+            //         if(res.data.username==""){
+            //           alert("Please Log in!");
+            //           this.props.history.push('/');
+            //         }
+            //     }
+            // );
             axios.get("http://localhost:5000/tenant_list_non_FB")
             .then(
                 res => {
@@ -654,7 +654,7 @@ class AuditChecklistNonFB extends Component {
             const individualScore = this.individualScore();
 
             this.state.finalDict['profstaffhydScoreList'] = individualScore["profStaffHydScore"];
-            this.state.finalDict['housekeepScoreList'] = individualScore["housekeepScore"];
+            this.state.finalDict['houseGeneralScoreList'] = individualScore["houseGeneralScore"];
             this.state.finalDict['worksafetyhealthScoreList'] = individualScore["workSafetyHealthScore"];
 
             const headers = {
