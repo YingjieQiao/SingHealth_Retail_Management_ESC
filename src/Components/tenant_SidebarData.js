@@ -51,20 +51,20 @@ export const tenant_SidebarData = [
     cName: 'nav-text',
     id:"profile"
   },
-  {
-    title: 'Compare Tenant',
-    path: '/compareTenant',
-    icon: <MdIcons.MdCompareArrows />,
-    cName: 'nav-text',
-    id:"inbox"
-  },
-  {
-    title: 'New Audit',
-    path: '/audit',
-    icon: <AiIcons.AiOutlineAudit />,
-    cName: 'nav-text',
-    id:"stats"
-  },
+  // {
+  //   title: 'Compare Tenant',
+  //   path: '/compareTenant',
+  //   icon: <MdIcons.MdCompareArrows />,
+  //   cName: 'nav-text',
+  //   id:"inbox"
+  // },
+  // {
+  //   title: 'New Audit',
+  //   path: '/audit',
+  //   icon: <AiIcons.AiOutlineAudit />,
+  //   cName: 'nav-text',
+  //   id:"stats"
+  // },
   {
     title: 'Sign Out',
     path: '/',

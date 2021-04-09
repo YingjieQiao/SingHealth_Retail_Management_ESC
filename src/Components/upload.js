@@ -59,9 +59,9 @@ class Upload extends Component {
 
                         <label>tenant :</label><select id= "tenant" onChange={this.tenantHandler} defaultValue="none">
                             <option defaultValue>Select tenant</option>
-                            <option value="RossGeller">RossGeller</option>
-                            <option value="711">711</option>
-                            <option value="good tenant">good tenant</option>
+                            <option value="mihirchibs">mihirchibs</option>
+                            <option value="mihirnair">mihirnair</option>
+                            <option value="ishaan">ishaannair</option>
                         </select><br />
 
                     </form >
