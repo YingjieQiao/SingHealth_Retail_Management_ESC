@@ -51,7 +51,7 @@ class stafftNotificationModal extends Component {
                   <label className={styles.sender_heading} id={index}>Sender: {this.state.data[index]["tenantName"]} <span id={index} style={this.getReadButtonClasses(index)} onClick={this.handleRead}>{this.handleReadStatus(index)}</span></label>
                 </div>
                 <div className={styles.date_container} id={index}>
-                  <label className="text-muted" id={index}><AiIcons.AiOutlineClockCircle id={index}/>{this.state.data[index]["date"]}, {this.state.data[index]["time"]}</label>
+                  <label className="text-muted" id={index}><AiIcons.AiOutlineClockCircle id={index}/> {this.state.data[index]["date"]}, {this.state.data[index]["time"]}</label>
                 </div>
               </div>
               <div className={styles.note_container} id={index}>
