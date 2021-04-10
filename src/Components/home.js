@@ -28,9 +28,10 @@ class Home extends Component {
 
   render() {
     return (
-      <div className='home'>
+      <div className='home' style={{backgroundColor: '#f5f3f4', height: '100vh'}}>
             <Navbar usertype="staff" />
             <h1>Staff User Homepage</h1>
+            <h2>Notification</h2>
         <div>
           {this.displayInfo()}
         </div>
