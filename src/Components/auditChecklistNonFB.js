@@ -656,7 +656,7 @@ class AuditChecklistNonFB extends Component {
             const individualScore = this.individualScore();
 
             this.state.finalDict['profstaffhydScoreList'] = individualScore["profStaffHydScore"];
-            this.state.finalDict['houseGeneralScoreList'] = individualScore["houseGeneralScore"];
+            this.state.finalDict['housekeepScoreList'] = individualScore["housekeepScore"];
             this.state.finalDict['worksafetyhealthScoreList'] = individualScore["workSafetyHealthScore"];
 
             const headers = {
