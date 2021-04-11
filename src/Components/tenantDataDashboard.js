@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import TenantNavbar from './Tenant_Navbar';
 import axios from 'axios';
+import mainStyle from './CSS/home.module.css';
 import styles from './CSS/dataDashboard.module.css';
 
 class TenantDataDashboard extends Component {
@@ -81,7 +82,9 @@ class TenantDataDashboard extends Component {
         return (
             <div>
                 <TenantNavbar/>
-                <h2>Data Dashboard</h2>
+                <div className={mainStyle.main_header_container}>
+                    <h2 className={mainStyle.main_header}>Data Dashboard</h2>
+                </div>
                 <h3>{this.state.tenantName}'s Performance Score</h3>
                 <div>
                     <label>Select a statistic to be displayed:</label>
