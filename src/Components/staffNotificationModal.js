@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import styles from './CSS/notification.module.css';
+import stylesBagde from './CSS/badge.module.css';
 import * as AiIcons from 'react-icons/ai';
  
 
@@ -57,19 +58,12 @@ class stafftNotificationModal extends Component {
               <div className={styles.note_container} id={index}>
                 <label id={index}>{this.state.data[index]["notes"]}</label>
               </div>
-              <div className={styles.container_2} id={index}>
-                <div className={styles.rectify_badge_container} id={index}>
-                  <span className={styles.rectify_badge} id={index}>
-                    <label className={styles.rectify} id={index}>Rectified: {this.handleRectifyStatus(index)}</label>
-                  </span>
-                </div>
-                <div className={styles.tag_badge_container} id={index}>
-                  <span className={styles.tag_badge} id={index}>
-                    <label className={styles.tag} id={index}>Tags: {this.state.data[index]["tags"]}</label>
-                  </span>
-                </div>
-              </div>
-
+              <span className={stylesBagde.badge_rectify} id={index}>
+                <label className={stylesBagde.badge_text} id={index}>Rectified: {this.handleRectifyStatus(index)}</label>
+              </span>
+              <span className={stylesBagde.badge_tag} id={index}>
+                <label className={stylesBagde.badge_text} id={index}>Tags: {this.state.data[index]["tags"]}</label>
+              </span>
             {/* <button type="button" id={index} class={this.getReadButtonClasses(index)} onClick={this.handleRead}>{this.handleReadStatus(index)}</button> */}
           </div>
         )

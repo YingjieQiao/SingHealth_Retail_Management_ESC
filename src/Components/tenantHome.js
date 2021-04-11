@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import TenantNavbar from './Tenant_Navbar';
 import axios from 'axios';
 import TenantNotificationModal from './tenantNotificationModal';
+import styles from './CSS/home.module.css';
 
 class tenantHome extends Component { 
 
@@ -39,10 +40,15 @@ class tenantHome extends Component {
   }
   render() {
     return (
-      <div className='home'>
+      <div className='home' className={styles.body}>
         <TenantNavbar/>
-        <h1>Tenant User Homepage</h1>
-        <div>
+        <div className={styles.main_header_container}>
+          <h1 className={styles.main_header}>Tenant User Homepage</h1>
+        </div>
+        <div className={styles.header_container}>
+          <h2 className={styles.header}>Notification</h2>
+        </div>
+        <div className={styles.notification_container}>
           {this.displayInfo()}
         </div>
       </div>

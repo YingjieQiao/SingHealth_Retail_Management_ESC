@@ -1,5 +1,5 @@
 .body {
-    /* background-color: aqua; */
+    /* background-color: #f5f3f4; */
     margin: auto;
     width: 90%;
 }
@@ -7,11 +7,11 @@
 .single_noti_body {
     background-color: white;
     margin: 10px auto 20px auto;
-    width: 90%;
+    width: 90vw;
     padding: 20px;
     text-align: left;
     border-radius: 5px;
-    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+    /* box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19); */
 }
 
 .button_container {
@@ -47,55 +47,6 @@
 
 .note_container {
     margin: 5px auto 5px auto;
-}
-
-.container_2 {
-    display: flex;
-    /* margin: 10px auto 10px auto; */
-    /* background-color: aliceblue; */
-}
-
-.rectify_badge_container {
-    text-align: left;
-    display: inline-block;
-    margin-right: 10px;
-}
-
-.rectify_badge {
-    background-color: #ffd60a;
-    margin: 10px auto 10px auto;
-    border-radius: 5px;
-    padding: 5px 0 5px 10px;
-}
-
-.recitfy {
-    text-align: justify;
-}
-
-.rectify_badge label {
-    font-size: small;
-    font-weight: bold;
-}
-
-.tag_badge_container {
-    display: inline-block;
-    margin-right: 10px;
-}
-
-.tag_badge {
-    background-color: #e9ecef;
-    margin: 10px auto 10px auto;
-    border-radius: 5px;
-    padding: 5px 0 5px 10px;
-}
-
-.tag {
-    text-align: justify;
-}
-
-.tag_badge label {
-    font-size: small;
-    font-weight: bold;
 }
 
 .date_container label{
