@@ -81,8 +81,7 @@ def testingsigninsignout():
         print("no alert")	
     # browser.execute_script("arguments[0].click();", WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "li.navigationbar__item a[data-link-name='login'][href='/login']"))))
 
-    time.sleep(1)	
-
+    
 
 
 def testinghomekeys():
@@ -97,18 +96,23 @@ def testinghomekeys():
         href = elem.get_attribute('className')
         if href is not None:
             print(href)
-    button = browser.find_element_by_id("Upload").click()
+    button = browser.find_element_by_id("tenant").click()
     time.sleep(1)
-    chooseFile = browser.find_element_by_id("choose")
-    chooseFile.send_keys("C:\\Users\\ishaa\\Pictures\\crop.jpg")
-    chooseFile = browser.find_element_by_id("select")
-    chooseFile.send_keys("HouseKeeping and General Cleanliness")
-    chooseFile = browser.find_element_by_id("notes")
-    chooseFile.send_keys("HouseKeeping and General Cleanliness")
-    chooseFile = browser.find_element_by_id("tenant")
-    chooseFile.send_keys("RossGeller")
+    time.sleep(1)
+    button = browser.find_element_by_id("type")
+    time.sleep(1)	
+    button.send_keys( "Non-F&B"  )
+    time.sleep(1)
+    button = browser.find_element_by_id("selector")
+    time.sleep(1)	
+    button.send_keys( "mihir chibs"  )
+    time.sleep(1)
+    button = browser.find_element_by_id("selector2")
+    time.sleep(1)	
+    button.send_keys( "mihir chibs"  )
+    time.sleep(1)
     button = browser.find_element_by_id("button").click()
-    time.sleep(1)
+    time.sleep(1)	
     try:
         WebDriverWait(browser, 10).until(EC.alert_is_present(),
                                        'Timed out waiting for PA creation ' +
@@ -120,15 +124,21 @@ def testinghomekeys():
         print("alert accepted")
     except TimeoutException:
         print("no alert")	
+    # browser.execute_script("arguments[0].click();", WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "li.navigationbar__item a[data-link-name='login'][href='/login']"))))
+
+    time.sleep(1)	
+
+
+
     button = browser.find_element_by_class_name("menu-bars").click()
     time.sleep(1)
     
     button = browser.find_element_by_id("signout").click()
     time.sleep(1)
-    print("***testing ended successfully***")
-    browser.quit()
 
 
 testinglink()
 testingsigninsignout()
 testinghomekeys()
+print("***testing ended successfully***")
+browser.quit()

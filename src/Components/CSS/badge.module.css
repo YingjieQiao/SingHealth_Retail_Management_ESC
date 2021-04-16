@@ -1,0 +1,31 @@
+.badge_container {
+    margin-top: 20px;
+}
+
+.badge_tag {
+    background-color: #e9ecef;
+    margin: 10px 10px 10px auto;
+    border-radius: 5px;
+    padding: 5px 0 5px 10px;
+}
+
+.badge_tag label {
+    font-size: small;
+    font-weight: bold;
+}
+
+.badge_text {
+    text-align: justify;
+}
+
+.badge_rectify {
+    background-color: #ffd60a;
+    margin: 10px 10px 10px auto;
+    border-radius: 5px;
+    padding: 5px 0 5px 10px;
+}
+
+.badge_rectify label {
+    font-size: small;
+    font-weight: bold;
+}

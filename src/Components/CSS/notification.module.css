@@ -1,0 +1,54 @@
+.body {
+    /* background-color: #f5f3f4; */
+    margin: auto;
+    width: 90%;
+}
+
+.single_noti_body {
+    background-color: white;
+    margin: 10px auto 20px auto;
+    width: 90vw;
+    padding: 20px;
+    text-align: left;
+    border-radius: 5px;
+    /* box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19); */
+}
+
+.button_container {
+    text-align: right;
+}
+
+.delete_button {
+    background-color: transparent;
+    border: none;
+    color: #495057;
+}
+
+.container_1 {
+    display: flex;
+    justify-content: space-between;
+    /* background-color: aliceblue; */
+}
+
+.sender_container {
+    text-align: left;
+    display: inline-block;
+    /* background-color: green; */
+}
+
+.sender_heading {
+    font-weight: bold;
+}
+
+.date_container {
+    display: inline-block;
+    /* background-color: pink; */
+}
+
+.note_container {
+    margin: 5px auto 5px auto;
+}
+
+.date_container label{
+    font-size: small;
+}

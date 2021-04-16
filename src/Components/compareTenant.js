@@ -46,7 +46,7 @@ class CompareTenant extends Component {
     }
     
     render() {
-
+        
         return (
             <div>
                 <Navbar/>
@@ -54,28 +54,28 @@ class CompareTenant extends Component {
                 <form>
                     <div>
                         <label>Type:</label>
-                        <select class="custom-select my-1 mr-sm-2" onChange={this.saveType}>
+                        <select id="type" class="custom-select my-1 mr-sm-2" onChange={this.saveType}>
                             <option selected>Choose...</option>
                             { this.state.typeArray.map(index => <option value={index}>{index}</option> ) }
                         </select>
                     </div>
                     <div>
                         <label>Name of institution/cluster 1:</label>
-                        <select class="custom-select my-1 mr-sm-2" onChange={this.saveInstitute1}>
+                        <select id="selector" class="custom-select my-1 mr-sm-2" onChange={this.saveInstitute1}>
                             <option selected>Choose...</option>
                             { this.state.numOfInstitute.map(index => <option value={index.toString()}>{this.handleInstitue(index)}</option> ) }
                         </select>
                     </div>
                     <div>
                         <label>Name of institution/cluster 2:</label>
-                        <select class="custom-select my-1 mr-sm-2" onChange={this.saveInstitute2}>
+                        <select id="selector2" class="custom-select my-1 mr-sm-2" onChange={this.saveInstitute2}>
                             <option selected>Choose...</option>
                             { this.state.numOfInstitute.map(index => <option value={index.toString()}>{this.handleInstitue(index)}</option> ) }
                         </select>
                     </div>
                 </form>
                 <div>
-                    <button type="button" class={this.getButtonClasses()} onClick={this.compare}>Compare</button>
+                    <button id= "button" type="button" class={this.getButtonClasses()} onClick={this.compare}>Compare</button>
                 </div>
             </div>
         )

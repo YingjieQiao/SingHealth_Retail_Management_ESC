@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import TenantNavbar from './Tenant_Navbar';
 import axios from "axios";
 import { ImUpload3 } from 'react-icons/im';
+import mainStyle from './CSS/home.module.css';
+import styles from './CSS/upload.module.css';
 
 class Upload extends Component {
 
@@ -50,21 +52,25 @@ class Upload extends Component {
 
     render() { 
         return (
-            <div style={{margin: "10px"}}>
+            <div className={styles.body}>
                 <TenantNavbar/>
-                <h2>Tenant Upload photo</h2>
-                <div className="border border-dark" style={{display: "inline-block",margin: "10px"}}>
-                    <ImUpload3 size="50" style={{display: "block", marginLeft: "auto", 
-                        marginRight: "auto", marginTop: "10px"}}/>
-                    <input type="file" name="file" onChange={this.onChooseFileHandler} 
-                        style={{display: "block", margin: '10px'}}/>
+                <div className={mainStyle.main_header_container}>
+                    <h2 className={mainStyle.main_header}>Tenant Upload Photo</h2>
+                </div>
+                <div className={styles.upload_container}>
+                    <ImUpload3 size="50" className={styles.upload_icon}/>
+                    <div className={styles.chooseFile_container}>
+                        <input type="file" name="file" onChange={this.onChooseFileHandler} 
+                            className={styles.chooseFile}/>
+                    </div>
                 </div>
 
-                <div>
+                <div className={styles.info_body}>
                     <form>
-                        <h1>Photo Information</h1>
-
-                        <label>Tags:</label><select onChange={this.tagsHandler} defaultValue="none">
+                        <div className={mainStyle.header_container}>
+                            <h1 className={mainStyle.header}>Photo Information</h1>
+                        </div>
+                        <label className={styles.info_label}>Tags:</label><select onChange={this.tagsHandler} defaultValue="none">
                             <option defaultValue>Select tags</option>
                             <option value="Professionalism and Staff Hygiene">Professionalism and Staff Hygiene</option>
                             <option value="HouseKeeping and General Cleanliness">HouseKeeping and General Cleanliness</option>
@@ -73,21 +79,16 @@ class Upload extends Component {
                             <option value="Workplace Safety and Health">Workplace Safety and Health</option>
                         </select><br />
                         
-                        <label>Notes:</label> <input type="text" 
-                            value={this.state.notes} onChange={this.notesHandler} placeholder="notes..." /><br />
+                        <label className={styles.info_label}>Notes:</label> <input type="text" 
+                            value={this.state.notes} onChange={this.notesHandler} placeholder="Write a note to the staff..." /><br />
 
-                        <label>Staff:</label><select onChange={this.staffHandler} defaultValue="none">
+                        <label className={styles.info_label}>Staff:</label><select onChange={this.staffHandler} defaultValue="none">
                             <option defaultValue>Select staff to answer to</option>
                             { this.state.staffList.map(staff => <option value={staff} key={staff}>{staff}</option> ) }
-                            {/* <option value="YingjieQiao">YingjieQiao</option>
-                            <option value="CarlJohnson">CarlJohnson</option>
-                            <option value="good staff">good staff</option>
-                            <option value="Li WenTest2">Li WenTest2</option> */}
                         </select><br />
-
                     </form >
 
-                    <div>
+                    <div className={styles.button_container}>
                         <button type="button" className="btn btn-primary m-2" 
                             onClick={this.photoInfoButtonHandler} >Upload Photo Information</button>
                     </div>
@@ -97,7 +98,6 @@ class Upload extends Component {
             
         );
     }
-
 
     photoInfoButtonHandler = (event) => {
         event.preventDefault()
@@ -115,7 +115,7 @@ class Upload extends Component {
 
     checkTenantName = () => {
 
-        if (this.state.tenantName.length != 0) {
+        if (this.state.tenantName.length !== 0) {
             // proceeds to upload info
             const photo = {
                 tags: this.state.tags,
@@ -185,7 +185,6 @@ class Upload extends Component {
             loaded: 0
         });
     }
-
     
 }
 

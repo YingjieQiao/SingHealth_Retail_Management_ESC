@@ -1,0 +1,40 @@
+.body {
+    height: 100%;
+    min-height: 100vh;
+}
+
+.upload_container {
+    margin: 40px auto 50px auto;
+    width: 50vw;
+    border: 2px dashed #adb5bd;
+    border-radius: 5px;
+}
+
+.upload_icon {
+    display: block;
+    margin: 20px auto 20px auto;
+}
+
+.chooseFile_container {
+    margin: auto;
+    justify-content: center;
+}
+
+.chooseFile {
+    margin: 20px auto 20px auto;
+}
+
+.info_body {
+    margin: 20px auto 20px auto;
+    width: 80%;
+    text-align: left;
+}
+
+.info_label {
+    font-weight: bold;
+}
+
+.button_container {
+    text-align: center;
+    padding-bottom: 20px;
+}
