@@ -33,3 +33,4 @@ yarn-error.log*
 /backend/tests/__pycache__ 
 /backend/flask_session
 *.log
+backend/tests/flask_session
