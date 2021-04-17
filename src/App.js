@@ -50,8 +50,9 @@ function App() {
       <Route path="/emailReport" exact component={emailReport}/>
       <Route path="/tenantUpload" exact component={tenantUpload}/>
       <Route path="/tenantViewPhoto" exact component={tenantViewPhoto}/>
-      <Route path='*' exact={true} component={My404Component} />	
       <Route path="/tenantDataDashboard" exact component={tenantDataDashboard}/>
+      <Route path='*' exact={true} component={My404Component} />	
+      
     </Switch>
     
     </div>
