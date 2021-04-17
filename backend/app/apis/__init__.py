@@ -71,6 +71,17 @@ def get_current_username_and_datetime():
     return {"username": username, "time": time_, "date": date_, "email": userEmail, "session": session.sid}, 200
 
 
+@apis.route('/signout', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def signout():
+    try:
+        utils.clear_username()
+    except:
+        logger.error("error in '/signout' endpoint")
+        return {"result": False, "session": session.sid}, 500
+    return {"result": True, "session": session.sid}, 200
+    
+
 @apis.route('/check_if_staff', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def check_if_staff():
