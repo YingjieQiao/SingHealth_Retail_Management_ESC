@@ -45,7 +45,6 @@ def encrypt_data(dt):
     return jwt.encode({'data': dt}, JWT_key, algorithm="HS256")
 
 def decrypt_data(dt):
-    print(dt)
     return jwt.decode(dt, JWT_key, algorithms=["HS256"])['data']
 
 s = URLSafeTimedSerializer('Thisisasecret!')
@@ -168,7 +167,7 @@ def user_signup():
     # with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
     #     server.login(sender_email, password)
     #     server.sendmail(sender_email, email, text)
-    logger.info("username %s sign up success", body['firstName']+body['lastName'])
+    logger.info("username %s sign up success", decrypt_data(body['firstName'])+decrypt_data(body['lastName']))
     return {'result': True, 'info': "Registeration Success", "session": session.sid}, 200
 
 # Code to verify the link for user registration, not being used for now
@@ -189,19 +188,16 @@ def user_signup():
 @cross_origin(supports_credentials=True)
 def user_login():
     body = request.get_json()
+    utils.reset_counter_brute_force("Mihir", "Chhiber")
     try:
         user = User.objects.get(email=encrypt_data(body.get('email')))
         authorized = user.check_password(encrypt_data(body.get('password')))
-        dc = {}
-        for i in user.keys():
-            dc[i] = decrypt_data(user[i])
-        user = dc
-        locked = user['locked']
+        locked = decrypt_data(user['locked'])
         if locked:
             logger.error("brute force attack detected!")
             return {'result': False, 'info': "brute force attack detected! your account is locked. Please contact admin to unlock"}, 200
-        firstName = user['firstName']
-        lastName = user['lastName']
+        firstName = decrypt_data(user['firstName'])
+        lastName = decrypt_data(user['lastName'])
         #print(authorized)
         if not authorized:
             if utils.counter_brute_force(firstName, lastName):
@@ -210,10 +206,14 @@ def user_login():
                 return {'result': False, 'info': "brute force attack detected! your account is locked. Please contact admin to unlock"}, 200
             logger.error("error in '/login' endpoint: %s", "password error")
             raise Exception("password error")
+        print('ye')
+        
         if utils.counter_brute_force(firstName, lastName):
             logger.error("brute force attack detected!")
             return {'result': False, 'info': "brute force attack detected! your account is locked. Please contact admin to unlock"}, 200
+        print('ye')
         session['username'] = firstName + lastName
+        print('ye')
         session.modified = True
         #print("username set: ", session['username'])
     except:
