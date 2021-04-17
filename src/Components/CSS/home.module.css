@@ -1,0 +1,32 @@
+.body {
+    background-color: #f5f3f4;
+    height: 100%;
+    min-height: 100vh;
+}
+
+.main_header_container {
+    margin: 20px auto 20px auto;
+}
+
+.main_header {
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+.header_container {
+    margin: 10px auto 20px auto;
+    width: 90vw;
+    text-align: left;
+}
+
+.header {
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.notification_container {
+    background-color: #f5f3f4;
+    height: 100%;
+    padding-bottom: 20px;
+}
+

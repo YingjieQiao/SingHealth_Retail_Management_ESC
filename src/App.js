@@ -52,7 +52,6 @@ function App() {
       <Route path="/tenantViewPhoto" exact component={tenantViewPhoto}/>
       <Route path="/tenantDataDashboard" exact component={tenantDataDashboard}/>
       <Route path='*' exact={true} component={My404Component} />	
-      
     </Switch>
     
     </div>

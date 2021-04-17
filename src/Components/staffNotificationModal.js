@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
+import styles from './CSS/notification.module.css';
+import stylesBagde from './CSS/badge.module.css';
+import * as AiIcons from 'react-icons/ai';
+ 
 
 class stafftNotificationModal extends Component { 
 
@@ -26,7 +29,7 @@ class stafftNotificationModal extends Component {
 
   render() {
     return (
-      <div>
+      <div className={styles.body}>
         {this.state.numOfData.map(index => { 
           return (
             <div>{this.displayInfo(index)}</div>
@@ -40,21 +43,28 @@ class stafftNotificationModal extends Component {
     try {
       if (this.state.data[index]["deleted"] === false) {
         return (
-          <div>
-            <div>
-              <label>Sender: {this.state.data[index]["tenantName"]}</label>
+          <div className={styles.single_noti_body} id={index} >
+            <div className={styles.button_container} id={index}>
+              <button type="button" className={styles.delete_button} id={index} onClick={this.handleDelete}>Delete</button>
             </div>
-            <div>
-              <label>Date: {this.state.data[index]["date"]}</label>
-            </div>
-            <div>
-              <label>Time: {this.state.data[index]["time"]}</label>
-            </div>
-            <div>
-              <label>Rectified: {this.handleRectifyStatus(index)}</label>
-            </div>
-            <button type="button" id={index} class={this.getReadButtonClasses(index)} onClick={this.handleRead}>{this.handleReadStatus(index)}</button>
-            <button type="button" className="btn btn-primary" id={index} onClick={this.handleDelete}>Delete</button>
+            <div className={styles.container_1} id={index}>
+                <div className={styles.sender_container} id={index}>
+                  <label className={styles.sender_heading} id={index}>Sender: {this.state.data[index]["tenantName"]} <span id={index} style={this.getReadButtonClasses(index)} onClick={this.handleRead}>{this.handleReadStatus(index)}</span></label>
+                </div>
+                <div className={styles.date_container} id={index}>
+                  <label className="text-muted" id={index}><AiIcons.AiOutlineClockCircle id={index}/> {this.state.data[index]["date"]}, {this.state.data[index]["time"]}</label>
+                </div>
+              </div>
+              <div className={styles.note_container} id={index}>
+                <label id={index}>{this.state.data[index]["notes"]}</label>
+              </div>
+              <span className={stylesBagde.badge_rectify} id={index}>
+                <label className={stylesBagde.badge_text} id={index}>Rectified: {this.handleRectifyStatus(index)}</label>
+              </span>
+              <span className={stylesBagde.badge_tag} id={index}>
+                <label className={stylesBagde.badge_text} id={index}>Tags: {this.state.data[index]["tags"]}</label>
+              </span>
+            {/* <button type="button" id={index} class={this.getReadButtonClasses(index)} onClick={this.handleRead}>{this.handleReadStatus(index)}</button> */}
           </div>
         )
       } else {
@@ -103,6 +113,7 @@ class stafftNotificationModal extends Component {
   handleDelete = event => {
     const index = event.target.id;
     var newData = this.state.data;
+    console.log("index: ", event.target.value);
     newData[index]["deleted"] = true;
     this.setState({data: newData});
 
@@ -121,7 +132,6 @@ class stafftNotificationModal extends Component {
 
   }
 
-
   validateReadStatus = (index) => {
     const status = this.state.data[index]["read"];
     if (status === true) return true;
@@ -129,8 +139,23 @@ class stafftNotificationModal extends Component {
   }
 
   getReadButtonClasses(index) {
-    let classes = 'btn btn-';
-    classes += this.validateReadStatus(index) === false ? 'primary' : 'light';
+    let classes = {
+      borderRadius: "5px",
+      fontSize: "small",
+      fontWeight: "bold",
+      padding: "5px",
+    }
+
+    if (this.validateReadStatus(index) === false ) {
+      classes["backgroundColor"] = "#40bcd8";
+      classes["color"] = "#f8f7ff";
+      classes["cursor"] = "pointer";
+    } else {
+      classes["backgroundColor"] = "#e9ecef";
+      classes["cursor"] = "default";
+    }
+    // let classes = 'btn btn-';
+    // classes += this.validateReadStatus(index) === false ? 'primary' : 'light';
     return classes;
   }
 

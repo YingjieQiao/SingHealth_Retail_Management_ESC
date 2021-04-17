@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import Navbar from './Navbar';
 import axios from "axios";
+import mainStyle from './CSS/home.module.css';
+import stylesBagde from './CSS/badge.module.css';
+import stylesNoti from './CSS/notification.module.css';
+import styles from './CSS/viewPhoto.module.css';
+import * as AiIcons from 'react-icons/ai';
 
 class viewPhoto extends Component {
 
@@ -12,8 +17,8 @@ class viewPhoto extends Component {
         tenantNumOfImage: [],
         tenantImgSrc: [],
         tenantPhotoAttrData: [],
-        viewTenantUpload: false,
-        viewStaffUpload: false,
+        showPhotoByStaff: false,
+        showPhotoByTenant: false,
     };
 
     componentDidMount() {
@@ -22,7 +27,7 @@ class viewPhoto extends Component {
             .then(
                 res => {
                     console.log(res.data);
-                    if(res.data.username==""){
+                    if(res.data.username===""){
                       alert("Please Log in!");
                       this.props.history.push('/');
                     }
@@ -34,31 +39,60 @@ class viewPhoto extends Component {
     render() { 
         return (
             
-            <div>
+            <div className={mainStyle.body}>
                 <Navbar/>
-                <h2>View Photos</h2>
-                <p>{this.state.reviewPhotoMsg}</p>
-                <button type="button" id="button1" className="btn btn-primary m-2" onClick={this.showPhotoByTenantHandler}>View Photos Uploaded By Tenants</button>
-                <button type="button" id="button2" className="btn btn-primary m-2" onClick={this.showPhotoByStaffHandler}>View Previously Updated Photos</button>
+                <div className={mainStyle.main_header_container}>
+                    <h2 className={mainStyle.main_header}>Staff View Photos</h2>
+                </div>
+                <div className={styles.button_container}>
+                    <button type="button" class={this.getTenantButtonClasses()} onClick={this.showPhotoByTenantHandler}>View Photos Uploaded By Tenants</button>
+                    <button type="button" class={this.getStaffButtonClasses()} onClick={this.showPhotoByStaffHandler}>View Previously Updated Photos</button>
+                </div>
+                <div className={styles.header_container}><h2 className={styles.header}>{this.displayUploadHeader()}</h2></div>
                 <div>
                     {this.state.numberOfImage.map(image => {
                         return(
-                            <div>
-                                <img src={this.state.imageSource[image]} alt={image} key={image} width="300" height="300" /> 
-                                <p>Tags: {this.handleInfo(image, "tags")}</p>
-                                <p>Date: {this.handleInfo(image, "date")}, {this.handleInfo(image, "time")}</p>
-                                <p>Notes: {this.handleInfo(image, "notes")}</p>
-                                <p>Staff's Name: {this.handleInfo(image, "staffName")}</p>
-                                <p>Tenant's Name: {this.handleInfo(image, "tenantName")}</p>
-                                <p>Rectified: {this.handleInfo(image, "rectified")}</p>
-                                <button type="button" id={image} onClick={this.rectify} className="btn btn-primary m-2">Rectify</button>
+                            <div className={styles.single_photo_body}>
+                                <div className={styles.image_container}>
+                                    <img src={this.state.imageSource[image]} alt={image} key={image} width="300" height="300" /> 
+                                </div>
+                                <div className={styles.date_container}>
+                                    <label className="text-muted"><AiIcons.AiOutlineClockCircle/> {this.handleInfo(image, "date")}, {this.handleInfo(image, "time")}</label>
+                                </div>
+                                <div className={stylesNoti.container_1}>
+                                    <div className={stylesNoti.sender_container}>
+                                        <label className={stylesNoti.sender_heading}>Uploaded by: {this.displayUploaderInfo(image)}</label>
+                                    </div>
+                                </div>                                
+                                <div className={stylesNoti.note_container}>
+                                    <label>Notes: {this.handleInfo(image, "notes")}</label>
+                                </div>
+                                <div className={stylesBagde.badge_container}>
+                                    <span className={stylesBagde.badge_tag}>
+                                        <label className={stylesBagde.badge_text}>Tags: {this.handleInfo(image, "tags")}</label>
+                                    </span>
+                                </div>
+                                <div className={styles.rectifyButton_container}>
+                                    <button type="button" id={image} onClick={this.rectify} className="btn btn-primary m-2">Rectify</button>
+                                </div>
                             </div>
+
                         )
                     })}
                 </div>
 
             </div>
         );
+    }
+
+    displayUploadHeader = () => {
+        if (this.state.showPhotoByStaff) return "View Photos Uploaded by you."; 
+        else if (this.state.showPhotoByTenant) return "View Photos Uploaded by tenants.";
+    }
+
+    displayUploaderInfo = (image) => {
+        if (this.state.showPhotoByStaff) return this.handleInfo(image, "staffName"); 
+        else if (this.state.showPhotoByTenant) return this.handleInfo(image, "tenantName");
     }
 
     handleInfo = (index, data) => {
@@ -110,8 +144,7 @@ class viewPhoto extends Component {
                 // res.photoAttrData is an array of dictionary, 
                 // each dictionary contains the info about this photo
 
-                this.setState({reviewPhotoMsg: ""});
-                this.setState({viewStaffUpload: true, viewTenantUpload: false});
+                this.setState({reviewPhotoMsg: "", showPhotoByStaff: true, showPhotoByTenant: false});
 
                 for (var i = 0; i < res.data.photoData.length; i++) {
                     let photoData = res.data.photoData[i];
@@ -165,8 +198,7 @@ class viewPhoto extends Component {
                 console.log(res);
                 // res.photoAttrData is an array of dictionary, each dictionary contains the info about this photo
 
-                this.setState({reviewPhotoMsg: ""});
-                this.setState({viewTenantUpload: true, viewStaffUpload: false});
+                this.setState({reviewPhotoMsg: "", showPhotoByStaff: false, showPhotoByTenant: true});
 
                 for (var i = 0; i < res.data.photoData.length; i++) {
                     let photoData = res.data.photoData[i];
@@ -257,53 +289,28 @@ class viewPhoto extends Component {
         
     }
 
+    uploadedByStaff = () => {
+        if (this.state.showPhotoByStaff) return true;
+        else return false;
+    }
+    
+    getStaffButtonClasses = () => {
+        let classes = 'btn m-2 btn-'
+        classes += this.uploadedByStaff() === true ? 'secondary' : 'primary';
+        return classes;
+    }
 
-    // rectify = event => {
-    //     event.preventDefault();
+    uploadedByTenant = () => {
+        if (this.state.showPhotoByTenant) return true;
+        else return false;
+    }
+    
+    getTenantButtonClasses = () => {
+        let classes = 'btn m-2 btn-'
+        classes += this.uploadedByTenant() === true ? 'secondary' : 'primary';
+        return classes;
+    }
 
-    //     const index = event.target.id;
-
-    //     const headers = {
-    //         'Content-Type': 'application/json',
-    //         'Access-Control-Allow-Origin': '*',
-    //         withCredentials: true
-    //     };
-        
-    //     const currPhoto = {
-    //         tags: this.state.photoAttrData[index]["tags"],
-    //         date: this.state.photoAttrData[index]["date"],
-    //         time: this.state.photoAttrData[index]["time"],
-    //         notes: this.state.photoAttrData[index]["notes"],
-    //         staffName: this.state.photoAttrData[index]["staffName"],
-    //         tenantName: this.state.photoAttrData[index]["tenantName"],
-    //         rectified: this.state.photoAttrData[index]["rectified"]
-    //     };
-
-    //     axios.post(`http://localhost:5000/rectify_photo`, currPhoto, headers)
-    //         .then(res => {
-    //             console.log(currPhoto);
-    //             console.log(res);
-    //     })
-
-
-    //     let newPhotoAttr = this.state.photoAttrData;
-    //     newPhotoAttr[index]["rectified"] = true;
-    //     this.setState({photoAttrData: newPhotoAttr});
-
-    //     let newNumArray = this.state.numberOfImage;
-    //     newNumArray.pop();
-
-    //     let newImgArray = this.state.imageSource
-    //     newImgArray.splice(index, 1);
-
-    //     let newPhotoAttrData = this.state.photoAttrData;
-    //     newPhotoAttrData.splice(index, 1);
-
-    //     this.setState(imageSource => {return newImgArray});
-    //     this.setState(photoAttrData => {return newPhotoAttrData});
-    //     this.setState(numberOfImage => {return newImgArray});
-        
-    // }
 
 }
 
