@@ -9,15 +9,25 @@ class User(db.Document):
     email = db.StringField(required=True, unique=True)
     password = db.StringField(required=True, unique=False, min_length=8)
     location = db.StringField(required=True, unique=False)
-    mobile = db.IntField(required=True, unique=False)
-    fnb = db.BooleanField(required=True, unique=False)
-    locked = db.BooleanField(required=True, unique=False)
-    attempts = db.IntField(required=True, unique=False)
+    # mobile = db.IntField(required=True, unique=False)
+    # fnb = db.BooleanField(required=True, unique=False)
+    # locked = db.BooleanField(required=True, unique=False)
+    # attempts = db.IntField(required=True, unique=False)
     meta = {'strict': False}
 
-    staff = db.BooleanField(required=True, default=False)
-    tenant = db.BooleanField(required=True, default=False)
-    admin = db.BooleanField(required=True, default=False)
+    # staff = db.BooleanField(required=True, default=False)
+    # tenant = db.BooleanField(required=True, default=False)
+    # admin = db.BooleanField(required=True, default=False)
+
+
+
+    mobile = db.StringField(required=True, unique=False)
+    fnb = db.StringField(required=True, unique=False)
+    locked = db.StringField(required=True, unique=False)
+    attempts = db.StringField(required=True, unique=False)
+    staff = db.StringField(required=True, unique=False)
+    tenant = db.StringField(required=True, default=False)
+    admin = db.StringField(required=True, unique=False)
 
     def hash_password(self):
        self.password = generate_password_hash(self.password).decode('utf8')
@@ -29,9 +39,6 @@ class User(db.Document):
 
     def is_acc_locked(self):
         return self.locked
-
-    def setfnb(self,val):
-        self.fnb = val
 
 
 class Photo(db.Document):

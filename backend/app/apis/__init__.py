@@ -32,9 +32,21 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 
 import shutil
+from cryptography.fernet import Fernet
+
+import jwt
 
 sender_email = "starboypp69@gmail.com"
 password = "MDR-XB450AP"
+
+JWT_key = "JWTencrypted"
+
+def encrypt_data(dt):
+    return jwt.encode({'data': dt}, JWT_key, algorithm="HS256")
+
+def decrypt_data(dt):
+    print(dt)
+    return jwt.decode(dt, JWT_key, algorithms=["HS256"])['data']
 
 s = URLSafeTimedSerializer('Thisisasecret!')
 
@@ -106,8 +118,9 @@ def check_if_tenant():
 @cross_origin(supports_credentials=True)
 def user_signup():
     body = request.get_json()
-    print(body)
     try:
+        for i in body.keys():
+            body[i] = encrypt_data(body[i])
         user = User(**body)
         user.hash_password()
         user.save()
@@ -177,14 +190,18 @@ def user_signup():
 def user_login():
     body = request.get_json()
     try:
-        user = User.objects.get(email=body.get('email'))
-        locked = user.is_acc_locked()
+        user = User.objects.get(email=encrypt_data(body.get('email')))
+        authorized = user.check_password(encrypt_data(body.get('password')))
+        dc = {}
+        for i in user.keys():
+            dc[i] = decrypt_data(user[i])
+        user = dc
+        locked = user['locked']
         if locked:
             logger.error("brute force attack detected!")
             return {'result': False, 'info': "brute force attack detected! your account is locked. Please contact admin to unlock"}, 200
-        firstName = user.firstName
-        lastName = user.lastName
-        authorized = user.check_password(body.get('password'))
+        firstName = user['firstName']
+        lastName = user['lastName']
         #print(authorized)
         if not authorized:
             if utils.counter_brute_force(firstName, lastName):
@@ -244,9 +261,7 @@ def login_verified():
 
     body = request.get_json()
     try:
-        print(body.get('email'))
         email = s.loads(body.get("token"), salt='login', max_age=120) #age needs to be increased to allow longer duration for the link to exist
-        print(email)
         user = User.objects.get(email=email)
         firstName = user.firstName
         lastName = user.lastName
