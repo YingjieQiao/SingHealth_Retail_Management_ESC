@@ -29,6 +29,7 @@ get number of photos post rectify:
 same test cases for tenant endpoints
 """
 
+
 class TestPhoto(TestBase):
     """
     Test uploading to S3 and mongo DB
@@ -79,22 +80,10 @@ class TestPhoto(TestBase):
         "breakit": ""
     }
 
-    TEST_PHOTO_INFO_UPLOAD_FAIL_2 = {
-        "tags": "tag2",
-        "date": "01-02-2020",
-        "time": "00:02:00",
-        "notes": "UNIT TEST ENTRY",
-        "staffName": "UnitTester",
-        "tenantName": "UnitTester",
-        "rectified": False,
-        "a column that does not exist": False,
-        "breakit": ""
-    }
 
     TEST_PHOTO_INFO_UPLOAD_PASS_1_JSON = json.dumps(TEST_PHOTO_INFO_UPLOAD_PASS_1)
     TEST_PHOTO_INFO_UPLOAD_PASS_2_JSON = json.dumps(TEST_PHOTO_INFO_UPLOAD_PASS_2)
     TEST_PHOTO_INFO_UPLOAD_FAIL_1_JSON = json.dumps(TEST_PHOTO_INFO_UPLOAD_FAIL_1)
-    TEST_PHOTO_INFO_UPLOAD_FAIL_2_JSON = json.dumps(TEST_PHOTO_INFO_UPLOAD_FAIL_2)
 
     def test_db_and_s3_upload_pass_1(self):
         rv = self.client.post('/upload_photo_info', data=self.TEST_PHOTO_INFO_UPLOAD_PASS_1_JSON,

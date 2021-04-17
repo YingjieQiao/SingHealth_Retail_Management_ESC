@@ -1,6 +1,0 @@
-firstName,lastName,email,location,mobile,fnb,staff,tenant,admin
-Yingjie,Qiao,yingjie_qiao@mymail.sutd.edu.sg,SUTD,1234,True,True,False,False
-Carl,Johnson,qyj001123@gmail.com,NUS,123,True,True,False,False
-Admin,User,kueapp2020@gmail.com,SUTD,1234,True,False,False,True
-Ross,Geller,yingjie_qiao@outlook.com,NUS,1234,True,False,True,False
-Chandler,Bing,cbing@friends.com,NUS,123,True,False,True,False
