@@ -16,36 +16,35 @@ get db data:
 class TestAudit(TestBase):
 
     TEST_AUDIT_1 = {  #  Correct data with correct column names
-        'auditorName' : "Jerry"
+        'auditorName' : "temp_auditor"
         'auditorDepartment' : "Risk"
-        'auditeeName' : "mihir_chhiber@mymail.sutd.edu.sg"
+        'auditeeName' : "temp_audit@temp.com"
         'comment' : "The hygiene level needs attention otherwise suspension of lease of con..."
         'checklist' : [1,0,-1,1,0,-1,1,0,-1,1,0,-1,1]
 
     }
 
     TEST_AUDIT_2 = {  # Missing data
-        'auditorName' : "Jerry"
+        'auditorName' : "temp_auditor"
         #department is missing
-        'auditeeName' : "mihir_chhiber@mymail.sutd.edu.sg"
+        'auditeeName' : "temp_audit@temp.com"
         'comment' : "The hygiene level needs attention otherwise suspension of lease of con..."
         'checklist' : [1,0,-1,1,0,-1,1,0,-1,1,0,-1,1]
     }
 
     TEST_AUDIT_3 = {  # Extra data
-        'auditorName' : "Jerry"
+        'auditorName' : "temp_auditor"
         'auditorDepartment' : "Risk"
-        'auditeeName' : "mihir_chhiber@mymail.sutd.edu.sg"
+        'auditeeName' : "temp_audit@temp.com"
         'comment' : "The hygiene level needs attention otherwise suspension of lease of con..."
         'checklist' : [1,0,-1,1,0,-1,1,0,-1,1,0,-1,1]
         "extra": 123
     }
 
     TEST_AUDIT_4 = {  # Incorrect data type
-        'timestamp' : "2021-03-31 02:54:48.316355"
-        'auditorName' : "Jerry"
+        'auditorName' : "temp_auditor"
         'auditorDepartment' : "Risk"
-        'auditeeName' : "mihir_chhiber@mymail.sutd.edu.sg"
+        'auditeeName' : "temp_audit@temp.com"
         'comment' : 1234 # should be string
         'checklist' : [1,0,-1,1,0,-1,1,0,-1,1,0,-1,1]
     }

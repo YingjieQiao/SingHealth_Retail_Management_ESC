@@ -831,7 +831,6 @@ def auditchecklistFB():
     print(body)
     audit = Audit_FB(**body)
     audit.timestamp = str(ts)
-    audit.computeTotalScore()
     audit.save()
     return {'statusText': True}
 
@@ -853,7 +852,6 @@ def auditchecklistNonFB():
 
         audit = Audit_non_FB(**body)
         audit.timestamp = str(ts)
-        audit.computeTotalScore()
         audit.save()
         return {'statusText': True}, 200
     except:
