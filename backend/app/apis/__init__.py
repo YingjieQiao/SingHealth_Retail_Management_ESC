@@ -282,8 +282,9 @@ def login_verified():
 @apis.route('/upload_file', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
 def upload_file():
-    if current_app.config['TESTING']:
+    if current_app.config['TESTING'] or utils.get_current_username() == "UnitTester":
         testFilePath = os.getcwd() + "/assets/image.jpg"
+        # print(testFilePath)
         body = PIL.Image.open(testFilePath)
     else:
         body = request.files['file']

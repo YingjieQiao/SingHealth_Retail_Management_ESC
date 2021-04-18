@@ -11,6 +11,9 @@ from flask import request, session
 
 logger = logging.getLogger("logger")
 
+s3_client = boto3.client('s3',
+                aws_access_key_id=os.environ.get('ACCESS_KEY'),
+                aws_secret_access_key=os.environ.get('SECRET_KEY'))
 
 def upload_file(file_name, bucket, object_name):
     """Upload a file to an S3 bucket
@@ -24,9 +27,6 @@ def upload_file(file_name, bucket, object_name):
     if object_name is None:
         object_name = file_name
 
-    s3_client = boto3.client('s3',
-                aws_access_key_id=os.environ.get('ACCESS_KEY'),
-                aws_secret_access_key=os.environ.get('SECRET_KEY'))
     try:
         response = s3_client.upload_file(file_name, bucket, object_name)
     except ClientError as e:
@@ -50,12 +50,8 @@ def download(s3, file_name, bucket, object_name):
     if object_name is None:
         object_name = file_name
 
-    if s3 == None:
-        s3 = boto3.client('s3',
-                aws_access_key_id=os.environ.get('ACCESS_KEY'),
-                aws_secret_access_key=os.environ.get('SECRET_KEY'))
     try:
-        s3.download_file(bucket, object_name, file_name)
+        s3_client.download_file(bucket, object_name, file_name)
         filename_full = os.getcwd() + '/' + file_name
     except ClientError as e:
         #print("error occurred: ", e)
@@ -64,9 +60,6 @@ def download(s3, file_name, bucket, object_name):
 
 
 def download_user_objects(bucket, username, timeInput, dateInput, counterPart):
-    s3_client = boto3.client('s3',
-                aws_access_key_id=os.environ.get('ACCESS_KEY'),
-                aws_secret_access_key=os.environ.get('SECRET_KEY'))
     photoData = []
     photoAttrData = []
     # #print(bucket, username, timeInput, dateInput, counterPart)

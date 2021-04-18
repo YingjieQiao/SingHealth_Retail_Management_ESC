@@ -11,7 +11,7 @@ def get_current_username():
     username = "UnitTester"
     if "username" in session:
         username = session['username']
-    print("in utils get username: ", username)
+    # print("in utils get username: ", username)
     return username
 
 
