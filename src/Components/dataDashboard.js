@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import Navbar from './Navbar';
 import axios from 'axios';
 import { MdSystemUpdate } from 'react-icons/md';
+import mainStyle from './CSS/home.module.css';
+import uploadStyle from './CSS/upload.module.css';
 
 class DataDashboard extends Component {
 
@@ -47,19 +49,25 @@ class DataDashboard extends Component {
     render() {
 
         return (
-            <div>
+            <div className={uploadStyle.body}>
                 <Navbar/>
-                <h2>Data Dashboard</h2>
-                <h3>Get Tenant's Statistics</h3>
-                <form>
-                    <div>
-                        <label>Name of Tenant:</label>
+                <div className={mainStyle.main_header_container}>
+                    <h2 className={mainStyle.main_header}>Data Dashboard</h2>
+                </div>
+
+                <div className={uploadStyle.info_body}>
+                    <div className={mainStyle.header_container}>
+                        <h1 className={mainStyle.header}>Get Tenant's Statistics</h1>
+                    </div>
+                    <form>
+                        <label className={uploadStyle.info_label}>Name of Tenant:</label>
                         <select class="custom-select my-1 mr-sm-2" onChange={this.saveTenant}>
                             <option selected>Choose...</option>
                             { this.state.numOfTenant.map(index => <option value={index.toString()}>{this.handleTenant(index)}</option> ) }
-                        </select>
-                    </div>
-                </form>
+                        </select><br />
+                    </form>
+                </div>
+
                 <button type="submit" class={this.getButtonClasses()} onClick={this.handleSubmit}>Find</button>
 
             </div>

@@ -104,6 +104,8 @@ def testinghomekeys():
     time.sleep(1)
     button = browser.find_element_by_class_name("menu-bars").click()
     time.sleep(1)
+    button = browser.find_element_by_id("profile").click()
+    time.sleep(1)
     # button = browser.find_element_by_id("inbox").click()
     # time.sleep(1)
     # button = browser.find_element_by_class_name("menu-bars").click()

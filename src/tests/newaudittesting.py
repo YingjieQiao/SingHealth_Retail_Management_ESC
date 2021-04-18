@@ -88,19 +88,19 @@ def AuditChecklistNonFB():
     print("non fnb selected")
     time.sleep(1)	
     n = random.randint(1,3)
-    # chooseFile = browser.find_element_by_id("auditeeName")
+    chooseFile = browser.find_element_by_id("Auditee")
     # if(n==1):
     #     chooseFile.send_keys("KFC")
     # elif(n==2): 
-    #     chooseFile.send_keys("McD")
+    chooseFile.send_keys("mihir chibs")
     # elif(n==3):
     #     chooseFile.send_keys("MosB")
     # r = random.randint(1,3)
-    # chooseFile = browser.find_element_by_id("auditorName")
+    chooseFile = browser.find_element_by_id("auditorName")
     # if(r==1):
     #     chooseFile.send_keys("Tom")
     # elif(r==2): 
-    #     chooseFile.send_keys("Jerry")
+    chooseFile.send_keys("ishaannair")
     # elif(r==3):
     #     chooseFile.send_keys("Charlie")
 
@@ -212,15 +212,15 @@ def AuditChecklistNonFB():
     chooseFile = browser.find_element_by_id("033")
     chooseFile.send_keys(data)
     data = random.randint(0,10)
-    chooseFile = browser.find_element_by_id("034")
+    chooseFile = browser.find_element_by_("034")
     chooseFile.send_keys(data)
-    # button = browser.find_element_by_id("button22").click()
+    # button = browser.find_elem    ent_by_id("button22").click()
     # time.sleep(1)
     time.sleep(1)
     chooseFile = browser.find_element_by_id("comments")
     chooseFile.send_keys("this is a test")
     time.sleep(1)
-    chooseFile = browser.find_element_by_id("submit").click()
+    chooseFile = browser.find_element_by("Submit").click()
     time.sleep(1)
     print("non fnb completed")
 
