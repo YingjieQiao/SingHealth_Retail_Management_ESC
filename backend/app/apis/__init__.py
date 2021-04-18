@@ -8,30 +8,23 @@ import PIL.Image
 import os
 from datetime import datetime
 import json
-
 from . import s3_methods, utils, notif_methods, email_methods
-
 import email, smtplib, ssl
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
- 
-# new library added, please take note
-# import seaborn as sns
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import base64
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
-
-import csv #new library
+import csv 
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER, TA_LEFT
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
-
 import shutil
 
 sender_email = "starboypp69@gmail.com"
