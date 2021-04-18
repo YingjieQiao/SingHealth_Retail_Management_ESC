@@ -89,12 +89,18 @@ class TestAudit(TestBase):
 
     TEST_GRAPH_CSV_CALL_1 = {  # failed testcase
         "institute1" : "test_1@test.com",
-        "institute2" : "test_2@test.com"
+        "institute2" : "test_3@test.com"
     }
 
     TEST_GRAPH_CSV_CALL_2 = {  # passed testcase
         "institute1" : "test_1@test.com",
-        "institute2" : "test_3@test.com"
+        "institute2" : "test_2@test.com"
+    }
+
+    TEST_REPORT_CALL = {
+        "institute1" : "test_1@test.com",
+        "institute2" : "test_2@test.com",
+        "emailContent" : {"email" : "test_1@test.com", "body" : "123", "subject" : "123"}
     }
 
     def setup_test(self):
@@ -126,3 +132,8 @@ class TestAudit(TestBase):
                               content_type='application/json')
         assert rv.status_code == 200
         assert rv.json['status'] == True
+        rv = self.client.post('/report_compare_tenant', data=self.TEST_REPORT_CALL,
+                              content_type='application/json')
+        assert rv.status_code == 200
+        assert rv.json['status'] == True
+        
