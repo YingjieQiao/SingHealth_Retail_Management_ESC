@@ -841,21 +841,22 @@ def auditchecklistNonFB():
     body = request.get_json()
     print(body)
     print(body['workSafetyHealthScore'])
-    try:
-        body['workSafetyScore'] = body['workSafetyHealthScore']
-        body['profScore'] = body['profStaffHydScore']
-        body['housekeepingScore'] = body['houseGeneralScore']
-        body.pop('workSafetyHealthScore')
-        body.pop('profStaffHydScore')
-        body.pop('houseGeneralScore')
-        print(body)
+    # try:
+    body['workSafetyScore'] = body['workSafetyHealthScore']
+    body['profScore'] = body['profStaffHydScore']
+    body['housekeepingScore'] = body['houseGeneralScore']
+    body.pop('workSafetyHealthScore')
+    body.pop('profStaffHydScore')
+    body.pop('houseGeneralScore')
+    print(body)
 
-        audit = Audit_non_FB(**body)
-        audit.timestamp = str(ts)
-        audit.save()
-        return {'statusText': True}, 200
-    except:
-        return {'statusText': False}, 500
+    audit = Audit_non_FB(**body)
+    audit.timestamp = str(ts)
+    audit.computeTotalScore()
+    audit.save()
+    return {'statusText': True}, 200
+    # except:
+    #     return {'statusText': False}, 500
 
 @apis.route('/covidChecklist', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
@@ -2508,7 +2509,7 @@ def report_checklistt():
         checklist = audit_ls['profstaffhydScoreList'] + audit_ls['housekeepScoreList'] + audit_ls['worksafetyhealthScoreList']
         for i in range(len(checklist)):
             checklist[i] = str(checklist[i])
-        checklist = ['',''] + checklist[:3] + [''] + checklist[3:6] + ['',''] + checklist[6:18] + ['',''] + checklist[18:27] + [''] + checklist[27:35]
+        checklist = ['',''] + checklist[:3] + [''] + checklist[3:6] + ['',''] + checklist[6:18] + ['',''] + checklist[18:27] + [''] + checklist[27:30] + [''] + checklist[30:]
 
         print(len(df['data']))
         print(len(checklist))
