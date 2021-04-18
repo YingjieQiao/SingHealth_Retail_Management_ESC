@@ -38,3 +38,11 @@
     text-align: center;
     padding-bottom: 20px;
 }
+
+.info_body label {
+    min-width: 20%;
+}
+
+.info_body select {
+    width: 70%;
+}
