@@ -16,59 +16,59 @@ get db data:
 class TestAudit(TestBase):
 
     TEST_AUDIT_1 = {  #  Correct data with correct column names
-        'auditorName' : "temp_auditor"
-        'auditorDepartment' : "Risk"
-        'auditeeName' : "temp_audit@temp.com"
-        'totalScore' : 44.91666666666667
-        'profstaffhydScoreList' : [1,3,5,3,5,2]
-        'profStaffHydScore' : 12
-        'housekeepScoreList' : [1,2,3,4,5,6,7,8,9,7,6,5]
-        'housekeepScore' : 16.666666666666668
-        'worksafetyhealthScoreList' : [1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2]
-        'workSafetyHealthScore' : 16.25
+        'auditorName' : "temp_auditor",
+        'auditorDepartment' : "Risk",
+        'auditeeName' : "temp_audit@temp.com",
+        'totalScore' : 44.91666666666667,
+        'profstaffhydScoreList' : [1,3,5,3,5,2],
+        'profStaffHydScore' : 12,
+        'housekeepScoreList' : [1,2,3,4,5,6,7,8,9,7,6,5],
+        'housekeepScore' : 16.666666666666668,
+        'worksafetyhealthScoreList' : [1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2],
+        'workSafetyHealthScore' : 16.25,
         'comment' : "The hygiene level needs attention otherwise suspension of lease of con..."
     }
 
     TEST_AUDIT_2 = {  # Missing data
-        'auditorName' : "temp_auditor"
-        'auditorDepartment' : "Risk"
-        'auditeeName' : "temp_audit@temp.com"
-        'totalScore' : 44.91666666666667
-        'profstaffhydScoreList' : [1,3,5,3,5,2]
-        'profStaffHydScore' : 12
-        'housekeepScoreList' : [1,2,3,4,5,6,7,8,9,7,6,5]
-        'housekeepScore' : 16.666666666666668
+        'auditorName' : "temp_auditor",
+        'auditorDepartment' : "Risk",
+        'auditeeName' : "temp_audit@temp.com",
+        'totalScore' : 44.91666666666667,
+        'profstaffhydScoreList' : [1,3,5,3,5,2],
+        'profStaffHydScore' : 12,
+        'housekeepScoreList' : [1,2,3,4,5,6,7,8,9,7,6,5],
+        'housekeepScore' : 16.666666666666668,
         # work safety health data is missing 
-        'workSafetyHealthScore' : 16.25
+        'workSafetyHealthScore' : 16.25,
         'comment' : "The hygiene level needs attention otherwise suspension of lease of con..."
     }
 
     TEST_AUDIT_3 = {  # Extra data
-        'auditorName' : "temp_auditor"
-        'auditorDepartment' : "Risk"
-        'auditeeName' : "temp_audit@temp.com"
-        'totalScore' : 44.91666666666667
-        'profstaffhydScoreList' : [1,3,5,3,5,2]
-        'profStaffHydScore' : 12
-        'housekeepScoreList' : [1,2,3,4,5,6,7,8,9,7,6,5]
-        'housekeepScore' : 16.666666666666668
-        'worksafetyhealthScoreList' : [1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2]
-        'workSafetyHealthScore' : 16.25
-        'comment' : "The hygiene level needs attention otherwise suspension of lease of con..."
+        'auditorName' : "temp_auditor",
+        'auditorDepartment' : "Risk",
+        'auditeeName' : "temp_audit@temp.com",
+        'totalScore' : 44.91666666666667,
+        'profstaffhydScoreList' : [1,3,5,3,5,2],
+        'profStaffHydScore' : 12,
+        'housekeepScoreList' : [1,2,3,4,5,6,7,8,9,7,6,5],
+        'housekeepScore' : 16.666666666666668,
+        'worksafetyhealthScoreList' : [1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2],
+        'workSafetyHealthScore' : 16.25,
+        'comment' : "The hygiene level needs attention otherwise suspension of lease of con...",
         "extra": 123
     }
 
     TEST_AUDIT_4 = {  # Incorrect data type
-        'auditorName' : "temp_auditor"
-        'auditorDepartment' : "Risk"
-        'auditeeName' : "temp_audit@temp.com"
-        'totalScore' : 44.91666666666667
-        'profstaffhydScoreList' : [1,3,5,3,5,2]
-        'profStaffHydScore' : 12
-        'housekeepScoreList' : [1,2,3,4,5,6,7,8,9,7,6,5]
-        'housekeepScore' : 16.666666666666668
-        'worksafetyhealthScoreList' : [1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2]
-        'workSafetyHealthScore' : 16.25
+        'auditorName' : "temp_auditor",
+        'auditorDepartment' : "Risk",
+        'auditeeName' : "temp_audit@temp.com",
+        'totalScore' : 44.91666666666667,
+        'profstaffhydScoreList' : [1,3,5,3,5,2],
+        'profStaffHydScore' : 12,
+        'housekeepScoreList' : [1,2,3,4,5,6,7,8,9,7,6,5],
+        'housekeepScore' : 16.666666666666668,
+        'worksafetyhealthScoreList' : [1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2],
+        'workSafetyHealthScore' : 16.25,
         'comment' : 1726 # should be string
     }
 

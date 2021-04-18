@@ -16,36 +16,36 @@ get db data:
 class TestAudit(TestBase):
 
     TEST_AUDIT_1 = {  #  Correct data with correct column names
-        'auditorName' : "temp_auditor"
-        'auditorDepartment' : "Risk"
-        'auditeeName' : "temp_audit@temp.com"
-        'comment' : "The hygiene level needs attention otherwise suspension of lease of con..."
+        'auditorName' : "temp_auditor",
+        'auditorDepartment' : "Risk",
+        'auditeeName' : "temp_audit@temp.com",
+        'comment' : "The hygiene level needs attention otherwise suspension of lease of con...",
         'checklist' : [1,0,-1,1,0,-1,1,0,-1,1,0,-1,1]
 
     }
 
     TEST_AUDIT_2 = {  # Missing data
-        'auditorName' : "temp_auditor"
+        'auditorName' : "temp_auditor",
         #department is missing
-        'auditeeName' : "temp_audit@temp.com"
-        'comment' : "The hygiene level needs attention otherwise suspension of lease of con..."
+        'auditeeName' : "temp_audit@temp.com",
+        'comment' : "The hygiene level needs attention otherwise suspension of lease of con...",
         'checklist' : [1,0,-1,1,0,-1,1,0,-1,1,0,-1,1]
     }
 
     TEST_AUDIT_3 = {  # Extra data
-        'auditorName' : "temp_auditor"
-        'auditorDepartment' : "Risk"
-        'auditeeName' : "temp_audit@temp.com"
-        'comment' : "The hygiene level needs attention otherwise suspension of lease of con..."
-        'checklist' : [1,0,-1,1,0,-1,1,0,-1,1,0,-1,1]
+        'auditorName' : "temp_auditor",
+        'auditorDepartment' : "Risk",
+        'auditeeName' : "temp_audit@temp.com",
+        'comment' : "The hygiene level needs attention otherwise suspension of lease of con...",
+        'checklist' : [1,0,-1,1,0,-1,1,0,-1,1,0,-1,1],
         "extra": 123
     }
 
     TEST_AUDIT_4 = {  # Incorrect data type
-        'auditorName' : "temp_auditor"
-        'auditorDepartment' : "Risk"
-        'auditeeName' : "temp_audit@temp.com"
-        'comment' : 1234 # should be string
+        'auditorName' : "temp_auditor",
+        'auditorDepartment' : "Risk",
+        'auditeeName' : "temp_audit@temp.com",
+        'comment' : 1234 # should be string,
         'checklist' : [1,0,-1,1,0,-1,1,0,-1,1,0,-1,1]
     }
 

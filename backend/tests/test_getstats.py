@@ -39,20 +39,20 @@ class TestAudit(TestBase):
     }
 
     TEST_AUDIT = {  # creating a new data entry
-        'auditorName' : "temp_auditor"
-        'auditorDepartment' : "Risk"
-        'auditeeName' : "test_2@test.com"
-        'totalScore' : 44.91666666666667
-        'profstaffhydScoreList' : [1,3,5,3,5,2,2,3,4,5,6,7,8]
-        'profStaffHydScore' : 12
-        'housekeepScoreList' : [1,3,5,3,5,2,2,3,4,5,6,7,8,1,2,3,4]
-        'housekeepScore' : 16.666666666666668
-        'worksafetyhealthScoreList' : [1,3,5,3,5,2,2,3,4,5,6,7,8,1,2,3,4,5]
-        'workSafetyHealthScore' : 16.25
-        'foodHydScore' : 19.2972972972973
-        'foodhydScoreList' : [1,3,5,3,5,2,2,3,4,5,6,7,8,1,2,3,1,3,5,3,5,2,2,3,4,5,6,7,8,1,2,3,1,2,3,4,5]
-        'healthierScore' : 8.045454545454545
-        'healthierScoreList': [1,2,3,4,5,6,7,8,9,8,7]
+        'auditorName' : "temp_auditor",
+        'auditorDepartment' : "Risk",
+        'auditeeName' : "test_2@test.com",
+        'totalScore' : 44.91666666666667,
+        'profstaffhydScoreList' : [1,3,5,3,5,2,2,3,4,5,6,7,8],
+        'profStaffHydScore' : 12,
+        'housekeepScoreList' : [1,3,5,3,5,2,2,3,4,5,6,7,8,1,2,3,4],
+        'housekeepScore' : 16.666666666666668,
+        'worksafetyhealthScoreList' : [1,3,5,3,5,2,2,3,4,5,6,7,8,1,2,3,4,5],
+        'workSafetyHealthScore' : 16.25,
+        'foodHydScore' : 19.2972972972973,
+        'foodhydScoreList' : [1,3,5,3,5,2,2,3,4,5,6,7,8,1,2,3,1,3,5,3,5,2,2,3,4,5,6,7,8,1,2,3,1,2,3,4,5],
+        'healthierScore' : 8.045454545454545,
+        'healthierScoreList': [1,2,3,4,5,6,7,8,9,8,7],
         'comment' : "The hygiene level needs attention otherwise suspension of lease of con..."
     }
 
@@ -82,7 +82,7 @@ class TestAudit(TestBase):
         rv = self.client.post('/auditChecklistFB', data=self.TEST_AUDIT,
                               content_type='application/json')
         assert rv.status_code == 200
-        rv = self.client.post('/dashboard_data', data=self.TEST_GRAPH_CSV_CALL_1,
+        rv = self.client.post('/dashboard_data', data=self.TEST_GRAPH_CSV_CALL_2,
                               content_type='application/json')
         assert rv.status_code == 200
         assert rv.json['status'] == True
