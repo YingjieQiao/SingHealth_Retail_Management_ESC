@@ -11,8 +11,22 @@ def get_current_username():
     username = "UnitTester"
     if "username" in session:
         username = session['username']
-    print("in utils get username: ", username)
+    # print("in utils get username: ", username)
     return username
+
+
+def clear_username():
+    try:
+        if "username" in session:
+            print(session['username'])
+            session.pop("username")
+    except:
+        return False
+    print("username" in session)
+    if "username" in session:
+        print(session['username'])
+    return True
+    
 
 def get_data(tableName):
     mapping = {

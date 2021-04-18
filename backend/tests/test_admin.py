@@ -17,7 +17,7 @@ download csv:
     - failed testcase 1: wrong HTTP handle
 """
 
-class TestUser(TestBase):
+class TestData(TestBase):
     DB_PAYLOAD_1 = {
         'tableName': 'User'
     }

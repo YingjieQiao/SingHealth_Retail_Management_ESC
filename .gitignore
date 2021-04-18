@@ -34,3 +34,4 @@ yarn-error.log*
 /backend/flask_session
 *.log
 backend/tests/flask_session
+backend/tests/assets/*.csv
