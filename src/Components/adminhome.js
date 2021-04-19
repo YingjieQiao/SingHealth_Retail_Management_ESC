@@ -1,7 +1,15 @@
 import React , { Component } from 'react';
 import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-router-dom";
 import axios from "axios";
-import './CSS/table.css'
+import './CSS/table.css';
+import logo from './logo/singhealth.jpg';
+import './Navbar.css';
+import Navbar from './Navbar';
+import styles from './CSS/home.module.css';
+import * as FaIcons from 'react-icons/fa';
+import * as AiIcons from 'react-icons/ai';
+
+
 // import { CSVLink } from 'react-csv';
 
 // import { ExportToCsv } from 'export-to-csv';
@@ -145,7 +153,16 @@ class Adminhome extends Component {
 
 	}
   //------------GENERATE PDF---------------------------------
+  Navbar() {
+    return (
+          <div className='navbar'>
+            <Link to='#' className='menu-bars'>
+            <img src={logo}  width="70" height="70" margin="3000px" margin-bottom="-30"  alt="Logo"  />
+            </Link>
+          </div>
 
+    );
+  }
   //--------------TABLE----------------------------------------------------
   renderTableDataUser() {
     return this.state.students.map((student, index) => {
@@ -240,7 +257,13 @@ componentDidMount() {
     // // this.forceUpdate();
 		// })
 		return (
-			<div>
+      <div className='home' className={styles.body}>
+        {this.Navbar()}
+
+      <div class="container22" >
+      
+
+      <div class="container"  >
         <h1>Admin Home</h1>
         <label>Type of data :</label><select id="data" onChange={this.Datahandler} defaultValue="none">
                         <option defaultValue>Select excel type</option>
@@ -252,7 +275,7 @@ componentDidMount() {
                     </select><br />
                     
         <button id="download_data_csv" onClick={this.testHandler1}>download_data_csv</button>
-
+        <label>      </label>
          <button id="display_data" onClick={this.testHandler2}>display_data</button>
          
          {/* <form onSubmit={this.testHandler2}>
@@ -267,10 +290,10 @@ componentDidMount() {
         <div className='form-container'>
        {(this.state.displayTable) ?this.rendervalue():this.state.displayTable}
        </div>
-
+       </div>
+       </div>
        </div>
 
-			
 		  );
 		
 	}

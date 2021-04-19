@@ -75,7 +75,18 @@ select {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+button{
+  width: 20%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: solid;
+  border-radius: 15px;
+  background-color: rgb(136, 191, 255);
+  color: rgb(10, 10, 10);
+  font-family: Arial, Helvetica, sans-serif;
 
+}
 .container{
   background-color: #ffffff;
   border-style: solid;
@@ -84,9 +95,9 @@ select {
   text-align: center;
   box-shadow: 0 8px 6px -6px black;
 
-  width: wrap;
+  width: 1000px;
   height: wrap;
-  margin-top: 50px;;
+  margin-top: 50  px;;
  
   
 }
@@ -106,7 +117,8 @@ select {
   text-align: center;
   box-shadow: 0 8px 6px -6px rgb(255, 254, 254);
   display: inline-block;
- width: 1000px;
+ width: 95%;
+ height: wrap;
   
 }
 @media screen and (max-width:900px){
