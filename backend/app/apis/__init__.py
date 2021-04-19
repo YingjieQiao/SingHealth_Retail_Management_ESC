@@ -384,8 +384,13 @@ def upload_photo_info():
         rcvEmail = utils.get_tenant_email(body["tenantName"])
         subject = "A SingHealth staff has uploaded a non-compliance of your outlet"
         emailTextBody = """
+        Hi,
+
         Please login to our retail-management platform using your tenant account, 
         and take necessary actions accordingly.
+
+        Regards,
+        SingHealth Retail Management Platform
         """
         email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
     except Exception as e:
@@ -412,9 +417,14 @@ def tenant_upload_photo_info():
             rcvEmail = utils.get_staff_email(body["staffName"])
             subject = "A tenant from a SingHealth institution has uploaded a remedy effort"
             emailTextBody = """
-                Please login to our retail-management platform using your staff account, 
-                and take necessary actions accordingly.
-                """
+            Hi,
+
+            Please login to our retail-management platform using your staff account, 
+            and take necessary actions accordingly.
+
+            Regards,
+            SingHealth Retail Management Platform
+            """
             email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
     except Exception as e:
         # print("Error occurred: ", e)
