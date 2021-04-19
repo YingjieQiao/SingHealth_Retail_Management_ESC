@@ -57,10 +57,12 @@ start backend: `yarn start-api`
 
 Backend unittesting can be found in `/backend/tests/`
 
-Frontend selenium testing and system robustness testing can be found in `src/tests`
+Frontend selenium testing and system robustness testing can be found in `/src/tests`
 
 
 ## Tech Stack
+
+![stack](assets/overall_design.jpeg)
 
 - Backend
     - [Flask](https://flask.palletsprojects.com/en/1.1.x/)
@@ -76,7 +78,7 @@ Frontend selenium testing and system robustness testing can be found in `src/tes
     - [Selenium](https://www.selenium.dev/)
 
 
-## Authors
+## Contributors
 
 - [Qiao Yingjie](https://github.com/YingjieQiao)
 - [Ong Li Wen](https://github.com/24kmystique)
