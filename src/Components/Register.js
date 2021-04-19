@@ -241,9 +241,15 @@ class Register extends Component {
 
                     <label>location :</label><select id="location" onChange={this.locationhandler} defaultValue="">
                         <option defaultValue>Select location</option>
-                        <option value="SUTD">SUTD</option>
-                        <option value="NUS">NUS</option>
-                        <option value="None">None</option>
+                        <option value="CGH">CGH</option>
+                        <option value="KKH">KKH</option>
+                        <option value="SGH">SKH</option>
+                        <option value="NCCS">NCCS</option>
+                        <option value="NDCS">NDCS</option>
+                        <option value="NHCS">NHCS</option>
+                        <option value="SNEC">SNEC</option>
+                        <option value="BVH">BVH</option>
+                        <option value="OCH">OCH</option>
                     </select><br />
                     <label>Type of user :</label><select id="usertype" onChange={this.userhandler} defaultValue="">
                         <option defaultValue>Select user</option>
