@@ -37,7 +37,8 @@ class Adminhome extends Component {
 	
 		const headers = {
 			'Content-Type': 'application/csv',
-			'Access-Control-Allow-Origin': '*'
+			'Access-Control-Allow-Origin': '*',
+      withCredentials: true
 		};
 	
 		const data = {
@@ -91,7 +92,8 @@ class Adminhome extends Component {
     this.state.DataTypefinal=this.state.DataType;
 		const headers = {
 			'Content-Type': 'multipart/form-data',
-			'Access-Control-Allow-Origin': '*'
+			'Access-Control-Allow-Origin': '*',
+      withCredentials: true
 		};
 	
 		const data = {
@@ -107,7 +109,16 @@ class Adminhome extends Component {
       if (this.state.DataTypefinal=="User"){
       this.state.students= [{ id: '', firstName: '',lastName: '',  mobile: '',email: '', location: '' }];
       }
-      else{
+      else if((this.state.DataTypefinal=="Photo")){
+        this.state.students= [{ id: '', tags: '',date: '',  time: '',notes: '', staffName: '' , tenantName: '', rectified:null }];
+      }
+      else if((this.state.DataTypefinal=="PhotoNotification")){
+        this.state.students= [{ id: '', tags: '',date: '',  time: '',notes: '', staffName: '' , tenantName: '', rectified:null }];
+      }
+      else if((this.state.DataTypefinal=="TenantPhoto")){
+        this.state.students= [{ id: '', tags: '',date: '',  time: '',notes: '', staffName: '' , tenantName: '', rectified:null }];
+      }
+      else if((this.state.DataTypefinal=="PhotoNotificationFromTenant")){
         this.state.students= [{ id: '', tags: '',date: '',  time: '',notes: '', staffName: '' , tenantName: '', rectified:null }];
       }
       this.state.student.forEach(element => {
@@ -191,7 +202,7 @@ rendervalue(){
  )
 }
 componentDidMount() {
-  axios.get("http://localhost:5000/if_loggedin")
+  axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
   .then(
       res => {
           console.log(res.data);
@@ -235,7 +246,11 @@ componentDidMount() {
                         <option defaultValue>Select excel type</option>
                         <option value="User">User</option>
                         <option value="Photo">Photo</option>
+                        <option value="PhotoNotification">PhotoNotification</option>
+                        <option value="TenantPhoto">tenant_Photo</option>
+                        <option value="PhotoNotificationFromTenant">PhotoNotification_from_tenant</option>
                     </select><br />
+                    
         <button id="download_data_csv" onClick={this.testHandler1}>download_data_csv</button>
 
          <button id="display_data" onClick={this.testHandler2}>display_data</button>

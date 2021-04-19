@@ -11,6 +11,7 @@ import email from './Components/email';
 import viewPhoto from './Components/viewPhoto';
 import dataDashboard from './Components/dataDashboard';
 import dataDashboardTenant from './Components/dataDashboardTenant';
+import dataDashboardCompareTenant from './Components/dataDashboardCompareTenant';
 import compareTenant from './Components/compareTenant';
 import audit from './Components/audit';
 import {Route, BrowserRouter as Router,Switch,Link} from "react-router-dom";
@@ -21,6 +22,9 @@ import tenantHome from './Components/tenantHome';
 import tenantUpload from './Components/tenantUpload';
 import tenantViewPhoto from './Components/tenantViewPhoto';
 import SignInSide from './Components/SignInSide';
+import emailReport from './Components/emailReport';
+import My404Component from './Components/My404Component';
+import tenantDataDashboard from './Components/tenantDataDashboard';
 
 function App() {
 
@@ -38,16 +42,18 @@ function App() {
       <Route path="/viewPhoto" exact component={viewPhoto}/>
       <Route path="/dataDashboard" exact component={dataDashboard}/>
       <Route path="/dataDashboardTenant" exact component={dataDashboardTenant}/>
+      <Route path="/dataDashboardCompareTenant" exact component={dataDashboardCompareTenant}/>
       <Route path="/compareTenant" exact component={compareTenant}/>
       <Route path="/audit" exact component={audit}/>
       <Route path="/adminhome" exact component={Adminhome}/>
       <Route path="/table" exact component={Table}/>
       <Route path="/tenantHome" exact component={tenantHome}/>
+      <Route path="/emailReport" exact component={emailReport}/>
       <Route path="/tenantUpload" exact component={tenantUpload}/>
       <Route path="/tenantViewPhoto" exact component={tenantViewPhoto}/>
       <Route path="/SignInSide" exact component={SignInSide}/>
-      
-
+      <Route path="/tenantDataDashboard" exact component={tenantDataDashboard}/>
+      <Route path='*' exact={true} component={My404Component} />	
     </Switch>
     
     </div>

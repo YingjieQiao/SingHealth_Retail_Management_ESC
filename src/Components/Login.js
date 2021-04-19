@@ -30,18 +30,35 @@ class Login extends Component {
         })
     }
 
+    testHandler = (event) => {
+        const headers = {
+            'Access-Control-Allow-Origin': '*',
+            withCredentials: true
+        };
+
+        try {
+            axios.get("http://localhost:5000/signout", headers)
+            .then(
+                res => {
+                    console.log(res);
+                }
+            )
+        } catch (e) { console.log(e); }
+    }
+
 
 
     handleSubmit = event => {
         event.preventDefault();
-    
+
         const user = {
           password: this.state.password,
           email: this.state.email
         };
         const headers = {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            withCredentials: true
         };
     
         axios.post(`http://localhost:5000/login`, user, headers)
@@ -61,12 +78,7 @@ class Login extends Component {
             }
         })
         .catch(function (error,res) {
-            console.log(error.response.status) // 401
-            console.log(error.response.data.error) //Please Authenticate or whatever returned from server
-          if(error.response.status==401){
-            alert("Login unsuccess!")
-            alert(res.data.info);
-          }
+            alert("Login unsuccessful:( \n");
         })
         
         
@@ -80,8 +92,7 @@ class Login extends Component {
             <div class="container22">
                 <img src={logo}  width="250" height="250" margin="3000px" margin-bottom="-30" alt="Logo" />
             <div class="container"  >
-                
-                
+                <button onClick={this.testHandler}>test</button>
                 <Route path="/Register" exact component={Register}/>        
                 <form onSubmit={this.handleSubmit}>
                     <h1>LOGIN</h1>
@@ -91,16 +102,18 @@ class Login extends Component {
                     <li>
                          <label>new tenant?  </label>
                         <Link to="/Register">Register</Link>
+                        
 
                      </li>
                      {/* <li>
                          <label>admin home link   </label>
                         <Link to="/Adminhome">admin</Link>
-
                      </li> */}
                 </form>
                 </div>
             </div>
+
+            
             
         )
     }

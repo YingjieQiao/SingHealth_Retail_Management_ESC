@@ -42,7 +42,9 @@ class TestUserLogin(TestBase):
         "staff": True,
         "tenant": False,
         "admin": False,
-        "fnb": True
+        "fnb": True,
+        "locked": False,
+        "attempts": 0
     }
 
     TEST_ACCOUNT_2 = {  # login failed testcase 2
@@ -76,7 +78,9 @@ class TestUserLogin(TestBase):
         "staff": True,
         "tenant": False,
         "admin": False,
-        "fnb": True
+        "fnb": True,
+        "locked": False,
+        "attempts": 0
     }
 
     TEST_ACCOUNT_5 = {  # login failed testcase 5
@@ -89,7 +93,9 @@ class TestUserLogin(TestBase):
         "staff": True,
         "tenant": False,
         "admin": False,
-        "fnb": True
+        "fnb": True,
+        "locked": False,
+        "attempts": 0
     }
 
     TEST_ACCOUNT_6 = {  # login failed testcase 5
@@ -102,7 +108,9 @@ class TestUserLogin(TestBase):
         "staff": False,
         "tenant": True,
         "admin": False,
-        "fnb": True
+        "fnb": True,
+        "locked": False,
+        "attempts": 0
     }
 
     TEST_ACCOUNT_1_JSON = json.dumps(TEST_ACCOUNT_1)
@@ -116,49 +124,38 @@ class TestUserLogin(TestBase):
     def test_login_fail_1(self):
         rv = self.client.post('/login', data=self.TEST_ACCOUNT_1_JSON,
                               content_type='application/json')
-        assert rv.status_code == 500
+        assert rv.status_code == 401
         assert rv.json['result'] == False
-        assert rv.json['info'] == "user does not exist or payload error"
-
-
-        """assert 'id' in rv.json
-        assert rv.json['firstName'] == self.TEST_ACCOUNT_1['firstName']
-        assert rv.json['lastName'] == self.TEST_ACCOUNT_1['lastName']
-        assert rv.json['email'] == self.TEST_ACCOUNT_1['email']
-        assert rv.json['mobile'] == self.TEST_ACCOUNT_1['mobile']
-        assert rv.json['location'] == self.TEST_ACCOUNT_1['location']"""
 
 
     def test_login_fail_2(self):
         rv = self.client.post('/login', data=self.TEST_ACCOUNT_2_JSON,
                               content_type='application/json')
-        assert rv.status_code == 500
+        assert rv.status_code == 401
         assert rv.json['result'] == False
-        assert rv.json['info'] == "user does not exist or payload error"
 
 
     def test_login_fail_3(self):
         rv = self.client.post('/login', data=self.TEST_ACCOUNT_3_JSON,
                               content_type='application/json')
-        assert rv.status_code == 500
+        assert rv.status_code == 401
         assert rv.json['result'] == False
-        assert rv.json['info'] == "user does not exist or payload error"
 
 
     def test_login_fail_4(self):
         rv = self.client.post('/login', data=self.TEST_ACCOUNT_4_JSON,
                               content_type='application/json')
-        assert rv.status_code == 500
+        assert rv.status_code == 401
         assert rv.json['result'] == False
-        assert rv.json['info'] == "password error"
 
 
     def test_login_fail_5(self):
         rv = self.client.post('/login', data=self.TEST_ACCOUNT_5_JSON,
                               content_type='application/json')
         assert rv.status_code == 200
-        assert rv.json['result'] == True
         assert rv.json['info'] == "2FA sent"
+        assert rv.json['result'] == True
+
 
         rv2 = self.client.post('/login_verified',  data=json.dumps({'token': 'wrong token'}),
                               content_type='application/json')
@@ -186,16 +183,6 @@ class TestUserSignUp(TestBase):
     """
     Test sign up
 
-    signup endpoint payload:
-        firstName: this.state.firstName,
-        lastName: this.state.lastName,
-        email: this.state.email,
-        mobile: this.state.mobile,
-        password: this.state.password,
-        location: this.state.location,
-        tenant: this.state.tenant,
-        staff: this.state.staff,
-        admin:this.state.admin
     """
 
     TEST_ACCOUNT_1 = {  # signup success testcase 1
@@ -208,7 +195,9 @@ class TestUserSignUp(TestBase):
         "staff": True,
         "tenant": False,
         "admin": False,
-        "fnb": True
+        "fnb": True,
+        "locked": False,
+        "attempts": 0
     }
 
     TEST_ACCOUNT_2 = {  # signup success testcase 2
@@ -221,7 +210,9 @@ class TestUserSignUp(TestBase):
         "staff": False,
         "tenant": True,
         "admin": False,
-        "fnb": True
+        "fnb": True,
+        "locked": False,
+        "attempts": 0
     }
 
     TEST_ACCOUNT_3 = {  # signup failed testcase 3
@@ -300,4 +291,4 @@ class TestUserCleanUp(TestBase):
     clean up
     """
     def test_cleanup(self):
-        assert TestBase.clean_user_post_test(self) == True
+        TestBase.clean_user_post_test(self)

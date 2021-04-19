@@ -1,0 +1,53 @@
+.header_container {
+    margin: 10px auto 20px auto;
+    width: 80vw;
+    text-align: left;
+    padding-top: 20px;
+}
+
+.header {
+    font-weight: bold;
+    font-size: x-large;
+}
+
+
+.single_photo_body {
+    background-color: white;
+    margin: 10px 20px 20px 20px;
+    padding: 30px;
+    text-align: left;
+    border-radius: 5px;
+    display: inline-block;
+    /* box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19); */
+}
+
+.button_container {
+    padding-top: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.image_container img{
+    display: block;
+    margin: auto auto 10px auto;
+    border-radius: 5px;
+}
+
+.date_container {
+    text-align: right;
+    margin: auto auto 20px auto;
+    /* background-color: pink; */
+}
+
+.date_container label{
+    font-size: small;
+}
+
+.rectifyButton_container {
+    text-align: center;
+    padding-top: 20px;
+}
+
+.noPhotoLabel {
+    margin: 20px;
+}

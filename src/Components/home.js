@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
 import StaffNotificationModal from './staffNotificationModal';
+import styles from './CSS/home.module.css';
 
 class Home extends Component { 
 
@@ -10,7 +11,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    axios.get("http://localhost:5000/staff_get_photo_notification")
+    axios.get("http://localhost:5000/staff_get_photo_notification", {withCredentials: true})
     .then(
         res => {
             console.log("start: ", res);
@@ -28,10 +29,15 @@ class Home extends Component {
 
   render() {
     return (
-      <div className='home'>
-            <Navbar usertype="staff" />
-            <h1>Staff User Homepage</h1>
-        <div>
+      <div className='home' className={styles.body}>
+        <Navbar usertype="staff" />
+        <div className={styles.main_header_container}>
+          <h1 className={styles.main_header}>Staff User Homepage</h1>
+        </div>
+        <div className={styles.header_container}>
+          <h2 className={styles.header}>Notification</h2>
+        </div>
+        <div className={styles.notification_container}>
           {this.displayInfo()}
         </div>
       </div>

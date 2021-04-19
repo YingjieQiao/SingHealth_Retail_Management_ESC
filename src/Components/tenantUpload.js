@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import TenantNavbar from './Tenant_Navbar';
 import axios from "axios";
 import { ImUpload3 } from 'react-icons/im';
+import mainStyle from './CSS/home.module.css';
+import styles from './CSS/upload.module.css';
 
 class Upload extends Component {
 
@@ -16,58 +18,77 @@ class Upload extends Component {
         notes: "",
         staffName: "",
         tenantName: "",
-        rectified: false
+        rectified: false,
+        staffList: [],
     };
-    componentDidMount() {
 
-        axios.get("http://localhost:5000/if_loggedin")
-        .then(
-            res => {
-                console.log(res.data);
-                if(res.data.username==""){
-                  alert("Please Log in!");
-                  this.props.history.push('/');
+    componentDidMount() {
+        try {
+            axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})
+            .then(
+                res => {
+                    console.log(res.data);
+                    if(res.data.username==""){
+                      alert("Please Log in!");
+                      this.props.history.push('/');
+                    }
                 }
-            }
-        )}
+            );
+            axios.get("http://localhost:5000/get_staff_list", {withCredentials: true})
+            .then(
+                res => {
+                    console.log(res.data);
+                    if (res.data.result) {
+                        for (var i = 0; i < res.data.staffList.length; i++) {
+                            let newArray1 = this.state.staffList;
+                            newArray1.push(res.data.staffList[i]);
+                            this.setState({staffList: newArray1});
+                        }
+                    }
+                }
+            );
+        } catch (e) { console.log(e); }
+    }
+
     render() { 
         return (
-            <div style={{margin: "10px"}}>
+            <div className={styles.body}>
                 <TenantNavbar/>
-                <h2>Tenant Upload photo</h2>
-                <div className="border border-dark" style={{display: "inline-block",margin: "10px"}}>
-                    <ImUpload3 size="50" style={{display: "block", marginLeft: "auto", 
-                        marginRight: "auto", marginTop: "10px"}}/>
-                    <input type="file" name="file" onChange={this.onChooseFileHandler} 
-                        style={{display: "block", margin: '10px'}}/>
+                <div className={mainStyle.main_header_container}>
+                    <h2 className={mainStyle.main_header}>Tenant Upload Photo</h2>
+                </div>
+                <div className={styles.upload_container}>
+                    <ImUpload3 size="50" className={styles.upload_icon}/>
+                    <div className={styles.chooseFile_container}>
+                        <input type="file" name="file" onChange={this.onChooseFileHandler} 
+                            className={styles.chooseFile}/>
+                    </div>
                 </div>
 
-                <div>
+                <div className={styles.info_body}>
                     <form>
-                        <h1>Photo Information</h1>
-
-                        <label>tags :</label><select onChange={this.tagsHandler} defaultValue="none">
+                        <div className={mainStyle.header_container}>
+                            <h1 className={mainStyle.header}>Photo Information</h1>
+                        </div>
+                        <label className={styles.info_label}>Tags:</label><select onChange={this.tagsHandler} defaultValue="none">
                             <option defaultValue>Select tags</option>
                             <option value="Professionalism and Staff Hygiene">Professionalism and Staff Hygiene</option>
-                            <option value="HouseKeeping and General Cleanliness2">HouseKeeping and General Cleanliness</option>
+                            <option value="HouseKeeping and General Cleanliness">HouseKeeping and General Cleanliness</option>
                             <option value="Food Hygiene">Food Hygiene</option>
                             <option value="Healthier Choice">Healthier Choice</option>
                             <option value="Workplace Safety and Health">Workplace Safety and Health</option>
                         </select><br />
                         
-                        <label>notes :</label> <input type="text" 
-                            value={this.state.notes} onChange={this.notesHandler} placeholder="notes..." /><br />
+                        <label className={styles.info_label}>Notes:</label> <input type="text" 
+                            value={this.state.notes} onChange={this.notesHandler} placeholder="Write a note to the staff..." /><br />
 
-                        <label>tenant :</label><select onChange={this.staffHandler} defaultValue="none">
+                        <label className={styles.info_label}>Staff:</label><select onChange={this.staffHandler} defaultValue="none">
                             <option defaultValue>Select staff to answer to</option>
-                            <option value="YingjieQiao">YingjieQiao</option>
-                            <option value="CarlJohnson">CarlJohnson</option>
-                            <option value="good staff">good staff</option>
+                            { this.state.staffList.map(staff => <option value={staff} key={staff}>{staff}</option> ) }
                         </select><br />
-
                     </form >
 
-                    <div>
+                    <div className={styles.button_container}>
                         <button type="button" className="btn btn-primary m-2" 
                             onClick={this.photoInfoButtonHandler} >Upload Photo Information</button>
                     </div>
@@ -78,12 +99,11 @@ class Upload extends Component {
         );
     }
 
-
     photoInfoButtonHandler = (event) => {
         event.preventDefault()
 
         // set staff username
-        axios.get("http://localhost:5000/get_current_username_and_datetime").then(
+        axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true}).then(
             res => {
                 console.log(res);
                 this.setState({tenantName: res.data.username, 
@@ -95,7 +115,7 @@ class Upload extends Component {
 
     checkTenantName = () => {
 
-        if (this.state.tenantName.length != 0) {
+        if (this.state.tenantName.length !== 0) {
             // proceeds to upload info
             const photo = {
                 tags: this.state.tags,
@@ -107,7 +127,8 @@ class Upload extends Component {
                 rectified: this.state.rectified
             };
             const headers = {
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                withCredentials: true
             };
         
             axios.post(`http://localhost:5000/tenant_upload_photo_info`, photo, headers)
@@ -164,7 +185,6 @@ class Upload extends Component {
             loaded: 0
         });
     }
-
     
 }
 

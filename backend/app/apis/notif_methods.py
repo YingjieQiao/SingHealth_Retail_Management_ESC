@@ -17,8 +17,8 @@ def add_notification(body):
         newPhotoNotification = PhotoNotification(**body)
         newPhotoNotification.save()
     except Exception as e:
-        print("error occurred: ", e)
-
+        #print("error occurred: ", e)
+        pass
 
 def add_notification_from_tenant(body):
     """
@@ -31,8 +31,8 @@ def add_notification_from_tenant(body):
         newPhotoNotification = PhotoNotificationFromTenant(**body)
         newPhotoNotification.save()
     except Exception as e:
-        print("error occurred: ", e)
-
+        # print("error occurred: ", e)
+        pass
 
 def tenant_update_photo_notification(op, username, body):    
     time_ = body['time']
@@ -44,7 +44,7 @@ def tenant_update_photo_notification(op, username, body):
 
     if username == "":
         username = "UnitTester"
-        print("testing")
+        # print("testing")
         logger.info("testing '/tenant_delete_photo_notification' endpoint")
 
     try:
@@ -52,7 +52,7 @@ def tenant_update_photo_notification(op, username, body):
                                                         tenantName=username)
         photoNotification.update(**body)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/tenant_delete_photo_notification' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
@@ -68,8 +68,8 @@ def staff_update_photo_notification(op, username, body):
         body['read'] = True
 
     if username == "":
-        username = "UnitTesterStaff"
-        print("testing: ", username)
+        username = "UnitTester"
+        # print("testing: ", username)
         logger.info("testing '/staff_delete_photo_notification' endpoint")
 
     try:
@@ -77,7 +77,7 @@ def staff_update_photo_notification(op, username, body):
                                                         staffName=username)
         photoNotificationFromTenant.update(**body)
     except Exception as e:
-        print("error: ", e) 
+        # print("error: ", e) 
         logger.error("In '/staff_delete_photo_notification' endpoint, error occurred: ", e)
         return {'result': False}, 500
 
