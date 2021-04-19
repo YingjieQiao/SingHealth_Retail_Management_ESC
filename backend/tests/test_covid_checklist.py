@@ -45,7 +45,7 @@ class TestAudit(TestBase):
         'auditorName' : "temp_auditor",
         'auditorDepartment' : "Risk",
         'auditeeName' : "temp_audit@temp.com",
-        'comment' : 1234 # should be string,
+        'comment' : 1234, # should be string,
         'checklist' : [1,0,-1,1,0,-1,1,0,-1,1,0,-1,1]
     }
 
