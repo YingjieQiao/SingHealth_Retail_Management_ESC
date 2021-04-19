@@ -29,6 +29,22 @@ class Login extends Component {
         })
     }
 
+    testHandler = (event) => {
+        const headers = {
+            'Access-Control-Allow-Origin': '*',
+            withCredentials: true
+        };
+
+        try {
+            axios.get("http://localhost:5000/signout", headers)
+            .then(
+                res => {
+                    console.log(res);
+                }
+            )
+        } catch (e) { console.log(e); }
+    }
+
 
 
     handleSubmit = event => {
@@ -73,7 +89,7 @@ class Login extends Component {
     render() {
         return (
             <div>
-
+                <button onClick={this.testHandler}>test</button>
                 <Route path="/Register" exact component={Register}/>        
                 <form onSubmit={this.handleSubmit}>
                     <h1>LOGIN</h1>
@@ -83,6 +99,7 @@ class Login extends Component {
                     <li>
                          <label>new tenant?  </label>
                         <Link to="/Register">Register</Link>
+                        
 
                      </li>
                      {/* <li>
@@ -92,6 +109,8 @@ class Login extends Component {
                 </form>
 
             </div>
+
+            
             
         )
     }

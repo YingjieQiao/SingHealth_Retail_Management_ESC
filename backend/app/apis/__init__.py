@@ -64,6 +64,17 @@ def get_current_username_and_datetime():
     return {"username": username, "time": time_, "date": date_, "email": userEmail, "session": session.sid}, 200
 
 
+@apis.route('/signout', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def signout():
+    try:
+        utils.clear_username()
+    except:
+        logger.error("error in '/signout' endpoint")
+        return {"result": False, "session": session.sid}, 500
+    return {"result": True, "session": session.sid}, 200
+    
+
 @apis.route('/check_if_staff', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def check_if_staff():
@@ -184,18 +195,18 @@ def user_login():
             if utils.counter_brute_force(firstName, lastName):
                 logger.error("brute force attack detected!")
                 utils.lock_acc(firstName, lastName)
-                return {'result': False, 'info': "brute force attack detected! your account is locked. Please contact admin to unlock"}, 200
+                return {'result': False, 'info': "brute force attack detected! your account is locked. Please contact admin to unlock"}, 500
             logger.error("error in '/login' endpoint: %s", "password error")
             raise Exception("password error")
         if utils.counter_brute_force(firstName, lastName):
             logger.error("brute force attack detected!")
-            return {'result': False, 'info': "brute force attack detected! your account is locked. Please contact admin to unlock"}, 200
+            return {'result': False, 'info': "brute force attack detected! your account is locked. Please contact admin to unlock"}, 500
         session['username'] = firstName + lastName
         session.modified = True
         #print("username set: ", session['username'])
     except:
         logger.error("error in '/login' endpoint: %s", "user does not exist or payload error or password incorrect")
-        return {'result': False, 'info': "user does not exist or password error"}, 200
+        return {'result': False, 'info': "user does not exist or password error"}, 401
 
     try:
         message = MIMEMultipart()
@@ -262,8 +273,9 @@ def login_verified():
 @apis.route('/upload_file', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
 def upload_file():
-    if current_app.config['TESTING']:
+    if current_app.config['TESTING'] or utils.get_current_username() == "UnitTester":
         testFilePath = os.getcwd() + "/assets/image.jpg"
+        # print(testFilePath)
         body = PIL.Image.open(testFilePath)
     else:
         body = request.files['file']
@@ -636,14 +648,12 @@ def get_tenant_list():
 def display_data():
     
     body = request.get_json()
-    tableName = body['tableName']
     try:
         body = request.get_json()
         tableName = body['tableName']
         data = utils.get_data(tableName)
-    except Exception as e:
-        # print("error: ", e)
-        logger.error("In '/display_data' endpoint, error occurred: ", e)
+    except:
+        logger.error("In '/display_data' endpoint, unknown error occurred ")
         return {'result': False, 'data': None, 'info': 'failed'}, 500
 
     return {'result': True, 'data': data, 'info': 'success'}, 200
@@ -654,15 +664,16 @@ def display_data():
 def download_data_csv():
     try:
         body = request.get_json()
-        tableName = body['tableName']
+        tableName = body.get('tableName')
+        if (tableName == None):
+            raise Exception("invalid payload from frontend")
 
         data = utils.get_data(tableName)
 
         dataDict = utils.mongo_object_to_dict(data)
         filePath, fileName = utils.write_to_csv(dataDict, tableName)
-    except Exception as e:
-        # print("error, ", e)
-        logger.error("In '/download_data_csv' endpoint, error occurred: ", e)
+    except:
+        logger.error("In '/download_data_csv' endpoint, unknown error occurred ")
         return {'result': False, 'data': None, 'info': 'failed'}, 500
 
     return send_from_directory(filePath, fileName, as_attachment=True), 200

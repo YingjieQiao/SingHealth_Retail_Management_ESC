@@ -85,7 +85,7 @@ class AuditChecklistNonFB extends Component {
 
                     <div className={styles.qn_body} >
                         <label className={styles.form_qn}>Auditee:</label>
-                        <select className={styles.form_qn} class="custom-select my-1 mr-sm-2" onChange={this.saveAuditee}>
+                        <select className={styles.form_qn} class="custom-select my-1 mr-sm-2" id="Auditee" onChange={this.saveAuditee}>
                             <option selected>Choose...</option>
                             { this.state.numOfAuditee.map(index => <option value={index.toString()}>{this.handleAuditee(index)}</option> ) }
                         </select>
@@ -489,8 +489,7 @@ class AuditChecklistNonFB extends Component {
                         <label className={styles.heading}>Comments:</label>
                         <input className={styles.commentInput} onInput={this.saveComment} type="text" />
                     </div>
-                    <div className={styles.button_container}><button type="submit" class={this.getButtonClasses()} onClick={this.handleSubmitForm}>Submit</button></div>
-                    <div className={styles.button_container}><button type="submit" class={this.getSendReportButtonClasses()} onClick={this.handleSendReport}>Send report</button></div>
+                    <div className={styles.button_container}><button type="submit" id="submittt" class={this.getButtonClasses()} onClick={this.handleSubmitForm}>Submit</button></div>
                 </form>
 
             </div>
@@ -669,33 +668,6 @@ class AuditChecklistNonFB extends Component {
                 alert("The form has been successfully recorded.");
             });
         }
-    }
-
-    handleSendReport = (event) => {
-        event.preventDefault();
-        try {
-            if (this.state.hasSubmitForm === false) {
-                alert("Please submit the form before sending the report.");
-            } else { 
-
-                // axios.post
-                
-            }
-        } catch (e) {
-            console.log(e);
-            alert("Unsuccessful. Please try again.");
-        }
-    }
-
-    validateReportSubmission() {
-        if (this.state.hasSubmitForm === false) return false;
-        else { return true; }
-    }
-
-    getSendReportButtonClasses() {
-        let classes = 'btn btn-';
-        classes += this.validateReportSubmission() === false ? 'secondary' : 'primary';
-        return classes;
     }
     
     validateData = () => {

@@ -48,7 +48,7 @@ class tenantNotificationModal extends Component {
             </div>
             <div className={styles.container_1} id={index}>
                 <div className={styles.sender_container} id={index}>
-                  <label className={styles.sender_heading} id={index}>Sender: {this.state.data[index]["tenantName"]} <span id={index} style={this.getReadButtonClasses(index)} onClick={this.handleRead}>{this.handleReadStatus(index)}</span></label>
+                  <label className={styles.sender_heading} id={index}>Sender: {this.state.data[index]["staffName"]} <span id={index} style={this.getReadButtonClasses(index)} onClick={this.handleRead}>{this.handleReadStatus(index)}</span></label>
                 </div>
                 <div className={styles.date_container} id={index}>
                   <label className="text-muted" id={index}><AiIcons.AiOutlineClockCircle id={index}/> {this.state.data[index]["date"]}, {this.state.data[index]["time"]}</label>

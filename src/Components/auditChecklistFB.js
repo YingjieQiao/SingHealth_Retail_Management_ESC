@@ -1169,8 +1169,7 @@ class AuditChecklistFB extends Component {
                         <input className={styles.commentInput} onInput={this.saveComment} type="text" />
                     </div>
 
-                    <div className={styles.button_container}><button type="submit" class={this.getButtonClasses()} onClick={this.handleSubmitForm}>Submit</button></div>
-                    <div className={styles.button_container}><button type="submit" class={this.getSendReportButtonClasses()} onClick={this.handleSendReport}>Send report</button></div>                
+                    <div className={styles.button_container}><button type="submit" class={this.getButtonClasses()} onClick={this.handleSubmitForm}>Submit</button></div>             
                 </form>
 
             </div>
@@ -1368,17 +1367,6 @@ class AuditChecklistFB extends Component {
                 alert("The form has been successfully recorded.");
             });
         }
-    }
-
-    validateReportSubmission() {
-        if (this.state.hasSubmitForm === false) return false;
-        else { return true; }
-    }
-
-    getSendReportButtonClasses() {
-        let classes = 'btn btn-';
-        classes += this.validateReportSubmission() === false ? 'secondary' : 'primary';
-        return classes;
     }
 
     validateData = () => {
