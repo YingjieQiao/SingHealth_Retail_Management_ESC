@@ -3,7 +3,7 @@ import './CSS/todo.css'
 import {Route, BrowserRouter as Router,Switch,Link,withRouter} from "react-router-dom";
 import Login from './Login';
 import axios from 'axios';
-
+import logo from './logo/singhealth.jpg';
 
 class Register extends Component {
     constructor(props) {
@@ -224,7 +224,8 @@ class Register extends Component {
     render() {
         return (
             <div class="container22">
-           
+
+                <img src={logo}  width="250" height="250" margin="3000px" margin-bottom="-30" alt="Logo" />
         <div class="container" margin-top="1000" >
             <div ></div>
                 <Route path="/" exact component={Login}/>        

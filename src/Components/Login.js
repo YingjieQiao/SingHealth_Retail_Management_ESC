@@ -92,7 +92,7 @@ class Login extends Component {
             <div class="container22">
                 <img src={logo}  width="250" height="250" margin="3000px" margin-bottom="-30" alt="Logo" />
             <div class="container"  >
-                <button onClick={this.testHandler}>test</button>
+
                 <Route path="/Register" exact component={Register}/>        
                 <form onSubmit={this.handleSubmit}>
                     <h1>LOGIN</h1>
