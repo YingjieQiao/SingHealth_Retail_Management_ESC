@@ -6,7 +6,7 @@ import AuditChecklistCovid from './auditChecklistCovid';
 import AuditChecklistTest from './auditChecklistTest';
 import styles from "./CSS/audit.module.css";
 import axios from 'axios';
-
+import background from './logo/background.jpg';
 
 class Audit extends Component {
 
@@ -37,6 +37,10 @@ class Audit extends Component {
         return (
             <div>
                 <Navbar/>
+                <div style={{ 
+                backgroundImage: `url(${background})`,  backgroundSize: "cover"
+                                }}>
+        <div class="container21" >
                 <form className={styles.form_layout}>
                     <label>Audit checklist for:</label>
                     <select class="custom-select my-1 mr-sm-2" id="auditType" onChange={this.handleAuditForm}>
@@ -48,6 +52,8 @@ class Audit extends Component {
                     </select>
                     <div>{this.displayAuditList()}</div>                
                 </form>
+            </div>
+            </div>
             </div>
         )
     }
