@@ -4,6 +4,7 @@ import Register from './Register'
 import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-router-dom";
 import axios from 'axios';
 import logo from './logo/singhealth.jpg';
+import background from './logo/background.jpg';
 import login_verified from './login_verified'
 // import { ExportToCsv } from 'export-to-csv';
 class Login extends Component {
@@ -101,8 +102,13 @@ class Login extends Component {
 
     render() {
         return (
+            <div style={{ 
+                backgroundImage: `url(${background})`,  backgroundSize: "cover"
+                                }}>
             <div class="container22">
-                <img src={logo}  width="250" height="250" margin="3000px" margin-bottom="-30" alt="Logo" />
+
+                
+                <img src={logo}  width="250" height="250" margin="3000px" margin-bottom="-30" alt="Logo"  />
             <div class="container"  >
 
                 <Route path="/Register" exact component={Register}/>        
@@ -126,7 +132,7 @@ class Login extends Component {
             </div>
 
             
-            
+            </div>
         )
     }
 

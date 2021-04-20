@@ -4,7 +4,7 @@ import {Route, BrowserRouter as Router,Switch,Link,withRouter} from "react-route
 import Login from './Login';
 import axios from 'axios';
 import logo from './logo/singhealth.jpg';
-
+import background from './logo/background.jpg';
 class Register extends Component {
     constructor(props) {
         super(props)
@@ -223,6 +223,9 @@ class Register extends Component {
 
     render() {
         return (
+            <div style={{ 
+                backgroundImage: `url(${background})`,  backgroundSize: "cover"
+                                }}>
             <div class="container22">
 
                 <img src={logo}  width="250" height="250" margin="3000px" margin-bottom="-30" alt="Logo" />
@@ -267,6 +270,7 @@ class Register extends Component {
                      </li>
                 </form >
                 </div>
+            </div>
             </div>
             
         )
