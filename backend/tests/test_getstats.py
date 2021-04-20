@@ -58,7 +58,7 @@ class TestAudit(TestBase):
         'foodhydScoreList' : [1,3,5,3,5,2,2,3,4,5,6,7,8,1,2,3,1,3,5,3,5,2,2,3,4,5,6,7,8,1,2,3,1,2,3,4,5],
         'healthierScore' : 8.045454545454545,
         'healthierScoreList': [1,2,3,4,5,6,7,8,9,8,7],
-        'comment' : "The hygiene level needs attention otherwise suspension of lease of con..."
+        'comment' : "TEST"
     }
 
     TEST_GRAPH_CSV_CALL_1 = {  # failed testcase

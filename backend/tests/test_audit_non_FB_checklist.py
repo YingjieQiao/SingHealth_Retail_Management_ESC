@@ -27,7 +27,7 @@ class TestAudit(TestBase):
         'houseGeneralScore' : 16.666666666666668,
         'worksafetyhealthScoreList' : [1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2],
         'workSafetyHealthScore' : 16.25,
-        'comment' : "The hygiene level needs attention otherwise suspension of lease of con..."
+        'comment' : "TEST"
     }
 
     TEST_AUDIT_2 = {  # Missing data
@@ -41,7 +41,7 @@ class TestAudit(TestBase):
         'houseGeneralScore'  : 16.666666666666668,
         # work safety health data is missing
         'workSafetyHealthScore' : 16.25,
-        'comment' : "The hygiene level needs attention otherwise suspension of lease of con..."
+        'comment' : "TEST"
     }
 
     TEST_AUDIT_3 = {  # Extra data
@@ -55,7 +55,7 @@ class TestAudit(TestBase):
         'houseGeneralScore'  : 16.666666666666668,
         'worksafetyhealthScoreList' : [1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2],
         'workSafetyHealthScore' : 16.25,
-        'comment' : "The hygiene level needs attention otherwise suspension of lease of con...",
+        'comment' : "TEST",
         "extra": 123
     }
 

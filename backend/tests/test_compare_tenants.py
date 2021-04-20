@@ -88,7 +88,7 @@ class TestAudit(TestBase):
                              2, 3, 1, 2, 3, 4, 5],
         'healthierScore': 8.045454545454545,
         'healthierScoreList': [1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7],
-        'comment': "The hygiene level needs attention otherwise suspension of lease of con..."
+        'comment': "TEST"
     }
 
     TEST_AUDIT_2 = {  # creating a new data entry
@@ -107,7 +107,7 @@ class TestAudit(TestBase):
                              2, 3, 1, 2, 3, 4, 5],
         'healthierScore': 8.045454545454545,
         'healthierScoreList': [1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7],
-        'comment': "The hygiene level needs attention otherwise suspension of lease of con..."
+        'comment': "TEST"
     }
 
     TEST_GRAPH_CSV_CALL_1 = {  # failed testcase
