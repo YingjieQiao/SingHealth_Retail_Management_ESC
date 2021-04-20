@@ -52,6 +52,10 @@ class DataDashboard extends Component {
         return (
             <div className={uploadStyle.body}>
                 <Navbar/>
+                <div style={{ 
+                backgroundImage: `url(${background})`,  backgroundSize: "cover"
+                                }}>
+        <div class="container21" >
                 <div className={mainStyle.main_header_container}>
                     <h2 className={mainStyle.main_header}>Data Dashboard</h2>
                 </div>
@@ -71,7 +75,7 @@ class DataDashboard extends Component {
 
                 <button type="submit" class={this.getButtonClasses()} onClick={this.handleSubmit}>Find</button>
 
-            </div>
+            </div></div></div>
         )
     }
 
