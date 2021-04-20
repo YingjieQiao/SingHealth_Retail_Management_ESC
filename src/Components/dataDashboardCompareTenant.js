@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import Navbar from './Navbar';
 import axios from 'axios';
 import styles from './CSS/dataDashboard.module.css';
-
+import mainStyle from './CSS/home.module.css';
+import uploadStyle from './CSS/upload.module.css';
 
 class DataDashboardCompareTenant extends Component {
 
@@ -89,25 +90,27 @@ class DataDashboardCompareTenant extends Component {
     render() {
 
         return (
-            <div>
+            <div className={uploadStyle.body}>
                 <Navbar/>
-                <h2>Data Dashboard</h2>
-                <div>
-                    <label>Select a statistic to be displayed:</label>
+                <div className={mainStyle.main_header_container}>
+                    <h2 className={mainStyle.main_header}>Data Dashboard</h2>
+                </div>
+                <div className={uploadStyle.info_body}>
+                    <div className={mainStyle.header_container}>
+                        <h1 className={mainStyle.header}>{this.state.instituteName1}'s v.s. {this.state.instituteName2}'s Performance Score</h1>
+                    </div>
+
+                    <label className={uploadStyle.info_label}>Select a statistic to be displayed:</label>
                     <select class="custom-select my-1 mr-sm-2" id="range" onChange={this.saveSelection}>
                         <option selected value="default">Choose...</option>
                         <option value="year" key="year">Yearly</option>
                         <option value="month" key="month">Monthly</option>
                         <option value="week" key="week">Weekly</option>
                         <option value="day" key="day">7 days</option>
-                    </select>
+                    </select><br />
                 </div>
-                <h3>{this.state.instituteName1}'s Performance Score</h3>
-                <h3>{this.state.instituteName2}'s Performance Score</h3>
                 <div>{this.displayImage()}</div>
                 <div className={styles.button_container}>{this.displayExportButton()}</div>
-                <div className={styles.button_container}>{this.displayReportButton()}</div>
-                <div className={styles.button_container}>{this.displayPopup()}</div>
             </div>
         )
     }
@@ -125,8 +128,8 @@ class DataDashboardCompareTenant extends Component {
             const index = this.state.timeChoice;
             if (validateImage === true) {
                 return (
-                <div>
-                    <h3>{this.displayImageHeading(index)}</h3>
+                <div style={{margin: "40px auto 20px auto"}}>
+                    <h3 className={mainStyle.header}>{this.displayImageHeading(index)}</h3>
                     <img src={this.getImagesrc(imageName)} alt={imageName} key={index} width="500" height="500" />  
                 </div> );
             }
@@ -158,13 +161,13 @@ class DataDashboardCompareTenant extends Component {
     displayImageHeading = (index) => {
         switch (index) {
             case "year":
-                return "Yearly statistics";
+                return "Yearly Statistics";
             case "month":
-                return "Monthly statistics";
+                return "Monthly Statistics";
             case "week":
-                return "Weekly statistics";
+                return "Weekly Statistics";
             case "day":
-                return "7 Days statistics";
+                return "7 Days Statistics";
             default:
                 return "No statistics available";
         }
@@ -183,10 +186,10 @@ class DataDashboardCompareTenant extends Component {
                 return <button type="button" className="btn btn-primary" id={index} onClick={this.handleExport}>Export {this.displayButtonLabel(index)} Graph to excel</button>;
             }
             else {
-                return <button type="button" className="btn btn-secondary" disabled>Export Graph to excel</button> ;
+                return <button type="button" className="btn btn-secondary" style={{visibility: 'hidden'}} disabled>Export Graph to excel</button> ;
             }
         } else {
-            return <button type="button" className="btn btn-secondary" disabled>Export Graph to excel</button> ;
+            return <button type="button" className="btn btn-secondary" style={{visibility: 'hidden'}} disabled>Export Graph to excel</button> ;
         }
     }
 
@@ -238,120 +241,6 @@ class DataDashboardCompareTenant extends Component {
             alert("Unable to download csv file. Try again.");
         }
     }
-
-    displayReportButton = () => {
-        if (this.state.timeChoice !== "default") {
-            const imageName = "audit_" + this.state.timeChoice + "_img";
-            const validateImage = this.checkIfImageExist(imageName);
-            const index = this.state.timeChoice;
-            if (validateImage === true) {
-                return <button type="button" className="btn btn-info" id={index} onClick={this.handleReport}>Send report</button>;
-            }
-            else {
-                return <button type="button" className="btn btn-secondary" disabled>Send report</button> ;
-            }
-        } else {
-            return <button type="button" className="btn btn-secondary" disabled>Send report</button> ;
-        }
-    }
-
-    handleReport = event => {
-        try {
-            this.setState({isReportAvail: true});
-        } catch (e) { console.log(e); }
-    }
-
-    displayPopup = () => {
-        if (this.state.isReportAvail) {
-            return(
-                <div>
-                    <h4>Send report</h4>
-                    <div>
-                        <label>Email:</label>
-                        <select class="custom-select my-1 mr-sm-2" onChange={this.saveReceiverEmail}>
-                            <option selected>Choose...</option>
-                            { this.state.emailList.map(email => <option value={email}>{email}</option> ) }
-                        </select>
-                        <button type="button" value={"1"} onClick={this.handleAddReceiver}>Add more email address</button>
-                    </div> 
-                    <div>{this.state.numOfReceiver.map(index => 
-                        <div>
-                            <label>Email:</label>
-                            <select class="custom-select my-1 mr-sm-2" onChange={this.saveReceiverEmail}>
-                                <option selected>Choose...</option>
-                                { this.state.emailList.map(email => <option value={email}>{email}</option> ) }
-                            </select>
-                        </div> )}
-                    </div>
-                    <div>
-                        <label>Subject:</label>
-                        <input placeholder="Subject" onInput={this.saveReceiverSubject} type="text" />
-                    </div>
-                    <div>
-                        <label>Note to receiver:</label>
-                        <input placeholder="Write something to receiver" onInput={this.saveReceiverNote} type="text" />
-                    </div>
-                    <button type="submit" onClick={this.handleSendReport}>Send Email</button>
-                </div>
-            )
-        }
-    }
-
-    saveReceiverEmail = event => {
-        var newEmailContent  = this.state.emailContent;
-        newEmailContent["email"].push(event.target.value);
-        this.setState({emailContent: newEmailContent});
-    }
-
-    saveReceiverSubject = event => {
-        var newEmailContent  = this.state.emailContent;
-        newEmailContent["subject"] = event.target.value;
-        this.setState({emailContent: newEmailContent});
-    }
-
-    handleAddReceiver = event => {
-        var newNumOfReceiver = this.state.numOfReceiver;
-        newNumOfReceiver.push(event.target.value);
-        this.setState({numOfReceiver: newNumOfReceiver});
-    }
-
-
-    saveReceiverSubject = event => {
-        var newEmailContent  = this.state.emailContent;
-        newEmailContent["subject"] = event.target.value;
-        this.setState({emailContent: newEmailContent});
-    }
-
-    saveReceiverNote = event => {
-        var newEmailContent  = this.state.emailContent;
-        newEmailContent["body"] = event.target.value;
-        this.setState({emailContent: newEmailContent});
-    }
-
-    handleSendReport = event => {
-        const headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Access-Control-Allow-Origin': '*',
-            withCredentials: true
-        };
-        
-        try {
-            console.log(this.state);
-            axios.post("http://localhost:5000/report_compare_tenant", this.state, headers)
-            .then(
-                res => {
-                    console.log(res.data);
-                    if(res.data.status==true){
-                        alert("Email sent!");
-                    }
-                }
-            );
-        } catch (e) {
-            console.log(e);
-        }
-
-    }
-
 
 
 }

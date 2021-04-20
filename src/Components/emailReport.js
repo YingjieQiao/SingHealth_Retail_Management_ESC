@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import Navbar from './Navbar';
+import mainStyle from './CSS/home.module.css';
+import uploadStyle from './CSS/upload.module.css';
 
 
 class EmailReport extends Component {
@@ -50,32 +52,34 @@ class EmailReport extends Component {
     render() {
 
         return (
-            <div>
+            <div className={uploadStyle.body}>
                 <Navbar />
-                <h2>Send Report</h2>
-                <div>
-                    <label>Email:</label>
+                <div className={mainStyle.main_header_container}>
+                    <h2 className={mainStyle.main_header}>Send Report</h2>
+                </div>
+                <div className={uploadStyle.info_body}>
+                    <label className={uploadStyle.info_label}>Email:</label>
                     <select class="custom-select my-1 mr-sm-2" onChange={this.saveReceiverEmail}>
                             <option selected>Choose...</option>
                             { this.state.tenantArrary.map(email => <option value={email}>{email}</option> ) }
-                    </select>
-                </div> 
-                <div>
-                    <label>Select a report to send:</label>
+                    </select><br />
+
+                    <label className={uploadStyle.info_label}>Select a report to send:</label>
                     <select class="custom-select my-1 mr-sm-2" onChange={this.saveReportChoice}>
                             <option selected>Choose...</option>
                             { this.state.timeframeArray.map(report => <option value={report}>{report}</option> ) }
-                    </select>
+                    </select><br />
+
+                    <label className={uploadStyle.info_label}>Subject:</label>
+                    <input placeholder="Subject" onInput={this.saveReceiverSubject} type="text" /><br />
+
+                    <label className={uploadStyle.info_label}>Note to receiver:</label>
+                    <input placeholder="Write something to receiver" onInput={this.saveReceiverNote} type="text" /><br />
+
+                    <div className={uploadStyle.button_container}>
+                        <button type="submit" className="btn btn-primary m-2" onClick={this.handleSendReport}>Send Email</button>
+                    </div>
                 </div> 
-                <div>
-                    <label>Subject:</label>
-                    <input placeholder="Subject" onInput={this.saveReceiverSubject} type="text" />
-                </div>
-                <div>
-                    <label>Note to receiver:</label>
-                    <input placeholder="Write something to receiver" onInput={this.saveReceiverNote} type="text" />
-                </div>
-                <button type="submit" onClick={this.handleSendReport}>Send Email</button>
             </div>
         )
     }

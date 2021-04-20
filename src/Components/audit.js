@@ -7,6 +7,9 @@ import AuditChecklistTest from './auditChecklistTest';
 import styles from "./CSS/audit.module.css";
 import axios from 'axios';
 import background from './logo/background.jpg';
+import mainStyle from './CSS/home.module.css';
+import uploadStyle from './CSS/upload.module.css';
+
 
 class Audit extends Component {
 
@@ -35,14 +38,17 @@ class Audit extends Component {
     render() {
 
         return (
-            <div>
+            <div className={uploadStyle.body}>
                 <Navbar/>
                 <div style={{ 
                 backgroundImage: `url(${background})`,  backgroundSize: "cover"
                                 }}>
         <div class="container21" >
+                <div className={mainStyle.main_header_container}>
+                    <h2 className={mainStyle.main_header}>Audit Form</h2>
+                </div>
                 <form className={styles.form_layout}>
-                    <label>Audit checklist for:</label>
+                    <label className={uploadStyle.info_label}>Select type of audit form:</label>
                     <select class="custom-select my-1 mr-sm-2" id="auditType" onChange={this.handleAuditForm}>
                         <option selected value="-1">Choose...</option>
                         <option value="1">F&#38;B</option>

@@ -1,6 +1,6 @@
 from app.config import Config
 from app import create_app
-from app.models import Photo, User, PhotoNotification, PhotoNotificationFromTenant
+from app.models import Photo, User, PhotoNotification, PhotoNotificationFromTenant,  Audit_non_FB,  Audit_FB, Covid_Compliance
 import boto3
 from botocore.exceptions import ClientError
 import os, json
@@ -39,6 +39,24 @@ class TestBase:
         realUsers = User.objects()
         res = json.loads(realUsers.to_json())
         return len(res) == 5
+
+    def clean_user_post_testv2(self):
+        for i in range(1,5):
+            testUsers = User.objects(lastName="TEST" + str(i))
+            if len(testUsers)!=0:
+                testUsers.delete()
+                realUsers = User.objects()
+                res = json.loads(realUsers.to_json())
+        return 
+
+    def clean_audit_test(self):
+        testUsers = Audit_FB.objects(comment="TEST")
+        testUsers.delete()
+        testUsers = Audit_non_FB.objects(comment="TEST")
+        testUsers.delete()
+        testUsers = Covid_Compliance.objects(comment="TEST")
+        testUsers.delete()
+        return 
 
 
     def clean_db_notif_test(self):

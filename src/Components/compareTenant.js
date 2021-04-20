@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Navbar from './Navbar';
 import axios from "axios";
+import mainStyle from './CSS/home.module.css';
+import uploadStyle from './CSS/upload.module.css';
 
 class CompareTenant extends Component {
 
@@ -48,32 +50,33 @@ class CompareTenant extends Component {
     render() {
         
         return (
-            <div>
+            <div className={uploadStyle.body}>
                 <Navbar/>
-                <h2>Compare between institutions/across clusters</h2>
-                <form>
-                    <div>
-                        <label>Type:</label>
+                <div className={mainStyle.main_header_container}>
+                    <h2 className={mainStyle.main_header}>Compare between institutions/across clusters</h2>
+                </div>
+                <div  className={uploadStyle.info_body}>
+                    <form>
+                        <label className={uploadStyle.info_label}>Type:</label>
                         <select id="type" class="custom-select my-1 mr-sm-2" onChange={this.saveType}>
                             <option selected>Choose...</option>
                             { this.state.typeArray.map(index => <option value={index}>{index}</option> ) }
-                        </select>
-                    </div>
-                    <div>
-                        <label>Name of institution/cluster 1:</label>
+                        </select><br />
+
+                        <label className={uploadStyle.info_label}>Name of institution/cluster 1:</label>
                         <select id="selector" class="custom-select my-1 mr-sm-2" onChange={this.saveInstitute1}>
                             <option selected>Choose...</option>
                             { this.state.numOfInstitute.map(index => <option value={index.toString()}>{this.handleInstitue(index)}</option> ) }
-                        </select>
-                    </div>
-                    <div>
-                        <label>Name of institution/cluster 2:</label>
+                        </select><br />
+                        
+                        <label className={uploadStyle.info_label}>Name of institution/cluster 2:</label>
                         <select id="selector2" class="custom-select my-1 mr-sm-2" onChange={this.saveInstitute2}>
                             <option selected>Choose...</option>
                             { this.state.numOfInstitute.map(index => <option value={index.toString()}>{this.handleInstitue(index)}</option> ) }
-                        </select>
-                    </div>
-                </form>
+                        </select><br />
+                    </form>
+                </div>
+
                 <div>
                     <button id= "button" type="button" class={this.getButtonClasses()} onClick={this.compare}>Compare</button>
                 </div>

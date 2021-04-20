@@ -8,30 +8,23 @@ import PIL.Image
 import os
 from datetime import datetime
 import json
-
 from . import s3_methods, utils, notif_methods, email_methods
-
 import email, smtplib, ssl
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
- 
-# new library added, please take note
-# import seaborn as sns
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import base64
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
-
-import csv #new library
+import csv 
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER, TA_LEFT
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
-
 import shutil
 
 password = os.environ.get("email_password")
@@ -40,13 +33,18 @@ sender_email = os.environ.get("sender_email")
 
 s = URLSafeTimedSerializer('Thisisasecret!')
 
+password = os.environ.get("email_password")
+sender_email = os.environ.get("sender_email")
+print(sender_email)
+print(password)
+
 apis = Blueprint('apis', __name__)
 
 logger = logging.getLogger("logger")
 
 #TODO remove all the print in the end
 #TODO more logging at successful executions
-#TODO remove downloaded csv from project directory 
+#TODO remove downloaded csv from project directory (PS: do not remove covid_audit.csv, fnb_audit.csv and non_fnb_audit.csv as these are used for creating reports)
 # after the file is downloaded on the frontned by the user for admin page
 
 
@@ -258,9 +256,7 @@ def login_verified():
 
     body = request.get_json()
     try:
-        print(body.get('email'))
         email = s.loads(body.get("token"), salt='login', max_age=120) #age needs to be increased to allow longer duration for the link to exist
-        print(email)
         user = User.objects.get(email=email)
         firstName = user.firstName
         lastName = user.lastName
@@ -407,8 +403,13 @@ def upload_photo_info():
         rcvEmail = utils.get_tenant_email(body["tenantName"])
         subject = "A SingHealth staff has uploaded a non-compliance of your outlet"
         emailTextBody = """
+        Hi,
+
         Please login to our retail-management platform using your tenant account, 
         and take necessary actions accordingly.
+
+        Regards,
+        SingHealth Retail Management Platform
         """
         email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
     except Exception as e:
@@ -435,9 +436,14 @@ def tenant_upload_photo_info():
             rcvEmail = utils.get_staff_email(body["staffName"])
             subject = "A tenant from a SingHealth institution has uploaded a remedy effort"
             emailTextBody = """
-                Please login to our retail-management platform using your staff account, 
-                and take necessary actions accordingly.
-                """
+            Hi,
+
+            Please login to our retail-management platform using your staff account, 
+            and take necessary actions accordingly.
+
+            Regards,
+            SingHealth Retail Management Platform
+            """
             email_methods.send_text_email(rcvEmail, sender_email, subject, emailTextBody, password)
     except Exception as e:
         # print("Error occurred: ", e)
@@ -710,7 +716,6 @@ def email():
         message["Subject"] = subject
         message.attach(MIMEText(body, "plain"))
     except:
-        print("error occured")
         return {'result': False, 'info': "user does not exist"}
 
     # attaching a picture
@@ -748,9 +753,6 @@ def email():
 def staff_list():
     
     tenant_list = User.objects(staff = True)
-    print(tenant_list)
-
-    # tenant_list = User.objects(tenant = True)
     # print(tenant_list)
 
     try:
@@ -763,7 +765,6 @@ def staff_list():
         else:
             return {'result': False}
     except:
-        print("error")
         return {'result': False}
 
 @apis.route('/tenant_list', methods=['GET', 'POST'])
@@ -803,7 +804,7 @@ def tenant_list_FB():
         else:
             return {'result': False}, 500
     except:
-        print("error")
+        # print("error")
         return {'result': False}, 500
 
 @apis.route('/tenant_list_non_FB', methods=['GET', 'POST'])
@@ -824,7 +825,7 @@ def tenant_list_non_FB():
         else:
             return {'result': False}, 500
     except:
-        print("error")
+        # print("error")
         return {'result': False}, 500
 
 @apis.route('/auditChecklistFB', methods=['GET', 'POST'])
@@ -832,29 +833,29 @@ def tenant_list_non_FB():
 def auditchecklistFB():
     ts = datetime.now().today()
     body = request.get_json()
-    print(body)
-    body['workSafetyScore'] = body['workSafetyHealthScore'] 
-    body['profScore'] = body['profStaffHydScore'] 
-    body['housekeepingScore'] = body['housekeepScore']
-    body['foodHygieneScore'] = body['foodHydScore']
-    body.pop('workSafetyHealthScore')
-    body.pop('profStaffHydScore')
-    body.pop('housekeepScore')
-    body.pop('foodHydScore')
-    print(body)
-    audit = Audit_FB(**body)
-    audit.timestamp = str(ts)
-    audit.computeTotalScore()
-    audit.save()
-    return {'statusText': True}
+    # print(body)
+    try:
+        body['workSafetyScore'] = body['workSafetyHealthScore']
+        body['profScore'] = body['profStaffHydScore']
+        body['housekeepingScore'] = body['housekeepScore']
+        body['foodHygieneScore'] = body['foodHydScore']
+        body.pop('workSafetyHealthScore')
+        body.pop('profStaffHydScore')
+        body.pop('housekeepScore')
+        body.pop('foodHydScore')
+        audit = Audit_FB(**body)
+        audit.timestamp = str(ts)
+        audit.save()
+        return {'statusText': True}, 200
+    except:
+        return {'statusText': False}, 500
 
 @apis.route('/auditChecklistNonFB', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
 def auditchecklistNonFB():
     ts = datetime.now().today()
     body = request.get_json()
-    print(body)
-    print(body['workSafetyHealthScore'])
+    # print(body)
     try:
         body['workSafetyScore'] = body['workSafetyHealthScore']
         body['profScore'] = body['profStaffHydScore']
@@ -862,8 +863,6 @@ def auditchecklistNonFB():
         body.pop('workSafetyHealthScore')
         body.pop('profStaffHydScore')
         body.pop('houseGeneralScore')
-        print(body)
-
         audit = Audit_non_FB(**body)
         audit.timestamp = str(ts)
         audit.computeTotalScore()
@@ -877,22 +876,27 @@ def auditchecklistNonFB():
 def covidchecklist():
     ts = datetime.now().today()
     body = request.get_json()
-    print(body)
-    dc = {}
-    dc['auditorName'] = body['auditorName']
-    dc['auditeeName'] = body['auditeeName']
-    dc['auditorDepartment'] = body['auditorDepartment']
-    dc['comment'] = body['comment']
-    ls = []
-    for i in range(1,10):
-        ls.append(body['00' + str(i)])
-    for i in range(10,14):
-        ls.append(body['0' + str(i)])    
-    dc['checklist'] = ls
-    audit = Covid_Compliance(**dc)
-    audit.timestamp = str(ts)
-    audit.save()
-    return {'statusText': True}
+    # print(body)
+    try:
+        if len(body) != 17:
+            return {'statusText': False}, 500
+        dc = {}
+        dc['auditorName'] = body['auditorName']
+        dc['auditeeName'] = body['auditeeName']
+        dc['auditorDepartment'] = body['auditorDepartment']
+        dc['comment'] = body['comment']
+        ls = []
+        for i in range(1,10):
+            ls.append(body['00' + str(i)])
+        for i in range(10,14):
+            ls.append(body['0' + str(i)])
+        dc['checklist'] = ls
+        audit = Covid_Compliance(**dc)
+        audit.timestamp = str(ts)
+        audit.save()
+        return {'statusText': True}, 200
+    except:
+        return {'statusText': False}, 500
 
 @apis.route('/dashboard_data', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
@@ -907,7 +911,7 @@ def dashboard_data():
         audit_ls = Audit_FB.objects(auditeeName = body.get('tenant'))
 
         if len(audit_ls) == 0:
-            return {'status': False, 'info': "Not enough data entries"}
+            return {'status': False, 'info': "Not enough data entries"}, 500
 
         temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.healthierScore, i.foodHygieneScore ,i.totalScore] for i in audit_ls]
         df = pd.DataFrame(temp_ls)
@@ -1036,7 +1040,7 @@ def dashboard_data():
         for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png"]:#, "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv", "audit.csv"]:
             os.remove(i)
 
-        return {'result': True, "audit_day_img": audit_day[2:-1], "audit_week_img": audit_week[2:-1], "audit_month_img": audit_month[2:-1], "audit_year_img": audit_year[2:-1], "audit_day_csv": [list(df_day.columns)] + df_day.values.tolist(), "audit_week_csv": [list(df_day.columns)] + df_week.values.tolist(), "audit_month_csv": [list(df_day.columns)] + df_month.values.tolist(), "audit_year_csv": [list(df_day.columns)] + df_year.values.tolist(), "audit_csv": [list(df_day.columns)] + df.values.tolist()}
+        return {'result': True, "audit_day_img": audit_day[2:-1], "audit_week_img": audit_week[2:-1], "audit_month_img": audit_month[2:-1], "audit_year_img": audit_year[2:-1], "audit_day_csv": [list(df_day.columns)] + df_day.values.tolist(), "audit_week_csv": [list(df_day.columns)] + df_week.values.tolist(), "audit_month_csv": [list(df_day.columns)] + df_month.values.tolist(), "audit_year_csv": [list(df_day.columns)] + df_year.values.tolist(), "audit_csv": [list(df_day.columns)] + df.values.tolist()}, 200
 
     else:
 
@@ -1173,7 +1177,7 @@ def compare_tenant():
         audit_ls_2 = Audit_FB.objects(auditeeName = body.get('institute2'))
 
         if len(audit_ls_1) == 0 or len(audit_ls_2) == 0:
-            return {'status': False, 'info': "Not enough data entries"},200
+            return {'status': False, 'info': "Not enough data entries"}, 500
 
         temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.healthierScore, i.foodHygieneScore, i.totalScore] for i in audit_ls_1]
         df_1 = pd.DataFrame(temp_ls)
@@ -1385,7 +1389,7 @@ def compare_tenant():
         audit_ls_2 = Audit_non_FB.objects(auditeeName = body.get('institute2'))
 
         if len(audit_ls_1) == 0 or len(audit_ls_2) == 0:
-            return {'status': False, 'info': "Not enough data entries"},200
+            return {'status': False, 'info': "Not enough data entries"}, 500
 
         temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.totalScore] for i in audit_ls_1]
         df_1 = pd.DataFrame(temp_ls)
@@ -1572,7 +1576,7 @@ def report_dashboard():
         audit_ls = Audit_FB.objects(auditeeName = body.get('tenant'))
 
         if len(audit_ls) == 0:
-            return {'status': False, 'info': "Not enough data entries"}
+            return {'status': False, 'info': "Not enough data entries"}, 500
 
         temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.healthierScore, i.foodHygieneScore ,i.totalScore] for i in audit_ls]
         df = pd.DataFrame(temp_ls)
@@ -1715,7 +1719,7 @@ def report_dashboard():
                 message["To"] = email
                 message["Subject"] = subject
             except:
-                print("error occured")
+                # print("error occured")
                 return {'result': False, 'info': "user does not exist"}, 500
 
             message.attach(MIMEText(content, "plain"))
@@ -1877,7 +1881,7 @@ def report_dashboard():
                 message["To"] = email
                 message["Subject"] = subject
             except:
-                print("error occured")
+                # print("error occured")
                 return {'result': False, 'info': "user does not exist"}, 500
 
             message.attach(MIMEText(content, "plain"))
@@ -1930,7 +1934,7 @@ def report_compare_tenant():
         audit_ls_2 = Audit_FB.objects(auditeeName = body.get('institute2'))
 
         if len(audit_ls_1) == 0 or len(audit_ls_2) == 0:
-            return {'status': False, 'info': "Not enough data entries"},200
+            return {'status': False, 'info': "Not enough data entries"}, 500
 
         temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.healthierScore, i.foodHygieneScore, i.totalScore] for i in audit_ls_1]
         df_1 = pd.DataFrame(temp_ls)
@@ -2136,7 +2140,7 @@ def report_compare_tenant():
                 message["To"] = email
                 message["Subject"] = subject
             except:
-                print("error occured")
+                # print("error occured")
                 return {'result': False, 'info': "user does not exist"}, 500
 
             message.attach(MIMEText(content, "plain"))
@@ -2355,7 +2359,7 @@ def report_compare_tenant():
                 message["To"] = email
                 message["Subject"] = subject
             except:
-                print("error occured")
+                # print("error occured")
                 return {'result': False, 'info': "user does not exist"}, 500
 
             message.attach(MIMEText(content, "plain"))
@@ -2400,7 +2404,7 @@ def report_timeframe():
 
     body = request.get_json()
 
-    print(body)
+    # print(body)
 
     report_timeframe_ls = []
     
@@ -2419,7 +2423,7 @@ def report_timeframe():
     for i in audit_ls:
         report_timeframe_ls.append("Covid_Audit_"+str(i.timestamp))
 
-    print(report_timeframe_ls)
+    # print(report_timeframe_ls)
 
     return {'status': True, 'timeframe_list': report_timeframe_ls}
 
@@ -2492,9 +2496,7 @@ def report_checklistt():
     elif timeframe[:3] == "Non":
 
         df = pd.read_csv("non_fnb_audit.csv")
-        print(timeframe[14:])
         audit_ls = Audit_non_FB.objects(timestamp = timeframe[14:])[0]
-        print(audit_ls)
 
         document.append(Paragraph(str(audit_ls["id"]),ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
         document.append(Image('singhealth_logo.png', 2.2*inch, 2.2*inch))
@@ -2516,21 +2518,13 @@ def report_checklistt():
         document.append(Spacer(1,3))
         document.append(Paragraph("Total Score : " + str(audit_ls['totalScore']) + "/100", ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
         document.append(Spacer(1,3))
-        
-        print( audit_ls['profstaffhydScoreList'])
-        print(audit_ls['housekeepScoreList'])
-        print(audit_ls['worksafetyhealthScoreList'])
+
         checklist = audit_ls['profstaffhydScoreList'] + audit_ls['housekeepScoreList'] + audit_ls['worksafetyhealthScoreList']
         for i in range(len(checklist)):
             checklist[i] = str(checklist[i])
-        checklist = ['',''] + checklist[:3] + [''] + checklist[3:6] + ['',''] + checklist[6:18] + ['',''] + checklist[18:27] + [''] + checklist[27:35]
-
-        print(len(df['data']))
-        print(len(checklist))
+        checklist = ['',''] + checklist[:3] + [''] + checklist[3:6] + ['',''] + checklist[6:18] + ['',''] + checklist[18:27] + [''] + checklist[27:30] + [''] + checklist[30:]
 
         df['data'] = checklist
-
-        print(df)
 
         text = ""
 
@@ -2548,7 +2542,6 @@ def report_checklistt():
     elif timeframe[:3] == 'FnB':
 
         df = pd.read_csv("fnb_audit.csv")
-        print(timeframe[10:])
         audit_ls = Audit_FB.objects(timestamp = timeframe[10:])[0]
 
         document.append(Paragraph(str(audit_ls["id"]),ParagraphStyle(name='Name', fontFamily='Arial', fontSize=14, bold=1)))
@@ -2581,11 +2574,7 @@ def report_checklistt():
             checklist[i] = str(checklist[i])
         checklist = ['',''] + checklist[:3] + [''] + checklist[3:13] + ['',''] + checklist[13:28] + [''] + checklist[28:30] + ['',''] + checklist[30:56] + [''] + checklist[56:67] + ['',''] + checklist[67:74] + [''] + checklist[74:78] + ['',''] + checklist[78:89] + [''] + checklist[89:92] + [''] + checklist[92:96]
 
-        print(len(df['data']))
-
         df['data'] = checklist
-
-        print(df)
 
         text = ""
 
@@ -2615,7 +2604,7 @@ def report_checklistt():
         message["Subject"] = subject
         message.attach(MIMEText(body.get("body"), "plain"))
     except:
-        print("error occured")
+        # print("error occured")
         return {'result': False, 'info': "user does not exist"}
 
     filename = "audit_checklist.pdf"  # In same directory as script
@@ -2645,6 +2634,7 @@ def report_checklistt():
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, text)
 
+    os.remove("app/apis/" + filename)
 
     return {'status': True}
 
