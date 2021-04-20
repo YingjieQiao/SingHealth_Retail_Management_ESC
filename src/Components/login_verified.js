@@ -121,6 +121,8 @@ class login_verified extends Component {
     <div>
        <form onSubmit={this.handleSubmit}>
         <h1>Login Verification</h1>
+        <h2> check your email for token id</h2>
+        
         <label>Enter Token :</label> <input id="token" type="text" value={this.state.Enter_Token} onChange={this.tokenhandler} placeholder="Token" /><br />
         <input id="submiting" type="submit" value="Log In" />
         </form>

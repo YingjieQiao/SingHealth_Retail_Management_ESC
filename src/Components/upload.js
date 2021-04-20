@@ -50,7 +50,7 @@ class Upload extends Component {
         } catch (e) { console.log(e); }
     }
 
-    render() { 
+    render() {  
         return (
         <div><Navbar/>
             <div className={styles.body}>
