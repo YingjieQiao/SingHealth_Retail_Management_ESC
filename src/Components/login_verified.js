@@ -5,6 +5,8 @@ import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-rout
 import axios from 'axios';
 import { useLocation } from "react-router-dom";
 import Navbar from './Navbar';
+import logo from './logo/singhealth.jpg';
+import background from './logo/background.jpg';
 class login_verified extends Component {
   constructor(props) {
     super(props)
@@ -93,26 +95,38 @@ class login_verified extends Component {
     })
   }
   }
-  componentDidMount() {
+  // componentDidMount() {
 
-    axios.get("http://localhost:5000/get_current_username_and_datetime")
-    .then(
-        res => {
-            console.log(res.data);
-            if(res.data.username==""||res.data.username=="UnitTester"){
-              alert("Please Log in!");
-              this.props.history.push('/');
-            }
-        }
-    )}
+  //   axios.get("http://localhost:5000/get_current_username_and_datetime")
+  //   .then(
+  //       res => {
+  //           console.log(res.data);
+  //           if(res.data.username==""||res.data.username=="UnitTester"){
+  //             alert("Please Log in!");
+  //             this.props.history.push('/');
+  //           }
+  //       }
+  //   )}
   render() {
     return (
+      <div style={{ 
+        backgroundImage: `url(${background})`,  backgroundSize: "cover"
+                        }}>
+    <div class="container22">
+
+        
+        <img src={logo}  width="250" height="250" margin="3000px" margin-bottom="-30" alt="Logo"  />
+    <div class="container"  >
+
     <div>
        <form onSubmit={this.handleSubmit}>
         <h1>Login Verification</h1>
         <label>Enter Token :</label> <input id="token" type="text" value={this.state.Enter_Token} onChange={this.tokenhandler} placeholder="Token" /><br />
         <input id="submiting" type="submit" value="Log In" />
         </form>
+    </div>
+    </div>
+    </div>
     </div>
     )
   }

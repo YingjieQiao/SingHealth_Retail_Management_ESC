@@ -3,7 +3,7 @@ import axios from 'axios';
 import Navbar from './Navbar';
 import StaffNotificationModal from './staffNotificationModal';
 import styles from './CSS/home.module.css';
-
+import background from './logo/background.jpg';
 class Home extends Component { 
 
   state = {
@@ -15,7 +15,7 @@ class Home extends Component {
     .then(
         res => {
             console.log(res.data);
-            if(res.data.username==""||res.data.username=="UnitTester"){
+            if(res.data.username===""||res.data.username==="UnitTester"){
               alert("Please Log in!");
               this.props.history.push('/');
             }
@@ -42,6 +42,10 @@ class Home extends Component {
     return (
       <div className='home' className={styles.body}>
         <Navbar usertype="staff" />
+        <div style={{ 
+                backgroundImage: `url(${background})`,  backgroundSize: "cover"
+                                }}>
+        <div class="container21" >
         <div className={styles.main_header_container}>
           <h1 className={styles.main_header}>Staff User Homepage</h1>
         </div>
@@ -51,7 +55,7 @@ class Home extends Component {
         <div className={styles.notification_container}>
           {this.displayInfo()}
         </div>
-      </div>
+      </div></div></div>
     )
   }
 

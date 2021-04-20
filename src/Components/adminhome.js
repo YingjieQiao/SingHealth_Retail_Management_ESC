@@ -2,13 +2,13 @@ import React , { Component } from 'react';
 import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-router-dom";
 import axios from "axios";
 import './CSS/table.css';
-import logo from './logo/singhealth.jpg';
+import logo from './logo/singhealth1.jpg';
 import './Navbar.css';
 import Navbar from './Navbar';
 import styles from './CSS/home.module.css';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
-
+import background from './logo/background.jpg';
 
 // import { CSVLink } from 'react-csv';
 
@@ -129,12 +129,13 @@ class Adminhome extends Component {
       else if((this.state.DataTypefinal=="PhotoNotificationFromTenant")){
         this.state.students= [{ id: '', tags: '',date: '',  time: '',notes: '', staffName: '' , tenantName: '', rectified:null }];
       }
+      if(this.state.student!=null){
       this.state.student.forEach(element => {
         this.state.count++;
         element.id=this.state.count;
         this.state.students.push(element);
         //console.log(element.id=this.state.count);  
-     });
+     });}
      this.forceUpdate();
 		})
     if(this.state.displayTable===true){
@@ -157,8 +158,9 @@ class Adminhome extends Component {
     return (
           <div className='navbar'>
             <Link to='#' className='menu-bars'>
-            <img src={logo}  width="70" height="70" margin="3000px" margin-bottom="-30"  alt="Logo"  />
             </Link>
+            <img src={logo} style={{float: "right", } } margin= "10px "width="70" height="70"  alt="Logo"  />
+
           </div>
 
     );
@@ -212,7 +214,7 @@ rendervalue(){
        <table id='students'>
           <tbody>
              <tr>{this.renderTableHeader()}</tr>
-             {(this.state.DataTypefinal=="User") ?this.renderTableDataUser():this.renderTableDataPhoto()}
+             {(this.state.DataTypefinal==="User") ?this.renderTableDataUser():this.renderTableDataPhoto()}
           </tbody>
        </table>
     </div>
@@ -223,7 +225,7 @@ componentDidMount() {
   .then(
       res => {
           console.log(res.data);
-          if(res.data.username==""||res.data.username=="UnitTester"){
+          if(res.data.username===""||res.data.username==="UnitTester"){
             alert("Please Log in!");
             this.props.history.push('/');
           }
@@ -261,7 +263,9 @@ componentDidMount() {
       
       <div className='home' className={styles.body}>
         {this.Navbar()}
-
+        <div style={{ 
+                backgroundImage: `url(${background})`,  backgroundSize: "cover"
+                                }}>
       <div class="container21" >
       
 
@@ -294,7 +298,7 @@ componentDidMount() {
        </div>
        </div>
        </div>
-   
+       </div>
 
 		  );
 		

@@ -5,7 +5,7 @@ import * as AiIcons from 'react-icons/ai';
 import { SidebarData } from './SidebarData';
 import './Navbar.css';
 import axios from 'axios';
-import logo from './logo/singhealth.jpg';
+import logo from './logo/singhealth1.jpg';
 import { IconContext } from 'react-icons';
 import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-router-dom";
 

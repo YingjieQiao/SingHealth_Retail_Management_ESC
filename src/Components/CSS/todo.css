@@ -126,14 +126,17 @@ min-height: 1000px;
 }
 .container21{
   background-color: #ffffff;
-margin-top:10px ;
+  margin-top: 10px;
+margin-bottom: 10px;
+border-style: solid;
+
   border-radius: 15px;
   padding:18px;
   text-align: center;
   box-shadow: 0 8px 6px -6px rgb(24, 19, 19);
   display: inline-block;
  width: 95%;
- height: wrap;
+ min-height: 900px;
   
 }
 @media screen and (max-width:900px){
