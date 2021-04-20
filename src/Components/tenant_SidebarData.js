@@ -67,7 +67,7 @@ export const tenant_SidebarData = [
   // },
   {
     title: 'Sign Out',
-    path: '/',
+    path: '/SignOut',
     icon: <FaIcons.FaSignOutAlt />,
     cName: 'nav-text',
     id:"signout"
