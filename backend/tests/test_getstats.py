@@ -15,7 +15,7 @@ class TestAudit(TestBase):
 
     TEST_ACCOUNT_1 = {  # to create temp account
         'firstName': "test_1",
-        'lastName': 'TEST',
+        'lastName': 'TEST1',
         'email': "test_1@test.com",
         'password': "asd123BNM",
         "mobile": 1234,
@@ -30,7 +30,7 @@ class TestAudit(TestBase):
 
     TEST_ACCOUNT_2 = {  # to create temp account
         'firstName': "test_2",
-        'lastName': 'TEST',
+        'lastName': 'TEST2',
         'email': "test_2@test.com",
         'password': "asd123BNM",
         "mobile": 1234,
@@ -102,4 +102,5 @@ class TestUserCleanUp(TestBase):
     clean up
     """
     def test_cleanup(self):
-        TestBase.clean_user_post_test(self)
+        TestBase.clean_user_post_testv2(self)
+        TestBase.clean_audit_test(self)

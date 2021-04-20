@@ -102,3 +102,10 @@ class TestAudit(TestBase):
                               content_type='application/json')
         assert rv.status_code == 500
         assert rv.json['statusText'] == False
+
+class TestUserCleanUp(TestBase):
+    """
+    clean up
+    """
+    def test_cleanup(self):
+        TestBase.clean_audit_test(self)

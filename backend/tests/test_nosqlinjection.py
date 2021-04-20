@@ -94,8 +94,8 @@ class TestUserSignUp(TestBase):
     
     TEST_ACCOUNT_1 = { # login failed testcase 1
         'firstName': 'DROP User;--',
-        'lastName': "' OR ‘0’='0",
-        'email': 'temp@temp.com" OR 1=1--',
+        'lastName': "TEST1",
+        'email': 'temp1@temp.com" OR 1=1--',
         'password': '10; DROP TABLE members --',
         "mobile": 123,
         "location": "SUTD",
@@ -109,8 +109,8 @@ class TestUserSignUp(TestBase):
 
     TEST_ACCOUNT_2 = {  # login failed testcase 2
         'firstName': "' OR ‘0’='0",
-        'lastName': 'DROP User;--',
-        'email': 'temp@temp.com" OR 1=1--',
+        'lastName': 'TEST2',
+        'email': 'temp2@temp.com" OR 1=1--',
         'password': "\”1' or '1' = '1’ /*\”",
         "mobile": 123,
         "location": "SUTD",
@@ -118,7 +118,8 @@ class TestUserSignUp(TestBase):
         "tenant": False,
         "admin": False,
         "locked" : False,
-        "attempts" : 0
+        "attempts" : 0,
+        "fnb" : False
     }
 
     TEST_ACCOUNT_1_JSON = json.dumps(TEST_ACCOUNT_1)
@@ -139,3 +140,10 @@ class TestUserSignUp(TestBase):
         assert rv.status_code == 200
         assert rv.json['result'] == True
         assert rv.json['info'] == "Registeration Success"
+
+class TestUserCleanUp(TestBase):
+    """
+    clean up
+    """
+    def test_cleanup(self):
+        TestBase.clean_user_post_testv2(self)
