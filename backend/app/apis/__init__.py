@@ -34,8 +34,9 @@ from reportlab.lib.units import inch
 
 import shutil
 
-sender_email = "starboypp69@gmail.com"
-password = "MDR-XB450AP"
+password = os.environ.get("email_password")
+sender_email = os.environ.get("sender_email")
+
 
 s = URLSafeTimedSerializer('Thisisasecret!')
 
