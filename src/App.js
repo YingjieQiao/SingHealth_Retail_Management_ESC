@@ -46,12 +46,12 @@ function App() {
       <Route path="/compareTenant" exact component={compareTenant}/>
       <Route path="/audit" exact component={audit}/>
       <Route path="/adminhome" exact component={Adminhome}/>
-      <Route path="/table" exact component={Table}/>
+
       <Route path="/tenantHome" exact component={tenantHome}/>
       <Route path="/emailReport" exact component={emailReport}/>
       <Route path="/tenantUpload" exact component={tenantUpload}/>
       <Route path="/tenantViewPhoto" exact component={tenantViewPhoto}/>
-      <Route path="/SignInSide" exact component={SignInSide}/>
+
       <Route path="/tenantDataDashboard" exact component={tenantDataDashboard}/>
       <Route path="/SignOut" exact component={SignOut}/>
       <Route path='*' exact={true} component={My404Component} />	

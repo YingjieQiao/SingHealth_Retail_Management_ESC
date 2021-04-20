@@ -11,6 +11,16 @@ class Home extends Component {
   }
 
   componentDidMount() {
+    axios.get("http://localhost:5000/get_current_username_and_datetime",{withCredentials: true})
+    .then(
+        res => {
+            console.log(res.data);
+            if(res.data.username==""||res.data.username=="UnitTester"){
+              alert("Please Log in!");
+              this.props.history.push('/');
+            }
+        }
+    )
     axios.get("http://localhost:5000/staff_get_photo_notification", {withCredentials: true})
     .then(
         res => {
@@ -26,6 +36,7 @@ class Home extends Component {
           }
         )
   } 
+
 
   render() {
     return (

@@ -28,7 +28,7 @@ class Upload extends Component {
             .then(
                 res => {
                     console.log(res.data);
-                    if(res.data.username==""){
+                    if(res.data.username==""||res.data.username=="UnitTester"){
                       alert("Please Log in!");
                       this.props.history.push('/');
                     }

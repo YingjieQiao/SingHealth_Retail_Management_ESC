@@ -93,18 +93,18 @@ class login_verified extends Component {
     })
   }
   }
-  // componentDidMount() {
+  componentDidMount() {
 
-  //   axios.get("http://localhost:5000/get_current_username_and_datetime")
-  //   .then(
-  //       res => {
-  //           console.log(res.data);
-  //           if(res.data.username==""){
-  //             alert("Please Log in!");
-  //             this.props.history.push('/');
-  //           }
-  //       }
-  //   )}
+    axios.get("http://localhost:5000/get_current_username_and_datetime")
+    .then(
+        res => {
+            console.log(res.data);
+            if(res.data.username==""||res.data.username=="UnitTester"){
+              alert("Please Log in!");
+              this.props.history.push('/');
+            }
+        }
+    )}
   render() {
     return (
     <div>
