@@ -61,49 +61,16 @@ def testrandomizer(link1):
         print("no alert")	    
     time.sleep(1)
 
-def logintesting(email,Password):
-    browser.find_element_by_id("email").clear()
-
-    username = browser.find_element_by_id("email")
-    time.sleep(1)	
-    username.send_keys(email)
-    time.sleep(1)
-    browser.find_element_by_id("password").clear()
-    password = browser.find_element_by_id("password")
-    time.sleep(1)	
-    password.send_keys(Password)
-    time.sleep(1)
-    button = browser.find_element_by_id("submit").click()
-    time.sleep(1)	
-
-
-def finalaily():        
-    username = browser.find_element_by_id("token")
-    time.sleep(1)	
-    username.send_keys(tokenadmin)
-    time.sleep(1)
-    button = browser.find_element_by_id("submiting").click()
-    time.sleep(1)	
-    try:
-        WebDriverWait(browser, 3).until(EC.alert_is_present(),
-                                       'Timed out waiting for PA creation ' +
-                                       'confirmation popup to appear.')
-
-        alert = browser.switch_to.alert
-        print(alert)
-        alert.accept()
-        print("alert accepted")
-    except TimeoutException:
-        print("no alert")	
-
-    print("***testing ended successfully***")
-    browser.quit()
-i=20
-while(i):
+e=20
+for i in list_link:
+        print("***--------------for loop-------------***")
+        testrandomizer(i)
+print("***--------------END OF for loop-------------***")
+while(e):
     print("***--------------while loop-------------***")
     n = random.randint(0,12)
     print(n)
     testrandomizer(list_link[n])
-    i=i-1
-    print("***--------------terminate-------------***")
+    e=e-1
+print("***--------------terminate-------------***")
 browser.quit()
