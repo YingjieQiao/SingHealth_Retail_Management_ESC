@@ -63,6 +63,7 @@ Frontend selenium testing and system robustness testing can be found in `/src/te
 ## Tech Stack
 
 ![stack](assets/overall_design.jpeg)
+![stack](assets/overall_design.png)
 
 - Backend
     - [Flask](https://flask.palletsprojects.com/en/1.1.x/)

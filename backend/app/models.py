@@ -30,9 +30,6 @@ class User(db.Document):
     def is_acc_locked(self):
         return self.locked
 
-    def setfnb(self,val):
-        self.fnb = val
-
 
 class Photo(db.Document):
     tags = db.StringField(required=True, unique=False)
@@ -85,15 +82,15 @@ class Audit_FB(db.Document):
     auditeeName = db.StringField(required=True, unique=False)
     totalScore = db.FloatField(required=True, unique=False)
     profScore = db.FloatField(required=True, unique=False)
-    profstaffhydScoreList = db.ListField(required=False, unique=False)
+    profstaffhydScoreList = db.ListField(required=True, unique=False)
     housekeepingScore = db.FloatField(required=True, unique=False)
-    housekeepScoreList = db.ListField(required=False, unique=False)
+    housekeepScoreList = db.ListField(required=True, unique=False)
     foodHygieneScore = db.FloatField(required=True, unique=False)
-    foodhydScoreList = db.ListField(required=False, unique=False)
+    foodhydScoreList = db.ListField(required=True, unique=False)
     healthierScore = db.FloatField(required=True, unique=False)
-    healthierScoreList = db.ListField(required=False, unique=False)
+    healthierScoreList = db.ListField(required=True, unique=False)
     workSafetyScore = db.FloatField(required=True, unique=False)
-    worksafetyhealthScoreList = db.ListField(required=False, unique=False)
+    worksafetyhealthScoreList = db.ListField(required=True, unique=False)
     comment = db.StringField(required=False, unique=False)
 
     def computeTotalScore(self):
@@ -107,11 +104,11 @@ class Audit_non_FB(db.Document):
     auditeeName = db.StringField(required=True, unique=False)
     totalScore = db.FloatField(required=True, unique=False)
     profScore = db.FloatField(required=True, unique=False)
-    profstaffhydScoreList = db.ListField(required=False, unique=False)
+    profstaffhydScoreList = db.ListField(required=True, unique=False)
     housekeepingScore = db.FloatField(required=True, unique=False)
-    housekeepScoreList = db.ListField(required=False, unique=False)
+    housekeepScoreList = db.ListField(required=True, unique=False)
     workSafetyScore = db.FloatField(required=True, unique=False)
-    worksafetyhealthScoreList = db.ListField(required=False, unique=False)
+    worksafetyhealthScoreList = db.ListField(required=True, unique=False)
     comment = db.StringField(required=False, unique=False)
 
     def computeTotalScore(self):
