@@ -6,7 +6,7 @@ import stylesBagde from './CSS/badge.module.css';
 import stylesNoti from './CSS/notification.module.css';
 import styles from './CSS/viewPhoto.module.css';
 import * as AiIcons from 'react-icons/ai';
-import background from './logo/background.jpg';
+
 class viewPhoto extends Component {
 
     state = {
@@ -41,10 +41,6 @@ class viewPhoto extends Component {
             
             <div className={mainStyle.body}>
                 <Navbar/>
-                <div style={{ 
-                backgroundImage: `url(${background})`,  backgroundSize: "cover"
-                                }}>
-        <div class="container21" >
                 <div className={mainStyle.main_header_container}>
                     <h2 className={mainStyle.main_header}>Staff View Photos</h2>
                 </div>
@@ -85,7 +81,7 @@ class viewPhoto extends Component {
                     })}
                 </div>
 
-            </div> </div> </div>
+            </div>
         );
     }
 
