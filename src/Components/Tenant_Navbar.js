@@ -5,6 +5,8 @@ import * as AiIcons from 'react-icons/ai';
 import { tenant_SidebarData } from './tenant_SidebarData';
 import './Navbar.css';
 import axios from 'axios';
+
+import logo from './logo/singhealth.jpg';
 import { IconContext } from 'react-icons';
 import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-router-dom";
 function TenantNavbar() {
@@ -15,6 +17,8 @@ function TenantNavbar() {
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
         <div className='navbar'>
+        <img src={logo} style={{float: "right", } } margin= "10px "width="70" height="70"  alt="Logo"  />
+
           <Link to='#' className='menu-bars'>
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>

@@ -74,6 +74,7 @@ def get_current_username_and_datetime():
 @apis.route('/signout', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def signout():
+    print("called signout!")
     try:
         utils.clear_username()
     except:
