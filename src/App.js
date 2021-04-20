@@ -25,7 +25,7 @@ import SignInSide from './Components/SignInSide';
 import emailReport from './Components/emailReport';
 import My404Component from './Components/My404Component';
 import tenantDataDashboard from './Components/tenantDataDashboard';
-
+import SignOut from './Components/signout';
 function App() {
 
   return (
@@ -53,6 +53,7 @@ function App() {
       <Route path="/tenantViewPhoto" exact component={tenantViewPhoto}/>
       <Route path="/SignInSide" exact component={SignInSide}/>
       <Route path="/tenantDataDashboard" exact component={tenantDataDashboard}/>
+      <Route path="/SignOut" exact component={SignOut}/>
       <Route path='*' exact={true} component={My404Component} />	
     </Switch>
     

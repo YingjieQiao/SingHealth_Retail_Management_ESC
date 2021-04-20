@@ -10,6 +10,7 @@ import { IconContext } from 'react-icons';
 import {Route, BrowserRouter as Router,Switch,Link,withRouter } from "react-router-dom";
 
 function login_handler(){
+  console.log("login handler called!");
   axios.post('http://localhost:5000/signout')
   .then(res => {
     console.log(res.data);
@@ -48,7 +49,7 @@ function Navbar() {
             </li>
             {SidebarData.map((item, index) => {
               return (
-                <li key={index} className={item.cName} id={item.id} {...(item.id)==="signout"?onclick=login_handler():{}}>
+                <li key={index} className={item.cName} id={item.id}>
                   <Link to={item.path}>
                     {item.icon}
                     <span>{item.title}</span>

@@ -84,7 +84,19 @@ class Login extends Component {
         
         
     }
-    
+    componentDidMount() {
+
+        axios.get('http://localhost:5000/signout',{withCredentials: true})
+        .then(res => {
+          console.log(res.data);
+          if (res.data.result === true) {
+              console.log("cleared chache");
+              
+          } else {
+            console.log("couldnt clear cache");
+            console.log(res.data.info);
+          }
+      })}
 
 
     render() {
