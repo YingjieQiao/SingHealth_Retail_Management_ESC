@@ -16,9 +16,8 @@ function TenantNavbar() {
   return (
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
+      <img src={logo} style={{float: "right", } } margin= "10px "width="80" height="80"  alt="Logo"  />
         <div className='navbar'>
-        <img src={logo} style={{float: "right", } } margin= "10px "width="70" height="70"  alt="Logo"  />
-
           <Link to='#' className='menu-bars'>
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>
