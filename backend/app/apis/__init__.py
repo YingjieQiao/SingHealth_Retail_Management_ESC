@@ -31,6 +31,8 @@ s = URLSafeTimedSerializer('Thisisasecret!')
 
 password = os.environ.get("email_password")
 sender_email = os.environ.get("sender_email")
+print(sender_email)
+print(password)
 
 apis = Blueprint('apis', __name__)
 
@@ -827,18 +829,21 @@ def auditchecklistFB():
     ts = datetime.now().today()
     body = request.get_json()
     # print(body)
-    body['workSafetyScore'] = body['workSafetyHealthScore'] 
-    body['profScore'] = body['profStaffHydScore'] 
-    body['housekeepingScore'] = body['housekeepScore']
-    body['foodHygieneScore'] = body['foodHydScore']
-    body.pop('workSafetyHealthScore')
-    body.pop('profStaffHydScore')
-    body.pop('housekeepScore')
-    body.pop('foodHydScore')
-    audit = Audit_FB(**body)
-    audit.timestamp = str(ts)
-    audit.save()
-    return {'statusText': True}
+    try:
+        body['workSafetyScore'] = body['workSafetyHealthScore']
+        body['profScore'] = body['profStaffHydScore']
+        body['housekeepingScore'] = body['housekeepScore']
+        body['foodHygieneScore'] = body['foodHydScore']
+        body.pop('workSafetyHealthScore')
+        body.pop('profStaffHydScore')
+        body.pop('housekeepScore')
+        body.pop('foodHydScore')
+        audit = Audit_FB(**body)
+        audit.timestamp = str(ts)
+        audit.save()
+        return {'statusText': True}, 200
+    except:
+        return {'statusText': False}, 500
 
 @apis.route('/auditChecklistNonFB', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
@@ -867,21 +872,26 @@ def covidchecklist():
     ts = datetime.now().today()
     body = request.get_json()
     # print(body)
-    dc = {}
-    dc['auditorName'] = body['auditorName']
-    dc['auditeeName'] = body['auditeeName']
-    dc['auditorDepartment'] = body['auditorDepartment']
-    dc['comment'] = body['comment']
-    ls = []
-    for i in range(1,10):
-        ls.append(body['00' + str(i)])
-    for i in range(10,14):
-        ls.append(body['0' + str(i)])    
-    dc['checklist'] = ls
-    audit = Covid_Compliance(**dc)
-    audit.timestamp = str(ts)
-    audit.save()
-    return {'statusText': True}
+    try:
+        if len(body) != 17:
+            return {'statusText': False}, 500
+        dc = {}
+        dc['auditorName'] = body['auditorName']
+        dc['auditeeName'] = body['auditeeName']
+        dc['auditorDepartment'] = body['auditorDepartment']
+        dc['comment'] = body['comment']
+        ls = []
+        for i in range(1,10):
+            ls.append(body['00' + str(i)])
+        for i in range(10,14):
+            ls.append(body['0' + str(i)])
+        dc['checklist'] = ls
+        audit = Covid_Compliance(**dc)
+        audit.timestamp = str(ts)
+        audit.save()
+        return {'statusText': True}, 200
+    except:
+        return {'statusText': False}, 500
 
 @apis.route('/dashboard_data', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
