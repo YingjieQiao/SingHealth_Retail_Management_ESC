@@ -4,6 +4,7 @@ import axios from "axios";
 import { ImUpload3 } from 'react-icons/im';
 import mainStyle from './CSS/home.module.css';
 import styles from './CSS/upload.module.css';
+import background from './logo/background.jpg';
 
 class Upload extends Component {
 
@@ -54,6 +55,10 @@ class Upload extends Component {
         return (
             <div className={styles.body}>
                 <TenantNavbar/>
+                <div style={{ 
+                backgroundImage: `url(${background})`,  backgroundSize: "cover"
+                                }}>
+        <div class="container21" >
                 <div className={mainStyle.main_header_container}>
                     <h2 className={mainStyle.main_header}>Tenant Upload Photo</h2>
                 </div>
@@ -93,7 +98,7 @@ class Upload extends Component {
                             onClick={this.photoInfoButtonHandler} >Upload Photo Information</button>
                     </div>
                 </div>
-            </div>
+            </div>    </div>    </div>
 
             
         );
