@@ -226,7 +226,7 @@ class Register extends Component {
             <div class="container22">
 
                 <img src={logo}  width="250" height="250" margin="3000px" margin-bottom="-30" alt="Logo" />
-        <div class="container" margin-top="1000" >
+            <div class="container" margin-top="1000" >
             <div ></div>
                 <Route path="/" exact component={Login}/>        
 

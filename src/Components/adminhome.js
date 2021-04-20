@@ -256,14 +256,16 @@ componentDidMount() {
     //  });
     // // this.forceUpdate();
 		// })
+    
 		return (
+      
       <div className='home' className={styles.body}>
         {this.Navbar()}
 
-      <div class="container22" >
+      <div class="container21" >
       
 
-      <div class="container"  >
+   
         <h1>Admin Home</h1>
         <label>Type of data :</label><select id="data" onChange={this.Datahandler} defaultValue="none">
                         <option defaultValue>Select excel type</option>
@@ -292,7 +294,7 @@ componentDidMount() {
        </div>
        </div>
        </div>
-       </div>
+   
 
 		  );
 		
