@@ -1,4 +1,5 @@
 from tests import TestBase
+import json
 
 """
 
@@ -14,7 +15,7 @@ class TestAudit(TestBase):
 
     TEST_ACCOUNT_1 = {  # to create temp account
         'firstName': "test_1",
-        'lastName': 'TEST',
+        'lastName': 'TEST1',
         'email': "test_1@test.com",
         'password': "asd123BNM",
         "mobile": 1234,
@@ -22,12 +23,14 @@ class TestAudit(TestBase):
         "staff": False,
         "tenant": True,
         "admin": False,
-        "fnb": True
+        "fnb": True,
+        "locked" : False,
+        "attempts" : 0
     }
 
     TEST_ACCOUNT_2 = {  # to create temp account
         'firstName': "test_2",
-        'lastName': 'TEST',
+        'lastName': 'TEST2',
         'email': "test_2@test.com",
         'password': "asd123BNM",
         "mobile": 1234,
@@ -35,20 +38,24 @@ class TestAudit(TestBase):
         "staff": False,
         "tenant": True,
         "admin": False,
-        "fnb": True
+        "fnb": True,
+        "locked" : False,
+        "attempts" : 0
     }
 
     TEST_ACCOUNT_3 = {  # to create temp account
-        'firstName': "test_2",
-        'lastName': 'TEST',
-        'email': "test_2@test.com",
+        'firstName': "test_3",
+        'lastName': 'TEST3',
+        'email': "test_3@test.com",
         'password': "asd123BNM",
         "mobile": 1234,
         "location": "SUTD",
         "staff": False,
         "tenant": True,
         "admin": False,
-        "fnb": False
+        "fnb": False,
+        "locked" : False,
+        "attempts" : 0
     }
 
     TEST_AUDIT_1 = {  # creating a new data entry
@@ -103,7 +110,11 @@ class TestAudit(TestBase):
         "emailContent" : {"email" : "test_1@test.com", "body" : "123", "subject" : "123"}
     }
 
-    def setup_test(self):
+    TEST_ACCOUNT_1_JSON = json.dumps(TEST_ACCOUNT_1)
+    TEST_ACCOUNT_2_JSON = json.dumps(TEST_ACCOUNT_2)
+    TEST_ACCOUNT_3_JSON = json.dumps(TEST_ACCOUNT_3)
+
+    def test_setup(self):
         rv = self.client.post('/signup', data=self.TEST_ACCOUNT_1_JSON,
                               content_type='application/json')
         assert rv.status_code == 200

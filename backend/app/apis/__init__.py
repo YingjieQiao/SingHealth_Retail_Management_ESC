@@ -906,7 +906,7 @@ def dashboard_data():
         audit_ls = Audit_FB.objects(auditeeName = body.get('tenant'))
 
         if len(audit_ls) == 0:
-            return {'status': False, 'info': "Not enough data entries"}
+            return {'status': False, 'info': "Not enough data entries"}, 500
 
         temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.healthierScore, i.foodHygieneScore ,i.totalScore] for i in audit_ls]
         df = pd.DataFrame(temp_ls)
@@ -1035,7 +1035,7 @@ def dashboard_data():
         for i in ["audit_day.png", "audit_week.png", "audit_month.png", "audit_year.png"]:#, "audit_day.csv", "audit_week.csv", "audit_month.csv", "audit_year.csv", "audit.csv"]:
             os.remove(i)
 
-        return {'result': True, "audit_day_img": audit_day[2:-1], "audit_week_img": audit_week[2:-1], "audit_month_img": audit_month[2:-1], "audit_year_img": audit_year[2:-1], "audit_day_csv": [list(df_day.columns)] + df_day.values.tolist(), "audit_week_csv": [list(df_day.columns)] + df_week.values.tolist(), "audit_month_csv": [list(df_day.columns)] + df_month.values.tolist(), "audit_year_csv": [list(df_day.columns)] + df_year.values.tolist(), "audit_csv": [list(df_day.columns)] + df.values.tolist()}
+        return {'result': True, "audit_day_img": audit_day[2:-1], "audit_week_img": audit_week[2:-1], "audit_month_img": audit_month[2:-1], "audit_year_img": audit_year[2:-1], "audit_day_csv": [list(df_day.columns)] + df_day.values.tolist(), "audit_week_csv": [list(df_day.columns)] + df_week.values.tolist(), "audit_month_csv": [list(df_day.columns)] + df_month.values.tolist(), "audit_year_csv": [list(df_day.columns)] + df_year.values.tolist(), "audit_csv": [list(df_day.columns)] + df.values.tolist()}, 200
 
     else:
 
@@ -1172,7 +1172,7 @@ def compare_tenant():
         audit_ls_2 = Audit_FB.objects(auditeeName = body.get('institute2'))
 
         if len(audit_ls_1) == 0 or len(audit_ls_2) == 0:
-            return {'status': False, 'info': "Not enough data entries"},200
+            return {'status': False, 'info': "Not enough data entries"}, 500
 
         temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.healthierScore, i.foodHygieneScore, i.totalScore] for i in audit_ls_1]
         df_1 = pd.DataFrame(temp_ls)
@@ -1384,7 +1384,7 @@ def compare_tenant():
         audit_ls_2 = Audit_non_FB.objects(auditeeName = body.get('institute2'))
 
         if len(audit_ls_1) == 0 or len(audit_ls_2) == 0:
-            return {'status': False, 'info': "Not enough data entries"},200
+            return {'status': False, 'info': "Not enough data entries"}, 500
 
         temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.totalScore] for i in audit_ls_1]
         df_1 = pd.DataFrame(temp_ls)
@@ -1571,7 +1571,7 @@ def report_dashboard():
         audit_ls = Audit_FB.objects(auditeeName = body.get('tenant'))
 
         if len(audit_ls) == 0:
-            return {'status': False, 'info': "Not enough data entries"}
+            return {'status': False, 'info': "Not enough data entries"}, 500
 
         temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.healthierScore, i.foodHygieneScore ,i.totalScore] for i in audit_ls]
         df = pd.DataFrame(temp_ls)
@@ -1929,7 +1929,7 @@ def report_compare_tenant():
         audit_ls_2 = Audit_FB.objects(auditeeName = body.get('institute2'))
 
         if len(audit_ls_1) == 0 or len(audit_ls_2) == 0:
-            return {'status': False, 'info': "Not enough data entries"},200
+            return {'status': False, 'info': "Not enough data entries"}, 500
 
         temp_ls = [[i.timestamp, i.profScore, i.housekeepingScore, i.workSafetyScore, i.healthierScore, i.foodHygieneScore, i.totalScore] for i in audit_ls_1]
         df_1 = pd.DataFrame(temp_ls)

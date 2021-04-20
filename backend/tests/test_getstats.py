@@ -1,4 +1,5 @@
 from tests import TestBase
+import json
 
 """
 
@@ -14,7 +15,7 @@ class TestAudit(TestBase):
 
     TEST_ACCOUNT_1 = {  # to create temp account
         'firstName': "test_1",
-        'lastName': 'TEST',
+        'lastName': 'TEST1',
         'email': "test_1@test.com",
         'password': "asd123BNM",
         "mobile": 1234,
@@ -22,12 +23,14 @@ class TestAudit(TestBase):
         "staff": False,
         "tenant": True,
         "admin": False,
-        "fnb": True
+        "fnb": True,
+        "locked" : False,
+        "attempts" : 0
     }
 
     TEST_ACCOUNT_2 = {  # to create temp account
         'firstName': "test_2",
-        'lastName': 'TEST',
+        'lastName': 'TEST2',
         'email': "test_2@test.com",
         'password': "asd123BNM",
         "mobile": 1234,
@@ -35,10 +38,12 @@ class TestAudit(TestBase):
         "staff": False,
         "tenant": True,
         "admin": False,
-        "fnb": True
+        "fnb": True,
+        "locked" : False,
+        "attempts" : 0
     }
 
-    TEST_AUDIT = {  # creating a new data entry
+    TEST_AUDIT = { #  Correct data with correct column names
         'auditorName' : "temp_auditor",
         'auditorDepartment' : "Risk",
         'auditeeName' : "test_2@test.com",
@@ -65,16 +70,22 @@ class TestAudit(TestBase):
     }
 
     TEST_REPORT_CALL = {
-        "tenant" : "test_1@test.com",
+        "tenant" : "test_2@test.com",
         "emailContent" : {"email" : "test_1@test.com", "body" : "123", "subject" : "123"}
     }
 
+    TEST_ACCOUNT_1_JSON = json.dumps(TEST_ACCOUNT_1)
+    TEST_ACCOUNT_2_JSON = json.dumps(TEST_ACCOUNT_2)
+    TEST_GRAPH_CSV_CALL_1_JSON = json.dumps(TEST_GRAPH_CSV_CALL_1)
+    TEST_GRAPH_CSV_CALL_2_JSON = json.dumps(TEST_GRAPH_CSV_CALL_2)
+    TEST_AUDIT_JSON = json.dumps(TEST_AUDIT)
+    TEST_REPORT_CALL_JSON = json.dumps(TEST_REPORT_CALL)
 
     def test_audit_submit_fail_1(self):
         rv = self.client.post('/signup', data=self.TEST_ACCOUNT_1_JSON,
                               content_type='application/json')
         assert rv.status_code == 200
-        rv = self.client.post('/dashboard_data', data=self.TEST_GRAPH_CSV_CALL_1,
+        rv = self.client.post('/dashboard_data', data=self.TEST_GRAPH_CSV_CALL_1_JSON,
                               content_type='application/json')
         assert rv.status_code == 500
         assert rv.json['status'] == False
@@ -84,14 +95,14 @@ class TestAudit(TestBase):
         rv = self.client.post('/signup', data=self.TEST_ACCOUNT_2_JSON,
                               content_type='application/json')
         assert rv.status_code == 200
-        rv = self.client.post('/auditChecklistFB', data=self.TEST_AUDIT,
+        rv = self.client.post('/auditChecklistFB', data=self.TEST_AUDIT_JSON,
                               content_type='application/json')
         assert rv.status_code == 200
-        rv = self.client.post('/dashboard_data', data=self.TEST_GRAPH_CSV_CALL_2,
+        rv = self.client.post('/dashboard_data', data=self.TEST_GRAPH_CSV_CALL_2_JSON,
                               content_type='application/json')
         assert rv.status_code == 200
-        assert rv.json['status'] == True
-        rv = self.client.post('/report_dashboard', data=self.TEST_REPORT_CALL,
+        assert rv.json['result'] == True
+        rv = self.client.post('/report_dashboard', data=self.TEST_REPORT_CALL_JSON,
                               content_type='application/json')
         assert rv.status_code == 200
         assert rv.json['status'] == True

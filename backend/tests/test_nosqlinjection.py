@@ -25,7 +25,7 @@ class TestUserLogin(TestBase):
     TEST_ACCOUNT_1 = { # login failed testcase 1
         'firstName': 'DROP User;--',
         'lastName': "' OR ‘0’='0",
-        'email': 'temp@temp.com" OR 1=1--',
+        'email': 'temp1@temp.com" OR 1=1--',
         'password': '10; DROP TABLE members --',
         "mobile": 123,
         "location": "SUTD",
@@ -38,13 +38,14 @@ class TestUserLogin(TestBase):
     TEST_ACCOUNT_2 = {  # login failed testcase 2
         'firstName': "' OR ‘0’='0",
         'lastName': 'DROP User;--',
-        'email': 'temp@temp.com" OR 1=1--',
+        'email': 'temp2@temp.com" OR 1=1--',
         'password': "\”1' or '1' = '1’ /*\”",
         "mobile": 123,
         "location": "SUTD",
         "staff": True,
         "tenant": False,
-        "admin": False
+        "admin": False,
+        "fnb": True
     }
 
     TEST_ACCOUNT_1_JSON = json.dumps(TEST_ACCOUNT_1)
@@ -54,9 +55,9 @@ class TestUserLogin(TestBase):
     def test_login_fail_1(self):
         rv = self.client.post('/login', data=self.TEST_ACCOUNT_1_JSON,
                               content_type='application/json')
-        assert rv.status_code == 500
+        assert rv.status_code == 401
         assert rv.json['result'] == False
-        assert rv.json['info'] == "user does not exist or payload error"
+        assert rv.json['info'] == "user does not exist or password error"
 
 
         """assert 'id' in rv.json
@@ -70,9 +71,9 @@ class TestUserLogin(TestBase):
     def test_login_fail_2(self):
         rv = self.client.post('/login', data=self.TEST_ACCOUNT_2_JSON,
                               content_type='application/json')
-        assert rv.status_code == 500
+        assert rv.status_code == 401
         assert rv.json['result'] == False
-        assert rv.json['info'] == "user does not exist or payload error"
+        assert rv.json['info'] == "user does not exist or password error"
 
 
 class TestUserSignUp(TestBase):
@@ -101,7 +102,9 @@ class TestUserSignUp(TestBase):
         "staff": True,
         "tenant": False,
         "admin": False,
-        "fnb": True
+        "fnb": True,
+        "locked" : False,
+        "attempts" : 0
     }
 
     TEST_ACCOUNT_2 = {  # login failed testcase 2
@@ -113,7 +116,9 @@ class TestUserSignUp(TestBase):
         "location": "SUTD",
         "staff": True,
         "tenant": False,
-        "admin": False
+        "admin": False,
+        "locked" : False,
+        "attempts" : 0
     }
 
     TEST_ACCOUNT_1_JSON = json.dumps(TEST_ACCOUNT_1)
@@ -130,6 +135,7 @@ class TestUserSignUp(TestBase):
     def test_signup_fail_2(self):
         rv = self.client.post('/signup', data=self.TEST_ACCOUNT_2_JSON,
                               content_type='application/json')
+        print(rv.json['info'])
         assert rv.status_code == 200
         assert rv.json['result'] == True
         assert rv.json['info'] == "Registeration Success"
