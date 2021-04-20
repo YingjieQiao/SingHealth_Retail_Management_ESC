@@ -16,11 +16,12 @@ class SignOut extends Component {
         .then(res => {
           console.log(res.data);
           if (res.data.result === true) {
-              alert("signout successfull")
+              console.log("signout successfull")
               this.props.history.push('/');
           } else {
-            alert("crashed while signing out! :(")
+            console.log("crashed while signing out! :(")
               alert(res.data.info);
+              this.props.history.push('/');
           }
       })
         // axios.get("http://localhost:5000/get_current_username_and_datetime", {withCredentials: true})

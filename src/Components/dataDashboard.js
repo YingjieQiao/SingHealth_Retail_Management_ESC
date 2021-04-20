@@ -4,7 +4,7 @@ import axios from 'axios';
 import { MdSystemUpdate } from 'react-icons/md';
 import mainStyle from './CSS/home.module.css';
 import uploadStyle from './CSS/upload.module.css';
-
+import background from './logo/background.jpg';
 class DataDashboard extends Component {
 
     state = {
