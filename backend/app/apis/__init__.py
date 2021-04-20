@@ -27,9 +27,6 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 import shutil
 
-password = os.environ.get("email_password")
-sender_email = os.environ.get("sender_email")
-
 
 s = URLSafeTimedSerializer('Thisisasecret!')
 
@@ -38,6 +35,8 @@ sender_email = os.environ.get("sender_email")
 print(sender_email)
 print(password)
 
+sender_email="starboypp69@gmail.com"
+password="singhealth1234"
 apis = Blueprint('apis', __name__)
 
 logger = logging.getLogger("logger")

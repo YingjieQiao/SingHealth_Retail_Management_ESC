@@ -3,7 +3,7 @@ import axios from "axios";
 import Navbar from './Navbar';
 import mainStyle from './CSS/home.module.css';
 import uploadStyle from './CSS/upload.module.css';
-
+import background from './logo/background.jpg';
 
 class EmailReport extends Component {
 
@@ -54,6 +54,10 @@ class EmailReport extends Component {
         return (
             <div className={uploadStyle.body}>
                 <Navbar />
+                <div style={{ 
+                backgroundImage: `url(${background})`,  backgroundSize: "cover"
+                                }}>
+                 <div class="container21" >
                 <div className={mainStyle.main_header_container}>
                     <h2 className={mainStyle.main_header}>Send Report</h2>
                 </div>
@@ -80,7 +84,7 @@ class EmailReport extends Component {
                         <button type="submit" className="btn btn-primary m-2" onClick={this.handleSendReport}>Send Email</button>
                     </div>
                 </div> 
-            </div>
+            </div> </div> </div>
         )
     }
 
