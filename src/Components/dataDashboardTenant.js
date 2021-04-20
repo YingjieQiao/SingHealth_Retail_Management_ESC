@@ -4,6 +4,7 @@ import axios from 'axios';
 import styles from './CSS/dataDashboard.module.css';
 import mainStyle from './CSS/home.module.css';
 import uploadStyle from './CSS/upload.module.css';
+import background from './logo/background.jpg';
 
 class DataDashboardTenant extends Component {
 
@@ -88,6 +89,10 @@ class DataDashboardTenant extends Component {
         return (
             <div className={uploadStyle.body}>
                 <Navbar/>
+                <div style={{ 
+                backgroundImage: `url(${background})`,  backgroundSize: "cover"
+                                }}>
+        <div class="container21" >
                 <div className={mainStyle.main_header_container}>
                     <h2 className={mainStyle.main_header}>Data Dashboard</h2>
                 </div>
@@ -109,7 +114,7 @@ class DataDashboardTenant extends Component {
 
                 <div>{this.displayImage()}</div>
                 <div className={styles.button_container}>{this.displayExportButton()}</div>
-            </div>
+            </div>          </div>          </div>
         )
     }
 

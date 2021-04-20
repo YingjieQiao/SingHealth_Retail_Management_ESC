@@ -3,7 +3,7 @@ import Navbar from './Navbar';
 import axios from "axios";
 import mainStyle from './CSS/home.module.css';
 import uploadStyle from './CSS/upload.module.css';
-
+import background from './logo/background.jpg';
 class CompareTenant extends Component {
 
     state = {
@@ -52,6 +52,10 @@ class CompareTenant extends Component {
         return (
             <div className={uploadStyle.body}>
                 <Navbar/>
+                <div style={{ 
+                backgroundImage: `url(${background})`,  backgroundSize: "cover"
+                                }}>
+        <div class="container21" >
                 <div className={mainStyle.main_header_container}>
                     <h2 className={mainStyle.main_header}>Compare between institutions/across clusters</h2>
                 </div>
@@ -80,7 +84,7 @@ class CompareTenant extends Component {
                 <div>
                     <button id= "button" type="button" class={this.getButtonClasses()} onClick={this.compare}>Compare</button>
                 </div>
-            </div>
+            </div> </div> </div>
         )
     }
 

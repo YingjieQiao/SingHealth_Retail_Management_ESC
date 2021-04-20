@@ -4,6 +4,7 @@ import TenantNavbar from './Tenant_Navbar';
 import axios from 'axios';
 import TenantNotificationModal from './tenantNotificationModal';
 import styles from './CSS/home.module.css';
+import background from './logo/background.jpg';
 
 class tenantHome extends Component { 
 
@@ -42,6 +43,10 @@ class tenantHome extends Component {
     return (
       <div className='home' className={styles.body}>
         <TenantNavbar/>
+        <div style={{ 
+                backgroundImage: `url(${background})`,  backgroundSize: "cover"
+                                }}>
+        <div class="container21" >
         <div className={styles.main_header_container}>
           <h1 className={styles.main_header}>Tenant User Homepage</h1>
         </div>
@@ -51,7 +56,7 @@ class tenantHome extends Component {
         <div className={styles.notification_container}>
           {this.displayInfo()}
         </div>
-      </div>
+      </div>    </div>    </div>
     )
   }
 
