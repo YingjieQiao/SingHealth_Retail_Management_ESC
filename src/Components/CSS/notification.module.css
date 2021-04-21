@@ -7,7 +7,8 @@
 .single_noti_body {
     background-color: white;
     margin: 10px auto 20px auto;
-    width: 90vw;
+    border-style: solid;
+    width: 100%;
     padding: 20px;
     text-align: left;
     border-radius: 5px;

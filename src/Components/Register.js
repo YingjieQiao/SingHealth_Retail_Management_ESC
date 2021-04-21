@@ -137,7 +137,7 @@ class Register extends Component {
         if(this.state.tenant===true){
         return (
           <div>
-                    <label>Type of tenant :</label><select onChange={this.tenanttypehandler} defaultValue="">
+                    <label>tenant type:&nbsp;</label><select onChange={this.tenanttypehandler} defaultValue="">
                         <option defaultValue>Select tenant type</option>
                         <option value="fnb">fnb</option>
                         <option value="non-fnb">non-fnb</option>
@@ -235,14 +235,15 @@ class Register extends Component {
 
                 <form onSubmit={this.handleSubmit}>
                     <h1>User Registration</h1>
-                    <label>First Name :</label> <input id="firstname" type="text" value={this.state.firstName} onChange={this.firsthandler} placeholder="FirstName..." /><br />
-                    <label>Last Name :</label> <input id="lastname" type="text" value={this.state.lastName} onChange={this.lasthandler} placeholder="LastName..." /><br />
-                    <label>email id :</label> <input id="emailid" type="text" value={this.state.email} onChange={this.emailhandler} placeholder="email id..." /><br />
-                    <label>mobile no :</label> <input id="mobile" type="number" value={this.state.mobile} onChange={this.mobilehandler} placeholder="Mobile number..." /><br />
-                    <label>Password :</label> <input id="password" type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password..." /><br />
-                    <label>RE-Password :</label> <input id="repassword" type="password" value={this.state.REpassword} onChange={this.REpasswordhandler} placeholder="RE-Password..." /><br />
+                    <div class="container1">
+                    <label>First Name :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label> <input id="firstname" type="text" value={this.state.firstName} onChange={this.firsthandler} placeholder="FirstName..." /><br />
+                    <label>Last Name :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label> <input id="lastname" type="text" value={this.state.lastName} onChange={this.lasthandler} placeholder="LastName..." /><br />
+                    <label>email id :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label> <input id="emailid" type="text" value={this.state.email} onChange={this.emailhandler} placeholder="email id..." /><br />
+                    <label>mobile no :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label> <input id="mobile" type="number" value={this.state.mobile} onChange={this.mobilehandler} placeholder="Mobile number..." /><br />
+                    <label>Password :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label> <input id="password" type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password..." /><br />
+                    <label>RE-Password :&nbsp;&nbsp;</label> <input id="repassword" type="password" value={this.state.REpassword} onChange={this.REpasswordhandler} placeholder="RE-Password..." /><br />
 
-                    <label>location :</label><select id="location" onChange={this.locationhandler} defaultValue="">
+                    <label>location :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><select id="location" onChange={this.locationhandler} defaultValue="">
                         <option defaultValue>Select location</option>
                         <option value="CGH">CGH</option>
                         <option value="KKH">KKH</option>
@@ -254,13 +255,15 @@ class Register extends Component {
                         <option value="BVH">BVH</option>
                         <option value="OCH">OCH</option>
                     </select><br />
-                    <label>Type of user :</label><select id="usertype" onChange={this.userhandler} defaultValue="">
+                    <label>Type of user:</label><select id="usertype" onChange={this.userhandler} defaultValue="">
                         <option defaultValue>Select user</option>
                         <option value="Tenant">Tenant</option>
                         <option value="Staff">staff</option>
 
                     </select><br />
+
                     {this.rendervalue()}
+                    </div>
                     <input id="submit11" type="submit" value="Submit"  />
 
                     <li>

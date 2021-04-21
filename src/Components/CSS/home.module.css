@@ -25,8 +25,9 @@
 }
 
 .notification_container {
-    background-color: #f5f3f4;
+    background-color: #ffffff;
     height: 100%;
+    width: wrap;
     padding-bottom: 20px;
 }
 
