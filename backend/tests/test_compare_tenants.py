@@ -123,7 +123,7 @@ class TestAudit(TestBase):
     TEST_REPORT_CALL = {
         "institute1" : "test_3@test.com",
         "institute2" : "test_4@test.com",
-        "emailContent" : {"email" : "test@gmail.com", "body" : "123", "subject" : "123"}
+        "emailContent" : {"email" : "yingjie_qiao@outlook.com", "body" : "123", "subject" : "123"}
     }
 
     TEST_ACCOUNT_1_JSON = json.dumps(TEST_ACCOUNT_1)
