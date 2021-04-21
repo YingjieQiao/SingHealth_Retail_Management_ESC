@@ -21,7 +21,7 @@ import Table from './Components/Table';
 import tenantHome from './Components/tenantHome';
 import tenantUpload from './Components/tenantUpload';
 import tenantViewPhoto from './Components/tenantViewPhoto';
-import SignInSide from './Components/SignInSide';
+
 import emailReport from './Components/emailReport';
 import My404Component from './Components/My404Component';
 import tenantDataDashboard from './Components/tenantDataDashboard';
