@@ -65,7 +65,7 @@ class Upload extends Component {
                 <div className={styles.upload_container}>
                     <ImUpload3 size="50" className={styles.upload_icon}/>
                     <div className={styles.chooseFile_container}>
-                        <input type="file" name="file" onChange={this.onChooseFileHandler} 
+                        <input type="file" name="file" id="choose" onChange={this.onChooseFileHandler} 
                             className={styles.chooseFile}/>
                     </div>
                 </div>
@@ -96,7 +96,7 @@ class Upload extends Component {
                     </form >
 
                     <div className={styles.button_container}>
-                        <button type="button" className="btn btn-primary m-2" 
+                        <button type="button" className="btn btn-primary m-2" id="button"
                             onClick={this.photoInfoButtonHandler} >Upload Photo Information</button>
                     </div>
                 </div>

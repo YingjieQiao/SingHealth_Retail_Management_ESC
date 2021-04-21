@@ -44,8 +44,8 @@ class viewPhoto extends Component {
                     <h2 className={mainStyle.main_header}>Tenant View Photos</h2>
                 </div>
                 <div className={styles.button_container}>
-                    <button type="button" class={this.getStaffButtonClasses()} onClick={this.showPhotoByStaffHandler}>View Photos Uploaded By Staff</button>
-                    <button type="button" class={this.getTenantButtonClasses()} onClick={this.showPhotoByTenantHandler}>View Previously Uploaded Photos</button>
+                    <button type="button" id="button1" class={this.getStaffButtonClasses()} onClick={this.showPhotoByStaffHandler}>View Photos Uploaded By Staff</button>
+                    <button type="button" id="button2" class={this.getTenantButtonClasses()} onClick={this.showPhotoByTenantHandler}>View Previously Uploaded Photos</button>
                 </div>
                 <div className={styles.header_container}><h2 className={styles.header}>{this.displayUploadHeader()}</h2></div>
                 <div>

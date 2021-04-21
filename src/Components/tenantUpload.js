@@ -65,7 +65,7 @@ class Upload extends Component {
                 <div className={styles.upload_container}>
                     <ImUpload3 size="50" className={styles.upload_icon}/>
                     <div className={styles.chooseFile_container}>
-                        <input type="file" name="file" onChange={this.onChooseFileHandler} 
+                        <input id="choose" type="file" name="file" onChange={this.onChooseFileHandler} 
                             className={styles.chooseFile}/>
                     </div>
                 </div>
@@ -75,7 +75,7 @@ class Upload extends Component {
                         <div className={mainStyle.header_container}>
                             <h1 className={mainStyle.header}>Photo Information</h1>
                         </div>
-                        <label className={styles.info_label}>Tags:</label><select onChange={this.tagsHandler} defaultValue="none">
+                        <label className={styles.info_label}>Tags:</label><select id="select" onChange={this.tagsHandler} defaultValue="none">
                             <option defaultValue>Select tags</option>
                             <option value="Professionalism and Staff Hygiene">Professionalism and Staff Hygiene</option>
                             <option value="HouseKeeping and General Cleanliness">HouseKeeping and General Cleanliness</option>
@@ -84,17 +84,17 @@ class Upload extends Component {
                             <option value="Workplace Safety and Health">Workplace Safety and Health</option>
                         </select><br />
                         
-                        <label className={styles.info_label}>Notes:</label> <input type="text" 
+                        <label className={styles.info_label}>Notes:</label> <input type="text" id="notes"
                             value={this.state.notes} onChange={this.notesHandler} placeholder="Write a note to the staff..." /><br />
 
-                        <label className={styles.info_label}>Staff:</label><select onChange={this.staffHandler} defaultValue="none">
+                        <label className={styles.info_label}>Staff:</label><select id="tenant" onChange={this.staffHandler} defaultValue="none">
                             <option defaultValue>Select staff to answer to</option>
                             { this.state.staffList.map(staff => <option value={staff} key={staff}>{staff}</option> ) }
                         </select><br />
                     </form >
 
                     <div className={styles.button_container}>
-                        <button type="button" className="btn btn-primary m-2" 
+                        <button type="button" className="btn btn-primary m-2" id="button"
                             onClick={this.photoInfoButtonHandler} >Upload Photo Information</button>
                     </div>
                 </div>

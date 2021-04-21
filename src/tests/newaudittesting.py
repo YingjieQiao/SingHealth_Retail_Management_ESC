@@ -11,9 +11,7 @@ browser = webdriver.Chrome("\webdriver\\chromedriver") # Get local session of fi
 browser.get("http://localhost:3000/") # Load App page
 print("***setup complete***")
 def testinglink():
-    browser.find_element(By.LINK_TEXT,"Register").click()
 
-    browser.find_element(By.LINK_TEXT,"Login").click()
 
     #browser.find_element(By.LINK_TEXT,"admin").click()
 
@@ -113,7 +111,7 @@ def AuditChecklistNonFB():
     elif(t==3):
         chooseFile.send_keys("Risk")
     data = random.randint(0,10)
-    chooseFile = browser.find_element_by_id("001")
+    chooseFile = browser.find_element_by_id("1").click()
     chooseFile.send_keys(data)
     data = random.randint(0,10)
     chooseFile = browser.find_element_by_id("002")

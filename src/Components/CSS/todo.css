@@ -43,7 +43,7 @@ input[type=number] {
 }
 
 input[type=password] {
-  width: 70%;
+  width: 75%;
   padding: 12px 20px;
   margin: 8px 0;
   box-sizing: content-box;
@@ -97,6 +97,22 @@ select {
  
   
 }
+.container1{
+  background-color: #ffffff;
+  border-style: hidden;
+  /* border-radius: 15px; */
+  /* padding:18px; */
+  margin-left: 10px;
+  text-align: left;
+  /* box-shadow: 0 8px 6px -6px black; */
+
+  width: wrap;
+  height: wrap;
+  margin-top: 10px;;
+ 
+  
+}
+
 button{
   width: 20%;
   padding: 12px 10px;

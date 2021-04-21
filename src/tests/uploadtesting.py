@@ -11,10 +11,7 @@ browser = webdriver.Chrome("\webdriver\\chromedriver") # Get local session of fi
 browser.get("http://localhost:3000/") # Load App page
 print("***setup complete***")
 def testinglink():
-    browser.find_element(By.LINK_TEXT,"Register").click()
-
-    browser.find_element(By.LINK_TEXT,"Login").click()
-
+  
     #browser.find_element(By.LINK_TEXT,"admin").click()
 
     print("yolo")

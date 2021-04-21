@@ -10,9 +10,6 @@ from selenium.webdriver.common.by import By
 browser = webdriver.Chrome("\webdriver\\chromedriver") # Get local session of firefox
 browser.get("http://localhost:3000/") # Load App page
 
-browser.find_element(By.LINK_TEXT,"Register").click()
-
-browser.find_element(By.LINK_TEXT,"Login").click()
 
 #browser.find_element(By.LINK_TEXT,"admin").click()
 

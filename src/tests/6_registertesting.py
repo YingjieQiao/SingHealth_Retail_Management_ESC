@@ -10,10 +10,8 @@ from selenium.webdriver.common.by import By
 browser = webdriver.Chrome("\webdriver\\chromedriver") # Get local session of firefox
 browser.get("http://localhost:3000/Register") # Load App page
 
+browser.execute_script("window.scrollTo(0, 500)") 
 
-
-browser.find_element(By.LINK_TEXT,"Login").click()
-browser.find_element(By.LINK_TEXT,"Register").click()
 #browser.find_element(By.LINK_TEXT,"admin").click()
 
 print("yolo")
@@ -78,7 +76,7 @@ username = browser.find_element_by_id("lastname")
 time.sleep(1)	
 username.send_keys(lastName)
 time.sleep(1)
-button = browser.find_element_by_id("submit").click()
+button = browser.find_element_by_id("submit11").click()
 time.sleep(1)
 try:
     WebDriverWait(browser, 3).until(EC.alert_is_present(),
@@ -103,7 +101,7 @@ username = browser.find_element_by_id("location")
 time.sleep(1)	
 username.send_keys(location)
 time.sleep(1)
-button = browser.find_element_by_id("submit").click()
+button = browser.find_element_by_id("submit11").click()
 time.sleep(1)
 try:
     WebDriverWait(browser, 3).until(EC.alert_is_present(),

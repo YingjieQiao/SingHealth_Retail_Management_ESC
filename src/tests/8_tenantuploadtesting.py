@@ -11,9 +11,7 @@ browser = webdriver.Chrome("\webdriver\\chromedriver") # Get local session of fi
 browser.get("http://localhost:3000/") # Load App page
 print("***setup complete***")
 def testinglink():
-    browser.find_element(By.LINK_TEXT,"Register").click()
 
-    browser.find_element(By.LINK_TEXT,"Login").click()
 
     #browser.find_element(By.LINK_TEXT,"admin").click()
 
@@ -64,7 +62,7 @@ def testingsigninsignout():
         print("no alert")	
     username = browser.find_element_by_id("token")
     time.sleep(1)	
-    username.send_keys(tokenstaff)
+    username.send_keys(tokentenant)
     time.sleep(1)
     button = browser.find_element_by_id("submiting").click()
     time.sleep(1)	
@@ -99,32 +97,30 @@ def testinghomekeys():
             print(href)
     button = browser.find_element_by_id("Upload").click()
     time.sleep(1)
+    chooseFile = browser.find_element_by_id("choose")
+    chooseFile.send_keys("C:\\Users\\ishaa\\Pictures\\crop.jpg")
+    chooseFile = browser.find_element_by_id("select")
+    chooseFile.send_keys("HouseKeeping and General Cleanliness")
+    chooseFile = browser.find_element_by_id("notes")
+    chooseFile.send_keys("HouseKeeping and General Cleanliness")
+    chooseFile = browser.find_element_by_id("tenant")
+    chooseFile.send_keys("ishaannair")
+    button = browser.find_element_by_id("button").click()
+    time.sleep(1)
+    try:
+        WebDriverWait(browser, 10).until(EC.alert_is_present(),
+                                       'Timed out waiting for PA creation ' +
+                                       'confirmation popup to appear.')
+
+        alert = browser.switch_to.alert
+        print(alert.text)
+        alert.accept()
+        print("alert accepted")
+    except TimeoutException:
+        print("no alert")	
     button = browser.find_element_by_class_name("menu-bars").click()
     time.sleep(1)
-    button = browser.find_element_by_id("view").click()
-    time.sleep(1)
-    button = browser.find_element_by_class_name("menu-bars").click()
-    time.sleep(1)
-    button = browser.find_element_by_id("inbox").click()
-    time.sleep(1)
-    button = browser.find_element_by_class_name("menu-bars").click()
-    time.sleep(1)
-    # button = browser.find_element_by_id("profile").click()
-    # time.sleep(1)
-    # button = browser.find_element_by_class_name("menu-bars").click()
-    # time.sleep(1)
-    button = browser.find_element_by_id("stats").click()
-    time.sleep(1)
-    button = browser.find_element_by_class_name("menu-bars").click()
-    time.sleep(1)
-    button = browser.find_element_by_id("tent").click()
-    time.sleep(1)
-    button = browser.find_element_by_class_name("menu-bars").click()
-    time.sleep(1)
-    button = browser.find_element_by_id("audit").click()
-    time.sleep(1)
-    button = browser.find_element_by_class_name("menu-bars").click()
-    time.sleep(1)
+    
     button = browser.find_element_by_id("signout").click()
     time.sleep(1)
     print("***testing ended successfully***")

@@ -11,9 +11,7 @@ browser = webdriver.Chrome("\webdriver\\chromedriver") # Get local session of fi
 browser.get("http://localhost:3000/") # Load App page
 print("***setup complete***")
 def testinglink():
-    browser.find_element(By.LINK_TEXT,"Register").click()
 
-    browser.find_element(By.LINK_TEXT,"Login").click()
 
     #browser.find_element(By.LINK_TEXT,"admin").click()
 
@@ -64,7 +62,7 @@ def testingsigninsignout():
         print("no alert")	
     username = browser.find_element_by_id("token")
     time.sleep(1)	
-    username.send_keys(tokenstaff)
+    username.send_keys(tokentenant)
     time.sleep(1)
     button = browser.find_element_by_id("submiting").click()
     time.sleep(1)	

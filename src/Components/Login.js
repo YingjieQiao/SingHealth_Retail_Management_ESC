@@ -114,8 +114,10 @@ class Login extends Component {
                 <Route path="/Register" exact component={Register}/>        
                 <form onSubmit={this.handleSubmit}>
                     <h1 margin ="100px">LOGIN</h1>
-                    <label >Email :</label> <input id="email" type="text" value={this.state.email} onChange={this.emailhandler} placeholder="Email..." /><br />
+                    <div class="container1">
+                    <label >Email :   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label> <input id="email" type="text" value={this.state.email} onChange={this.emailhandler} placeholder="Email..." /><br />
                     <label>Password :</label> <input id="password" type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password..." /><br />
+                    </div>
                     <input id="submit" type="submit" value="Log In" />
                     <li>
                          <label>new tenant?  </label>

@@ -261,7 +261,7 @@ class Register extends Component {
 
                     </select><br />
                     {this.rendervalue()}
-                    <input id="submit" type="submit" value="Submit"  />
+                    <input id="submit11" type="submit" value="Submit"  />
 
                     <li>
                          <label>Sign in? </label>
