@@ -79,7 +79,7 @@ class TestAudit(TestBase):
     TEST_GRAPH_CSV_CALL_1_JSON = json.dumps(TEST_GRAPH_CSV_CALL_1)
     TEST_GRAPH_CSV_CALL_2_JSON = json.dumps(TEST_GRAPH_CSV_CALL_2)
     TEST_AUDIT_JSON = json.dumps(TEST_AUDIT)
-    TEST_REPORT_CAL_JSON= json.dumps(TEST_REPORT_CALL)
+    TEST_REPORT_CALL_JSON= json.dumps(TEST_REPORT_CALL)
 
     def test_audit_submit_fail_1(self):
         rv = self.client.post('/signup', data=self.TEST_ACCOUNT_1_JSON,
@@ -102,7 +102,7 @@ class TestAudit(TestBase):
                               content_type='application/json')
         assert rv.status_code == 200
         assert rv.json['result'] == True
-        rv = self.client.post('/report_dashboard', data=self.TEST_REPORT_CALL,
+        rv = self.client.post('/report_dashboard', data=self.TEST_REPORT_CALL_JSON,
                               content_type='application/json')
         assert rv.status_code == 200
         assert rv.json['status'] == True
