@@ -35,3 +35,5 @@ yarn-error.log*
 *.log
 backend/tests/flask_session
 backend/tests/assets/*.csv
+*.ini
+*.env
