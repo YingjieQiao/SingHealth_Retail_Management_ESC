@@ -77,7 +77,7 @@ class viewPhoto extends Component {
                                     </span>
                                 </div>
                                 <div className={styles.rectifyButton_container}>
-                                    <button type="button" id={image} onClick={this.rectify} className="btn btn-primary m-2" width="wrap">Rectify</button>
+                                    <button type="button" id={image} onClick={this.rectify} className="btn btn-primary m-2" width="wrap">Rectify &nbsp;&nbsp;</button>
                                 </div>
                             </div>
 
