@@ -259,15 +259,15 @@ class viewPhoto extends Component {
             tenantName: this.state.photoAttrData[index]["tenantName"],
             rectified: this.state.photoAttrData[index]["rectified"]
         };
-
-        if (this.state.viewStaffUpload) {
+        
+        if (this.state.showPhotoByStaff) {
             axios.post(`http://localhost:5000/rectify_photo`, currPhoto, headers)
             .then(res => {
                 console.log(currPhoto);
                 console.log(res);
             });
         } 
-        else if (this.state.viewTenantUpload) {
+        else if (this.state.showPhotoByTenant) {
             axios.post(`http://localhost:5000/tenant_rectify_photo`, currPhoto, headers)
             .then(res => {
                 console.log(currPhoto);

@@ -461,7 +461,7 @@ def rectify_photo():
         username = "UnitTester"
         # print("testing")
         logger.info("testing '/rectify_photo' endpoint")
-
+    print(username, date_, time_)
     try:
         photoInfo = Photo.objects(date=date_, time=time_, staffName=username)
         photoInfo.update(**body)
