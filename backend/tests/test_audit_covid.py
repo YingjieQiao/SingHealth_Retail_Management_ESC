@@ -32,12 +32,12 @@ class TestAudit(TestBase):
         '010' : 1,
         '011' : 1,
         '012' : -1,
-        '013' : 0,
+        '013' : 0
     }
 
     TEST_AUDIT_2 = {  # Missing data
         'auditorName' : "temp_auditor",
-        'auditorDepartment' : "Risk",
+        # data is missing
         'auditeeName' : "temp_audit@temp.com",
         'comment' : "TEST",
         '001' : 1,
@@ -45,14 +45,14 @@ class TestAudit(TestBase):
         '003' : -1,
         '004' : 0,
         '005' : -1,
-        # data is missing
+        '006' : -1,
         '007' : 0,
         '008' : 0,
         '009' : -1,
         '010' : 1,
         '011' : 1,
         '012' : -1,
-        '013' : 0,
+        '013' : 0
     }
 
     TEST_AUDIT_3 = {  # Extra data
@@ -93,7 +93,7 @@ class TestAudit(TestBase):
         '010' : 1,
         '011' : 1,
         '012' : -1,
-        '013' : 0,
+        '013' : 0
     }
 
     TEST_AUDIT_1_JSON = json.dumps(TEST_AUDIT_1)
