@@ -59,9 +59,10 @@ def q1():
         print("no alert")
     
     links = [link for link in driver.find_elements_by_xpath("//a[@href]") if link.is_displayed()]
-    button = driver.find_element_by_class_name("menu-bars").click()
+ 
  
     while True:
+        
         if(driver.current_url=="http://localhost:3000/"):
             break
         n = random. randint(1,2)
@@ -73,8 +74,20 @@ def q1():
             time.sleep(1)
             random_id = choice(id)
 
-            print("clicking")
-            print(random_id)
+            print("clicking following id :")
+            print(random_id.get_attribute('id') )
+            if(random_id.get_attribute('id')=="buttonviewtenant"):
+                print("\n\n***************View Photos Uploaded By Tenants CLICKED*****************\n\n")
+            if(random_id.get_attribute('id')=="buttonviewstaff"):
+                print("\n\n***************View Previously Updated Photos CLICKED*****************\n\n")
+            if(random_id.get_attribute('id')=="buttonstaffview"):
+                print("\n\n***************View Photos Uploaded By Staff CLICKED*****************\n\n")
+            if(random_id.get_attribute('id')=="buttonprevup"):
+                print("\n\n***************View Previously Uploaded Photos CLICKED*****************\n\n")
+            if(random_id.get_attribute('id')=="buttontoupload"):
+                print("\n\n***************Upload Photo Information CLICKED*****************\n\n")
+            if(random_id.get_attribute('id')=="buttontouploadten"):
+                print("\n\n***************Upload Photo Information CLICKED*****************\n\n")
             driver.get(random_id.click())
         except:
             try:
@@ -87,8 +100,8 @@ def q1():
                             driver.get(random_id.sed_key("12342234"))
                             driver.get(random_id.click())
             except:
-                            print("Element not clickable: ")
-                            print("unclickable element found, terminating.")
+                            print("Element not clickable AT ALL:  ")
+                            
                             try:
                                 id = driver.find_elements_by_xpath('//*[@id]')
                                 time.sleep(1)
@@ -101,7 +114,8 @@ def q1():
                                 print("Element not textable: ")
                                 print("unclickable element found, terminating.")
             print("Element not clickable: ")
-            print("unclickable element found, terminating.")
+            print("unclickable element found.")
+    print("*********TERMINATED!*********")
 
     driver.close()
 

@@ -94,7 +94,7 @@ class Upload extends Component {
                     </form >
 
                     <div className={styles.button_container}>
-                        <button type="button" className="btn btn-primary m-2" id="button"
+                        <button type="button" className="btn btn-primary m-2" id="buttontouploadten"
                             onClick={this.photoInfoButtonHandler} >Upload Photo Information</button>
                     </div>
                 </div>

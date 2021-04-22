@@ -32,7 +32,8 @@ class viewPhoto extends Component {
                       this.props.history.push('/');
                     }
                 }
-            );
+     
+                );
         } catch (e) { console.log(e); }
     }
 
@@ -49,8 +50,8 @@ class viewPhoto extends Component {
                     <h2 className={mainStyle.main_header}>Staff View Photos</h2>
                 </div>
                 <div className={styles.button_container}>
-                    <button type="button" class={this.getTenantButtonClasses()} onClick={this.showPhotoByTenantHandler}>View Photos Uploaded By Tenants</button>
-                    <button type="button" class={this.getStaffButtonClasses()} onClick={this.showPhotoByStaffHandler}>View Previously Updated Photos</button>
+                    <button type="button" id="buttonviewtenant" class={this.getTenantButtonClasses()} onClick={this.showPhotoByTenantHandler}>View Photos Uploaded By Tenants</button>
+                    <button type="button" id="buttonviewstaff" class={this.getStaffButtonClasses()} onClick={this.showPhotoByStaffHandler}>View Previously Updated Photos</button>
                 </div>
                 <div className={styles.header_container}><h2 className={styles.header}>{this.displayUploadHeader()}</h2></div>
                 <div>
