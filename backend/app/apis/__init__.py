@@ -873,7 +873,7 @@ def covidchecklist():
     body = request.get_json()
     # print(body)
     try:
-        if len(body) != 17:
+        if len(body) < 16 or len(body) > 17:
             return {'statusText': False}, 500
         dc = {}
         dc['auditorName'] = body['auditorName']
