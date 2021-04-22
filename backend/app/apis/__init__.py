@@ -35,17 +35,12 @@ s = URLSafeTimedSerializer('Thisisasecret!')
 
 password = os.environ.get("email_password")
 sender_email = os.environ.get("sender_email")
-print(sender_email)
-print(password)
+# print(sender_email)
+# print(password)
 
 apis = Blueprint('apis', __name__)
 
 logger = logging.getLogger("logger")
-
-#TODO remove all the print in the end
-#TODO more logging at successful executions
-#TODO remove downloaded csv from project directory (PS: do not remove covid_audit.csv, fnb_audit.csv and non_fnb_audit.csv as these are used for creating reports)
-# after the file is downloaded on the frontned by the user for admin page
 
 
 @apis.after_request
