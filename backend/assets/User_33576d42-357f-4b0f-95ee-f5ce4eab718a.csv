@@ -1,0 +1,5 @@
+firstName,lastName,email,location,mobile,fnb,locked,attempts,staff,tenant,admin
+mihir,chibs,mihirchibs@gmail.com,SUTD,1234455,False,False,0,False,True,False
+mihir,nair,mihirchibs2312@gmail.com,NUS,12345667,True,False,0,False,True,False
+ishaan,nair,ishaan_nair@mymail.sutd.edu.sg,SGH,12345678,False,False,2,True,False,False
+aum,bansal,aumbansal619@gmail.com,SGH,123456789,False,False,0,False,True,False
