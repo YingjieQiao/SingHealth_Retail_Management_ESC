@@ -328,7 +328,7 @@ class AuditChecklistCovid extends Component {
         if (Object.keys(this.state.scoreDict).length < (this.state.dataLength - 1)) {
             console.log("empty field");
             alert("Please fill up all fields");
-        } else { 
+        } else if (Object.keys(this.state.scoreDict).length === (this.state.dataLength)){ 
             // all data has been filled
             // proceeds to send data to backend
             const headers = {
@@ -336,12 +336,19 @@ class AuditChecklistCovid extends Component {
                 'Access-Control-Allow-Origin': '*', 
                 withCredentials: true
             };
-            
+            try{
             axios.post("http://localhost:5000/covidChecklist", this.state.scoreDict, headers
             ).then( res => {
                 console.log(res.statusText);
                 alert("The form has been successfully recorded.");
             });
+            }
+            catch(e){
+                alert("Please fill up all fields");
+            }
+        }
+        else{
+            alert("Please fill up all fields");
         }
     }
 
