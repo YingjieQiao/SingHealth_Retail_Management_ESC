@@ -21,6 +21,7 @@ Frontend dependencies: `yarn install`
 
 ### Set up local mongodb database
 
+*Please take note that it requires *nix systems to run the app.*
 
 - on Mac OS
 
